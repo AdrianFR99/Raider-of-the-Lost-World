@@ -1,6 +1,7 @@
 #include "j1App.h"
 #include "p2Log.h"
 #include "j1render.h"
+#include "j1input.h"
 #include "SDL/include/SDL.h"
 #include "j2Player.h"
 
@@ -22,10 +23,21 @@ bool j2Player::Start()
 {
 	LOG("Player Start");
 	
+	playerPos.x = 64;
+	playerPos.y = 36 * 16;
+
 	playerRect.h = 32;
 	playerRect.w = 16;
-	playerRect.x = -32;
-	playerRect.y = -32;
+	playerRect.x = playerPos.x;
+	playerRect.y = playerPos.y;
+
+	lateralTest.h = 48;
+	lateralTest.w = 64;
+	lateralTest.x = playerPos.x + 128;
+	lateralTest.y = playerPos.y - 16;
+	
+
+	max_speed = 6;
 	 
 	return true;
 }
@@ -45,10 +57,25 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		playerPos.x += max_speed;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		playerPos.x -= max_speed;
+	}
+
+
+
+
 	
-	App->render->DrawQuad(playerRect, 255, 0, 0, 255);
+	playerRect.x = playerPos.x;
+	playerRect.y = playerPos.y;
 
-
+	App->render->DrawQuad(playerRect, 255, 0, 0, 200);
+	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
 	return true;
 }
 

@@ -32,7 +32,12 @@ public:
 public: //Variables
 
 	SDL_Rect playerRect;
+	iPoint playerPos;
+	int max_speed;
 
+
+	//Debug purpose RECTS
+	SDL_Rect lateralTest;
 };
 
 
