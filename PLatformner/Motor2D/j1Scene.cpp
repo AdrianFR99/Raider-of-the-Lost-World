@@ -19,10 +19,16 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+
+	loadedMap1 = config.attribute("Map1").as_string();
+	if (loadedMap1 == NULL) {
+
+		ret = false;
+	}
 
 	return ret;
 }
@@ -30,7 +36,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("maps/map1_tiledV0_17.tmx");
+	App->map->Load(loadedMap1.GetString());
 	//App->map->Load("iso.tmx");
 	
 	return true;
