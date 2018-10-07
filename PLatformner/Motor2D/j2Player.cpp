@@ -37,7 +37,7 @@ bool j2Player::Start()
 	lateralTest.y = playerPos.y - 16;
 	
 
-	max_speed = 6;
+	max_speed = 4;
 	 
 	return true;
 }
@@ -51,12 +51,24 @@ bool j2Player::CleanUp()
 bool j2Player::PreUpdate()
 {
 	//App->render->DrawQuad(playerRect, 255, 0, 0, 130, true, false);
+	
 	return true;
 }
 
 
 bool j2Player::Update(float dt)
 {
+
+	if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
+		&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
+	{
+		max_speed = 0;
+	}
+	else
+	{
+		max_speed = 4;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		playerPos.x += max_speed;
@@ -66,7 +78,6 @@ bool j2Player::Update(float dt)
 	{
 		playerPos.x -= max_speed;
 	}
-
 
 
 
@@ -82,8 +93,19 @@ bool j2Player::Update(float dt)
 // Called each loop iteration
 bool j2Player::PostUpdate()
 {
+	
 	//App->render->DrawQuad(playerRect, 255, 0, 0, 130, true, false);
 	return true;
 }
 
+
+bool j2Player::CheckCollision(const SDL_Rect& r) const
+{
+	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
+}
+
+bool j2Player::PreCheckCollision(const SDL_Rect& r) const
+{
+	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || ((playerRect.x + playerRect.w) + max_speed )< r.x || playerRect.x > r.x + r.w);
+}
 

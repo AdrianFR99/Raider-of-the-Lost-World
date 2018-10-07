@@ -29,6 +29,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
+	bool j2Player::CheckCollision(const SDL_Rect& r) const;
+	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
+
 public: //Variables
 
 	SDL_Rect playerRect;
