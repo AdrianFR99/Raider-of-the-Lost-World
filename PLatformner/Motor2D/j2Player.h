@@ -32,16 +32,21 @@ public:
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
+	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;
 
 public: //Variables
 
 	SDL_Rect playerRect;
 	iPoint playerPos;
-	int max_speed;
+	int max_x_speed;
+	int max_y_speed;
+	int d_to_ground;
+	bool landed;
 
 
 	//Debug purpose RECTS
 	SDL_Rect lateralTest;
+	SDL_Rect verticalTest;
 };
 
 

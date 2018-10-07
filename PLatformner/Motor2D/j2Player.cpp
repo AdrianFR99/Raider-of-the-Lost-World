@@ -35,9 +35,17 @@ bool j2Player::Start()
 	lateralTest.w = 64;
 	lateralTest.x = playerPos.x + 128;
 	lateralTest.y = playerPos.y - 16;
+
+	verticalTest.h = 48;
+	verticalTest.w = 256;
+	verticalTest.x = playerPos.x + -64;
+	verticalTest.y = playerPos.y + 32;
 	
 
-	max_speed = 4;
+	max_x_speed = 4;
+	max_y_speed = -8;
+
+	landed = true;
 	 
 	return true;
 }
@@ -58,26 +66,58 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
-
+	//Check Horizontal collisions
 	if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
 		&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
 	{
-		max_speed = 0;
+		max_x_speed = 0;
 	}
 	else
 	{
-		max_speed = 4;
+		max_x_speed = 4;
 	}
+
+	//Check vertical collisions
+	if (CheckVerticalCollision(verticalTest) == true)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		{
+			landed = false;
+		}
+		else{
+			landed = true;
+		}
+		
+		max_y_speed = -8;
+	}
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		playerPos.x += max_speed;
+		playerPos.x += max_x_speed;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		playerPos.x -= max_speed;
+		playerPos.x -= max_x_speed;
 	}
+
+	if (landed == false)
+	{
+		
+		d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
+
+
+		playerPos.y += max_y_speed;
+		max_y_speed += 1;
+	}
+
+	
+
+	
+
+	
+	
 
 
 
@@ -87,6 +127,7 @@ bool j2Player::Update(float dt)
 
 	App->render->DrawQuad(playerRect, 255, 0, 0, 200);
 	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
+	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);
 	return true;
 }
 
@@ -106,6 +147,10 @@ bool j2Player::CheckCollision(const SDL_Rect& r) const
 
 bool j2Player::PreCheckCollision(const SDL_Rect& r) const
 {
-	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || ((playerRect.x + playerRect.w) + max_speed )< r.x || playerRect.x > r.x + r.w);
+	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || ((playerRect.x + playerRect.w) + max_x_speed )< r.x || playerRect.x > r.x + r.w);
 }
 
+bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const
+{
+	return !((playerRect.y + playerRect.h + 1 )< r.y || (playerRect.y -1) > r.y + r.h);
+}
