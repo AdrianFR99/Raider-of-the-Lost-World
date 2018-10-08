@@ -9,6 +9,12 @@
  <tileset firstgid="853" name="environment-background" tilewidth="16" tileheight="16" tilecount="280" columns="28">
   <image source="environment-background.png" width="448" height="160"/>
  </tileset>
+ <imagelayer name="Back">
+  <image source="ParallaxBackG2.png" width="7000" height="724"/>
+ </imagelayer>
+ <imagelayer name="Front">
+  <image source="parallaxBackG1.png" width="7000" height="718"/>
+ </imagelayer>
  <layer name="backLayer" width="256" height="45">
   <data>
    <tile gid="0"/>

@@ -9,6 +9,18 @@
  <tileset firstgid="953" name="Light_Lava_Water" tilewidth="16" tileheight="16" tilecount="180" columns="15">
   <image source="Light_Lava_Water.png" width="250" height="192"/>
  </tileset>
+ <imagelayer name="Sky(back)">
+  <image source="skyLine.png" width="4800" height="810"/>
+ </imagelayer>
+ <imagelayer name="Clouds(MiddleUp)">
+  <image source="UpClouds.png" width="4800" height="315"/>
+ </imagelayer>
+ <imagelayer name="Clouds(MiddleDown)" offsetx="2" offsety="520">
+  <image source="CloudsBack.png" width="4800" height="381"/>
+ </imagelayer>
+ <imagelayer name="Clouds(Front)" offsetx="136" offsety="724">
+  <image source="CloudsFront.png" width="4800" height="186"/>
+ </imagelayer>
  <layer name="Background" width="300" height="57">
   <data>
    <tile gid="0"/>
