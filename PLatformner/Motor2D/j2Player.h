@@ -38,8 +38,8 @@ public: //Variables
 
 	SDL_Rect playerRect;
 	iPoint playerPos;
-	int max_x_speed;
-	int max_y_speed;
+	int x_speed;
+	int y_speed;
 	int d_to_ground;
 	bool landed;
 
