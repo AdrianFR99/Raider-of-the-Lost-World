@@ -37,13 +37,13 @@ bool j2Player::Start()
 	lateralTest.y = playerPos.y - 16;
 
 	verticalTest.h = 48;
-	verticalTest.w = 256;
+	verticalTest.w = 512;
 	verticalTest.x = playerPos.x + -64;
 	verticalTest.y = playerPos.y + 32;
 	
 
 	x_speed = 4;
-	y_speed = -0;
+	y_speed = -15;
 
 	landed = true;
 	 
@@ -80,17 +80,22 @@ bool j2Player::Update(float dt)
 	}
 
 	//Check vertical collisions
-	if (CheckVerticalCollision(verticalTest) == true || CheckVerticalCollision(lateralTest) == true)
+	if (CheckVerticalCollision(verticalTest) == true /*|| CheckVerticalCollision(lateralTest) == true*/)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
 			landed = false;
+			y_speed = -15;
 		}
-		else{
+		else
+		{
 			landed = true;
 		}
 		
-		y_speed = -10;
+	}
+	else
+	{
+		landed = false;
 	}
 	
 
@@ -104,32 +109,20 @@ bool j2Player::Update(float dt)
 		playerPos.x -= x_speed;
 	}
 
+
+	//LANDED LOGIC
 	if (landed == false)
 	{
-		if (d_to_ground < y_speed)
-		{
-			y_speed = d_to_ground;
-		}
-		else
-		{
-			y_speed += 1;
-		}
-		
 		playerPos.y += y_speed;
-		
-		
+		y_speed += 1;
+	}
+	else
+	{
+		y_speed = 0;
 	}
 
 	
 
-	
-
-	
-	
-
-
-
-	
 	playerRect.x = playerPos.x;
 	playerRect.y = playerPos.y;
 
@@ -155,10 +148,10 @@ bool j2Player::CheckCollision(const SDL_Rect& r) const
 
 bool j2Player::PreCheckCollision(const SDL_Rect& r) const
 {
-	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + x_speed )< r.x || playerRect.x > r.x + r.w);
+	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + 1 )< r.x || playerRect.x > r.x + r.w);
 }
 
 bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const
 {
-	return !((playerRect.y + playerRect.h + 1 )< r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w))< r.x || playerRect.x > r.x + r.w);
+	return !( (playerRect.y + playerRect.h +1 )< r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
 }
