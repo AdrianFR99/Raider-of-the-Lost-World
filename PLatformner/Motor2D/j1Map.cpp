@@ -9,6 +9,7 @@
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name.create("map");
+
 }
 
 // Destructor
@@ -22,6 +23,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+	
 
 	return ret;
 }
@@ -35,13 +37,14 @@ void j1Map::Draw()
 	//SDL_Rect rec = { 0,0,4800,810 };
 	//SDL_Rect rec2 = { 0,0,4800,381 };
 
-	//App->render->Blit(App->tex->Load("maps/skyLine.png"), 0, 0, &rec);
-	//App->render->Blit(App->tex->Load("maps/CloudsBack.png"), 2, 520, &rec2);
+	//SDL_Texture*tex1 = App->tex->Load("maps/skyLine.png");
+	//SDL_Texture*tex2 = App->tex->Load("maps/CloudsBack.png");
 
-	/*for (int x = 0; x < data.imagelayers.count();++x) {
+	for (int x = 0; x < data.imagelayers.count();++x) {
 		
 		App->render->Blit(data.imagelayers[x]->texture,data.imagelayers[x]->OffsetX, data.imagelayers[x]->OffsetY, &data.imagelayers[x]->GetImageLayerRect());
-	}*/
+
+	}
 
 
 //DRAW FUNCTION FOR LAYERS AND TILESTS
@@ -121,6 +124,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 SDL_Rect ImageLayer::GetImageLayerRect() const {
 
 	SDL_Rect rec;
+
 	rec.w = Width;
 	rec.h = Height;
 	rec.x = 0;
@@ -447,7 +451,7 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 	Image->name = node.attribute("name").as_string();
 	Image->Width = node.child("image").attribute("width").as_int();
 	Image->Height = node.child("image").attribute("height").as_int();
-	Image->texture = App->tex->Load(PATH(folder.GetString(),node.attribute("source").as_string()));
+	Image->texture = App->tex->Load(PATH(folder.GetString(),node.child("image").attribute("source").as_string()));
 
 	if (node.attribute("offsetx").as_int() != NULL)
 		Image->OffsetX = node.attribute("offsetx").as_int();

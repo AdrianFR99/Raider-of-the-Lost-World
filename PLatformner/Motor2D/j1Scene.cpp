@@ -38,6 +38,7 @@ bool j1Scene::Start()
 {
 	App->map->Load(loadedMap1.GetString());
 	//App->map->Load("iso.tmx");
+
 	
 	return true;
 }
@@ -69,6 +70,10 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 1;
+
+
+	
+
 
 	App->map->Draw();
 
