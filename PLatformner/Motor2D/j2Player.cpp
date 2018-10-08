@@ -66,6 +66,7 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	//This variable STORES the distance of the player lowest point of the lowest pixel to the ground
 	d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
 
 	//Check Horizontal collisions
@@ -79,7 +80,7 @@ bool j2Player::Update(float dt)
 		x_speed = 4;
 	}
 
-	//Check vertical collisions
+	//Check vertical collisions and set LANDED
 	if (CheckVerticalCollision(verticalTest) == true /*|| CheckVerticalCollision(lateralTest) == true*/)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
@@ -110,7 +111,10 @@ bool j2Player::Update(float dt)
 	}
 
 
-	//LANDED LOGIC
+	//LANDED LOGIC:  when landed == false the player 
+	//is not touching a solid surface with its feet
+	//when landed == true the player IS touching a solid surface with its feet
+
 	if (landed == false)
 	{
 		playerPos.y += y_speed;
@@ -122,10 +126,12 @@ bool j2Player::Update(float dt)
 	}
 
 	
-
+	//Here we change the values of the rect position
 	playerRect.x = playerPos.x;
 	playerRect.y = playerPos.y;
 
+
+	//Here we draw some quads for DEBUG purposes
 	App->render->DrawQuad(playerRect, 255, 0, 0, 200);
 	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
 	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);
