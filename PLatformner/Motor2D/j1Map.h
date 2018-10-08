@@ -7,6 +7,18 @@
 #include "j1Module.h"
 
 // ----------------------------------------------------
+
+struct ImageLayer {
+	
+	SDL_Rect GetImageLayerRect() const;
+
+	p2SString name;
+	int Width, Height;
+	int OffsetX, OffsetY = 0;
+	SDL_Texture*texture;
+
+};
+
 struct MapLayer
 {
 	p2SString	name;
@@ -67,6 +79,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<ImageLayer*> imagelayers;
 };
 
 // ----------------------------------------------------
@@ -101,6 +114,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
 
 public:
 

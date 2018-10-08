@@ -8,6 +8,6 @@
 	<scene />
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="0" y="-176" />
 	</renderer>
 </game_state>
