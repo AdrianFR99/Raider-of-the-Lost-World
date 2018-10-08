@@ -37,13 +37,13 @@ bool j2Player::Start()
 	lateralTest.y = playerPos.y - 16;
 
 	verticalTest.h = 48;
-	verticalTest.w = 256;
+	verticalTest.w = 512;
 	verticalTest.x = playerPos.x + -64;
 	verticalTest.y = playerPos.y + 32;
 	
 
-	max_x_speed = 4;
-	max_y_speed = -0;
+	x_speed = 4;
+	y_speed = -15;
 
 	landed = true;
 	 
@@ -66,73 +66,72 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	//This variable STORES the distance of the player lowest point of the lowest pixel to the ground
 	d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
 
 	//Check Horizontal collisions
 	if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
 		&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
 	{
-		max_x_speed = 0;
+		x_speed = 0;
 	}
 	else
 	{
-		max_x_speed = 4;
+		x_speed = 4;
 	}
 
-	//Check vertical collisions
-	if (CheckVerticalCollision(verticalTest) == true || CheckVerticalCollision(lateralTest) == true)
+	//Check vertical collisions and set LANDED
+	if (CheckVerticalCollision(verticalTest) == true /*|| CheckVerticalCollision(lateralTest) == true*/)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
 			landed = false;
+			y_speed = -15;
 		}
-		else{
+		else
+		{
 			landed = true;
 		}
 		
-		max_y_speed = -10;
+	}
+	else
+	{
+		landed = false;
 	}
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		playerPos.x += max_x_speed;
+		playerPos.x += x_speed;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		playerPos.x -= max_x_speed;
+		playerPos.x -= x_speed;
 	}
+
+
+	//LANDED LOGIC:  when landed == false the player 
+	//is not touching a solid surface with its feet
+	//when landed == true the player IS touching a solid surface with its feet
 
 	if (landed == false)
 	{
-		if (d_to_ground < max_y_speed)
-		{
-			max_y_speed = d_to_ground;
-		}
-		else
-		{
-
-		}
-		
-		playerPos.y += max_y_speed;
-		
-		
+		playerPos.y += y_speed;
+		y_speed += 1;
+	}
+	else
+	{
+		y_speed = 0;
 	}
 
 	
-
-	
-
-	
-	
-
-
-
-	
+	//Here we change the values of the rect position
 	playerRect.x = playerPos.x;
 	playerRect.y = playerPos.y;
 
+
+	//Here we draw some quads for DEBUG purposes
 	App->render->DrawQuad(playerRect, 255, 0, 0, 200);
 	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
 	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);
@@ -155,10 +154,10 @@ bool j2Player::CheckCollision(const SDL_Rect& r) const
 
 bool j2Player::PreCheckCollision(const SDL_Rect& r) const
 {
-	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + max_x_speed )< r.x || playerRect.x > r.x + r.w);
+	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + 1 )< r.x || playerRect.x > r.x + r.w);
 }
 
 bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const
 {
-	return !((playerRect.y + playerRect.h + 1 )< r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w))< r.x || playerRect.x > r.x + r.w);
+	return !( (playerRect.y + playerRect.h +1 )< r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
 }

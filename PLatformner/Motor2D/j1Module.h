@@ -11,6 +11,8 @@
 
 class j1App;
 
+struct Collider; //Remember this is to avoid problems as j1Module.h is created before the struct collider
+
 class j1Module
 {
 public:
@@ -68,6 +70,9 @@ public:
 	{
 		return true;
 	}
+
+	// Callbacks ---
+	virtual void OnCollision(Collider* , Collider* ) {}
 
 public:
 
