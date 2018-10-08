@@ -14,7 +14,7 @@ struct ImageLayer {
 
 	p2SString name;
 	int Width, Height;
-	int OffsetX, OffsetY = 0;
+	int OffsetX, OffsetY=0;
 	SDL_Texture*texture;
 
 };

@@ -456,9 +456,10 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 	if (node.attribute("offsetx").as_int() != NULL)
 		Image->OffsetX = node.attribute("offsetx").as_int();
 
-	if (node.attribute("offsety").as_int() == NULL)
-	Image->OffsetY = node.attribute("offsety").as_int();
 
+	if (node.attribute("offsety").as_int() != NULL)
+	Image->OffsetY = node.attribute("offsety").as_int();
+	
 	
 
 
