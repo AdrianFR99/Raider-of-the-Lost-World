@@ -9,6 +9,7 @@
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name.create("map");
+
 }
 
 // Destructor
@@ -22,6 +23,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+	
 
 	return ret;
 }
@@ -30,9 +32,22 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
+	//DRAW FUNCTION FOR IMAGE_LAYERS
 
-	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-	
+	//SDL_Rect rec = { 0,0,4800,810 };
+	//SDL_Rect rec2 = { 0,0,4800,381 };
+
+	//SDL_Texture*tex1 = App->tex->Load("maps/skyLine.png");
+	//SDL_Texture*tex2 = App->tex->Load("maps/CloudsBack.png");
+
+	for (int x = 0; x < data.imagelayers.count();++x) {
+		
+		App->render->Blit(data.imagelayers[x]->texture,data.imagelayers[x]->OffsetX, data.imagelayers[x]->OffsetY, &data.imagelayers[x]->GetImageLayerRect());
+
+	}
+
+
+//DRAW FUNCTION FOR LAYERS AND TILESTS
 	for (int x = 0; x < data.tilesets.count(); x++)
 	{
 		for (uint l = 0; l < data.layers.count(); l++)
@@ -106,7 +121,17 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
 	return rect;
 }
+SDL_Rect ImageLayer::GetImageLayerRect() const {
 
+	SDL_Rect rec;
+
+	rec.w = Width;
+	rec.h = Height;
+	rec.x = 0;
+	rec.y = 0;
+
+	return rec;
+}
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -133,6 +158,18 @@ bool j1Map::CleanUp()
 		item2 = item2->next;
 	}
 	data.layers.clear();
+
+	//remove all ImageLayers
+
+	p2List_item<ImageLayer*>* item3;
+	item3 = data.imagelayers.start;
+
+	while (item3 != NULL)
+	{
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.imagelayers.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -192,6 +229,20 @@ bool j1Map::Load(const char* file_name)
 			data.layers.add(lay);
 	}
 
+	//Load ImageLayer Info-------------------------------------------
+	pugi::xml_node Image_Layer;
+	for (Image_Layer = map_file.child("map").child("imagelayer"); Image_Layer && ret; Image_Layer = Image_Layer.next_sibling("imagelayer"))
+	{
+
+		ImageLayer*ImagLay = new ImageLayer();
+
+		ret = LoadImageLayer(Image_Layer,ImagLay);
+
+		if (ret == true)
+			data.imagelayers.add(ImagLay);
+
+	}
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -218,6 +269,17 @@ bool j1Map::Load(const char* file_name)
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
+		p2List_item<ImageLayer*>*Item_ImageLayer = data.imagelayers.start;
+		while (Item_ImageLayer != NULL) {
+
+			ImageLayer*I = Item_ImageLayer->data;
+			LOG("ImageLayer-----");
+			LOG("name:%s",I->name.GetString());
+			LOG("image width: %d image height: %d",I->Width,I->Height);
+			Item_ImageLayer = Item_ImageLayer->next;
+
+		}
+
 	}
 
 	map_loaded = ret;
@@ -378,6 +440,31 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 			layer->data[i++] = tile.attribute("gid").as_int(0);
 		}
 	}
+
+	return ret;
+}
+
+bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
+
+	bool ret = true;
+
+	Image->name = node.attribute("name").as_string();
+	Image->Width = node.child("image").attribute("width").as_int();
+	Image->Height = node.child("image").attribute("height").as_int();
+	Image->texture = App->tex->Load(PATH(folder.GetString(),node.child("image").attribute("source").as_string()));
+
+	if (node.attribute("offsetx").as_int() != NULL)
+		Image->OffsetX = node.attribute("offsetx").as_int();
+
+
+	if (node.attribute("offsety").as_int() != NULL)
+	Image->OffsetY = node.attribute("offsety").as_int();
+	
+	
+
+
+
+	
 
 	return ret;
 }
