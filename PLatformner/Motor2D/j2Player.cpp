@@ -43,7 +43,7 @@ bool j2Player::Start()
 	
 
 	max_x_speed = 4;
-	max_y_speed = -8;
+	max_y_speed = -0;
 
 	landed = true;
 	 
@@ -66,6 +66,8 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
+
 	//Check Horizontal collisions
 	if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
 		&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
@@ -78,7 +80,7 @@ bool j2Player::Update(float dt)
 	}
 
 	//Check vertical collisions
-	if (CheckVerticalCollision(verticalTest) == true)
+	if (CheckVerticalCollision(verticalTest) == true || CheckVerticalCollision(lateralTest) == true)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
@@ -88,7 +90,7 @@ bool j2Player::Update(float dt)
 			landed = true;
 		}
 		
-		max_y_speed = -8;
+		max_y_speed = -10;
 	}
 	
 
@@ -104,12 +106,18 @@ bool j2Player::Update(float dt)
 
 	if (landed == false)
 	{
+		if (d_to_ground < max_y_speed)
+		{
+			max_y_speed = d_to_ground;
+		}
+		else
+		{
+
+		}
 		
-		d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
-
-
 		playerPos.y += max_y_speed;
-		max_y_speed += 1;
+		
+		
 	}
 
 	
@@ -147,10 +155,10 @@ bool j2Player::CheckCollision(const SDL_Rect& r) const
 
 bool j2Player::PreCheckCollision(const SDL_Rect& r) const
 {
-	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || ((playerRect.x + playerRect.w) + max_x_speed )< r.x || playerRect.x > r.x + r.w);
+	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + max_x_speed )< r.x || playerRect.x > r.x + r.w);
 }
 
 bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const
 {
-	return !((playerRect.y + playerRect.h + 1 )< r.y || (playerRect.y -1) > r.y + r.h);
+	return !((playerRect.y + playerRect.h + 1 )< r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w))< r.x || playerRect.x > r.x + r.w);
 }
