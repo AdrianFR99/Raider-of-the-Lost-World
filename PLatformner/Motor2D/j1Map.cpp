@@ -64,17 +64,16 @@ void j1Map::Draw()
 						(gid) &= ~(FLIPPED_HORIZONTALLY_FLAG |
 						FLIPPED_VERTICALLY_FLAG |
 						FLIPPED_DIAGONALLY_FLAG);
+					
+						//// Resolve the tile
+						//for (int i = tileset_count - 1; i >= 0; --i) {
+						//	Tileset *tileset = tilesets[i];
 
-						//for (int i = data.tilesets.count() -1; i >= 0; --i) {
-						//	TileSet *tileset = data.tilesets[i];
-
-						//	if (tileset->firstgid <= gid) {
-						//		tiles[y][x] = tileset->tileAt(gid - tileset->firstgid);
+						//	if (tileset->first_gid() <= global_tile_id) {
+						//		tiles[y][x] = tileset->tileAt(global_tile_id - tileset->first_gid());
 						//		break;
 						//	}
 						//}
-
-				
 
 					App->render->Blit(data.tilesets[x]->texture,    //texture 
 						pos.x,                     //position.x of tile
