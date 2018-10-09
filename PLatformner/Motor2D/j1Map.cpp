@@ -32,13 +32,7 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
-	//DRAW FUNCTION FOR IMAGE_LAYERS
-
-	//SDL_Rect rec = { 0,0,4800,810 };
-	//SDL_Rect rec2 = { 0,0,4800,381 };
-
-	//SDL_Texture*tex1 = App->tex->Load("maps/skyLine.png");
-	//SDL_Texture*tex2 = App->tex->Load("maps/CloudsBack.png");
+	
 
 	for (int x = 0; x < data.imagelayers.count();++x) {
 		
@@ -56,12 +50,36 @@ void j1Map::Draw()
 			{
 				for (uint column = 0; column < data.width; column++)
 				{
+
 					iPoint pos = MapToWorld(column, row);
+
+					uint gid= (data.layers[l]->data[data.layers[l]->Get(column, row)]);
+
+					//Read out the flags
+					bool flipped_horizontally = (gid & FLIPPED_HORIZONTALLY_FLAG);
+					bool flipped_vertically = (gid & FLIPPED_VERTICALLY_FLAG);
+					bool flipped_diagonally = (gid & FLIPPED_DIAGONALLY_FLAG);
+
+					// Clear the flags
+						(gid) &= ~(FLIPPED_HORIZONTALLY_FLAG |
+						FLIPPED_VERTICALLY_FLAG |
+						FLIPPED_DIAGONALLY_FLAG);
+
+						//for (int i = data.tilesets.count() -1; i >= 0; --i) {
+						//	TileSet *tileset = data.tilesets[i];
+
+						//	if (tileset->firstgid <= gid) {
+						//		tiles[y][x] = tileset->tileAt(gid - tileset->firstgid);
+						//		break;
+						//	}
+						//}
+
+				
 
 					App->render->Blit(data.tilesets[x]->texture,    //texture 
 						pos.x,                     //position.x of tile
 						pos.y,                         //position.y of tile
-						&data.tilesets[x]->GetTileRect(data.layers[l]->data[data.layers[l]->Get(column, row)])); //rectangle
+						&data.tilesets[x]->GetTileRect(gid)); //rectangle
 				}
 			}
 		}
@@ -443,6 +461,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return ret;
 }
+
 
 bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 

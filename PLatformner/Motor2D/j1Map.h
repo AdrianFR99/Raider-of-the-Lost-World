@@ -119,6 +119,18 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
 
+	//vars for flipping the tiles
+	const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+	const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
+	const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+
+
+	
+
+
+	
+
+
 public:
 
 	MapData data;
