@@ -1,7 +1,7 @@
 #ifndef __j2Collision_H__
 #define __j2Collision_H__
 
-#define MAX_COLLIDERS 100	// Make dymanic array for final game?
+#define MAX_COLLIDERS 3000	// Make dymanic array for final game?
 
 #include "j1Module.h"
 
@@ -34,6 +34,7 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
+	bool PreCheckCollision(const SDL_Rect& r) const;
 };
 
 class j2Collision : public j1Module

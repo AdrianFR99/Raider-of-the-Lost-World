@@ -10,6 +10,13 @@ j2Collision::j2Collision()
 {
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
+
+	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
+
+	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
+
 }
 
 // Destructor
@@ -94,12 +101,12 @@ void j2Collision::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
-		//case COLLIDER_WALL: // blue
-		//	App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
-		//	break;
-		//case COLLIDER_PLAYER: // green
-		//	App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
-		//	break;
+		case COLLIDER_WALL: // blue
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+			break;
+		case COLLIDER_PLAYER: // green
+			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+			break;
 		
 
 		}
@@ -145,4 +152,10 @@ Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	return !(rect.y + rect.h < r.y || rect.y > r.y + r.h || rect.x + rect.w < r.x || rect.x > r.x + r.w);
+}
+
+
+bool Collider::PreCheckCollision(const SDL_Rect& r) const
+{
+	return !((rect.y + rect.h + 1) < r.y || (rect.y - 1) > r.y + r.h || ((rect.x + rect.w) + 1) < r.x || rect.x > r.x + r.w);
 }

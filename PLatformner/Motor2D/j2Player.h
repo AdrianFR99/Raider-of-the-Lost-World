@@ -3,6 +3,8 @@
 
 #include "j1Module.h"
 
+struct Collider;
+
 class j2Player : public j1Module
 {
 public:
@@ -29,10 +31,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+	void OnCollision(Collider*, Collider*);
+
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
-	bool j2Player::CheckCollision(const SDL_Rect& r) const;
+	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
-	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;
+	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;*/
 
 public: //Variables
 
@@ -47,6 +52,10 @@ public: //Variables
 	//Debug purpose RECTS
 	SDL_Rect lateralTest;
 	SDL_Rect verticalTest;
+
+	Collider* playerHitbox;
+	Collider* verticalTestHitbox;
+	Collider* lateralTestHitbox;
 };
 
 

@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Window.h"
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <cmath>
@@ -46,7 +47,7 @@ void j1Map::Draw()
 
 	}
 
-
+	SDL_Rect recToDraw;
 //DRAW FUNCTION FOR LAYERS AND TILESTS
 	for (int x = 0; x < data.tilesets.count(); x++)
 	{
@@ -58,10 +59,15 @@ void j1Map::Draw()
 				{
 					iPoint pos = MapToWorld(column, row);
 
+					recToDraw = data.tilesets[x]->GetTileRect(data.layers[l]->data[data.layers[l]->Get(column, row)]);
+					/*if (pos.x < (App->render->camera.x) )
+					{
+					*/
 					App->render->Blit(data.tilesets[x]->texture,    //texture 
 						pos.x,                     //position.x of tile
 						pos.y,                         //position.y of tile
-						&data.tilesets[x]->GetTileRect(data.layers[l]->data[data.layers[l]->Get(column, row)])); //rectangle
+						&recToDraw); //rectangle
+					/*}*/
 				}
 			}
 		}
