@@ -25,31 +25,31 @@ bool j2Player::Start()
 {
 	LOG("Player Start");
 	
-	playerPos.x = 64;
-	playerPos.y = 36 * 16;
+	player.playerPos.x = 64;
+	player.playerPos.y = 36 * 16;
 
-	playerRect.h = 32;
-	playerRect.w = 16;
-	playerRect.x = playerPos.x;
-	playerRect.y = playerPos.y;
+	player.playerRect.h = 32;
+	player.playerRect.w = 16;
+	player.playerRect.x = player.playerPos.x;
+	player.playerRect.y = player.playerPos.y;
 
 	lateralTest.h = 48;
 	lateralTest.w = 64;
-	lateralTest.x = playerPos.x + 128;
-	lateralTest.y = playerPos.y - 16;
+	lateralTest.x = player.playerPos.x + 128;
+	lateralTest.y = player.playerPos.y - 16;
 
 	verticalTest.h = 48;
 	verticalTest.w = 512;
-	verticalTest.x = playerPos.x + -64;
-	verticalTest.y = playerPos.y + 32;
+	verticalTest.x = player.playerPos.x + -64;
+	verticalTest.y = player.playerPos.y + 32;
 	
 	lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
-	playerHitbox = App->collision->AddCollider(playerRect, COLLIDER_PLAYER,this);
-	x_speed = 4;
-	y_speed = -15;
+	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
+	player.x_speed = 4;
+	player.y_speed = -15;
 
-	landed = true;
+	player.landed = false;
 	 
 	return true;
 }
@@ -62,7 +62,11 @@ bool j2Player::CleanUp()
 
 bool j2Player::PreUpdate()
 {
-	//App->render->DrawQuad(playerRect, 255, 0, 0, 130, true, false);
+	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
+	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
+	player.landed = false;
+	player.nextFrameLanded = false;
+	
 	
 	return true;
 }
@@ -98,12 +102,12 @@ bool j2Player::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		playerPos.x += x_speed;
+		player.playerPos.x += player.x_speed;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		playerPos.x -= x_speed;
+		player.playerPos.x -= player.x_speed;
 	}
 
 
@@ -111,33 +115,36 @@ bool j2Player::Update(float dt)
 	//is not touching a solid surface with its feet
 	//when landed == true the player IS touching a solid surface with its feet
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
 	{
-		landed = false;
-		y_speed = -15;
+		player.landed = false;
+		player.y_speed = -15;
 	}
 
-	if (landed == false)
+	if (player.landed == false)
 	{
-		playerPos.y += y_speed;
-		y_speed += 1;
+		player.playerPos.y += player.y_speed;
+		if (player.nextFrameLanded == false)
+		{
+			player.y_speed += 1;
+		}
 	}
 	else
 	{
-		y_speed = 0;
+		player.y_speed = 0;
 	}
 	
 	
 	//Here we change the values of the rect position
-	playerRect.x = playerPos.x;
-	playerRect.y = playerPos.y;
+	player.playerRect.x = player.playerPos.x;
+	player.playerRect.y = player.playerPos.y;
 
-	playerHitbox->SetPos(playerRect.x, playerRect.y);
+	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
 	//Here we draw some quads for DEBUG purposes
-	App->render->DrawQuad(playerRect, 255, 0, 0, 200);
+	/*App->render->DrawQuad(player.playerRect, 255, 0, 0, 200);
 	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
-	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);
+	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);*/
 	return true;
 }
 
@@ -152,9 +159,14 @@ bool j2Player::PostUpdate()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
-	landed = true;
-}
+	player.landed = true;
+} 
 
+void j2Player::OnPreCollision(int d) 
+{
+	player.d_to_ground = d;
+	player.nextFrameLanded = true;
+}
 //bool j2Player::CheckCollision(const SDL_Rect& r) const
 //{
 //	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);

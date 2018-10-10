@@ -5,6 +5,8 @@
 
 #include "j1Module.h"
 
+struct Player;
+
 enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
@@ -34,7 +36,8 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	bool PreCheckCollision(const SDL_Rect& r) const;
+	bool PreCheckCollision(const Player& p) const;
+	int ret_d_to_ground(const Player& p) const;
 };
 
 class j2Collision : public j1Module
@@ -51,7 +54,7 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void DebugDraw();
 
-
+	
 private:
 
 	Collider* colliders[MAX_COLLIDERS];

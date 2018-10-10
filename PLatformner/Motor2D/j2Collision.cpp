@@ -2,6 +2,7 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j2Collision.h"
+#include "j2Player.h"
 #include "j1Window.h"
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -63,6 +64,17 @@ bool j2Collision::PreUpdate()
 
 				if (matrix[c2->type][c1->type] && c2->callback)
 					c2->callback->OnCollision(c2, c1);
+
+			}
+
+			if (c1->PreCheckCollision(App->player->player) == true)
+			{
+				if (matrix[c1->type][c2->type] && c1->callback)
+					c1->callback->OnPreCollision(c1->ret_d_to_ground(App->player->player));
+
+				if (matrix[c2->type][c1->type] && c2->callback)
+					c2->callback->OnPreCollision(c2->ret_d_to_ground(App->player->player));
+
 			}
 		}
 	}
@@ -155,7 +167,16 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 }
 
 
-bool Collider::PreCheckCollision(const SDL_Rect& r) const
+bool Collider::PreCheckCollision(const Player& p) const
 {
-	return !((rect.y + rect.h + 1) < r.y || (rect.y - 1) > r.y + r.h || ((rect.x + rect.w) + 1) < r.x || rect.x > r.x + r.w);
+	if (p.y_speed > (rect.y - (p.playerRect.y + p.playerRect.h)) && p.landed == false)
+	{
+		return true;
+	}
+	return false;
+}
+
+int Collider::ret_d_to_ground(const Player& p) const
+{
+	return (rect.y - (p.playerRect.y + p.playerRect.h));
 }
