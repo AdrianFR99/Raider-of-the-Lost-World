@@ -1,6 +1,7 @@
 #include "j1App.h"
 #include "p2Log.h"
 #include "j1render.h"
+#include "j1window.h"
 #include "j1input.h"
 #include "j2Collision.h"
 #include "SDL/include/SDL.h"
@@ -51,6 +52,10 @@ bool j2Player::Start()
 	player.y_speed = -10;
 
 	player.landed = false;
+
+	//Calling the camera to follow the player
+	App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
+	App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
 	 
 	return true;
 }
@@ -135,29 +140,39 @@ bool j2Player::Update(float dt)
 		player.y_speed = 0;
 	}
 	
-	
-	//Here we change the values of the rect position
-	player.playerRect.x = player.playerPos.x;
-	player.playerRect.y = player.playerPos.y;
-
-	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
-
-	//Calling the camera to follow the player
-	App->render->followPlayer(player);
-
-
-	//Here we draw some quads for DEBUG purposes
-	/*App->render->DrawQuad(player.playerRect, 255, 0, 0, 200);
-	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
-	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);*/
 	return true;
 }
 
 // Called each loop iteration
 bool j2Player::PostUpdate()
 {
+	//Camera Following player logic
+	App->render->followPlayer(player);
+
 	
-	//App->render->DrawQuad(playerRect, 255, 0, 0, 130, true, false);
+
+
+	if (App->render->camera.x < 0)
+	{
+		App->render->camera.x = 0;
+	}
+
+
+
+		//Here we change the values of the rect position
+	player.playerRect.x = player.playerPos.x;
+	player.playerRect.y = player.playerPos.y;
+
+	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
+
+
+
+
+	//Here we draw some quads for DEBUG purposes
+	/*App->render->DrawQuad(player.playerRect, 255, 0, 0, 200);
+	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
+	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);*/
+	
 	return true;
 }
 

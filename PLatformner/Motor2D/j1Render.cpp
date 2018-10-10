@@ -253,6 +253,19 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 //Follow the player around
 void j1Render::followPlayer(const Player &p)
 {
-	camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
-	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
+	/*camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
+	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;*/
+
+	if (p.playerPos.x - App->render->camera.x >= 400)
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		App->render->camera.x += p.x_speed;
+	}
+
+	if (p.playerPos.x - App->render->camera.x <= 200)
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		App->render->camera.x -= p.x_speed;
+	}
+
 }
