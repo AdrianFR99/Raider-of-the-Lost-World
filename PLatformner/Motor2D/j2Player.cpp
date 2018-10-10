@@ -142,6 +142,10 @@ bool j2Player::Update(float dt)
 
 	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
+	//Calling the camera to follow the player
+	App->render->followPlayer(player);
+
+
 	//Here we draw some quads for DEBUG purposes
 	/*App->render->DrawQuad(player.playerRect, 255, 0, 0, 200);
 	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
@@ -182,3 +186,5 @@ void j2Player::OnPreCollision(int d)
 //{
 //	return !( (playerRect.y + playerRect.h +1 )< r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
 //}
+
+

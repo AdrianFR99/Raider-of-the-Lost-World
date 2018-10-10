@@ -4,6 +4,8 @@
 #include "j1Window.h"
 #include "j1Render.h"
 
+#include "j2player.h"
+
 #define VSYNC true
 
 j1Render::j1Render() : j1Module()
@@ -130,7 +132,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 		SDL_Rect rect;
 		rect.x = (int)(-camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.y = (int)(-camera.y * speed) + y * scale;
 
 		if (section != NULL)
 		{
@@ -177,7 +179,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	if(use_camera)
 	{
 		rec.x = (int)(-camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.y = (int)(-camera.y + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -245,4 +247,12 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	}
 
 	return ret;
+}
+
+
+//Follow the player around
+void j1Render::followPlayer(const Player &p)
+{
+	camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
+	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 }
