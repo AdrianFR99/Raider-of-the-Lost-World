@@ -70,6 +70,9 @@ public:
 	{
 		return true;
 	}
+	//Testing
+	
+
 
 	// Callbacks ---
 	virtual void OnCollision(Collider* , Collider* ) {}
@@ -78,7 +81,7 @@ public:
 
 	p2SString	name;
 	bool		active;
-
+	bool enabled = true;
 };
 
 #endif // __j1MODULE_H__

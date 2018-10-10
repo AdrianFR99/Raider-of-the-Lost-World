@@ -486,3 +486,4 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 
 	return ret;
 }
+

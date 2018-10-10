@@ -109,7 +109,6 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	
-	
 
 private:
 

@@ -32,8 +32,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+	void SwitchMap();
+
+	bool ChangingMap = false;
+
 private:
 	p2SString loadedMap1;
+	p2SString loadedMap2;
 	
 };
 

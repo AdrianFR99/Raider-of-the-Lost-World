@@ -23,8 +23,12 @@ bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
-	loadedMap1 = config.attribute("Map1").as_string();
+	
+	
+		loadedMap1 = config.child("Map1").attribute("file").as_string();
+		loadedMap2 = config.child("Map2").attribute("file").as_string();
+		
+	
 	if (loadedMap1 == NULL) {
 
 		ret = false;
@@ -70,9 +74,11 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 2 * App->win->GetScale();
-
-
 	
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		SwitchMap();
+	
+	}
 
 
 	App->map->Draw();
@@ -107,4 +113,20 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+
+void j1Scene::SwitchMap() {
+	if (!ChangingMap) {
+		ChangingMap = true;
+		App->map->CleanUp();
+		App->map->Load(loadedMap2.GetString());
+	}
+
+	else {
+		ChangingMap = false;
+		App->map->CleanUp();
+		App->map->Load(loadedMap1.GetString());
+	}
+
 }

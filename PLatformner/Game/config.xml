@@ -22,8 +22,10 @@
     <path>data.zip</path>
   </file_system>
 
-  <scene Map1="map1_tiledV0_17.tmx"/>
-  
+  <scene>
+    <Map1 file="map1_tiledV0_17.tmx"/>
+    <Map2 file="Map2.tmx"/>
+  </scene>
   <map>
     <folder>maps/</folder>
   </map>
