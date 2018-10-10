@@ -64,6 +64,8 @@ public: //Variables
 	
 	Collider* verticalTestHitbox;
 	Collider* lateralTestHitbox;
+
+	Collider* verticalTestHitbox_2;
 };
 
 

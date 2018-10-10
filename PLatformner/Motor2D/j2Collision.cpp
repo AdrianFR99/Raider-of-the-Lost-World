@@ -9,6 +9,7 @@
 
 j2Collision::j2Collision()
 {
+	bool debugMode = false;	//We start the game without seeing any colliders
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
 
@@ -79,14 +80,23 @@ bool j2Collision::PreUpdate()
 		}
 	}
 
+	//Check if we will call debugDraw or not at Update
+
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		debugMode = !debugMode;
+	}
+
 	return true;
 }
 
 // Called before render is available
  bool j2Collision::Update(float dt)
 {
-
-	DebugDraw();
+	 if (debugMode == true)
+	 {
+		 DebugDraw();
+	 }
 
 	return true;
 }
@@ -163,7 +173,7 @@ Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-	return !(rect.y + rect.h < r.y || rect.y > r.y + r.h || rect.x + rect.w < r.x || rect.x > r.x + r.w);
+	return !((rect.y + rect.h + 1)< r.y || rect.y > r.y + r.h || rect.x + rect.w < r.x || rect.x > r.x + r.w);
 }
 
 

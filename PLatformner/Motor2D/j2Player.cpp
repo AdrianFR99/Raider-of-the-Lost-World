@@ -39,15 +39,16 @@ bool j2Player::Start()
 	lateralTest.y = player.playerPos.y - 16;
 
 	verticalTest.h = 48;
-	verticalTest.w = 512;
+	verticalTest.w = lateralTest.x - (player.playerPos.x + -64 );
 	verticalTest.x = player.playerPos.x + -64;
 	verticalTest.y = player.playerPos.y + 32;
 	
 	lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
+	//verticalTestHitbox_2 = App->collision->AddCollider({ 512,player.playerPos.y + -60, 100,40 }, COLLIDER_WALL);
 	player.x_speed = 4;
-	player.y_speed = -15;
+	player.y_speed = -10;
 
 	player.landed = false;
 	 
@@ -118,7 +119,7 @@ bool j2Player::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
 	{
 		player.landed = false;
-		player.y_speed = -15;
+		player.y_speed = -10;
 	}
 
 	if (player.landed == false)
