@@ -26,7 +26,7 @@
  </imagelayer>
  <layer name="Background" width="300" height="57">
   <properties>
-   <property name="Draw" type="bool" value="true"/>
+   <property name="Draw" type="int" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -17133,7 +17133,7 @@
  </layer>
  <layer name="middleground" width="300" height="57">
   <properties>
-   <property name="Draw" type="bool" value="true"/>
+   <property name="Draw" type="int" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -34240,7 +34240,7 @@
  </layer>
  <layer name="Collisions" width="300" height="57">
   <properties>
-   <property name="Draw" type="bool" value="false"/>
+   <property name="Draw" type="int" value="0"/>
   </properties>
   <data>
    <tile gid="0"/>

@@ -19,6 +19,37 @@ struct ImageLayer {
 
 };
 
+
+struct Properties
+{
+	struct Property
+	{
+		p2SString name;
+		int value;
+	};
+
+
+	~Properties()
+	{
+		p2List_item<Property*>* itemP;
+		itemP = Propertieslist.start;
+
+		while (itemP != NULL)
+		{
+			RELEASE(itemP->data);
+			itemP = itemP->next;
+		}
+
+		Propertieslist.clear();
+	}
+
+	int GetProperty(const char* name, int def_value = 0) const;
+
+	p2List<Property*>	Propertieslist;
+};
+
+
+
 struct MapLayer
 {
 	p2SString	name;
@@ -39,6 +70,9 @@ struct MapLayer
 	{
 		return (x+(y*width));
 	}
+
+
+	Properties	properties;
 };
 
 // ----------------------------------------------------
@@ -104,9 +138,12 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+
+	TileSet* GetTilesetFromTileId(int id) const;
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
+
 
 	
 
@@ -117,6 +154,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
+	bool LoadProperties(pugi::xml_node& node, Properties& list);
 
 	//vars for flipping the tiles
 	const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
