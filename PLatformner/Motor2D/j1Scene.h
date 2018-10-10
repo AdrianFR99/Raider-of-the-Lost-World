@@ -35,11 +35,13 @@ public:
 
 	void SwitchMap();
 
-	bool ChangingMap = false;
+	
+
+	int SceneCounter = 0;
 
 private:
-	p2SString loadedMap1;
-	p2SString loadedMap2;
+
+	p2List<p2SString*> loadedMap;
 	
 };
 
