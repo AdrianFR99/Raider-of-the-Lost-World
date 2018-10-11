@@ -41,54 +41,38 @@ void j1Map::Draw()
 
 	}
 
-	SDL_Rect recToDraw;
+
 //DRAW FUNCTION FOR LAYERS AND TILESTS
 
 
 
-	for (int x = 0; x < data.tilesets.count(); x++)
+	MapLayer* layer /*this->data.layers.start->data*/;
+
+
+	for (uint i = 0; i < data.layers.count();i++)
 	{
-		for (uint l = 0; l < data.layers.count(); l++)
+		layer = data.layers.At(i)->data;
+
+		if (layer->properties.GetProperty("Draw",0)==0)
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
 		{
-
-			MapLayer*layer = data.layers.At(l)->data;
-
-			if (layer->properties.GetProperty("Draw", 1) == 0)
-				continue;
-
-			for (uint row = 0; row < data.height; row++)
+			for (int x = 0; x < data.width; ++x)
 			{
-				for (uint column = 0; column < data.width; column++)
+				int tileID = layer->Get(x, y);
+				if (tileID > 0)
 				{
+					TileSet* tileset = GetTilesetFromTileId(tileID);
 
-					iPoint pos = MapToWorld(column, row);
+					if (tileset != nullptr)
+					{
+						SDL_Rect rect = tileset->GetTileRect(tileID);
+						iPoint position = MapToWorld(x, y);
 
-					uint gid= (data.layers[l]->data[data.layers[l]->Get(column, row)]);
 
-					//Read out the flags
-					bool flipped_horizontally = (gid & FLIPPED_HORIZONTALLY_FLAG);
-					bool flipped_vertically = (gid & FLIPPED_VERTICALLY_FLAG);
-					bool flipped_diagonally = (gid & FLIPPED_DIAGONALLY_FLAG);
-
-					// Clear the flags
-						(gid) &= ~(FLIPPED_HORIZONTALLY_FLAG |
-						FLIPPED_VERTICALLY_FLAG |
-						FLIPPED_DIAGONALLY_FLAG);
-					
-						//// Resolve the tile
-						//for (int i = data.tilesets.count() - 1; i >= 0; --i) {
-						//	TileSet*tileset = data.tilesets[i];
-
-						//	if (tileset->firstgid<=gid) {
-						//		tiles[y][x] = tileset->tileAt(gid - tileset->firstgid);
-						//		break;
-						//	}
-						//}
-
-					App->render->Blit(data.tilesets[x]->texture,    //texture 
-						pos.x,                     //position.x of tile
-						pos.y,                         //position.y of tile
-						&data.tilesets[x]->GetTileRect(gid)); //rectangle
+						App->render->Blit(tileset->texture, position.x, position.y, &rect);
+					}
 				}
 			}
 		}
