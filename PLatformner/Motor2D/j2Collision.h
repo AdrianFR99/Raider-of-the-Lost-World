@@ -1,9 +1,11 @@
 #ifndef __j2Collision_H__
 #define __j2Collision_H__
 
-#define MAX_COLLIDERS 100	// Make dymanic array for final game?
+#define MAX_COLLIDERS 3000	// Make dymanic array for final game?
 
 #include "j1Module.h"
+
+struct Player;
 
 enum COLLIDER_TYPE
 {
@@ -34,6 +36,8 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
+	bool PreCheckCollision(const Player& p) const;
+	int ret_d_to_ground(const Player& p) const;
 };
 
 class j2Collision : public j1Module
@@ -50,12 +54,13 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void DebugDraw();
 
-
+	
 private:
 
 	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX]; 
 	SDL_Rect screen;
+	bool debugMode;
 };
 
 #endif // __ModuleCollision_H__

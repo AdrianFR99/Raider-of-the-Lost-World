@@ -3,6 +3,20 @@
 
 #include "j1Module.h"
 
+struct Collider;
+
+struct Player
+{
+	SDL_Rect playerRect;
+	iPoint playerPos;
+	int x_speed;
+	int y_speed;
+	int d_to_ground;
+	bool landed;
+	bool nextFrameLanded;
+	Collider* playerHitbox;
+};
+
 class j2Player : public j1Module
 {
 public:
@@ -29,24 +43,29 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+	void OnCollision(Collider*, Collider*);
+	void OnPreCollision(int d);
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
-	bool j2Player::CheckCollision(const SDL_Rect& r) const;
+	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
-	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;
+	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;*/
 
 public: //Variables
 
-	SDL_Rect playerRect;
-	iPoint playerPos;
-	int x_speed;
-	int y_speed;
-	int d_to_ground;
-	bool landed;
+	Player player;
+	
 
 
 	//Debug purpose RECTS
 	SDL_Rect lateralTest;
 	SDL_Rect verticalTest;
+
+	
+	Collider* verticalTestHitbox;
+	Collider* lateralTestHitbox;
+
+	Collider* verticalTestHitbox_2;
 };
 
 

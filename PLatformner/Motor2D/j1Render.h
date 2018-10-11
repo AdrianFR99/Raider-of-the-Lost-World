@@ -5,6 +5,8 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct Player;
+
 class j1Render : public j1Module
 {
 public:
@@ -42,6 +44,9 @@ public:
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
+
+	//Follow Player
+	void followPlayer(const Player &p);
 
 public:
 

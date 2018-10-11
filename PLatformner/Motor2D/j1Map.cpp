@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Window.h"
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <cmath>
@@ -40,7 +41,7 @@ void j1Map::Draw()
 
 	}
 
-
+	SDL_Rect recToDraw;
 //DRAW FUNCTION FOR LAYERS AND TILESTS
 
 
