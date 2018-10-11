@@ -39,10 +39,10 @@ bool j2Player::Start()
 	lateralTest.x = player.playerPos.x + 128;
 	lateralTest.y = player.playerPos.y - 16;
 
-	lateralTest_2.h = 48;
+	lateralTest_2.h = 16;
 	lateralTest_2.w = 32;
 	lateralTest_2.x = player.playerPos.x -40;
-	lateralTest_2.y = player.playerPos.y - 16;
+	lateralTest_2.y = player.playerPos.y +16;
 
 	verticalTest.h = 48;
 	verticalTest.w = lateralTest.x - (player.playerPos.x + -64 );
@@ -212,13 +212,13 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x 
 			&& c2->rect.x - player.playerHitbox->rect.x > 0
-			&& c2->rect.y < player.playerHitbox->rect.y)
+			&& c2->rect.y +1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 		{
 			player.colliding.wallFront = true;
 		}
 		if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w 
 			&& player.playerHitbox->rect.x - c2->rect.x > 0
-			&& c2->rect.y < player.playerHitbox->rect.y)
+			&& c2->rect.y +1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h )
 		{
 			player.colliding.wallBack = true;
 		}
