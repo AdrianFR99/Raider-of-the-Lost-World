@@ -54,10 +54,10 @@ bool j2Player::Start()
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
 	player.x_speed = 2;
-	player.y_speed = -10;
+	player.y_speed = 0;
 
 
-	player.landed = false;
+	player.landed = true;
 
 
 	player.actual_x_speed = 0;
@@ -90,7 +90,7 @@ bool j2Player::PreUpdate()
 {
 	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
-	player.landed = false;
+	//player.landed = false;
 	player.nextFrameLanded = false;
 	
 	
@@ -142,7 +142,20 @@ bool j2Player::Update(float dt)
 	//is not touching a solid surface with its feet
 	//when landed == true the player IS touching a solid surface with its feet
 
-	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
+
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
+	{
+		player.landed = false;
+		player.y_speed = -10;
+	}
+
+	if (player.landed == false)
+	{
+		player.playerPos.y += player.y_speed;
+		player.y_speed += 1;
+	}
+	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
 		player.landed = false;
 		player.y_speed = -10;
@@ -159,8 +172,8 @@ bool j2Player::Update(float dt)
 	else
 	{
 		player.y_speed = 0;
-	}
-	*/
+	}*/
+	
 	
 	
 	//We pass them onto the player Rect
@@ -221,6 +234,11 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			&& c2->rect.y +1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h )
 		{
 			player.colliding.wallBack = true;
+		}
+
+		if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y)
+		{
+			player.landed = true;
 		}
 		
 	}
