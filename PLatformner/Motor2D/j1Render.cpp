@@ -256,7 +256,7 @@ void j1Render::followPlayer(const Player &p)
 	/*camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
 	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;*/
 
-	if (p.playerPos.x - App->render->camera.x >= 400)
+	if ((p.playerPos.x - App->render->camera.x) >= 400 )
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		App->render->camera.x += p.x_speed;
@@ -266,6 +266,12 @@ void j1Render::followPlayer(const Player &p)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		App->render->camera.x -= p.x_speed;
+	}
+
+	if (p.playerPos.y - App->render->camera.y <= camera.h / 2 -40)
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		App->render->camera.y += p.y_speed;
 	}
 
 }
