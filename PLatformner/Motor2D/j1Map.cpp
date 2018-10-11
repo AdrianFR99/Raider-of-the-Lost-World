@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Window.h"
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <cmath>
@@ -32,13 +33,7 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
-	//DRAW FUNCTION FOR IMAGE_LAYERS
-
-	//SDL_Rect rec = { 0,0,4800,810 };
-	//SDL_Rect rec2 = { 0,0,4800,381 };
-
-	//SDL_Texture*tex1 = App->tex->Load("maps/skyLine.png");
-	//SDL_Texture*tex2 = App->tex->Load("maps/CloudsBack.png");
+	
 
 	for (int x = 0; x < data.imagelayers.count();++x) {
 		
@@ -46,22 +41,54 @@ void j1Map::Draw()
 
 	}
 
-
+	SDL_Rect recToDraw;
 //DRAW FUNCTION FOR LAYERS AND TILESTS
+
+
+
 	for (int x = 0; x < data.tilesets.count(); x++)
 	{
 		for (uint l = 0; l < data.layers.count(); l++)
 		{
+
+			MapLayer*layer = data.layers.At(l)->data;
+
+			if (layer->properties.GetProperty("Draw", 1) == 0)
+				continue;
+
 			for (uint row = 0; row < data.height; row++)
 			{
 				for (uint column = 0; column < data.width; column++)
 				{
+
 					iPoint pos = MapToWorld(column, row);
+
+					uint gid= (data.layers[l]->data[data.layers[l]->Get(column, row)]);
+
+					//Read out the flags
+					bool flipped_horizontally = (gid & FLIPPED_HORIZONTALLY_FLAG);
+					bool flipped_vertically = (gid & FLIPPED_VERTICALLY_FLAG);
+					bool flipped_diagonally = (gid & FLIPPED_DIAGONALLY_FLAG);
+
+					// Clear the flags
+						(gid) &= ~(FLIPPED_HORIZONTALLY_FLAG |
+						FLIPPED_VERTICALLY_FLAG |
+						FLIPPED_DIAGONALLY_FLAG);
+					
+						//// Resolve the tile
+						//for (int i = data.tilesets.count() - 1; i >= 0; --i) {
+						//	TileSet*tileset = data.tilesets[i];
+
+						//	if (tileset->firstgid<=gid) {
+						//		tiles[y][x] = tileset->tileAt(gid - tileset->firstgid);
+						//		break;
+						//	}
+						//}
 
 					App->render->Blit(data.tilesets[x]->texture,    //texture 
 						pos.x,                     //position.x of tile
 						pos.y,                         //position.y of tile
-						&data.tilesets[x]->GetTileRect(data.layers[l]->data[data.layers[l]->Get(column, row)])); //rectangle
+						&data.tilesets[x]->GetTileRect(gid)); //rectangle
 				}
 			}
 		}
@@ -423,6 +450,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->height = node.attribute("height").as_int();
 	pugi::xml_node layer_data = node.child("data");
 
+	LoadProperties(node,layer->properties);
+
 	if(layer_data == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
@@ -443,6 +472,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return ret;
 }
+
 
 bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 
@@ -467,4 +497,60 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 	
 
 	return ret;
+}
+
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* itemP = data.tilesets.start;
+	TileSet* set = NULL;
+
+	while (itemP)
+	{
+		if (id < itemP->data->firstgid)
+		{
+			set = itemP->prev->data;
+			break;
+		}
+		set = itemP->data;
+		itemP = itemP->next;
+	}
+
+	return set;
+}
+
+bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = false;
+	pugi::xml_node data = node.child("properties");
+
+	if (data != NULL)
+	{
+		pugi::xml_node prop;
+
+		for (prop = data.child("property"); prop; prop = prop.next_sibling("property"))
+		{
+			Properties::Property* property_aux = new Properties::Property();
+
+			property_aux->name = prop.attribute("name").as_string();
+			property_aux->value = prop.attribute("value").as_int();
+
+			properties.Propertieslist.add(property_aux);
+		}
+	}
+
+	return ret;
+}
+int Properties::GetProperty(const char* value, int def_value) const
+{
+	p2List_item<Property*>* itemP = Propertieslist.start;
+
+	while (itemP)
+	{
+		if (itemP->data->name == value)
+			return itemP->data->value;
+		itemP = itemP->next;
+	}
+
+	return def_value;
 }
