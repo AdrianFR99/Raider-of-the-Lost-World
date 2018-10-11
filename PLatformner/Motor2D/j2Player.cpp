@@ -39,6 +39,11 @@ bool j2Player::Start()
 	lateralTest.x = player.playerPos.x + 128;
 	lateralTest.y = player.playerPos.y - 16;
 
+	lateralTest_2.h = 48;
+	lateralTest_2.w = 32;
+	lateralTest_2.x = player.playerPos.x -40;
+	lateralTest_2.y = player.playerPos.y - 16;
+
 	verticalTest.h = 48;
 	verticalTest.w = lateralTest.x - (player.playerPos.x + -64 );
 	verticalTest.x = player.playerPos.x + -64;
@@ -47,11 +52,22 @@ bool j2Player::Start()
 	lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
-	//verticalTestHitbox_2 = App->collision->AddCollider({ 512,player.playerPos.y + -60, 100,40 }, COLLIDER_WALL);
-	player.x_speed = 4;
+	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
+	player.x_speed = 2;
 	player.y_speed = -10;
 
+
 	player.landed = false;
+
+
+	player.actual_x_speed = 0;
+	player.actual_y_speed = 0;
+	player.stopped_speed = 0;
+
+	player.colliding.wallFront = false;
+	player.colliding.wallBack = false;
+	player.colliding.wallDown = false;
+	player.colliding.wallTop = false;
 
 	//Calling the camera to follow the player
 	App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
@@ -62,6 +78,10 @@ bool j2Player::Start()
 
 bool j2Player::CleanUp()
 {
+	LOG("Player CleanUp");
+
+	player.playerHitbox = nullptr;
+
 	return true;
 }
 
@@ -105,23 +125,24 @@ bool j2Player::Update(float dt)
 	//	landed = false;
 	//}
 	
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	//Control X speed
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
 	{
 		player.playerPos.x += player.x_speed;
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
 	{
 		player.playerPos.x -= player.x_speed;
 	}
+	
 
 
 	//LANDED LOGIC:  when landed == false the player 
 	//is not touching a solid surface with its feet
 	//when landed == true the player IS touching a solid surface with its feet
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
+	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
 	{
 		player.landed = false;
 		player.y_speed = -10;
@@ -139,7 +160,12 @@ bool j2Player::Update(float dt)
 	{
 		player.y_speed = 0;
 	}
+	*/
 	
+	
+	//We pass them onto the player Rect
+	player.playerRect.x = player.playerPos.x;
+	player.playerRect.y = player.playerPos.y;
 	return true;
 }
 
@@ -147,10 +173,14 @@ bool j2Player::Update(float dt)
 bool j2Player::PostUpdate()
 {
 	//Camera Following player logic
-	App->render->followPlayer(player);
+	//App->render->followPlayer(player);
 
+	// We reset the colliders collisions
+	player.colliding.wallFront = false;
+	player.colliding.wallBack = false;
 	
 
+	
 
 	if (App->render->camera.x < 0)
 	{
@@ -160,8 +190,7 @@ bool j2Player::PostUpdate()
 
 
 		//Here we change the values of the rect position
-	player.playerRect.x = player.playerPos.x;
-	player.playerRect.y = player.playerPos.y;
+	
 
 	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
@@ -179,13 +208,28 @@ bool j2Player::PostUpdate()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
-	player.landed = true;
+	if (c2->type == COLLIDER_WALL)
+	{
+		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x 
+			&& c2->rect.x - player.playerHitbox->rect.x > 0
+			&& c2->rect.y < player.playerHitbox->rect.y)
+		{
+			player.colliding.wallFront = true;
+		}
+		if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w 
+			&& player.playerHitbox->rect.x - c2->rect.x > 0
+			&& c2->rect.y < player.playerHitbox->rect.y)
+		{
+			player.colliding.wallBack = true;
+		}
+		
+	}
 } 
 
 void j2Player::OnPreCollision(int d) 
 {
-	player.d_to_ground = d;
-	player.nextFrameLanded = true;
+	/*player.d_to_ground = d;
+	player.nextFrameLanded = true;*/
 }
 //bool j2Player::CheckCollision(const SDL_Rect& r) const
 //{
