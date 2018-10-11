@@ -90,7 +90,7 @@ bool j2Player::PreUpdate()
 {
 	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
-	//player.landed = false;
+	player.landed = false;
 	player.nextFrameLanded = false;
 	
 	
@@ -225,18 +225,19 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x 
 			&& c2->rect.x - player.playerHitbox->rect.x > 0
-			&& c2->rect.y +1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 		{
 			player.colliding.wallFront = true;
 		}
 		if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w 
 			&& player.playerHitbox->rect.x - c2->rect.x > 0
-			&& c2->rect.y +1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h )
+			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h )
 		{
 			player.colliding.wallBack = true;
 		}
 
-		if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y)
+		if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
+			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 		{
 			player.landed = true;
 		}
