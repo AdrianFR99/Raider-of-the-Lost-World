@@ -34601,6 +34601,7 @@
  </layer>
  <layer name="Collisions" width="256" height="45">
   <properties>
+   <property name="Collision" type="int" value="1"/>
    <property name="Draw" type="int" value="0"/>
   </properties>
   <data>

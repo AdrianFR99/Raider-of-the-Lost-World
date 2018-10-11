@@ -54,8 +54,8 @@ bool j2Player::Start()
 	player.landed = false;
 
 	//Calling the camera to follow the player
-	App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
-	App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
+	//App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
+	//App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
 	 
 	return true;
 }
@@ -147,7 +147,7 @@ bool j2Player::Update(float dt)
 bool j2Player::PostUpdate()
 {
 	//Camera Following player logic
-	App->render->followPlayer(player);
+	/*App->render->followPlayer(player);
 
 	
 
@@ -155,7 +155,7 @@ bool j2Player::PostUpdate()
 	if (App->render->camera.x < 0)
 	{
 		App->render->camera.x = 0;
-	}
+	}*/
 
 
 

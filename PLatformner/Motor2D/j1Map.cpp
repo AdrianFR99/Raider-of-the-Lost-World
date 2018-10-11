@@ -5,6 +5,7 @@
 #include "j1Window.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j2Collision.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -24,7 +25,10 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+
 	
+	
+
 
 	return ret;
 }
@@ -56,6 +60,7 @@ void j1Map::Draw()
 		if (layer->properties.GetProperty("Draw",0)==0)
 			continue;
 
+
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)
@@ -69,15 +74,21 @@ void j1Map::Draw()
 					{
 						SDL_Rect rect = tileset->GetTileRect(tileID);
 						iPoint position = MapToWorld(x, y);
+					
 
-
-						App->render->Blit(tileset->texture, position.x, position.y, &rect);
+					
+		
+							App->render->Blit(tileset->texture, position.x, position.y, &rect);
+						
 					}
 				}
 			}
 		}
 	}
 
+	
+	
+	
 }
 
 iPoint j1Map::MapToWorld(int x, int y) const
@@ -450,7 +461,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		int i = 0;
 		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = tile.attribute("gid").as_int(0);
+
+				layer->data[i++] = tile.attribute("gid").as_int(0);
+			
+
 		}
 	}
 
@@ -537,4 +551,70 @@ int Properties::GetProperty(const char* value, int def_value) const
 	}
 
 	return def_value;
+}
+
+bool j1Map::CreateColliders() {
+
+	MapLayer* layer2;
+
+
+	for (uint i = 0; i < data.layers.count(); i++)
+	{
+		layer2 = data.layers.At(i)->data;
+
+		if (layer2->properties.GetProperty("Collision", 0) == 0)
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tileID = layer2->Get(x, y);
+
+				if (tileID > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tileID);
+
+					if (tileID >= tileset->firstgid) {
+
+						iPoint position = MapToWorld(x, y);
+						Collider*Coll = nullptr;
+
+						switch (tileID)
+						{
+						case 1133:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_TRAP);
+							break;
+
+						case 1134:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_CLIMBWALL);
+							break;
+
+						case 1135:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_WALL);
+							break;
+							
+						case 1136:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_WATER);
+							break;
+					
+						case 1137:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_ICE);
+							break;
+
+						case 1138:
+							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_PLATFORM);
+							break;
+
+						}
+						
+					}
+					
+				}
+			}
+
+		}
+	
+	}
+	return true;
 }
