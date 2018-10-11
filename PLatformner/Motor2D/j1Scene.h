@@ -32,8 +32,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+	void SwitchMap();
+
+	
+
+	int SceneCounter = 0;
+
 private:
-	p2SString loadedMap1;
+
+	p2List<p2SString*> loadedMap;
 	
 };
 

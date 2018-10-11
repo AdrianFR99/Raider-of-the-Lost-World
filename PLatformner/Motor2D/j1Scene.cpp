@@ -23,12 +23,23 @@ bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+	
+	
+			
+		pugi::xml_node Scenes;
+		for (Scenes = config.child("Map"); Scenes != NULL; Scenes = Scenes.next_sibling("Map")) {
 
-	loadedMap1 = config.attribute("Map1").as_string();
-	if (loadedMap1 == NULL) {
+		p2SString*Stringmap = new p2SString();
 
-		ret = false;
-	}
+		Stringmap->create(Scenes.attribute("file").as_string());
+
+		loadedMap.add(Stringmap);
+		
+		}
+
+
+	
+	
 
 	return ret;
 }
@@ -36,7 +47,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load(loadedMap1.GetString());
+	App->map->Load(loadedMap[SceneCounter]->GetString());
+	
 	//App->map->Load("iso.tmx");
 
 	
@@ -72,7 +84,11 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x += 2 * App->win->GetScale();
 
 
+
 	
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		SwitchMap();
+	}
 
 
 	App->map->Draw();
@@ -109,3 +125,26 @@ bool j1Scene::CleanUp()
 
 	return true;
 }
+
+
+void j1Scene::SwitchMap() {
+
+	LOG("Changing Map");
+
+	if (SceneCounter == loadedMap.count() - 1) {
+
+		SceneCounter = 0;
+		App->map->CleanUp();
+		App->map->Load(loadedMap[SceneCounter]->GetString());
+
+	}
+	else {
+
+		App->map->CleanUp();
+		SceneCounter++;
+		App->map->Load(loadedMap[SceneCounter]->GetString());
+
+	}
+	
+}
+
