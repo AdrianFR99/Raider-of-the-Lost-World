@@ -1,7 +1,8 @@
-#ifndef __j2MAP_H__
-#define __j2MAP_H__
+#ifndef __j2Player_H__
+#define __j2Player_H__
 
 #include "j1Module.h"
+#include "j2Animation.h"
 
 struct Collider;
 
@@ -15,6 +16,15 @@ struct Player
 		bool wallDown;
 	};
 
+	struct animations
+	{
+		SDL_Texture* playTex;
+		Animation* currentAnimation;
+		Animation idle;
+		Animation run;
+		Animation jump;
+		Animation hurt;
+	};
 	
 	SDL_Rect playerRect;
 	iPoint playerPos;
@@ -26,6 +36,7 @@ struct Player
 	bool nextFrameLanded;
 	Collider* playerHitbox;
 	collisionControl colliding;
+	animations animations;
 };
 
 class j2Player : public j1Module
@@ -38,6 +49,8 @@ public:
 	//Virtual Destructor
 	virtual ~j2Player();
 
+	// Called before render is available
+	bool Awake(pugi::xml_node& config);
 
 	// Called before the first frame
 	bool Start();
@@ -53,6 +66,10 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 
 
 	void OnCollision(Collider*, Collider*);

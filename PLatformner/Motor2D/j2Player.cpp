@@ -4,6 +4,7 @@
 #include "j1window.h"
 #include "j1input.h"
 #include "j2Collision.h"
+#include "j2Animation.h"
 #include "SDL/include/SDL.h"
 #include "j2Player.h"
 
@@ -12,7 +13,7 @@
 //CONSTRUCTOR
 j2Player::j2Player()
 {
-
+	name.create("player");
 }
 
 //DESTRUCTOR
@@ -21,18 +22,76 @@ j2Player::~j2Player()
 
 }
 
+bool j2Player::Awake(pugi::xml_node& config)
+{
+	LOG("Loading Player Data");
+	bool ret = true;
+	
+	if (config != NULL)
+	{
+		//Player Position
+		player.playerPos.x = config.child("playerPos").attribute("x").as_int();
+		player.playerPos.y = config.child("playerPos").attribute("y").as_int();
+		//Player SDL_Rect
+		player.playerRect.w = config.child("playerRect").attribute("width").as_int();
+		player.playerRect.h = config.child("playerRect").attribute("height").as_int();
+		player.playerRect.x = player.playerPos.x;
+		player.playerRect.y = player.playerPos.y;
+		//Player Speeds
+		player.x_speed = config.child("x_speed").attribute("value").as_int();
+		player.y_speed = config.child("y_speed").attribute("value").as_int();
+
+		player.actual_x_speed = config.child("actual_x_speed").attribute("value").as_int();
+		player.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
+		player.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
+
+		//Player collider Control
+		player.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
+		player.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
+		player.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
+		player.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
+
+		//Player landed
+		player.landed = config.child("landed").attribute("value").as_bool();
+	}
+	else
+	{
+		LOG("Could not Load Player data on Awake!");
+	}
+
+	return ret;
+}
+
+// Load Game State
+bool j2Player::Load(pugi::xml_node& data)
+{
+	player.playerPos.x = data.child("playerPos").attribute("x").as_int();
+	player.playerPos.y = data.child("playerPos").attribute("y").as_int();
+
+	player.landed = data.child("landed").attribute("value").as_bool();
+
+	return true;
+}
+
+// Save Game State
+bool j2Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node playerSave = data.append_child("playerPos");
+	
+	playerSave.append_attribute("x") = player.playerPos.x;
+	playerSave.append_attribute("y") = player.playerPos.y;
+
+	playerSave = data.append_child("landed");
+	playerSave.append_attribute("value") = player.landed;
+
+	return true;
+}
+
 
 bool j2Player::Start()
 {
 	LOG("Player Start");
 	
-	player.playerPos.x = 64;
-	player.playerPos.y = 36 * 16;
-
-	player.playerRect.h = 32;
-	player.playerRect.w = 16;
-	player.playerRect.x = player.playerPos.x;
-	player.playerRect.y = player.playerPos.y;
 
 	lateralTest.h = 48;
 	lateralTest.w = 64;
@@ -53,21 +112,13 @@ bool j2Player::Start()
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
-	player.x_speed = 2;
-	player.y_speed = 0;
+	
+	//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
+	player.animations.idle.PushBack({14,6,19,30});
+	player.animations.idle.PushBack({65,6,19,30});
+	player.animations.idle.speed = 0.03f;
 
-
-	player.landed = true;
-
-
-	player.actual_x_speed = 0;
-	player.actual_y_speed = 0;
-	player.stopped_speed = 0;
-
-	player.colliding.wallFront = false;
-	player.colliding.wallBack = false;
-	player.colliding.wallDown = false;
-	player.colliding.wallTop = false;
+	player.animations.currentAnimation = &player.animations.idle;
 
 	//Calling the camera to follow the player
 	//App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;

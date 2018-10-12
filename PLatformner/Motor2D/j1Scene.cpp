@@ -43,6 +43,26 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+// Load Game State
+bool j1Scene::Load(pugi::xml_node& data)
+{
+	/*if (loadedMap[SceneCounter]->GetString() != data.child("currentMap").attribute("name").as_string())
+	{
+		SwitchMap();
+	}*/
+	return true;
+}
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node sceneMap = data.append_child("currentMap");
+
+	sceneMap.append_attribute("name") = loadedMap[SceneCounter]->GetString();
+
+	return true;
+}
+
 // Called before the first frame
 bool j1Scene::Start()
 {
@@ -71,10 +91,10 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
