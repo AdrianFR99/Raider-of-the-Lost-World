@@ -6,11 +6,12 @@
 	<audio />
 	<map />
 	<scene />
-	<:anonymous />
-	<:anonymous />
+	<player>
+		<playerPos x="106" y="522" />
+		<landed value="false" />
+	</player>
+	<collisions />
 	<renderer>
-
-		<camera x="0" y="0" />
-    
+		<camera x="0" y="-588" />
 	</renderer>
 </game_state>

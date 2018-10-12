@@ -61,6 +61,28 @@ bool j2Player::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+// Load Game State
+bool j2Player::Load(pugi::xml_node& data)
+{
+	
+
+	return true;
+}
+
+// Save Game State
+bool j2Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node playerSave = data.append_child("playerPos");
+	
+	playerSave.append_attribute("x") = player.playerPos.x;
+	playerSave.append_attribute("y") = player.playerPos.y;
+
+	playerSave = data.append_child("landed");
+	playerSave.append_attribute("value") = player.landed;
+
+	return true;
+}
+
 
 bool j2Player::Start()
 {

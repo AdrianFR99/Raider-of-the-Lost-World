@@ -9,6 +9,7 @@
 
 j2Collision::j2Collision()
 {
+	name.create("collisions");
 	bool debugMode = false;	//We start the game without seeing any colliders
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
