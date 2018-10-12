@@ -24,9 +24,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 	
-	
-			
 		pugi::xml_node Scenes;
+	
 		for (Scenes = config.child("Map"); Scenes != NULL; Scenes = Scenes.next_sibling("Map")) {
 
 		p2SString*Stringmap = new p2SString();
@@ -39,8 +38,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 
 	
 
-	
-	
+
 
 	return ret;
 }
@@ -68,9 +66,17 @@ bool j1Scene::Save(pugi::xml_node& data) const
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load(loadedMap[SceneCounter]->GetString());
-	//App->map->CreateColliders();
+	for (int i = 0; i < loadedMap.count();i++) {
+		if (i == 1) {
+			App->map->Load(loadedMap[i]->GetString(), App->map->data2);
+			continue;
+		}
+
+		App->map->Load(loadedMap[i]->GetString(), App->map->data);
+		
+	}
 	
+	/*App->map->CreateColliders(App->map->data);*/
 	
 	return true;
 }
@@ -103,27 +109,56 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 2 * App->win->GetScale();
 
-
-
-	
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		SwitchMap();
+		
+		if (switchMap==false)
+			switchMap = true;
+
+		else
+			switchMap = false;
+
 	}
 
 
-	App->map->Draw();
+ 
+	if (switchMap==false) {
+		App->map->Draw(App->map->data);
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(),
-					map_coordinates.x, map_coordinates.y,
-					App->render->camera.x, App->render->camera.y);
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
+		p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
+			App->map->data.width, App->map->data.height,
+			App->map->data.tile_width, App->map->data.tile_height,
+			App->map->data.tilesets.count(),
+			map_coordinates.x, map_coordinates.y,
+			App->render->camera.x, App->render->camera.y);
 
-	App->win->SetTitle(title.GetString());
+		App->win->SetTitle(title.GetString());
+		
+	}
+
+	else {
+		App->map->Draw(App->map->data2);
+
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data2);
+		p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
+			App->map->data2.width, App->map->data2.height,
+			App->map->data2.tile_width, App->map->data2.tile_height,
+			App->map->data2.tilesets.count(),
+			map_coordinates.x, map_coordinates.y,
+			App->render->camera.x, App->render->camera.y);
+
+			App->win->SetTitle(title.GetString());
+	}
+
+
+	//CAREFUL WITH THE MAP DATA
+	
+
+	
 	return true;
 }
 
@@ -147,24 +182,5 @@ bool j1Scene::CleanUp()
 }
 
 
-void j1Scene::SwitchMap() {
 
-	LOG("Changing Map");
-
-	if (SceneCounter == loadedMap.count() - 1) {
-
-		SceneCounter = 0;
-		App->map->CleanUp();
-		App->map->Load(loadedMap[SceneCounter]->GetString());
-
-	}
-	else {
-
-		App->map->CleanUp();
-		SceneCounter++;
-		App->map->Load(loadedMap[SceneCounter]->GetString());
-
-	}
-	
-}
 

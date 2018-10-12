@@ -33,15 +33,17 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-void j1Map::Draw()
+void j1Map::Draw(MapData&DataAux)
 {
+
+
 	if(map_loaded == false)
 		return;
 	
 
-	for (int x = 0; x < data.imagelayers.count();++x) {
+	for (int x = 0; x < DataAux.imagelayers.count();++x) {
 		
-		App->render->Blit(data.imagelayers[x]->texture,data.imagelayers[x]->OffsetX, data.imagelayers[x]->OffsetY, &data.imagelayers[x]->GetImageLayerRect());
+		App->render->Blit(DataAux.imagelayers[x]->texture, DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY, &DataAux.imagelayers[x]->GetImageLayerRect());
 
 	}
 
@@ -53,27 +55,27 @@ void j1Map::Draw()
 	MapLayer* layer /*this->data.layers.start->data*/;
 
 
-	for (uint i = 0; i < data.layers.count();i++)
+	for (uint i = 0; i < DataAux.layers.count();i++)
 	{
-		layer = data.layers.At(i)->data;
+		layer = DataAux.layers.At(i)->data;
 
 		if (layer->properties.GetProperty("Draw",0)==0)
 			continue;
 
 
-		for (int y = 0; y < data.height; ++y)
+		for (int y = 0; y < DataAux.height; ++y)
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int x = 0; x < DataAux.width; ++x)
 			{
 				int tileID = layer->Get(x, y);
 				if (tileID > 0)
 				{
-					TileSet* tileset = GetTilesetFromTileId(tileID);
+					TileSet* tileset = GetTilesetFromTileId(tileID,DataAux);
 
 					if (tileset != nullptr)
 					{
 						SDL_Rect rect = tileset->GetTileRect(tileID);
-						iPoint position = MapToWorld(x, y);
+						iPoint position = MapToWorld(x, y,DataAux);
 					
 
 					
@@ -91,41 +93,41 @@ void j1Map::Draw()
 	
 }
 
-iPoint j1Map::MapToWorld(int x, int y) const
+iPoint j1Map::MapToWorld(int x, int y,MapData &DataAux) const
 {
 	iPoint ret(0,0);
 	
-	if (data.type == MapTypes::MAPTYPE_ORTHOGONAL)
+	if (DataAux.type == MapTypes::MAPTYPE_ORTHOGONAL)
 	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
+		ret.x = x * DataAux.tile_width;
+		ret.y = y * DataAux.tile_height;
 	}
 
-	else if (data.type == MapTypes::MAPTYPE_ISOMETRIC)
+	else if (DataAux.type == MapTypes::MAPTYPE_ISOMETRIC)
 	{
-		ret.x = (x - y) * (data.tile_width / 2);
-		ret.y = (x + y) * (data.tile_height / 2);
+		ret.x = (x - y) * (DataAux.tile_width / 2);
+		ret.y = (x + y) * (DataAux.tile_height / 2);
 	}
 
 	return ret;
 }
 
 
-iPoint j1Map::WorldToMap(int x, int y) const
+iPoint j1Map::WorldToMap(int x, int y,MapData& DataAux) const
 {
 	iPoint ret(0,0);
-	if (data.type == MapTypes::MAPTYPE_ORTHOGONAL)
+	if (DataAux.type == MapTypes::MAPTYPE_ORTHOGONAL)
 	{
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
+		ret.x = x / DataAux.tile_width;
+		ret.y = y / DataAux.tile_height;
 	}
 
-	else if (data.type == MapTypes::MAPTYPE_ISOMETRIC)
+	else if (DataAux.type == MapTypes::MAPTYPE_ISOMETRIC)
 	{
 
 		y -= 16;
-		ret.x = ((x / (data.tile_width / 2) + (y / (data.tile_height / 2))) / 2);
-		ret.y = ((y / (data.tile_height / 2) - (x / (data.tile_width / 2))) / 2);
+		ret.x = ((x / (DataAux.tile_width / 2) + (y / (DataAux.tile_height / 2))) / 2);
+		ret.y = ((y / (DataAux.tile_height / 2) - (x / (DataAux.tile_width / 2))) / 2);
 
 	}
 	return ret;
@@ -155,43 +157,43 @@ SDL_Rect ImageLayer::GetImageLayerRect() const {
 	return rec;
 }
 // Called before quitting
-bool j1Map::CleanUp()
+bool j1Map::CleanUp(MapData& DataAux)
 {
 	LOG("Unloading map");
 
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
+	item =  DataAux.tilesets.start;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->next;
 	}
-	data.tilesets.clear();
+	DataAux.tilesets.clear();
 
 	// Remove all layers
 	p2List_item<MapLayer*>* item2;
-	item2 = data.layers.start;
+	item2 = DataAux.layers.start;
 
 	while(item2 != NULL)
 	{
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	data.layers.clear();
+	DataAux.layers.clear();
 
 	//remove all ImageLayers
 
 	p2List_item<ImageLayer*>* item3;
-	item3 = data.imagelayers.start;
+	item3 = DataAux.imagelayers.start;
 
 	while (item3 != NULL)
 	{
 		RELEASE(item3->data);
 		item3 = item3->next;
 	}
-	data.imagelayers.clear();
+	DataAux.imagelayers.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -200,9 +202,11 @@ bool j1Map::CleanUp()
 }
 
 // Load new map
-bool j1Map::Load(const char* file_name)
+bool j1Map::Load(const char* file_name,MapData& DataAux)
 {
 	bool ret = true;
+
+	
 	
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 
@@ -217,7 +221,7 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if(ret == true)
 	{
-		ret = LoadMap();
+		ret = LoadMap(DataAux);
 	}
 
 	// Load all tilesets info ----------------------------------------------
@@ -236,7 +240,7 @@ bool j1Map::Load(const char* file_name)
 			ret = LoadTilesetImage(tileset, set);
 		}
 
-		data.tilesets.add(set);
+		DataAux.tilesets.add(set);
 	}
 
 	// Load layer info ----------------------------------------------
@@ -248,7 +252,7 @@ bool j1Map::Load(const char* file_name)
 		ret = LoadLayer(layer, lay);
 
 		if(ret == true)
-			data.layers.add(lay);
+			DataAux.layers.add(lay);
 	}
 
 	//Load ImageLayer Info-------------------------------------------
@@ -261,15 +265,15 @@ bool j1Map::Load(const char* file_name)
 		ret = LoadImageLayer(Image_Layer,ImagLay);
 
 		if (ret == true)
-			data.imagelayers.add(ImagLay);
+			DataAux.imagelayers.add(ImagLay);
 
 	}
 
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
-		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("width: %d height: %d", DataAux.width, DataAux.height);
+		LOG("tile_width: %d tile_height: %d", DataAux.tile_width, DataAux.tile_height);
 
 		p2List_item<TileSet*>* item = data.tilesets.start;
 		while(item != NULL)
@@ -282,7 +286,7 @@ bool j1Map::Load(const char* file_name)
 			item = item->next;
 		}
 
-		p2List_item<MapLayer*>* item_layer = data.layers.start;
+		p2List_item<MapLayer*>* item_layer = DataAux.layers.start;
 		while(item_layer != NULL)
 		{
 			MapLayer* l = item_layer->data;
@@ -291,7 +295,7 @@ bool j1Map::Load(const char* file_name)
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
-		p2List_item<ImageLayer*>*Item_ImageLayer = data.imagelayers.start;
+		p2List_item<ImageLayer*>*Item_ImageLayer = DataAux.imagelayers.start;
 		while (Item_ImageLayer != NULL) {
 
 			ImageLayer*I = Item_ImageLayer->data;
@@ -305,12 +309,14 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
+	
+
 
 	return ret;
 }
 
 // Load map general properties
-bool j1Map::LoadMap()
+bool j1Map::LoadMap(MapData& DataAux)
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -322,16 +328,16 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
-		data.width = map.attribute("width").as_int();
-		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
+		DataAux.width = map.attribute("width").as_int();
+		DataAux.height = map.attribute("height").as_int();
+		DataAux.tile_width = map.attribute("tilewidth").as_int();
+		DataAux.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
-		data.background_color.b = 0;
-		data.background_color.a = 0;
+		DataAux.background_color.r = 0;
+		DataAux.background_color.g = 0;
+		DataAux.background_color.b = 0;
+		DataAux.background_color.a = 0;
 
 		if(bg_color.Length() > 0)
 		{
@@ -356,19 +362,19 @@ bool j1Map::LoadMap()
 
 		if(orientation == "orthogonal")
 		{
-			data.type = MAPTYPE_ORTHOGONAL;
+			DataAux.type = MAPTYPE_ORTHOGONAL;
 		}
 		else if(orientation == "isometric")
 		{
-			data.type = MAPTYPE_ISOMETRIC;
+			DataAux.type = MAPTYPE_ISOMETRIC;
 		}
 		else if(orientation == "staggered")
 		{
-			data.type = MAPTYPE_STAGGERED;
+			DataAux.type = MAPTYPE_STAGGERED;
 		}
 		else
 		{
-			data.type = MAPTYPE_UNKNOWN;
+			DataAux.type = MAPTYPE_UNKNOWN;
 		}
 	}
 
@@ -498,9 +504,11 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 }
 
 
-TileSet* j1Map::GetTilesetFromTileId(int id) const
+TileSet* j1Map::GetTilesetFromTileId(int id,MapData& DataAux) 
 {
-	p2List_item<TileSet*>* itemP = data.tilesets.start;
+
+
+	p2List_item<TileSet*>* itemP = DataAux.tilesets.start;
 	TileSet* set = NULL;
 
 	while (itemP)
@@ -553,62 +561,60 @@ int Properties::GetProperty(const char* value, int def_value) const
 	return def_value;
 }
 
-bool j1Map::CreateColliders() {
+bool j1Map::CreateColliders(MapData&DataAux) {
+
 
 	MapLayer* layer2;
 
 
-	for (uint i = 0; i < data.layers.count(); i++)
+	for (uint i = 0; i < DataAux.layers.count(); i++)
 	{
-		layer2 = data.layers.At(i)->data;
+		layer2 = DataAux.layers.At(i)->data;
 
 		if (layer2->properties.GetProperty("Collision", 0) == 0)
 			continue;
 
-		for (int y = 0; y < data.height; ++y)
+		for (int y = 0; y < DataAux.height; ++y)
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int x = 0; x < DataAux.width; ++x)
 			{
 				int tileID = layer2->Get(x, y);
 
 				if (tileID > 0)
 				{
-					TileSet* tileset = GetTilesetFromTileId(tileID);
+			
+					TileSet* tileset = GetTilesetFromTileId(tileID,DataAux);
 
 					if (tileID >= tileset->firstgid) {
 
-						iPoint position = MapToWorld(x, y);
+						iPoint position = MapToWorld(x, y,DataAux);
 						Collider*Coll = nullptr;
 
-						switch (tileID)
-						{
-						case 1133:
+					if(tileID==tileset->firstgid)
 							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_TRAP);
-							break;
-
-						case 1134:
-							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_CLIMBWALL);
-							break;
-
-						case 1135:
-							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WALL);
-							break;
 							
-						case 1136:
-							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WATER);
-							break;
-					
-						case 1137:
-							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_ICE);
-							break;
+					else if (tileID == tileset->firstgid+1)
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_CLIMBWALL);
+						
 
-						case 1138:
+					else if (tileID == tileset->firstgid + 2)
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WALL);
+						
+				
+					else if (tileID == tileset->firstgid +3)
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WATER);
+						
+					
+					else if (tileID == tileset->firstgid +4)
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_ICE);
+						
+					else if (tileID == tileset->firstgid + 5)
 							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_PLATFORM);
-							break;
+					
 
 						}
 						
-					}
+					
 					
 				}
 			}
