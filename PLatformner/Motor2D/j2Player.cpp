@@ -70,8 +70,8 @@ bool j2Player::Start()
 	player.colliding.wallTop = false;
 
 	//Calling the camera to follow the player
-	App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
-	App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
+	//App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
+	//App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
 	 
 	return true;
 }
@@ -186,7 +186,9 @@ bool j2Player::Update(float dt)
 bool j2Player::PostUpdate()
 {
 	//Camera Following player logic
-	//App->render->followPlayer(player);
+
+	/*App->render->followPlayer(player);
+
 
 	// We reset the colliders collisions
 	player.colliding.wallFront = false;
@@ -199,7 +201,7 @@ bool j2Player::PostUpdate()
 	if (App->render->camera.x < 0)
 	{
 		App->render->camera.x = 0;
-	}
+	}*/
 
 
 

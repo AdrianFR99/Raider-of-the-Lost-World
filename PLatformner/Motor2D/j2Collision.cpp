@@ -123,10 +123,29 @@ void j2Collision::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_WALL: // blue
+		case COLLIDER_WALL: //yellow
+			App->render->DrawQuad(colliders[i]->rect, 225,225, 0, alpha);
+			break;
+		case COLLIDER_PLAYER: // random
+			App->render->DrawQuad(colliders[i]->rect, 150, 150, 150, alpha);
+			break;
+		case COLLIDER_TRAP: //red
+			App->render->DrawQuad(colliders[i]->rect,255, 0, 0, alpha);
+			break;
+
+		case COLLIDER_ICE: //cyan
+			App->render->DrawQuad(colliders[i]->rect, 0, 183, 235, alpha);
+			break;
+
+		case COLLIDER_WATER://blue
 			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
 			break;
-		case COLLIDER_PLAYER: // green
+
+		case COLLIDER_PLATFORM://magenta
+			App->render->DrawQuad(colliders[i]->rect, 202, 31, 123, alpha);
+			break;
+
+		case COLLIDER_CLIMBWALL: //green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
 			break;
 		
