@@ -5,13 +5,15 @@
 	<textures />
 	<audio />
 	<map />
-	<scene />
+	<scene>
+		<currentMap name="Map2.tmx" />
+	</scene>
 	<player>
-		<playerPos x="106" y="522" />
-		<landed value="false" />
+		<playerPos x="64" y="577" />
+		<landed value="true" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="0" y="-588" />
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>

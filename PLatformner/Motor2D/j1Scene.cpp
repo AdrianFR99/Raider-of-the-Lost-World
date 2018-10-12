@@ -45,6 +45,22 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+// Load Game State
+bool j1Scene::Load(pugi::xml_node& data)
+{
+	return true;
+}
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node sceneMap = data.append_child("currentMap");
+
+	sceneMap.append_attribute("name") = loadedMap[SceneCounter]->GetString();
+
+	return true;
+}
+
 // Called before the first frame
 bool j1Scene::Start()
 {
