@@ -49,7 +49,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 bool j1Scene::Start()
 {
 	App->map->Load(loadedMap[SceneCounter]->GetString());
-	//App->map->CreateColliders();
+	App->map->CreateColliders();
 	
 	
 	return true;
