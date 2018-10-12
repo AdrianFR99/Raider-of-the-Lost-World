@@ -191,6 +191,7 @@ bool j2Player::PostUpdate()
 	// We reset the colliders collisions
 	player.colliding.wallFront = false;
 	player.colliding.wallBack = false;
+	player.colliding.wallDown = false;
 	
 
 	
@@ -228,18 +229,23 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 		{
 			player.colliding.wallFront = true;
+			player.playerHitbox->rect.x -= player.playerHitbox->rect.x + player.playerHitbox->rect.w - c2->rect.x;
+			player.playerPos.x = player.playerHitbox->rect.x;
 		}
 		if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w 
 			&& player.playerHitbox->rect.x - c2->rect.x > 0
 			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h )
 		{
 			player.colliding.wallBack = true;
+			player.playerHitbox->rect.x += c2->rect.x + c2->rect.w - player.playerHitbox->rect.x;
+			player.playerPos.x = player.playerHitbox->rect.x;
 		}
 
 		if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
 			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 		{
 			player.landed = true;
+			player.colliding.wallDown = true;
 		}
 		
 	}

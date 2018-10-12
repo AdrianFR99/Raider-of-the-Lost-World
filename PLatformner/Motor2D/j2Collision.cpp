@@ -173,7 +173,7 @@ Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || rect.x + rect.w < r.x || rect.x > r.x + r.w);
+	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
 }
 
 
