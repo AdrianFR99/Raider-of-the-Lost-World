@@ -104,11 +104,11 @@ bool j2Player::Start()
 	lateralTest_2.y = player.playerPos.y +16;
 
 	verticalTest.h = 48;
-	verticalTest.w = lateralTest.x - (player.playerPos.x + -64 );
+	verticalTest.w = 3000;
 	verticalTest.x = player.playerPos.x + -64;
 	verticalTest.y = player.playerPos.y + 32;
 	
-	lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
+	//lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
@@ -225,11 +225,14 @@ bool j2Player::Update(float dt)
 		player.y_speed = 0;
 	}*/
 	
+	App->render->followPlayer(player);
 	
 	
 	//We pass them onto the player Rect
 	player.playerRect.x = player.playerPos.x;
 	player.playerRect.y = player.playerPos.y;
+
+	
 	return true;
 }
 
@@ -238,7 +241,7 @@ bool j2Player::PostUpdate()
 {
 	//Camera Following player logic
 
-	/*App->render->followPlayer(player);
+	App->render->followPlayer(player);
 
 
 	// We reset the colliders collisions
@@ -252,7 +255,7 @@ bool j2Player::PostUpdate()
 	if (App->render->camera.x < 0)
 	{
 		App->render->camera.x = 0;
-	}*/
+	}
 
 
 

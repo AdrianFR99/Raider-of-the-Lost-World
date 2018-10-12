@@ -76,7 +76,7 @@ bool j1Scene::Start()
 		
 	}
 	
-	/*App->map->CreateColliders(App->map->data);*/
+	App->map->CreateColliders(App->map->data);
 	
 	return true;
 }

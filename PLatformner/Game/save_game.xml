@@ -9,11 +9,11 @@
 		<currentMap />
 	</scene>
 	<player>
-		<playerPos x="66" y="577" />
+		<playerPos x="154" y="577" />
 		<landed value="true" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-112" y="-548" />
+		<camera x="-204" y="770" />
 	</renderer>
 </game_state>

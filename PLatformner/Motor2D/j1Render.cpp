@@ -131,8 +131,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		uint scale = App->win->GetScale();
 
 		SDL_Rect rect;
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)-(camera.x * speed) + x * scale;
+		rect.y = (int)(-camera.y * speed) + y * scale;
 
 		if (section != NULL)
 		{
@@ -179,8 +179,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	if(use_camera)
 	{
 
-		rec.x = (int)(camera.x + rect.x *scale); // Changed this scale thing 
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(-camera.x + rect.x *scale); // Changed this scale thing 
+		rec.y = (int)(-camera.y + rect.y * scale);
 
 		rec.w *= scale;
 		rec.h *= scale;
@@ -255,21 +255,21 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 //Follow the player around
 void j1Render::followPlayer(const Player &p)
 {
-	///*camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
-	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;*/
+	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
+	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	//if ((p.playerPos.x - App->render->camera.x) >= 100 * App->win->GetScale())
-	//{
-	//	//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-	//	//App->render->camera.x += p.x_speed ;
-	//	camera.x += p.x_speed;
-	//}
+	if ((p.playerPos.x - App->render->camera.x/ App->win->GetScale()) >= 150 * App->win->GetScale())
+	{
+		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
+		App->render->camera.x += p.x_speed ;
+		camera.x += p.x_speed;
+	}
 
-	//if (p.playerPos.x - App->render->camera.x <= 200)
-	//{
-	//	//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-	//	App->render->camera.x -= p.x_speed;
-	//}
+	if ((p.playerPos.x - App->render->camera.x / App->win->GetScale()) <= 250 / App->win->GetScale())
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		App->render->camera.x -= p.x_speed;
+	}
 
 	//if (p.playerPos.y - App->render->camera.y <= camera.h / 2 -40)
 	//{

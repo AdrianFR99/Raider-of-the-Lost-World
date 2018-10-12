@@ -79,8 +79,11 @@ void j1Map::Draw(MapData&DataAux)
 					
 
 					
-		
+						if (position.x + tileset->tile_width >= (App->render->camera.x / App->win->GetScale())
+							&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
+						{
 							App->render->Blit(tileset->texture, position.x, position.y, &rect);
+						}
 						
 					}
 				}

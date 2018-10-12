@@ -49,34 +49,37 @@ bool j2Collision::PreUpdate()
 			continue;
 
 		c1 = colliders[i];
-
-		// avoid checking collisions already checked
-		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
+		if (c1->rect.x + c1->rect.w >= (App->render->camera.x / App->win->GetScale())
+			&& c1->rect.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
 		{
-			// skip empty colliders
-			if (colliders[k] == nullptr)
-				continue;
-
-			c2 = colliders[k];
-
-			if (c1->CheckCollision(c2->rect) == true)
+			// avoid checking collisions already checked
+			for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
 			{
-				if (matrix[c1->type][c2->type] && c1->callback) 
-					c1->callback->OnCollision(c1, c2);
+				// skip empty colliders
+				if (colliders[k] == nullptr)
+					continue;
 
-				if (matrix[c2->type][c1->type] && c2->callback)
-					c2->callback->OnCollision(c2, c1);
+				c2 = colliders[k];
 
-			}
+				if (c1->CheckCollision(c2->rect) == true)
+				{
+					if (matrix[c1->type][c2->type] && c1->callback)
+						c1->callback->OnCollision(c1, c2);
 
-			if (c1->PreCheckCollision(App->player->player) == true)
-			{
-				if (matrix[c1->type][c2->type] && c1->callback)
-					c1->callback->OnPreCollision(c1->ret_d_to_ground(App->player->player));
+					if (matrix[c2->type][c1->type] && c2->callback)
+						c2->callback->OnCollision(c2, c1);
 
-				if (matrix[c2->type][c1->type] && c2->callback)
-					c2->callback->OnPreCollision(c2->ret_d_to_ground(App->player->player));
+				}
 
+				if (c1->PreCheckCollision(App->player->player) == true)
+				{
+					if (matrix[c1->type][c2->type] && c1->callback)
+						c1->callback->OnPreCollision(c1->ret_d_to_ground(App->player->player));
+
+					if (matrix[c2->type][c1->type] && c2->callback)
+						c2->callback->OnPreCollision(c2->ret_d_to_ground(App->player->player));
+
+				}
 			}
 		}
 	}
