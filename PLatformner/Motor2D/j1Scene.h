@@ -33,11 +33,11 @@ public:
 	bool CleanUp();
 
 
-	void SwitchMap();
+	
 
 	
 
-
+	bool switchMap = false;
 
 private:
 
