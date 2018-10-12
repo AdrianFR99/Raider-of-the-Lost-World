@@ -5,10 +5,15 @@
 	<textures />
 	<audio />
 	<map />
-	<scene />
-	<:anonymous />
-	<:anonymous />
+	<scene>
+		<currentMap name="map1_tiledV0_17.tmx" />
+	</scene>
+	<player>
+		<playerPos x="64" y="577" />
+		<landed value="true" />
+	</player>
+	<collisions />
 	<renderer>
-		<camera x="2132" y="656" />
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>

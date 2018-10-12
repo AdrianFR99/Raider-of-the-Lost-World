@@ -33,11 +33,13 @@ public:
 	bool CleanUp();
 
 
-	void SwitchMap();
-
 	
 
-	int SceneCounter = 0;
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+	bool switchMap = false;
 
 private:
 

@@ -7,7 +7,7 @@
   </app>
 	
   <renderer>
-    <vsync value="false"/>
+    <vsync value="true"/>
   </renderer>
 
   <window>
@@ -30,4 +30,20 @@
     <folder>maps/</folder>
   </map>
 
+  <player>
+    <playerRect  x="64" y="576" width="16" height="32" />
+    <playerPos  x="64" y="576" />
+    <x_speed value="2" />
+    <y_speed value="0" />
+    <actual_x_speed value="0" />
+    <actual_y_speed  value="0" />
+    <stopped_speed value="0" />
+    <d_to_ground value="0" />
+    <landed value="false" />
+
+    <nextFrameLanded value="false" />
+
+    <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
+
+  </player>
 </config>

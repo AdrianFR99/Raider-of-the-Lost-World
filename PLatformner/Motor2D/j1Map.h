@@ -19,7 +19,6 @@ struct ImageLayer {
 
 };
 
-
 struct Properties
 {
 	struct Property
@@ -130,37 +129,36 @@ public:
 	bool Awake(pugi::xml_node& conf);
 
 	// Called each loop iteration
-	void Draw();
+	void Draw(MapData &DataAux);
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(MapData &DataAux);
 
 	// Load new map
-	bool Load(const char* path);
+	bool Load(const char* path, MapData &DataAux);
+
+	bool CreateColliders(MapData &DataAux);
 
 
-	TileSet* GetTilesetFromTileId(int id) const;
+
+	TileSet* GetTilesetFromTileId(int id,MapData& DataAux);
 	// Coordinate translation methods
-	iPoint MapToWorld(int x, int y) const;
-	iPoint WorldToMap(int x, int y) const;
+	iPoint MapToWorld(int x, int y, MapData &DataAux) const;
+	iPoint WorldToMap(int x, int y, MapData &DataAux) const;
 
 
 	
 
 private:
 
-	bool LoadMap();
+	bool LoadMap(MapData &DataAux);
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
 	bool LoadProperties(pugi::xml_node& node, Properties& list);
 
-	//vars for flipping the tiles
-	const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-	const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
-	const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
-
+	
 
 	
 
@@ -171,6 +169,8 @@ private:
 public:
 
 	MapData data;
+	MapData data2;
+	p2List<MapData> MapDataList;
 
 private:
 
