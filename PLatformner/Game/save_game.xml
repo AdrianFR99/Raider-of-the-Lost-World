@@ -9,11 +9,11 @@
 		<currentMap name="map1_tiledV0_17.tmx" />
 	</scene>
 	<player>
-		<playerPos x="122" y="577" />
+		<playerPos x="64" y="577" />
 		<landed value="true" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="0" y="-596" />
+		<camera x="328" y="-844" />
 	</renderer>
 </game_state>

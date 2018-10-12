@@ -67,7 +67,7 @@ bool j2Player::Load(pugi::xml_node& data)
 	player.playerPos.x = data.child("playerPos").attribute("x").as_int();
 	player.playerPos.y = data.child("playerPos").attribute("y").as_int();
 
-	player.landed = data.child("landed").attribute("value").as_bool;
+	player.landed = data.child("landed").attribute("value").as_bool();
 
 	return true;
 }
