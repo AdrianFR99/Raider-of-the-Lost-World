@@ -561,8 +561,13 @@ int Properties::GetProperty(const char* value, int def_value) const
 	return def_value;
 }
 
+
+
+
+
 bool j1Map::CreateColliders(MapData&DataAux) {
 
+	
 
 	MapLayer* layer2;
 

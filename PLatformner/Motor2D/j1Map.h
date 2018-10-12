@@ -134,6 +134,8 @@ public:
 	// Called before quitting
 	bool CleanUp(MapData &DataAux);
 
+	
+
 	// Load new map
 	bool Load(const char* path, MapData &DataAux);
 

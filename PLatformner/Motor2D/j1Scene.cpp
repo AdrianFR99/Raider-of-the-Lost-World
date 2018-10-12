@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j2Collision.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -76,7 +77,7 @@ bool j1Scene::Start()
 		
 	}
 	
-	/*App->map->CreateColliders(App->map->data);*/
+	App->map->CreateColliders(App->map->data);
 	
 	return true;
 }
@@ -109,13 +110,25 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 2 * App->win->GetScale();
 
+	
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		
-		if (switchMap==false)
-			switchMap = true;
+		if (switchMap == false) {
 
-		else
+			App->collision->CleanUp();
+			App->map->CreateColliders(App->map->data2);
+			switchMap = true;
+		}
+	
+		else {
+
+		
+			App->collision->CleanUp();
+			App->map->CreateColliders(App->map->data);
 			switchMap = false;
+
+		}
+
+		
 
 	}
 
