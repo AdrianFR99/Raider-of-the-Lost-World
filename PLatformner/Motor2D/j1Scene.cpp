@@ -48,6 +48,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	/*if (loadedMap[SceneCounter]->GetString() != data.child("currentMap").attribute("name").as_string())
+	{
+		SwitchMap();
+	}*/
 	return true;
 }
 
