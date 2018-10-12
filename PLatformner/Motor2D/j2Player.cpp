@@ -64,7 +64,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 // Load Game State
 bool j2Player::Load(pugi::xml_node& data)
 {
-	
+	player.playerPos.x = data.child("playerPos").attribute("x").as_int();
+	player.playerPos.y = data.child("playerPos").attribute("y").as_int();
+
+	player.landed = data.child("landed").attribute("value").as_bool;
 
 	return true;
 }

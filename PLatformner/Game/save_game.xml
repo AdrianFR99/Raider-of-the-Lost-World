@@ -6,14 +6,14 @@
 	<audio />
 	<map />
 	<scene>
-		<currentMap name="Map2.tmx" />
+		<currentMap name="map1_tiledV0_17.tmx" />
 	</scene>
 	<player>
-		<playerPos x="64" y="577" />
+		<playerPos x="122" y="577" />
 		<landed value="true" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="0" y="-596" />
 	</renderer>
 </game_state>
