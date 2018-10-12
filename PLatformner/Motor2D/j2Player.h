@@ -7,14 +7,25 @@ struct Collider;
 
 struct Player
 {
+	struct collisionControl 
+	{
+		bool wallFront;
+		bool wallBack;
+		bool wallTop;
+		bool wallDown;
+	};
+
+	
 	SDL_Rect playerRect;
 	iPoint playerPos;
-	int x_speed;
-	int y_speed;
+	int x_speed, y_speed;
+	int actual_x_speed, actual_y_speed;
+	int stopped_speed;
 	int d_to_ground;
 	bool landed;
 	bool nextFrameLanded;
 	Collider* playerHitbox;
+	collisionControl colliding;
 };
 
 class j2Player : public j1Module
@@ -60,12 +71,12 @@ public: //Variables
 	//Debug purpose RECTS
 	SDL_Rect lateralTest;
 	SDL_Rect verticalTest;
-
+	SDL_Rect lateralTest_2;
 	
 	Collider* verticalTestHitbox;
 	Collider* lateralTestHitbox;
 
-	Collider* verticalTestHitbox_2;
+	Collider* lateralTestHitbox_2;
 };
 
 

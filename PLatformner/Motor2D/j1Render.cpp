@@ -178,8 +178,10 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
+
 		rec.x = (int)(camera.x + rect.x *scale); // Changed this scale thing 
 		rec.y = (int)(camera.y + rect.y * scale);
+
 		rec.w *= scale;
 		rec.h *= scale;
 	}
