@@ -4,6 +4,7 @@
 #include "j1window.h"
 #include "j1input.h"
 #include "j2Collision.h"
+#include "j2Animation.h"
 #include "SDL/include/SDL.h"
 #include "j2Player.h"
 
@@ -112,9 +113,12 @@ bool j2Player::Start()
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
 	
+	//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
+	player.animations.idle.PushBack({14,6,19,30});
+	player.animations.idle.PushBack({65,6,19,30});
+	player.animations.idle.speed = 0.03f;
 
-	
-
+	player.animations.currentAnimation = &player.animations.idle;
 
 	//Calling the camera to follow the player
 	//App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
