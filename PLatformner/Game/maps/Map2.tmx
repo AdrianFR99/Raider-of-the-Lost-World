@@ -34240,6 +34240,7 @@
  </layer>
  <layer name="Collisions" width="300" height="57">
   <properties>
+   <property name="Collision" type="int" value="1"/>
    <property name="Draw" type="int" value="0"/>
   </properties>
   <data>

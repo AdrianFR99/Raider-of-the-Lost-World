@@ -93,7 +93,7 @@ bool j2Player::Start()
 	LOG("Player Start");
 	
 
-	lateralTest.h = 48;
+	/*lateralTest.h = 48;
 	lateralTest.w = 64;
 	lateralTest.x = player.playerPos.x + 128;
 	lateralTest.y = player.playerPos.y - 16;
@@ -106,7 +106,7 @@ bool j2Player::Start()
 	verticalTest.h = 48;
 	verticalTest.w = 3000;
 	verticalTest.x = player.playerPos.x + -64;
-	verticalTest.y = player.playerPos.y + 32;
+	verticalTest.y = player.playerPos.y + 32;*/
 	
 	//lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
