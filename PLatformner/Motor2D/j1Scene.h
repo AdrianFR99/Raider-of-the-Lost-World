@@ -37,7 +37,7 @@ public:
 
 	
 
-	int SceneCounter = 0;
+
 
 private:
 

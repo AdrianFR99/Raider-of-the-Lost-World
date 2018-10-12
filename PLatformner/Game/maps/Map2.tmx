@@ -34238,7 +34238,7 @@
    <tile gid="555"/>
   </data>
  </layer>
- <layer name="Collisions" width="300" height="57" visible="0">
+ <layer name="Collisions" width="300" height="57">
   <properties>
    <property name="Draw" type="int" value="0"/>
   </properties>

@@ -48,10 +48,11 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load(loadedMap[SceneCounter]->GetString());
-	App->map->CreateColliders();
-	
-	
+	App->map->Load(loadedMap[0]->GetString(),App->map->data);
+	App->map->Load(loadedMap[1]->GetString(), App->map->data2);
+	/*App->map->Load(loadedMap[1]->GetString());*/
+
+	//App->map->CreateColliders();
 	return true;
 }
 
@@ -91,11 +92,12 @@ bool j1Scene::Update(float dt)
 	}
 
 
-	App->map->Draw();
+	App->map->Draw(App->map->data);
 
+	//CAREFUL WITH THE MAP DATA
 	int x, y;
 	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
+	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y,App->map->data);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
@@ -131,20 +133,7 @@ void j1Scene::SwitchMap() {
 
 	LOG("Changing Map");
 
-	if (SceneCounter == loadedMap.count() - 1) {
-
-		SceneCounter = 0;
-		App->map->CleanUp();
-		App->map->Load(loadedMap[SceneCounter]->GetString());
-
-	}
-	else {
-
-		App->map->CleanUp();
-		SceneCounter++;
-		App->map->Load(loadedMap[SceneCounter]->GetString());
-
-	}
+	
 	
 }
 
