@@ -583,27 +583,27 @@ bool j1Map::CreateColliders() {
 						switch (tileID)
 						{
 						case 1133:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_TRAP);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_TRAP);
 							break;
 
 						case 1134:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_CLIMBWALL);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_CLIMBWALL);
 							break;
 
 						case 1135:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_WALL);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WALL);
 							break;
 							
 						case 1136:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_WATER);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_WATER);
 							break;
 					
 						case 1137:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_ICE);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_ICE);
 							break;
 
 						case 1138:
-							Coll = App->collision->AddCollider({ position.x,position.y,16,16 }, COLLIDER_PLATFORM);
+							Coll = App->collision->AddCollider({ position.x,position.y,tileset->tile_width,tileset->tile_height }, COLLIDER_PLATFORM);
 							break;
 
 						}
