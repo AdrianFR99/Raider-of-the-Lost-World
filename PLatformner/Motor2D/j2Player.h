@@ -38,6 +38,8 @@ public:
 	//Virtual Destructor
 	virtual ~j2Player();
 
+	// Called before render is available
+	bool Awake(pugi::xml_node& config);
 
 	// Called before the first frame
 	bool Start();
