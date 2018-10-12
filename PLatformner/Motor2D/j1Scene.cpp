@@ -58,7 +58,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node sceneMap = data.append_child("currentMap");
 
-	sceneMap.append_attribute("name") = loadedMap[SceneCounter]->GetString();
+	/*sceneMap.append_attribute("name") = loadedMap[SceneCounter]->GetString();*/
 
 	return true;
 }
