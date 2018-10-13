@@ -14,9 +14,17 @@
  </tileset>
  <imagelayer name="Back">
   <image source="ParallaxBackG2.png" width="7000" height="724"/>
+  <properties>
+   <property name="Movement" type="int" value="1"/>
+   <property name="Speed" type="float" value="-0.25"/>
+  </properties>
  </imagelayer>
  <imagelayer name="Front">
   <image source="parallaxBackG1.png" width="7000" height="718"/>
+  <properties>
+   <property name="Movement" type="int" value="1"/>
+   <property name="Speed" type="float" value="-0.5"/>
+  </properties>
  </imagelayer>
  <layer name="backLayer" width="256" height="45">
   <properties>

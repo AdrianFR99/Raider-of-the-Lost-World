@@ -39,7 +39,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	bool switchMap = false;
+	bool switchMap;
 	bool DeleteColliders = false;
 
 private:

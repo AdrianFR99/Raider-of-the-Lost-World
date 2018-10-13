@@ -79,6 +79,8 @@ bool j1Scene::Start()
 		
 	}
 	
+	switchMap = false;
+	
 	App->map->CreateColliders(App->map->data);
 	
 	return true;
@@ -113,26 +115,26 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x += 2 * App->win->GetScale();
 
 	
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		if (switchMap == false) {
 			App->collision->CleanUp();
 			App->map->CreateColliders(App->map->data2);
 			switchMap = true;
 		}
-
 		else {
-
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data);
 		switchMap = false;
 
 		}
-
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 
+		App->render->camera.x= App->map->SetPlayerToInitial(App->map->data);
+	}
  
+
 	if (switchMap==false) {
 		App->map->Draw(App->map->data);
 
@@ -167,7 +169,6 @@ bool j1Scene::Update(float dt)
 	}
 
 
-	//CAREFUL WITH THE MAP DATA
 	
 
 	

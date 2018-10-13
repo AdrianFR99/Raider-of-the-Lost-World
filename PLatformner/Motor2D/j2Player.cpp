@@ -29,9 +29,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 	
 	if (config != NULL)
 	{
-		//Player Position
+		//Player Position Init
+		
 		player.playerPos.x = config.child("playerPos").attribute("x").as_int();
 		player.playerPos.y = config.child("playerPos").attribute("y").as_int();
+		
 		//Player SDL_Rect
 		player.playerRect.w = config.child("playerRect").attribute("width").as_int();
 		player.playerRect.h = config.child("playerRect").attribute("height").as_int();
@@ -325,5 +327,4 @@ void j2Player::OnPreCollision(int d)
 //{
 //	return !( (playerRect.y + playerRect.h +1 )< r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
 //}
-
 
