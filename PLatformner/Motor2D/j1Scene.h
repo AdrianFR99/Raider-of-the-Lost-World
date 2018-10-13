@@ -39,7 +39,7 @@ public:
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-
+public:
 	bool CurrentMap2=false;  // Use as Indicator of Which maps is the current one false=Map1 and true=Map2
 	bool DeleteColliders = false;
 

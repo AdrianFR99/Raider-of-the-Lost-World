@@ -15,10 +15,60 @@ j2Collision::j2Collision()
 		colliders[i] = nullptr;
 
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
+	matrix[COLLIDER_WALL][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_WALL][COLLIDER_ICE] = false;
+	matrix[COLLIDER_WALL][COLLIDER_WATER] = false;
+	matrix[COLLIDER_WALL][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_WALL][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
 
-	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_WALL] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_ICE] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_WATER] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_PLAYER] = true;
+
+	matrix[COLLIDER_ICE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_ICE][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_ICE][COLLIDER_ICE] = false;
+	matrix[COLLIDER_ICE][COLLIDER_WATER] = false;
+	matrix[COLLIDER_ICE][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_ICE][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_ICE][COLLIDER_PLAYER] = true;
+
+	matrix[COLLIDER_WATER][COLLIDER_WALL] = false;
+	matrix[COLLIDER_WATER][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_WATER][COLLIDER_ICE] = false;
+	matrix[COLLIDER_WATER][COLLIDER_WATER] = false;
+	matrix[COLLIDER_WATER][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_WATER][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_WATER][COLLIDER_PLAYER] = true;
+
+	matrix[COLLIDER_PLATFORM][COLLIDER_WALL] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_ICE] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_WATER] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER] = true;
+
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_WALL] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_ICE] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_WATER] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLAYER] = true;
+
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_TRAP] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ICE] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_WATER] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_CLIMBWALL] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 
 }
 
@@ -196,7 +246,7 @@ Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
+	return !(rect.y + rect.h< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
 }
 
 

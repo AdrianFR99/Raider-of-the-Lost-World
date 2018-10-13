@@ -38,12 +38,12 @@
     <playerRect  x="64" y="576" width="16" height="32" />
     <playerPos  x="64" y="576" />
     <x_speed value="2" />
-    <y_speed value="0" />
+    <y_speed value="-10" />
     <actual_x_speed value="0" />
     <actual_y_speed  value="0" />
     <stopped_speed value="0" />
     <d_to_ground value="0" />
-    <landed value="false" />
+    <landed value="true" />
 
     <nextFrameLanded value="false" />
 

@@ -110,7 +110,7 @@ bool j2Player::Start()
 	player.playerRect = player_Init.playerRect;
 	//Player Speeds
 	player.x_speed = player_Init.x_speed;
-	player.y_speed = player_Init.y_speed;
+	player.y_speed = player_Init.actual_y_speed;
 
 	player.actual_x_speed = player_Init.actual_x_speed;
 	player.actual_y_speed = player_Init.actual_y_speed;
@@ -141,7 +141,7 @@ bool j2Player::Start()
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
 	
-	//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
+	//PUSHBACKS HARDCODED THAT WILL LATER GO INTO CONFIG (just to test first)
 	player.animations.idle.PushBack({14,6,19,30});
 	player.animations.idle.PushBack({65,6,19,30});
 	player.animations.idle.speed = 0.03f;
@@ -241,7 +241,7 @@ bool j2Player::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
 	{
 		player.landed = false;
-		player.y_speed = -10;
+		player.y_speed = player_Init.y_speed;
 	}
 
 	if (player.landed == false)
@@ -323,7 +323,10 @@ void j2Player::changedMaps()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
-	if (c2->type == COLLIDER_WALL)
+	if (c2->type == COLLIDER_WALL 
+		|| c2->type == COLLIDER_ICE 
+		|| c2->type == COLLIDER_PLATFORM 
+		|| c2->type == COLLIDER_CLIMBWALL)
 	{
 		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x 
 			&& c2->rect.x - player.playerHitbox->rect.x > 0
