@@ -44,7 +44,9 @@ void j1Map::Draw(MapData&DataAux)
 
 	for (int x = 0; x < DataAux.imagelayers.count();++x) {
 		
-		App->render->Blit(DataAux.imagelayers[x]->texture, DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY, &DataAux.imagelayers[x]->GetImageLayerRect());
+		App->render->Blit(DataAux.imagelayers[x]->texture,
+			DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY, 
+			&DataAux.imagelayers[x]->GetImageLayerRect());
 
 	}
 
@@ -530,7 +532,7 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 	Image->Height = node.child("image").attribute("height").as_int();
 	Image->texture = App->tex->Load(PATH(folder.GetString(),node.child("image").attribute("source").as_string()));
 
-
+	LoadProperties(node, Image->PropImg);
 
 
 

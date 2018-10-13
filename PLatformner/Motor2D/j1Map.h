@@ -40,17 +40,7 @@ struct ObjectGroup {
 
 };
 
-struct ImageLayer {
-	
-	SDL_Rect GetImageLayerRect() const;
 
-	p2SString name;
-	int Width, Height;
-	int OffsetX, OffsetY=0;
-	SDL_Texture*texture;
-
-	
-};
 
 
 struct Properties
@@ -81,7 +71,18 @@ struct Properties
 	p2List<Property*>	Propertieslist;
 };
 
+struct ImageLayer {
 
+	SDL_Rect GetImageLayerRect() const;
+
+	p2SString name;
+	int Width, Height;
+	int OffsetX, OffsetY = 0;
+	SDL_Texture*texture;
+
+	Properties PropImg;
+
+};
 
 struct MapLayer
 {

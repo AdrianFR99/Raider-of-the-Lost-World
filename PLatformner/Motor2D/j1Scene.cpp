@@ -222,16 +222,3 @@ void j1Scene::switchTheMaps()
 }
 
 
-MapData j1Scene::GetCurrentStage() {
-
-
-	if (CurrentMap2)
-		return App->map->data2;
-
-	else
-		return App->map->data;
-
-
-}
-
-
