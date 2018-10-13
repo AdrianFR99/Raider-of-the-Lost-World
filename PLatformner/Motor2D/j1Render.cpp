@@ -50,6 +50,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = config.child("cameraInit").attribute("y").as_int();
 	}
 	cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
+	cameraOffset_right = config.child("cameraOffset").attribute("right_x").as_int();
+	cameraOffset_left = config.child("cameraOffset").attribute("left_x").as_int();
 	scale = App->win->GetScale();
 
 	return ret;
@@ -262,13 +264,13 @@ void j1Render::followPlayer(const Player &p)
 	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
 	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	if ((p.playerPos.x - camera.x / scale) >= 150 * scale)
+	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale)
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
 		camera.x += p.x_speed;
 	}
 
-	if ((p.playerPos.x - camera.x / scale) <= 250 / scale)
+	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		App->render->camera.x -= p.x_speed;

@@ -10,6 +10,7 @@
     <vsync value="true"/>
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
+    <cameraOffset left_x="300" right_x="150"/>
   </renderer>
 
   <window>

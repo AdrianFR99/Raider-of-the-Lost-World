@@ -56,6 +56,8 @@ public:
 	SDL_Color		background;
 	uint scale;
 	int cameraDisplacement;
+	int cameraOffset_right;
+	int cameraOffset_left;
 };
 
 #endif // __j1RENDER_H__
