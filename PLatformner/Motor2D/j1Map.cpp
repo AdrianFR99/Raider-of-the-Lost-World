@@ -6,6 +6,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j2Collision.h"
+#include "j2Player.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -529,6 +530,10 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 	Image->Height = node.child("image").attribute("height").as_int();
 	Image->texture = App->tex->Load(PATH(folder.GetString(),node.child("image").attribute("source").as_string()));
 
+
+
+
+
 	if (node.attribute("offsetx").as_int() != NULL)
 		Image->OffsetX = node.attribute("offsetx").as_int();
 
@@ -695,3 +700,32 @@ bool j1Map::CreateColliders(MapData&DataAux) {
 	}
 	return true;
 }
+
+float j1Map::SetPlayerToInitial(MapData&DataAux) {
+
+	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
+
+		if (DataAux.ObjectGamesGroup.At(i)->data->nameGroup == "StartingAndFinishPoint") {
+
+			for (int x = 0; x < DataAux.ObjectGamesGroup.At(i)->data->Objectlist.count(); ++x) {
+
+				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->name == "StartingPoint");
+
+				App->player->player.playerPos.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->x;
+				App->player->player.playerPos.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->y;
+
+				break;
+			}
+		}
+	}
+	return (App->player->player.playerPos.x);
+}
+
+
+
+
+
+
+
+
+

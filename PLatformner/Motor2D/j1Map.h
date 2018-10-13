@@ -49,7 +49,9 @@ struct ImageLayer {
 	int OffsetX, OffsetY=0;
 	SDL_Texture*texture;
 
+	
 };
+
 
 struct Properties
 {
@@ -168,14 +170,14 @@ public:
 	// Called before quitting
 	bool CleanUp(MapData &DataAux);
 
-	
-
 	// Load new map
 	bool Load(const char* path, MapData &DataAux);
 
 	bool CreateColliders(MapData &DataAux);
 
+	float SetPlayerToInitial(MapData&DataAux);
 
+	
 
 	TileSet* GetTilesetFromTileId(int id,MapData& DataAux);
 	// Coordinate translation methods

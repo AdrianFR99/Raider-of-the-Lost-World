@@ -14,15 +14,31 @@
  </tileset>
  <imagelayer name="Sky(back)">
   <image source="skyLine.png" width="4800" height="810"/>
+  <properties>
+   <property name="Movement" type="int" value="0"/>
+   <property name="Speed" type="float" value="0"/>
+  </properties>
  </imagelayer>
  <imagelayer name="Clouds(MiddleUp)">
   <image source="UpClouds.png" width="4800" height="315"/>
+  <properties>
+   <property name="Movement" type="int" value="1"/>
+   <property name="Speed" type="float" value="-0.25"/>
+  </properties>
  </imagelayer>
  <imagelayer name="Clouds(MiddleDown)" offsetx="2" offsety="520">
   <image source="CloudsBack.png" width="4800" height="381"/>
+  <properties>
+   <property name="Movement" type="int" value="1"/>
+   <property name="Speed" type="float" value="-0.25"/>
+  </properties>
  </imagelayer>
  <imagelayer name="Clouds(Front)" offsetx="136" offsety="724">
   <image source="CloudsFront.png" width="4800" height="186"/>
+  <properties>
+   <property name="Movement" type="int" value="1"/>
+   <property name="Speed" type="float" value="-0.5"/>
+  </properties>
  </imagelayer>
  <layer name="Background" width="300" height="57">
   <properties>

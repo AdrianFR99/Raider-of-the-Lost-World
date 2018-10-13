@@ -6,6 +6,7 @@
 
 struct Collider;
 
+
 struct Player
 {
 	struct collisionControl 
@@ -76,6 +77,7 @@ public:
 	void OnPreCollision(int d);
 
 	void changedMaps();
+
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
