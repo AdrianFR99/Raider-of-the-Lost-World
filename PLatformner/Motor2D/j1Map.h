@@ -36,6 +36,8 @@ struct ObjectGroup {
 	}
 
 
+	
+
 	p2List<Object*>	Objectlist;
 
 };
@@ -48,7 +50,7 @@ struct Properties
 	struct Property
 	{
 		p2SString name;
-		int value;
+		float value;
 	};
 
 
@@ -65,8 +67,9 @@ struct Properties
 
 		Propertieslist.clear();
 	}
+	
+	float GetProperty(const char* value, float def_value) const;
 
-	int GetProperty(const char* name, int def_value = 0) const;
 
 	p2List<Property*>	Propertieslist;
 };
@@ -77,8 +80,11 @@ struct ImageLayer {
 
 	p2SString name;
 	int Width, Height;
-	int OffsetX, OffsetY = 0;
+	float OffsetX, OffsetY = 0.0f;
+	float SpeedFront, SpeedMiddle, SpeedBack = 0.0f;
 	SDL_Texture*texture;
+
+
 
 	Properties PropImg;
 
@@ -177,6 +183,10 @@ public:
 	bool CreateColliders(MapData &DataAux);
 
 	float SetPlayerToInitial(MapData&DataAux);
+
+	float SetLimitPoint(MapData&DataAux);
+
+
 
 	
 

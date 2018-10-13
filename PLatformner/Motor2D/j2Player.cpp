@@ -121,24 +121,12 @@ bool j2Player::Start()
 	
 	//Player landed
 	player.landed = player_Init.landed;
-	/*lateralTest.h = 48;
-	lateralTest.w = 64;
-	lateralTest.x = player.playerPos.x + 128;
-	lateralTest.y = player.playerPos.y - 16;
-
-	lateralTest_2.h = 16;
-	lateralTest_2.w = 32;
-	lateralTest_2.x = player.playerPos.x -40;
-	lateralTest_2.y = player.playerPos.y +16;
-
-	verticalTest.h = 48;
-	verticalTest.w = 3000;
-	verticalTest.x = player.playerPos.x + -64;
-	verticalTest.y = player.playerPos.y + 32;*/
 	
-	//lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
 	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
-	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
+
+	if(player.playerHitbox==nullptr)
+	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+	
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
 	
 	//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
@@ -148,9 +136,7 @@ bool j2Player::Start()
 
 	player.animations.currentAnimation = &player.animations.idle;
 
-	//Calling the camera to follow the player
-	//App->render->camera.x = player.playerRect.x * App->win->GetScale() - App->render->camera.w / 2;
-	//App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
+
 	 
 	return true;
 }
