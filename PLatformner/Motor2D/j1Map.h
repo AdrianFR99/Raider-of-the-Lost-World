@@ -11,6 +11,8 @@
 
 struct ObjectGroup {
 
+	p2SString nameGroup;
+
 	struct Object
 	{
 		p2SString name;
@@ -102,7 +104,7 @@ struct MapLayer
 
 
 	Properties	properties;
-	ObjectGroup GameObject;
+
 };
 
 // ----------------------------------------------------
@@ -144,6 +146,7 @@ struct MapData
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
 	p2List<ImageLayer*> imagelayers;
+	p2List<ObjectGroup*>ObjectGamesGroup;
 };
 
 // ----------------------------------------------------
@@ -188,7 +191,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
 	bool LoadProperties(pugi::xml_node& node, Properties& list);
-	bool LoadGameObjects(pugi::xml_node& node,ObjectGroup& list);
+	bool LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjGroup);
 	
 
 	

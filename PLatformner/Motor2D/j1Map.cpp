@@ -197,6 +197,20 @@ bool j1Map::CleanUp(MapData& DataAux)
 		item3 = item3->next;
 	}
 	DataAux.imagelayers.clear();
+	//remove all GameObjects
+
+	p2List_item<ObjectGroup*>*Item4; 
+	Item4 = DataAux.ObjectGamesGroup.start;
+	
+	while (Item4 != NULL) {
+
+		RELEASE(Item4->data);
+		Item4 = Item4->next;
+	}
+
+	DataAux.ObjectGamesGroup.clear();
+
+	
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -271,6 +285,21 @@ bool j1Map::Load(const char* file_name,MapData& DataAux)
 			DataAux.imagelayers.add(ImagLay);
 
 	}
+	//Load ImageLayer Info--------------------------------------------
+	pugi::xml_node Object_Game;
+	for (Object_Game = map_file.child("map").child("objectgroup"); Object_Game && ret; Object_Game = Object_Game.next_sibling("Objectgroup"))
+	{
+		ObjectGroup*ObjGroup = new ObjectGroup();
+
+		ret = LoadGameObjects(Object_Game, ObjGroup);
+
+		if (ret == true)
+			DataAux.ObjectGamesGroup.add(ObjGroup);
+	}
+
+
+//-----------------------------------------------------------------
+
 
 	if(ret == true)
 	{
@@ -309,6 +338,16 @@ bool j1Map::Load(const char* file_name,MapData& DataAux)
 
 		}
 
+		p2List_item<ObjectGroup*>*Item_ObjectGroup = DataAux.ObjectGamesGroup.start;
+		while (Item_ObjectGroup != NULL) {
+
+			ObjectGroup*O = Item_ObjectGroup->data;
+			LOG("ObjectGroup name:%s", O->nameGroup.GetString());
+			Item_ObjectGroup = Item_ObjectGroup->next;
+	
+		}
+
+
 	}
 
 	map_loaded = ret;
@@ -319,7 +358,7 @@ bool j1Map::Load(const char* file_name,MapData& DataAux)
 }
 
 // Load map general properties
-bool j1Map::LoadMap(MapData& DataAux)
+bool j1Map::LoadMap(MapData&DataAux)
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -563,32 +602,28 @@ int Properties::GetProperty(const char* value, int def_value) const
 
 	return def_value;
 }
-bool LoadGameObjects(pugi::xml_node& node, ObjectGroup& list) {
+
+
+bool j1Map::LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjAux) {
 
 	bool ret = true;
 
-	pugi::xml_node data = node.child("objectgroup");
+	ObjAux->nameGroup = node.attribute("name").as_string();
 
-	LOG("Objectgroup name: %s",data.attribute("name").as_string());
-
-	if (data != NULL)
+	for (pugi::xml_node Obj = node.child("object"); Obj && ret; Obj = Obj.next_sibling("object"))
 	{
-		pugi::xml_node obj;
-		for (obj = data.child("object"); data;obj=obj.next_sibling("object")) {
+		ObjectGroup::Object*Object = new ObjectGroup::Object();
 
-			ObjectGroup::Object*tmpObj = new ObjectGroup::Object();
+		Object->name = Obj.attribute("name").as_string();
+		Object->x = Obj.attribute("x").as_float();
+		Object->y = Obj.attribute("y").as_float();
+		Object->width = Obj.attribute("width").as_float();
+		Object->height = Obj.attribute("height").as_float();
 
-			tmpObj->name = obj.attribute("name").as_string();
-			tmpObj->x = obj.attribute("x").as_float();
-			tmpObj->y = obj.attribute("y").as_float();
-			tmpObj->width = obj.attribute("width").as_float();
-			tmpObj->height = obj.attribute("height").as_float();
-
-			list.Objectlist.add(tmpObj);
-		}
-
+		ObjAux->Objectlist.add(Object);
 	}
 
+	
 
 	return ret;
 }
