@@ -45,6 +45,7 @@ public:
 private:
 
 	p2List<p2SString*> loadedMap;
+	void switchTheMaps(bool switcher);
 	
 };
 

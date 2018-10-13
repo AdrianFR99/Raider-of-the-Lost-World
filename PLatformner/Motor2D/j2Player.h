@@ -76,7 +76,8 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
-	
+	void changedMaps();
+
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
@@ -85,6 +86,7 @@ public:
 public: //Variables
 
 	Player player;
+	Player player_Init;
 	
 
 
