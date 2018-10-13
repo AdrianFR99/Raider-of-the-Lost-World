@@ -563,6 +563,36 @@ int Properties::GetProperty(const char* value, int def_value) const
 
 	return def_value;
 }
+bool LoadGameObjects(pugi::xml_node& node, ObjectGroup& list) {
+
+	bool ret = true;
+
+	pugi::xml_node data = node.child("objectgroup");
+
+	LOG("Objectgroup name: %s",data.attribute("name").as_string());
+
+	if (data != NULL)
+	{
+		pugi::xml_node obj;
+		for (obj = data.child("object"); data;obj=obj.next_sibling("object")) {
+
+			ObjectGroup::Object*tmpObj = new ObjectGroup::Object();
+
+			tmpObj->name = obj.attribute("name").as_string();
+			tmpObj->x = obj.attribute("x").as_float();
+			tmpObj->y = obj.attribute("y").as_float();
+			tmpObj->width = obj.attribute("width").as_float();
+			tmpObj->height = obj.attribute("height").as_float();
+
+			list.Objectlist.add(tmpObj);
+		}
+
+	}
+
+
+	return ret;
+}
+
 
 bool j1Map::CreateColliders(MapData&DataAux) {
 

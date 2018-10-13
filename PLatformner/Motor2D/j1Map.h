@@ -8,6 +8,36 @@
 
 // ----------------------------------------------------
 
+
+struct ObjectGroup {
+
+	struct Object
+	{
+		p2SString name;
+		float x, y, width, height;
+		
+	};
+
+
+	~ObjectGroup()
+	{
+		p2List_item<Object*>* itemP;
+		itemP = Objectlist.start;
+
+		while (itemP != NULL)
+		{
+			RELEASE(itemP->data);
+			itemP = itemP->next;
+		}
+
+		Objectlist.clear();
+	}
+
+
+	p2List<Object*>	Objectlist;
+
+};
+
 struct ImageLayer {
 	
 	SDL_Rect GetImageLayerRect() const;
@@ -72,6 +102,7 @@ struct MapLayer
 
 
 	Properties	properties;
+	ObjectGroup GameObject;
 };
 
 // ----------------------------------------------------
@@ -157,7 +188,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* Image);
 	bool LoadProperties(pugi::xml_node& node, Properties& list);
-
+	bool LoadGameObjects(pugi::xml_node& node,ObjectGroup& list);
 	
 
 	
