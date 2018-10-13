@@ -47,8 +47,10 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
 		camera.x = 0;
-		camera.y = 0;//-(68*16);
+		camera.y = 0;
 	}
+
+	scale = App->win->GetScale();
 
 	return ret;
 }
@@ -59,6 +61,8 @@ bool j1Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
+	//App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
 	return true;
 }
 
@@ -256,25 +260,40 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 void j1Render::followPlayer(const Player &p)
 {
 	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
-	camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
+	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	if ((p.playerPos.x - App->render->camera.x/ App->win->GetScale()) >= 150 * App->win->GetScale())
+	if ((p.playerPos.x - camera.x / scale) >= 150 * scale)
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-		App->render->camera.x += p.x_speed ;
 		camera.x += p.x_speed;
 	}
 
-	if ((p.playerPos.x - App->render->camera.x / App->win->GetScale()) <= 250 / App->win->GetScale())
+	if ((p.playerPos.x - camera.x / scale) <= 250 / scale)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		App->render->camera.x -= p.x_speed;
 	}
 
-	//if (p.playerPos.y - App->render->camera.y <= camera.h / 2 -40)
-	//{
-	//	//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-	//	App->render->camera.y += p.y_speed;
-	//}
+	if (p.playerPos.y - (camera.y / scale) <= 1500 / scale )
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		camera.y += p.y_speed;
+		/*camera.y += 3;
+		if (p.landed == true)
+		{
+			camera.y -= 3;
+		}*/
+	}
+
+	//If first map
+	if (camera.x < 0)
+	{
+		camera.x = 0;
+	}
+
+	if (camera.y > 1346 / scale)
+	{
+		camera.y = 1346 / scale;
+	}
 
 }

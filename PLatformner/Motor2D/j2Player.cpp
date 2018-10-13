@@ -53,6 +53,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Player landed
 		player.landed = config.child("landed").attribute("value").as_bool();
+
+		
 	}
 	else
 	{
@@ -252,10 +254,7 @@ bool j2Player::PostUpdate()
 
 	
 
-	if (App->render->camera.x < 0)
-	{
-		App->render->camera.x = 0;
-	}
+	
 
 
 
