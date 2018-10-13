@@ -49,19 +49,21 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
-	/*if (loadedMap[SceneCounter]->GetString() != data.child("currentMap").attribute("name").as_string())
+	if (data.child("switchScene").attribute("value").as_bool() != switchMap)
 	{
-		SwitchMap();
-	}*/
+		switchTheMaps(switchMap);
+	}
 	return true;
 }
 
 // Save Game State
 bool j1Scene::Save(pugi::xml_node& data) const
 {
-	pugi::xml_node sceneMap = data.append_child("currentMap");
+	pugi::xml_node switchScene = data.append_child("switchScene");
 
-	/*sceneMap.append_attribute("name") = loadedMap[SceneCounter]->GetString();*/
+	switchScene.append_attribute("value") = switchMap;
+
+	
 
 	return true;
 }
@@ -115,20 +117,7 @@ bool j1Scene::Update(float dt)
 	
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 
-		if (switchMap == false) {
-			App->collision->CleanUp();
-			App->map->CreateColliders(App->map->data2);
-			switchMap = true;
-		}
-
-		else {
-
-		App->collision->CleanUp();
-		App->map->CreateColliders(App->map->data);
-		switchMap = false;
-
-		}
-
+		switchTheMaps(switchMap);
 	}
 
 
@@ -191,6 +180,24 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void j1Scene::switchTheMaps(bool switcher)
+{
+	switchMap = switcher;
+	if (switchMap == false) {
+		App->collision->CleanUp();
+		App->map->CreateColliders(App->map->data2);
+		switchMap = true;
+	}
+
+	else {
+
+		App->collision->CleanUp();
+		App->map->CreateColliders(App->map->data);
+		switchMap = false;
+
+	}
 }
 
 

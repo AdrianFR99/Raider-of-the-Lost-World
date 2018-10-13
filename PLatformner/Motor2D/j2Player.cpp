@@ -30,29 +30,29 @@ bool j2Player::Awake(pugi::xml_node& config)
 	if (config != NULL)
 	{
 		//Player Position
-		player.playerPos.x = config.child("playerPos").attribute("x").as_int();
-		player.playerPos.y = config.child("playerPos").attribute("y").as_int();
+		player_Init.playerPos.x = config.child("playerPos").attribute("x").as_int();
+		player_Init.playerPos.y = config.child("playerPos").attribute("y").as_int();
 		//Player SDL_Rect
-		player.playerRect.w = config.child("playerRect").attribute("width").as_int();
-		player.playerRect.h = config.child("playerRect").attribute("height").as_int();
-		player.playerRect.x = player.playerPos.x;
-		player.playerRect.y = player.playerPos.y;
+		player_Init.playerRect.w = config.child("playerRect").attribute("width").as_int();
+		player_Init.playerRect.h = config.child("playerRect").attribute("height").as_int();
+		player_Init.playerRect.x = player_Init.playerPos.x;
+		player_Init.playerRect.y = player_Init.playerPos.y;
 		//Player Speeds
-		player.x_speed = config.child("x_speed").attribute("value").as_int();
-		player.y_speed = config.child("y_speed").attribute("value").as_int();
+		player_Init.x_speed = config.child("x_speed").attribute("value").as_int();
+		player_Init.y_speed = config.child("y_speed").attribute("value").as_int();
 
-		player.actual_x_speed = config.child("actual_x_speed").attribute("value").as_int();
-		player.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
-		player.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
+		player_Init.actual_x_speed = config.child("actual_x_speed").attribute("value").as_int();
+		player_Init.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
+		player_Init.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
 
 		//Player collider Control
-		player.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
-		player.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
-		player.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
-		player.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
+		player_Init.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
+		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
+		player_Init.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
+		player_Init.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
 
 		//Player landed
-		player.landed = config.child("landed").attribute("value").as_bool();
+		player_Init.landed = config.child("landed").attribute("value").as_bool();
 
 		
 	}
@@ -72,6 +72,10 @@ bool j2Player::Load(pugi::xml_node& data)
 
 	player.landed = data.child("landed").attribute("value").as_bool();
 
+	player.y_speed = data.child("speeds").attribute("y_speed").as_int();
+
+
+
 	return true;
 }
 
@@ -86,6 +90,9 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave = data.append_child("landed");
 	playerSave.append_attribute("value") = player.landed;
 
+	playerSave = data.append_child("speeds");
+	playerSave.append_attribute("y_speed") = player.y_speed;
+
 	return true;
 }
 
@@ -94,7 +101,24 @@ bool j2Player::Start()
 {
 	LOG("Player Start");
 	
+	//Load all data from player_Init into the player we will be using
+	//Player Position
+	player.playerPos = player_Init.playerPos;
+	//Player SDL_Rect
+	player.playerRect = player_Init.playerRect;
+	//Player Speeds
+	player.x_speed = player_Init.x_speed;
+	player.y_speed = player_Init.y_speed;
 
+	player.actual_x_speed = player_Init.actual_x_speed;
+	player.actual_y_speed = player_Init.actual_y_speed;
+	player.stopped_speed = player_Init.stopped_speed;
+
+	//Player collider Control
+	player.colliding = player_Init.colliding;
+	
+	//Player landed
+	player.landed = player_Init.landed;
 	/*lateralTest.h = 48;
 	lateralTest.w = 64;
 	lateralTest.x = player.playerPos.x + 128;
@@ -131,9 +155,19 @@ bool j2Player::Start()
 
 bool j2Player::CleanUp()
 {
-	LOG("Player CleanUp");
+	LOG("Freeing Player");
 
-	player.playerHitbox = nullptr;
+	if (player.playerHitbox != nullptr)
+	{
+		player.playerHitbox->to_delete;
+		player.playerHitbox = nullptr;
+	}
+
+	if (player.animations.playTex != nullptr)
+	{
+		delete player.animations.playTex;
+		player.animations.playTex = nullptr;
+	}
 
 	return true;
 }
@@ -153,6 +187,11 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	if (player.playerHitbox->type != COLLIDER_PLAYER)
+	{
+		player.playerRect = player_Init.playerRect;
+		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+	}
 	//This variable STORES the distance of the player lowest point of the lowest pixel to the ground
 	//d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
 
@@ -272,6 +311,11 @@ bool j2Player::PostUpdate()
 	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);*/
 	
 	return true;
+}
+
+void j2Player::changedMaps()
+{
+
 }
 
 
