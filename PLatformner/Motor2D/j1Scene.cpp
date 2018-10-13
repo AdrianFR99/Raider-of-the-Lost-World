@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include"j2Collision.h"
 #include "j1Scene.h"
+#include "j2Collision.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -111,8 +112,8 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 2 * App->win->GetScale();
 
+	
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-
 
 		if (switchMap == false) {
 			App->collision->CleanUp();
@@ -127,6 +128,7 @@ bool j1Scene::Update(float dt)
 		switchMap = false;
 
 		}
+
 	}
 
 

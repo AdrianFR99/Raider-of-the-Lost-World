@@ -604,6 +604,7 @@ int Properties::GetProperty(const char* value, int def_value) const
 }
 
 
+
 bool j1Map::LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjAux) {
 
 	bool ret = true;
@@ -629,8 +630,10 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjAux) {
 }
 
 
+
 bool j1Map::CreateColliders(MapData&DataAux) {
 
+	
 
 	MapLayer* layer2;
 

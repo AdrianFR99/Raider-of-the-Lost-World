@@ -40,6 +40,7 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	bool switchMap = false;
+	bool DeleteColliders = false;
 
 private:
 
