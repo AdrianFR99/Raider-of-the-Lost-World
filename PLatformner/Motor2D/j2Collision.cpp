@@ -123,11 +123,11 @@ bool j2Collision::PreUpdate()
 
 				if (c1->PreCheckCollision(App->player->player) == true)
 				{
-					if (matrix[c1->type][c2->type] && c1->callback)
-						c1->callback->OnPreCollision(c1->ret_d_to_ground(App->player->player));
+					//if (matrix[c1->type][c2->type] && c1->callback)
+					//	//c1->callback->OnPreCollision(c1,c2);
 
-					if (matrix[c2->type][c1->type] && c2->callback)
-						c2->callback->OnPreCollision(c2->ret_d_to_ground(App->player->player));
+					//if (matrix[c2->type][c1->type] && c2->callback)
+					//	//c2->callback->OnPreCollision(c2,c1);
 
 				}
 			}
