@@ -46,10 +46,10 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
+		camera.x = config.child("cameraInit").attribute("x").as_int();
+		camera.y = config.child("cameraInit").attribute("y").as_int();
 	}
-
+	cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
 	scale = App->win->GetScale();
 
 	return ret;
@@ -274,15 +274,14 @@ void j1Render::followPlayer(const Player &p)
 		App->render->camera.x -= p.x_speed;
 	}
 
-	if (p.playerPos.y - (camera.y / scale) <= 1500 / scale )
+	if (p.playerPos.y < (camera.y + camera.h/3 ) / scale)
 	{
-		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-		camera.y += p.y_speed;
-		/*camera.y += 3;
-		if (p.landed == true)
-		{
-			camera.y -= 3;
-		}*/
+		camera.y -= cameraDisplacement * scale;
+	}
+
+	if (p.playerPos.y > (camera.y + camera.h / 3) / scale)
+	{
+		camera.y += cameraDisplacement * scale;
 	}
 
 	//If first map

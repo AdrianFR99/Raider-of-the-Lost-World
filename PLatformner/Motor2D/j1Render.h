@@ -55,6 +55,7 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	uint scale;
+	int cameraDisplacement;
 };
 
 #endif // __j1RENDER_H__

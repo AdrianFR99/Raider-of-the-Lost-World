@@ -8,6 +8,8 @@
 	
   <renderer>
     <vsync value="true"/>
+    <cameraInit x="0" y="0"/>
+    <cameraDisplacement value="3" />
   </renderer>
 
   <window>
@@ -26,6 +28,7 @@
     <Map file="map1_tiledV0_17.tmx"/>
     <Map file="Map2.tmx"/>
   </scene>
+ 
   <map>
     <folder>maps/</folder>
   </map>
