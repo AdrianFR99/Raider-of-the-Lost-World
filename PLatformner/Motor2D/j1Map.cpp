@@ -285,7 +285,7 @@ bool j1Map::Load(const char* file_name,MapData& DataAux)
 			DataAux.imagelayers.add(ImagLay);
 
 	}
-	//Load ImageLayer Info--------------------------------------------
+	//Load ObjectGroup Info--------------------------------------------
 	pugi::xml_node Object_Game;
 	for (Object_Game = map_file.child("map").child("objectgroup"); Object_Game && ret; Object_Game = Object_Game.next_sibling("Objectgroup"))
 	{
