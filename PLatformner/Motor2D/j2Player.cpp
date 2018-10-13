@@ -47,6 +47,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
 		player_Init.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
 		player_Init.y_max_speed = config.child("y_max_speed").attribute("value").as_int();
+		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
+		player_Init.doubleJump_counter = config.child("doubleJump_counter").attribute("value").as_int();
+		player_Init.doubleJump_delay = config.child("doubleJump_delay").attribute("value").as_int();
+
 		//Player collider Control
 		player_Init.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
 		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
@@ -117,7 +121,9 @@ bool j2Player::Start()
 	player.actual_x_speed = player_Init.actual_x_speed;
 	player.actual_y_speed = player_Init.actual_y_speed;
 	player.stopped_speed = player_Init.stopped_speed;
-
+	player.doubleJump = player_Init.doubleJump;
+	player.doubleJump_counter = player_Init.doubleJump_counter;
+	player.doubleJump_delay = player_Init.doubleJump_delay;
 	//Player collider Control
 	player.colliding = player_Init.colliding;
 	
@@ -240,7 +246,8 @@ bool j2Player::Update(float dt)
 
 
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.landed == true)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+		&& player.landed == true )
 	{
 		player.landed = false;
 		player.y_speed = player_Init.y_speed;
@@ -248,6 +255,12 @@ bool j2Player::Update(float dt)
 
 	if (player.landed == false)
 	{
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+			&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay )
+		{
+			player.doubleJump = false;
+			player.y_speed = player_Init.y_speed;
+		}
 		player.playerPos.y += player.y_speed;
 		player.y_speed += 1;
 		
@@ -255,10 +268,13 @@ bool j2Player::Update(float dt)
 		{
 			player.y_speed = player.y_max_speed;
 		}
+		player.doubleJump_counter += 1;
 	}
 	else
 	{
 		player.gravity_speed = 0.0f;
+		player.doubleJump = true;
+		player.doubleJump_counter = player_Init.doubleJump_counter;
 	}
 	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{

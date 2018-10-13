@@ -46,7 +46,9 @@
     <stopped_speed value="0" />
     <d_to_ground value="0" />
     <landed value="true" />
-
+    <doubleJump value="true"/>
+    <doubleJump_delay value="15"/>
+    <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>

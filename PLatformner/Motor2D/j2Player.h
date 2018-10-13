@@ -36,8 +36,12 @@ struct Player
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
 	int d_to_ground;
+	int doubleJump_delay;
+	int doubleJump_counter;
+	bool doubleJump;
 	bool landed;
 	bool nextFrameLanded;
+	
 	Collider* playerHitbox;
 	collisionControl colliding;
 	animations animations;
