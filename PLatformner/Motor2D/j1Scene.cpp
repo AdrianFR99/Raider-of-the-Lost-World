@@ -49,9 +49,9 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
-	if (data.child("switchScene").attribute("value").as_bool() != switchMap)
+	if (data.child("switchScene").attribute("value").as_bool() != CurrentMap2)
 	{
-		switchTheMaps(switchMap);
+		switchTheMaps();
 	}
 	return true;
 }
@@ -61,7 +61,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node switchScene = data.append_child("switchScene");
 
-	switchScene.append_attribute("value") = switchMap;
+	switchScene.append_attribute("value") = CurrentMap2;
 
 	
 
@@ -71,6 +71,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 // Called before the first frame
 bool j1Scene::Start()
 {
+	
+	LOG("Loading Maps");
+
 	for (int i = 0; i < loadedMap.count();i++) {
 		if (i == 1) {
 			App->map->Load(loadedMap[i]->GetString(), App->map->data2);
@@ -81,10 +84,15 @@ bool j1Scene::Start()
 		
 	}
 	
-	switchMap = false;
-	
+	//Selecting which Colliders create 
+
+	if(CurrentMap2 == false)
 	App->map->CreateColliders(App->map->data);
+
+	else
+		App->map->CreateColliders(App->map->data2);
 	
+
 	return true;
 }
 
@@ -120,17 +128,23 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 
-		switchTheMaps(switchMap);
+		switchTheMaps();
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		
+		//Player Goes To inital position of the current stage map
+		
+		if(CurrentMap2 == false)
+		App->render->camera.x= App->map->SetPlayerToInitial(App->map->data) ;
 
-		App->render->camera.x= App->map->SetPlayerToInitial(App->map->data);
+		else
+			App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 	}
  
 
-	if (switchMap==false) {
+	if (CurrentMap2==false) {	  	      //Draw Map 1
 		App->map->Draw(App->map->data);
 
 		int x, y;
@@ -148,7 +162,7 @@ bool j1Scene::Update(float dt)
 	}
 
 	else {
-		App->map->Draw(App->map->data2);
+		App->map->Draw(App->map->data2);   //Draw Map 2
 
 		int x, y;
 		App->input->GetMousePosition(x, y);
@@ -189,24 +203,35 @@ bool j1Scene::CleanUp()
 	return true;
 }
 
-void j1Scene::switchTheMaps(bool switcher)
+void j1Scene::switchTheMaps()
 {
-	switchMap = switcher;
-	if (switchMap == false) {
+	
+	if (CurrentMap2 == false) {
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data2);
-		switchMap = true;
+		CurrentMap2 = true;
 	}
 
 	else {
 
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data);
-		switchMap = false;
+		CurrentMap2 = false;
 
 	}
 }
 
 
+MapData j1Scene::GetCurrentStage() {
+
+
+	if (CurrentMap2)
+		return App->map->data2;
+
+	else
+		return App->map->data;
+
+
+}
 
 

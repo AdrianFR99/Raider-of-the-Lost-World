@@ -5,6 +5,7 @@
 
 struct SDL_Texture;
 
+
 class j1Scene : public j1Module
 {
 public:
@@ -39,13 +40,13 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	bool switchMap;
+	bool CurrentMap2=false;  // Use as Indicator of Which maps is the current one false=Map1 and true=Map2
 	bool DeleteColliders = false;
 
 private:
 
 	p2List<p2SString*> loadedMap;
-	void switchTheMaps(bool switcher);
+	void switchTheMaps();
 	
 };
 
