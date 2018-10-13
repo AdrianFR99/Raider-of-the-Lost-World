@@ -46,9 +46,13 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;//-(68*16);
+		camera.x = config.child("cameraInit").attribute("x").as_int();
+		camera.y = config.child("cameraInit").attribute("y").as_int();
 	}
+	cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
+	cameraOffset_right = config.child("cameraOffset").attribute("right_x").as_int();
+	cameraOffset_left = config.child("cameraOffset").attribute("left_x").as_int();
+	scale = App->win->GetScale();
 
 	return ret;
 }
@@ -59,6 +63,8 @@ bool j1Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
+	//App->render->camera.y = player.playerRect.y * App->win->GetScale() - App->render->camera.h / 2;
 	return true;
 }
 
@@ -131,8 +137,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		uint scale = App->win->GetScale();
 
 		SDL_Rect rect;
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)-(camera.x * speed) + x * scale;
+		rect.y = (int)(-camera.y * speed) + y * scale;
 
 		if (section != NULL)
 		{
@@ -179,8 +185,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	if(use_camera)
 	{
 
-		rec.x = (int)(camera.x + rect.x *scale); // Changed this scale thing 
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(-camera.x + rect.x *scale); // Changed this scale thing 
+		rec.y = (int)(-camera.y + rect.y * scale);
 
 		rec.w *= scale;
 		rec.h *= scale;
@@ -255,26 +261,40 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 //Follow the player around
 void j1Render::followPlayer(const Player &p)
 {
-	///*camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
-	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;*/
+	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
+	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	//if ((p.playerPos.x - App->render->camera.x) >= 100 * App->win->GetScale())
-	//{
-	//	//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-	//	//App->render->camera.x += p.x_speed ;
-	//	camera.x += p.x_speed;
-	//}
+	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale)
+	{
+		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
+		camera.x += p.x_speed;
+	}
 
-	//if (p.playerPos.x - App->render->camera.x <= 200)
-	//{
-	//	//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-	//	App->render->camera.x -= p.x_speed;
-	//}
+	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale)
+	{
+		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
+		App->render->camera.x -= p.x_speed;
+	}
 
-	//if (p.playerPos.y - App->render->camera.y <= camera.h / 2 -40)
-	//{
-	//	//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-	//	App->render->camera.y += p.y_speed;
-	//}
+	if (p.playerPos.y < (camera.y + camera.h/3 ) / scale)
+	{
+		camera.y -= cameraDisplacement * scale;
+	}
+
+	if (p.playerPos.y > (camera.y + camera.h / 3) / scale)
+	{
+		camera.y += cameraDisplacement * scale;
+	}
+
+	//If first map
+	if (camera.x < 0)
+	{
+		camera.x = 0;
+	}
+
+	if (camera.y > 1346 / scale)
+	{
+		camera.y = 1346 / scale;
+	}
 
 }
