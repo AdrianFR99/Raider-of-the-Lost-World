@@ -42,11 +42,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Speeds
 		player_Init.x_speed = config.child("x_speed").attribute("value").as_int();
 		player_Init.y_speed = config.child("y_speed").attribute("value").as_int();
-
+		player_Init.gravity_speed = config.child("gravity_speed").attribute("value").as_int();
 		player_Init.actual_x_speed = config.child("actual_x_speed").attribute("value").as_int();
 		player_Init.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
 		player_Init.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
-
+		player_Init.y_max_speed = config.child("y_max_speed").attribute("value").as_int();
 		//Player collider Control
 		player_Init.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
 		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
@@ -111,6 +111,8 @@ bool j2Player::Start()
 	//Player Speeds
 	player.x_speed = player_Init.x_speed;
 	player.y_speed = player_Init.actual_y_speed;
+	player.y_max_speed = player_Init.y_max_speed;
+	player.gravity_speed = player_Init.gravity_speed;
 
 	player.actual_x_speed = player_Init.actual_x_speed;
 	player.actual_y_speed = player_Init.actual_y_speed;
@@ -248,6 +250,15 @@ bool j2Player::Update(float dt)
 	{
 		player.playerPos.y += player.y_speed;
 		player.y_speed += 1;
+		
+		if (player.y_speed > player.y_max_speed)
+		{
+			player.y_speed = player.y_max_speed;
+		}
+	}
+	else
+	{
+		player.gravity_speed = 0.0f;
 	}
 	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
@@ -354,10 +365,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			player.landed = true;
 			player.colliding.wallDown = true;
 		}
-		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h
-			 )
+		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h)
 		{
-			player.y_speed = 0;
+			player.y_speed = -1;
 			player.landed = false;
 			//player.colliding.wallDown;
 			player.colliding.wallTop = true;

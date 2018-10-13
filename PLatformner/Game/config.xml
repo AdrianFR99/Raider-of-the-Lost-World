@@ -37,8 +37,10 @@
   <player>
     <playerRect  x="64" y="576" width="16" height="32" />
     <playerPos  x="64" y="576" />
+    <gravity_speed value="0" />
+    <y_max_speed value="4"/>
     <x_speed value="2" />
-    <y_speed value="-10" />
+    <y_speed value="-12" />
     <actual_x_speed value="0" />
     <actual_y_speed  value="0" />
     <stopped_speed value="0" />

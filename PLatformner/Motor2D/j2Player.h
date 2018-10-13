@@ -27,8 +27,11 @@ struct Player
 		Animation hurt;
 	};
 	
+
 	SDL_Rect playerRect;
 	iPoint playerPos;
+	float gravity_speed;
+	int y_max_speed;
 	int x_speed, y_speed;
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
