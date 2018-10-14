@@ -178,13 +178,12 @@ bool j2Player::Start()
 	if(player.playerHitbox==nullptr)
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 	
-
-
-
 	
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
 
-	player.animations.currentAnimation = &player.animations.idle;
+	
+	player.idle_Bool_Right =true;
+
 
 	return true;
 }
@@ -223,6 +222,9 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+
+	
+
 	if (player.dead == true)
 	{
 		if (player.deadCounter < player.deadDelay)
@@ -256,11 +258,17 @@ bool j2Player::Update(float dt)
 		//Control X speed
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
 		{
+
+			player.run_Bool_Right = true;
 			player.playerPos.x += player.x_speed;
+	
+
+			
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
 		{
+			player.run_Bool_Left = true;
 			player.playerPos.x -= player.x_speed;
 		}
 
@@ -297,6 +305,7 @@ bool j2Player::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
 				&& player.landed == true)
 			{
+				player.jump_Bool = true;
 				player.landed = false;
 				player.y_speed = player_Init.y_speed;
 			}
@@ -308,6 +317,7 @@ bool j2Player::Update(float dt)
 					// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
 					//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
 				{
+					player.Doublejump_Bool = true;
 					player.doubleJump = false;
 					player.y_speed = player_Init.y_speed;
 				}
@@ -354,10 +364,84 @@ bool j2Player::Update(float dt)
 
 
 
-	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
 
-	App->render->Blit(playTex,player.playerPos.x,player.playerPos.y,&AnimationRect);
-	//App->render->Blit(Textures, (int)data.xpos, (int)data.ypos, &CurrentAnimationRect, 1, 90.0, SDL_FLIP_HORIZONTAL, 1, 1, 1.0);
+
+
+//AnimationsConditions
+
+	//idle
+	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
+
+		player.animations.currentAnimation = &player.animations.idle;
+		
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+
+	}
+	//run right
+	if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
+	{
+
+		player.animations.currentAnimation = &player.animations.run;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+
+
+	}
+
+	//run left
+	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
+	
+		player.animations.currentAnimation = &player.animations.run;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
+	
+	}
+	//Jump &Run to right and Jump
+	if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)|| 
+		(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)) 
+	
+	{
+
+		player.animations.currentAnimation = &player.animations.jump;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
+
+	}
+	//Run to left and Jump
+	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
+
+	{
+
+		player.animations.currentAnimation = &player.animations.jump;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+
+	}
+
+	//double Jump
+	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && player.Doublejump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
+
+	{
+
+		player.animations.currentAnimation = &player.animations.jumpDouble;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
+
+	}
+
+
 
 	return true;
 	
@@ -385,6 +469,15 @@ bool j2Player::PostUpdate()
 	player.playerGodModeHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
 	
+	player.run_Bool_Right = false;
+	player.run_Bool_Left = false;
+
+	if(player.landed)
+	player.jump_Bool = false;
+
+	if (player.landed)
+		player.Doublejump_Bool = false;
+
 	return true;
 }
 

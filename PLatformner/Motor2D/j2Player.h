@@ -54,6 +54,19 @@ struct Player
 
 	bool godMode;
 
+
+	//Animations bools
+	bool idle_Bool_Left=false;
+	bool idle_Bool_Right = false;
+	bool run_Bool_Left = false;
+	bool run_Bool_Right = false;
+	bool slide_Bool_Left = false;
+	bool slide_Bool_Right = false;
+	bool jump_Bool = false;
+	bool Doublejump_Bool = false;
+	bool die_Bool = false;
+	
+
 	Collider* playerHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
