@@ -48,16 +48,18 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.h = App->win->screen_surface->h;
 		camera.x = config.child("cameraInit").attribute("x").as_int();
 		camera.y = config.child("cameraInit").attribute("y").as_int();
+
+		cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
+		cameraOffset_right = config.child("cameraOffset").attribute("right_x").as_int();
+		cameraOffset_left = config.child("cameraOffset").attribute("left_x").as_int();
+
+		map1_cameraLimit_y = config.child("cameraLimits_map1").attribute("y_max").as_int();
+		map2_cameraLimit_y = config.child("cameraLimits_map2").attribute("y_max").as_int();
+		map2_cameraLimit_x = config.child("cameraLimits_map2").attribute("x_max").as_int();
+		scale = App->win->GetScale();
+
 	}
-	cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
-	cameraOffset_right = config.child("cameraOffset").attribute("right_x").as_int();
-	cameraOffset_left = config.child("cameraOffset").attribute("left_x").as_int();
-
-	map1_cameraLimit_y = config.child("cameraLimits_map1").attribute("y_max").as_int();
-	map2_cameraLimit_y = config.child("cameraLimits_map2").attribute("y_max").as_int();
-	map2_cameraLimit_x = config.child("cameraLimits_map2").attribute("x_max").as_int();
-	scale = App->win->GetScale();
-
+	
 	return ret;
 }
 

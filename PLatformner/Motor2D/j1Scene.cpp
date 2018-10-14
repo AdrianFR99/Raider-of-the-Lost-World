@@ -241,13 +241,13 @@ bool j1Scene::Update(float dt)
 
 	}
 
-	/*if (App->player->player.dead ) {
+	//if (App->player->player.dead ) {
 
-		App->map->data2.imagelayers.At(0)->data->SpeedBack = 0.0;
-		App->map->data2.imagelayers.At(3)->data->SpeedBack = 0.0;
-		App->map->data2.imagelayers.At(2)->data->SpeedBack = 0.0;
+	//	App->map->data2.imagelayers.At(0)->data->SpeedBack = 0.0;
+	//	App->map->data2.imagelayers.At(3)->data->SpeedBack = 0.0;
+	//	App->map->data2.imagelayers.At(2)->data->SpeedBack = 0.0;
 
-	}*/
+	//}
 
 	
 
@@ -283,15 +283,15 @@ void j1Scene::switchTheMaps()
 	if (CurrentMap2 == false) {
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data2);
-		App->map->SetPlayerToInitial(App->map->data2); 
+		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
 	}
-
+	
 	else {
 
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data);
-		App->map->SetPlayerToInitial(App->map->data);
+		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
 
 	}
