@@ -6,15 +6,15 @@
 	<audio />
 	<map />
 	<scene>
-		<switchScene value="false" />
+		<switchScene value="true" />
 	</scene>
 	<player>
-		<playerPos x="464" y="567" />
+		<playerPos x="4082" y="561" />
 		<landed value="true" />
-		<speeds y_speed="11" />
+		<speeds y_speed="4" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="378" y="673" />
+		<camera x="7566" y="870" />
 	</renderer>
 </game_state>

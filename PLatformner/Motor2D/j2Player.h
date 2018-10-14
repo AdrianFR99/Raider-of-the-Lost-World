@@ -30,13 +30,23 @@ struct Player
 	
 	SDL_Rect playerRect;
 	iPoint playerPos;
-
+	float gravity_speed;
+	int y_max_speed;
 	int x_speed, y_speed;
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
 	int d_to_ground;
+	int doubleJump_delay;
+	int doubleJump_counter;
+	bool doubleJump;
 	bool landed;
 	bool nextFrameLanded;
+
+	bool dead;
+	int deadDelay;
+	int deadCounter;
+	int maximumDeadY_map1;
+	int maximumDeadY_map2;
 
 	Collider* playerHitbox;
 	collisionControl colliding;
@@ -80,7 +90,7 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
-	void changedMaps();
+	
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
@@ -94,16 +104,6 @@ public: //Variables
 	Player player_Init;
 	
 
-
-	//Debug purpose RECTS
-	SDL_Rect lateralTest;
-	SDL_Rect verticalTest;
-	SDL_Rect lateralTest_2;
-	
-	Collider* verticalTestHitbox;
-	Collider* lateralTestHitbox;
-
-	Collider* lateralTestHitbox_2;
 
 private:
 	p2SString	folder;
