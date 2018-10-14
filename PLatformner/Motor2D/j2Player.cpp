@@ -55,7 +55,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 	if (config != NULL)
 	{
-
+		//We load everything player_Init so Player will always have a reference for the initial conditions
 		//Player Position
 		player_Init.playerPos.x = config.child("playerPos").attribute("x").as_int();
 		player_Init.playerPos.y = config.child("playerPos").attribute("y").as_int();
@@ -83,6 +83,9 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
 		player_Init.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
 		player_Init.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
+		//PlayerCollision Adjusters
+		player_Init.colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
+		player_Init.colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
 
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();
@@ -97,7 +100,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Godmode
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
-
+		
 	
 	}
 	else
@@ -118,6 +121,8 @@ bool j2Player::Load(pugi::xml_node& data)
 
 	player.y_speed = data.child("speeds").attribute("y_speed").as_int();
 
+	player.dead = data.child("dead").attribute("value").as_bool();
+	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
 
 
 	return true;
@@ -136,6 +141,11 @@ bool j2Player::Save(pugi::xml_node& data) const
 
 	playerSave = data.append_child("speeds");
 	playerSave.append_attribute("y_speed") = player.y_speed;
+
+	playerSave = data.append_child("dead");
+	playerSave.append_attribute("value") = player.dead;
+	playerSave.append_attribute("deadCounter") = player.deadCounter;
+
 
 	return true;
 }
@@ -296,6 +306,7 @@ bool j2Player::Update(float dt)
 
 		if (player.godMode == true)
 		{
+			//If GodMode Activated, move around FREELY (X vlues aren't affected)
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 				player.playerPos.y -= player.y_max_speed;
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -328,7 +339,7 @@ bool j2Player::Update(float dt)
 					player.y_speed = player_Init.y_speed;
 				}
 				player.playerPos.y += player.y_speed;
-				player.y_speed += 1;
+				player.y_speed += player.gravity_speed;
 
 				if (player.y_speed > player.y_max_speed)
 				{
@@ -338,7 +349,6 @@ bool j2Player::Update(float dt)
 			}
 			else
 			{
-				player.gravity_speed = 0.0f;
 				player.doubleJump = true;
 				player.doubleJump_counter = player_Init.doubleJump_counter;
 			}
@@ -361,10 +371,7 @@ bool j2Player::Update(float dt)
 		}
 	}
 
-	//Camera Following player logic
-	App->render->followPlayer(player);
-	//Camera Following player logic
-
+	//Camera Following player
 	App->render->followPlayer(player);
 
 	//We pass them onto the player Rect
@@ -379,7 +386,7 @@ bool j2Player::Update(float dt)
 //AnimationsConditions
 
 	//idle
-	if (player.idle_Bool_Right == true) {
+	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
 
 		player.animations.currentAnimation = &player.animations.idle;
 		
@@ -389,7 +396,7 @@ bool j2Player::Update(float dt)
 
 	}
 	//run right
-	if (player.run_Bool_Right == true)
+	if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
 	{
 
 		player.animations.currentAnimation = &player.animations.run;
@@ -402,7 +409,7 @@ bool j2Player::Update(float dt)
 	}
 
 	//run left
-	if (player.run_Bool_Left == true) {
+	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
 	
 		player.animations.currentAnimation = &player.animations.run;
 
@@ -438,7 +445,7 @@ bool j2Player::Update(float dt)
 	}
 
 	//double Jump
-	if (player.Doublejump_Bool == true)
+	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && player.Doublejump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
 
 	{
 
@@ -460,9 +467,6 @@ bool j2Player::Update(float dt)
 // Called each loop iteration
 bool j2Player::PostUpdate()
 {
-	
-
-
 	// We reset the colliders collisions
 	player.colliding.wallFront = false;
 	player.colliding.wallBack = false;
@@ -496,24 +500,27 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		|| c2->type == COLLIDER_PLATFORM
 		|| c2->type == COLLIDER_CLIMBWALL)
 	{
+		//Conditions to know if the collider that we collided with is in Front of the player
 		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 			&& c2->rect.x - player.playerHitbox->rect.x > 0
-			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 		{
 			player.colliding.wallFront = true;
-			/*player.playerHitbox->rect.x -= player.playerHitbox->rect.x + player.playerHitbox->rect.w - c2->rect.x;
-			player.playerPos.x = player.playerHitbox->rect.x;*/
+			//Before we do anything else, don't allow the collider to enter the tile
+			player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
 		}
+		//Conditions to know if the collider that we collided with is Behind of the player
 		else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
 			&& player.playerHitbox->rect.x - c2->rect.x > 0
-			&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 		{
 			player.colliding.wallBack = true;
-			/*player.playerHitbox->rect.x += c2->rect.x + c2->rect.w - player.playerHitbox->rect.x;
-			player.playerPos.x = player.playerHitbox->rect.x;*/
+			//Before we do anything else, don't allow the collider to enter the tile
+			player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
+			
 			player.playerRect.y = c2->rect.y - player.playerRect.h;
 		}
-
+		//Conditions to know if the collider that we collided with is Under the player
 		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
 			&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
 			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
@@ -521,15 +528,17 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			player.landed = true;
 			player.colliding.wallDown = true;
 		}
-		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h)
+		//Conditions to know if the collider that we collided with is over the player
+		//Also, if the collider is a PLATFORM, let us go through it
+		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h && c2->type != COLLIDER_PLATFORM)
 		{
-			player.y_speed = -1;
+			player.y_speed = -1; // change the speed to inmediately falling (bouncing off the Top)
 			player.landed = false;
 			player.colliding.wallTop = true;
 		}
 
 	}
-
+	//If the collider is a killing obstacle DIE
 	if (c2->type == COLLIDER_TRAP)
 	{
 		player.dead = true;
