@@ -21,7 +21,7 @@
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
-    <fullscreen_window value="false"/>
+    <fullscreen_window value="true"/>
   </window>
 
   <file_system>
@@ -60,8 +60,10 @@
     <doubleJump_delay value="13"/>
     <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
+
     <!--Player Death-->>
     <dead boolDead="false" deadDelay="20" deadCounter="0" />
+
     <maximumDead_Y map1="800" map2="1200"/>
     <!--God Mode-->>
     <godMode value="false"/>

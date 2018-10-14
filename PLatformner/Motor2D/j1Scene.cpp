@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 
 
 
-	if (CurrentMap2==false) {	  	      //Draw Map 1
+	if (CurrentMap2 == false) {	  	      //Draw Map 1
 		App->map->Draw(App->map->data);
 
 		int x, y;
@@ -166,13 +166,39 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x, App->render->camera.y);
 
 		App->win->SetTitle(title.GetString());*/
-		
-	if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data)) {
+
+		if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data)) {
 			switchTheMaps();
 		}
 
-		
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
+		{
+
+			//moving the offsetx of parallax map1
+			App->map->data.imagelayers.At(1)->data->SpeedBack -= App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed", 0.5); 
+			App->map->data.imagelayers.At(0)->data->SpeedBack -= App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
+		}
+
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
+		{
+
+			//moving the offsetx of parallax map1
+			App->map->data.imagelayers.At(1)->data->SpeedBack += App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed",0.5);
+			App->map->data.imagelayers.At(0)->data->SpeedBack += App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
+		}
+
+		/*if (App->player->player.dead) {
+
+			App->map->data.imagelayers.At(0)->data->SpeedBack = 0.0;
+			App->map->data.imagelayers.At(3)->data->SpeedBack = 0.0;
+			App->map->data.imagelayers.At(2)->data->SpeedBack = 0.0;
+
+		}*/
+
 	}
+
 
 	else {
 		App->map->Draw(App->map->data2);   //Draw Map 2
@@ -192,8 +218,36 @@ bool j1Scene::Update(float dt)
 			if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data2)) {
 				switchTheMaps();
 			}
+
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
+			{
+
+				//moving the offsetx of parallax map2
+				App->map->data2.imagelayers.At(0)->data->SpeedBack -=App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed",0.0);
+				App->map->data2.imagelayers.At(3)->data->SpeedBack -= App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
+				App->map->data2.imagelayers.At(2)->data->SpeedBack -= App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
+
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->player->player.colliding.wallBack == false)
+			{
+
+				//moving the offsetx of parallax map2
+				App->map->data2.imagelayers.At(0)->data->SpeedBack += App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.0);
+				App->map->data2.imagelayers.At(3)->data->SpeedBack += App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
+				App->map->data2.imagelayers.At(2)->data->SpeedBack += App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
+
+			}
+
 	}
 
+	/*if (App->player->player.dead ) {
+
+		App->map->data2.imagelayers.At(0)->data->SpeedBack = 0.0;
+		App->map->data2.imagelayers.At(3)->data->SpeedBack = 0.0;
+		App->map->data2.imagelayers.At(2)->data->SpeedBack = 0.0;
+
+	}*/
 
 	
 

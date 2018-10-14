@@ -51,7 +51,7 @@ void j1Map::Draw(MapData&DataAux)
 
 
 			App->render->Blit(DataAux.imagelayers[x]->texture,
-				DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY,
+				Image->SpeedBack, DataAux.imagelayers[x]->OffsetY,
 				&DataAux.imagelayers[x]->GetImageLayerRect());
 		
 	}
