@@ -27,6 +27,7 @@ struct Player
 		Animation jumpDouble;
 		Animation die;
 		Animation slide;
+		Animation GodMode;
 	};
 	
 	SDL_Rect playerRect;
@@ -60,12 +61,9 @@ struct Player
 	bool idle_Bool_Right = false;
 	bool run_Bool_Left = false;
 	bool run_Bool_Right = false;
-	bool slide_Bool_Left = false;
-	bool slide_Bool_Right = false;
 	bool jump_Bool = false;
-	bool Doublejump_Bool = false;
 	bool die_Bool = false;
-	
+	bool GodMode_Left = false;
 
 	Collider* playerHitbox;
 	Collider* playerGodModeHitbox;

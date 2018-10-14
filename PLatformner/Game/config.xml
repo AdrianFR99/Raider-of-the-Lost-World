@@ -21,7 +21,7 @@
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
-    <fullscreen_window value="false"/>
+    <fullscreen_window value="true"/>
   </window>
 
   <file_system>
@@ -53,7 +53,7 @@
     <doubleJump_delay value="15"/>
     <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
-    <dead boolDead="false" deadDelay="20" deadCounter="0" />
+    <dead boolDead="false" deadDelay="45" deadCounter="0" />
     <maximumDead_Y map1="800" map2="1200"/>
 
     <godMode value="false"/>

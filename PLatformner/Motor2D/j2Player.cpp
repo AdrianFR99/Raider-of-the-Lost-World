@@ -38,6 +38,9 @@ j2Player::j2Player()
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
 	player.animations.die.LoadPushBack(AnimPushBack);
+	
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("GodMode");//GodMode
+	player.animations.GodMode.LoadPushBack(AnimPushBack);
 }
 
 //DESTRUCTOR
@@ -267,13 +270,9 @@ bool j2Player::Update(float dt)
 
 			player.run_Bool_Right = true;
 			player.playerPos.x += player.x_speed;
-
+			
+			player.GodMode_Left = false;
        
-
-			//moving the offsetx of parallax map2
-			App->map->data2.imagelayers.At(0)->data->SpeedBack -=0;
-			App->map->data2.imagelayers.At(3)->data->SpeedBack -= 0.5f;
-			App->map->data2.imagelayers.At(2)->data->SpeedBack -= 0.25f;
 			
 		}
 
@@ -282,13 +281,7 @@ bool j2Player::Update(float dt)
 			player.run_Bool_Left = true;
 			player.playerPos.x -= player.x_speed;
 
-
-
-
-			//moving the offsetx of parallax map2
-			App->map->data2.imagelayers.At(0)->data->SpeedBack +=0;
-			App->map->data2.imagelayers.At(3)->data->SpeedBack += 0.5f;
-			App->map->data2.imagelayers.At(2)->data->SpeedBack += 0.25f;
+			player.GodMode_Left = true;
 
 
 		}
@@ -299,11 +292,13 @@ bool j2Player::Update(float dt)
 			player.godMode = !player.godMode;
 			if (player.godMode == true)
 			{
+				player.idle_Bool_Right = false;
 				player.playerHitbox->to_delete = true;
 				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
 			}
 			else
 			{
+				player.idle_Bool_Right = true;
 				player.playerGodModeHitbox->to_delete = true;
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 			}
@@ -338,9 +333,11 @@ bool j2Player::Update(float dt)
 					// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
 					//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
 				{
-					player.Doublejump_Bool = true;
+					
 					player.doubleJump = false;
 					player.y_speed = player_Init.y_speed;
+				
+
 				}
 				player.playerPos.y += player.y_speed;
 				player.y_speed += 1;
@@ -394,7 +391,7 @@ bool j2Player::Update(float dt)
 //AnimationsConditions
 
 	//idle
-	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
+	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool  && !player.dead) {
 
 		player.animations.currentAnimation = &player.animations.idle;
 		
@@ -404,7 +401,7 @@ bool j2Player::Update(float dt)
 
 	}
 	//run right
-	if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
+	if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool  && !player.dead && player.landed)
 	{
 
 		player.animations.currentAnimation = &player.animations.run;
@@ -417,7 +414,7 @@ bool j2Player::Update(float dt)
 	}
 
 	//run left
-	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool) {
+	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.dead && player.landed) {
 	
 		player.animations.currentAnimation = &player.animations.run;
 
@@ -427,8 +424,8 @@ bool j2Player::Update(float dt)
 	
 	}
 	//Jump &Run to right and Jump
-	if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)|| 
-		(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)) 
+	if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )||
+		(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool &&  !player.dead ))
 	
 	{
 
@@ -440,7 +437,7 @@ bool j2Player::Update(float dt)
 
 	}
 	//Run to left and Jump
-	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
+	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )
 
 	{
 
@@ -452,20 +449,44 @@ bool j2Player::Update(float dt)
 
 	}
 
-	//double Jump
-	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool && player.Doublejump_Bool && !player.slide_Bool_Right && !player.slide_Bool_Left && !player.die_Bool)
 
-	{
+	if (player.dead) {
 
-		player.animations.currentAnimation = &player.animations.jumpDouble;
+		player.animations.currentAnimation = &player.animations.die;
 
 		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
 
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+
+
+
 
 	}
 
 
+	if (player.godMode && !player.idle_Bool_Right && !player.GodMode_Left) {
+
+
+		player.animations.currentAnimation = &player.animations.GodMode;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+
+
+	}
+
+	if (player.godMode && !player.idle_Bool_Right && player.GodMode_Left) {
+
+
+		player.animations.currentAnimation = &player.animations.GodMode;
+
+		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
+
+
+	}
 
 	return true;
 	
@@ -494,12 +515,10 @@ bool j2Player::PostUpdate()
 	player.run_Bool_Right = false;
 	player.run_Bool_Left = false;
 
-	if(player.landed)
-	player.jump_Bool = false;
 
-	if (player.landed)
-		player.Doublejump_Bool = false;
-
+	if (player.landed) {
+		player.jump_Bool = false;
+	}
 	return true;
 }
 
