@@ -141,7 +141,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN){
 		
 		if (CurrentMap2 == false)
-			App->map->SetPlayerToInitial(App->map->data);
+			App->render->camera.x =App->map->SetPlayerToInitial(App->map->data);
 
 		else
 			switchTheMaps();

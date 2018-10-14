@@ -5,7 +5,9 @@
 #include "j1input.h"
 #include "j2Collision.h"
 #include "j2Animation.h"
+#include "j1Textures.h"
 #include "SDL/include/SDL.h"
+#include "j1Map.h"
 #include "j2Player.h"
 
 
@@ -26,7 +28,9 @@ bool j2Player::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Player Data");
 	bool ret = true;
-	
+
+	folder.create(config.child("folder").child_value());
+
 	if (config != NULL)
 	{
 
@@ -56,7 +60,63 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();
 
+	
+
+		//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
+		player.animations.idle.PushBack({ 14,7,19,29 });
+		player.animations.idle.PushBack({ 66,6,17,30 });
+		player.animations.idle.PushBack({ 115,6,19,30 });
+		player.animations.idle.PushBack({ 163,6,20,30 });
+		player.animations.idle.speed = 0.03f;
+
+		player.animations.die.PushBack({ 215,567,18,24 });
+		player.animations.die.PushBack({ 260,565,20,23 });
+		player.animations.die.PushBack({ 304,571,29,18 });
+		player.animations.die.PushBack({ 9,606,29,7 });
+		player.animations.die.PushBack({ 59,606,29,7 });
+		player.animations.die.speed = 0.03f;
+
+		player.animations.run.PushBack({ 67,45,20,28 });
+		player.animations.run.PushBack({ 116,46,20,27 });
+		player.animations.run.PushBack({ 166,48,20,25 });
+		player.animations.run.PushBack({ 217,45,23,28 });
+		player.animations.run.PushBack({ 266,46,20,27 });
+		player.animations.run.PushBack({ 316,48,20,25 });
+		player.animations.run.speed = 0.03f;
+
+
+		player.animations.jump.PushBack({ 15,86,20,24 });//
+		player.animations.jump.PushBack({ 65,88,20,22 });//
+		player.animations.jump.PushBack({ 117,81,19,27 });//normal jump
+		player.animations.jump.PushBack({ 164,79,21,23 });
+		player.animations.jump.PushBack({ 218,81,15,21 });
+		player.animations.jump.PushBack({ 264,84,24,17 });
+		player.animations.jump.PushBack({ 320,84,18,21 });
+		player.animations.jump.PushBack({ 11,124,26,17 });
+		player.animations.jump.PushBack({ 68,112,17,31 });
+		player.animations.jump.PushBack({ 118,113117,30 });//last two for landing
+		player.animations.jump.speed = 0.03f;
+
+
+		player.animations.slide.PushBack({ 155,132,34,15 });
+		player.animations.slide.PushBack({ 205,132,34,15 });
+		player.animations.slide.PushBack({ 255,131,34,16 });
+		player.animations.slide.PushBack({ 309,130,30,17 });
+		player.animations.slide.PushBack({ 15,167,22,17 });
+		player.animations.slide.speed = 0.03f;
+
+
+
+		player.animations.currentAnimation = &player.animations.idle;
+
 		
+
+		/*player.animations.playTex = App->tex->Load("textures/adventure.png");*/
+
+
+
+
+
 	}
 	else
 	{
@@ -129,14 +189,7 @@ bool j2Player::Start()
 	
 	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
 	
-	//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
-	player.animations.idle.PushBack({14,6,19,30});
-	player.animations.idle.PushBack({65,6,19,30});
-	player.animations.idle.speed = 0.03f;
-
-	player.animations.currentAnimation = &player.animations.idle;
-
-
+	
 	 
 	return true;
 }
@@ -209,6 +262,8 @@ bool j2Player::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
 	{
 		player.playerPos.x += player.x_speed;
+	/*	App->map->data.imagelayers[0]->OffsetX +=SpeedFront;*/
+
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)

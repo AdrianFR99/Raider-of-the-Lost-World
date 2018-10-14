@@ -19,24 +19,28 @@ struct Player
 
 	struct animations
 	{
-		SDL_Texture* playTex;
+		SDL_Texture* playTex=nullptr;
 		Animation* currentAnimation;
 		Animation idle;
 		Animation run;
 		Animation jump;
-		Animation hurt;
+		Animation die;
+		Animation slide;
 	};
 	
 	SDL_Rect playerRect;
 	iPoint playerPos;
+
 	int x_speed, y_speed;
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
 	int d_to_ground;
 	bool landed;
 	bool nextFrameLanded;
+
 	Collider* playerHitbox;
 	collisionControl colliding;
+
 	animations animations;
 };
 
@@ -86,6 +90,7 @@ public:
 public: //Variables
 
 	Player player;
+
 	Player player_Init;
 	
 
@@ -99,6 +104,9 @@ public: //Variables
 	Collider* lateralTestHitbox;
 
 	Collider* lateralTestHitbox_2;
+
+private:
+	p2SString	folder;
 };
 
 
