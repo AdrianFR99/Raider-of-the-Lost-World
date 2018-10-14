@@ -19,11 +19,12 @@ struct Player
 
 	struct animations
 	{
-		SDL_Texture* playTex=nullptr;
+		
 		Animation* currentAnimation;
 		Animation idle;
 		Animation run;
 		Animation jump;
+		Animation jumpDouble;
 		Animation die;
 		Animation slide;
 	};
@@ -109,7 +110,12 @@ public: //Variables
 
 	Player player_Init;
 	
+	SDL_Texture* playTex = nullptr;
 
+	pugi::xml_node AnimPushBack;
+	pugi::xml_document configAnim;
+
+	SDL_Rect AnimationRect;
 
 private:
 	p2SString	folder;

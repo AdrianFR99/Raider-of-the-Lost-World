@@ -55,6 +55,28 @@ public:
 	{
 		loops = 0;
 	}
+
+
+	void LoadPushBack(pugi::xml_node& config) {
+
+		loop = config.attribute("loop").as_bool();
+		speed = config.attribute("speed").as_float();
+
+		SDL_Rect Rect;
+
+		for (config = config.child("PushBack"); config; config = config.next_sibling("PushBack"))
+		{
+			Rect.x = config.attribute("x").as_int();
+			Rect.y = config.attribute("y").as_int();
+			Rect.w = config.attribute("w").as_int();
+			Rect.h = config.attribute("h").as_int();
+
+			this->PushBack({ Rect });
+		}
+
+
+	}
+
 };
 
 #endif

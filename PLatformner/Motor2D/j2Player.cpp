@@ -17,6 +17,27 @@
 j2Player::j2Player()
 {
 	name.create("player");
+
+	pugi::xml_parse_result result =configAnim.load_file("Animations.xml");
+
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("idle");//idle
+	player.animations.idle.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("run");//run
+	player.animations.run.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jump");//jump
+	player.animations.jump.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jumpDouble");//DoubleJump
+	player.animations.jumpDouble.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
+	player.animations.jumpDouble.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
+	player.animations.die.LoadPushBack(AnimPushBack);
 }
 
 //DESTRUCTOR
@@ -77,61 +98,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
 
-		//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
-		player.animations.idle.PushBack({ 14,7,19,29 });
-		player.animations.idle.PushBack({ 66,6,17,30 });
-		player.animations.idle.PushBack({ 115,6,19,30 });
-		player.animations.idle.PushBack({ 163,6,20,30 });
-		player.animations.idle.speed = 0.03f;
-
-		player.animations.die.PushBack({ 215,567,18,24 });
-		player.animations.die.PushBack({ 260,565,20,23 });
-		player.animations.die.PushBack({ 304,571,29,18 });
-		player.animations.die.PushBack({ 9,606,29,7 });
-		player.animations.die.PushBack({ 59,606,29,7 });
-		player.animations.die.speed = 0.03f;
-
-		player.animations.run.PushBack({ 67,45,20,28 });
-		player.animations.run.PushBack({ 116,46,20,27 });
-		player.animations.run.PushBack({ 166,48,20,25 });
-		player.animations.run.PushBack({ 217,45,23,28 });
-		player.animations.run.PushBack({ 266,46,20,27 });
-		player.animations.run.PushBack({ 316,48,20,25 });
-		player.animations.run.speed = 0.03f;
-
-
-		player.animations.jump.PushBack({ 15,86,20,24 });//
-		player.animations.jump.PushBack({ 65,88,20,22 });//
-		player.animations.jump.PushBack({ 117,81,19,27 });//normal jump
-		player.animations.jump.PushBack({ 164,79,21,23 });
-		player.animations.jump.PushBack({ 218,81,15,21 });
-		player.animations.jump.PushBack({ 264,84,24,17 });
-		player.animations.jump.PushBack({ 320,84,18,21 });
-		player.animations.jump.PushBack({ 11,124,26,17 });
-		player.animations.jump.PushBack({ 68,112,17,31 });
-		player.animations.jump.PushBack({ 118,113117,30 });//last two for landing
-		player.animations.jump.speed = 0.03f;
-
-
-		player.animations.slide.PushBack({ 155,132,34,15 });
-		player.animations.slide.PushBack({ 205,132,34,15 });
-		player.animations.slide.PushBack({ 255,131,34,16 });
-		player.animations.slide.PushBack({ 309,130,30,17 });
-		player.animations.slide.PushBack({ 15,167,22,17 });
-		player.animations.slide.speed = 0.03f;
-
-
-
-		player.animations.currentAnimation = &player.animations.idle;
-
-		
-
-		/*player.animations.playTex = App->tex->Load("textures/adventure.png");*/
-
-
-
-
-
+	
 	}
 	else
 	{
@@ -211,7 +178,14 @@ bool j2Player::Start()
 	if(player.playerHitbox==nullptr)
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 	
+
+
+
 	
+	playTex = App->tex->Load(folder.GetString());//loading Player textures
+
+	player.animations.currentAnimation = &player.animations.idle;
+
 	return true;
 }
 
@@ -225,10 +199,10 @@ bool j2Player::CleanUp()
 		player.playerHitbox = nullptr;
 	}
 
-	if (player.animations.playTex != nullptr)
+	if (playTex != nullptr)
 	{
-		delete player.animations.playTex;
-		player.animations.playTex = nullptr;
+		App->tex->UnLoad(playTex);
+
 	}
 
 	return true;
@@ -274,22 +248,11 @@ bool j2Player::Update(float dt)
 		if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
 		{
 				player.playerRect = player_Init.playerRect;
-				/*if (player.playerGodModeHitbox != nullptr)
-				{
-					player.playerGodModeHitbox->to_delete;
-				}*/
+			
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
-		//else if (player.playerGodModeHitbox->type != COLLIDER_GODMODE && player.godMode == true)
-		//{
-		//	//player.playerRect = player.playerRect; 
-		//	if (player.playerHitbox != nullptr)
-		//	{
-		//		player.playerHitbox->to_delete;
-		//	}
-		//	player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);;
-		//}
-
+	
+		  
 		//Control X speed
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
 		{
@@ -390,6 +353,12 @@ bool j2Player::Update(float dt)
 	player.playerRect.y = player.playerPos.y;
 
 
+
+	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	App->render->Blit(playTex,player.playerPos.x,player.playerPos.y,&AnimationRect);
+	//App->render->Blit(Textures, (int)data.xpos, (int)data.ypos, &CurrentAnimationRect, 1, 90.0, SDL_FLIP_HORIZONTAL, 1, 1, 1.0);
+
 	return true;
 	
 	
@@ -473,18 +442,4 @@ void j2Player::OnPreCollision(int d)
 	/*player.d_to_ground = d;
 	player.nextFrameLanded = true;*/
 }
-//bool j2Player::CheckCollision(const SDL_Rect& r) const
-//{
-//	return !(playerRect.y + playerRect.h < r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
-//}
-//
-//bool j2Player::PreCheckCollision(const SDL_Rect& r) const
-//{
-//	return !((playerRect.y + playerRect.h + 1) < r.y || (playerRect.y -1) > r.y + r.h || ((playerRect.x + playerRect.w) + 1 )< r.x || playerRect.x > r.x + r.w);
-//}
-//
-//bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const
-//{
-//	return !( (playerRect.y + playerRect.h +1 )< r.y || playerRect.y > r.y + r.h || playerRect.x + playerRect.w < r.x || playerRect.x > r.x + r.w);
-//}
 
