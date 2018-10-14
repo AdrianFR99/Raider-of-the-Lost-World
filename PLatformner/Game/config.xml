@@ -38,29 +38,40 @@
   </map>
 
   <player>
+    <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="14" height="30" />
     <playerPos  x="64" y="576" />
-    <gravity_speed value="0" />
+    
+   
+    <!--Player Speeds-->
+    <gravity_speed value="1" />
     <y_max_speed value="4"/>
     <x_speed value="2" />
     <y_speed value="-12" />
     <actual_x_speed value="0" />
     <actual_y_speed  value="0" />
     <stopped_speed value="0" />
+  
+    <!--Player Landed-->
     <d_to_ground value="0" />
     <landed value="true" />
+    <!--Double Jump-->>
     <doubleJump value="true"/>
-    <doubleJump_delay value="15"/>
+    <doubleJump_delay value="13"/>
     <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
-    <dead boolDead="false" deadDelay="45" deadCounter="0" />
-    <maximumDead_Y map1="800" map2="1200"/>
 
+    <!--Player Death-->>
+    <dead boolDead="false" deadDelay="20" deadCounter="0" />
+
+    <maximumDead_Y map1="800" map2="1200"/>
+    <!--God Mode-->>
     <godMode value="false"/>
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
-
-    
+    <!--Collision adjusters-->>
+    <xCollisionAdjuster x="3"/>
+    <vCollision_controller y="8"/>
     <folder>textures/adventure.png</folder>
     
   </player>

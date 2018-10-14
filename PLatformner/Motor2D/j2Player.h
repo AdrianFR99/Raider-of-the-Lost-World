@@ -15,6 +15,10 @@ struct Player
 		bool wallBack;
 		bool wallTop;
 		bool wallDown;
+		
+		//Collision Adjusters
+		int x_CollisionAdjuster;
+		int y_CollisionController;
 	};
 
 	struct animations
@@ -32,29 +36,33 @@ struct Player
 	
 	SDL_Rect playerRect;
 	iPoint playerPos;
-	float gravity_speed;
+	//Player Speeds
+	int gravity_speed;
 	int y_max_speed;
 	int x_speed, y_speed;
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
 	
 	int d_to_ground;
-	
+	//DoubleJump
 	int doubleJump_delay;
 	int doubleJump_counter;
 	bool doubleJump;
-	
+	//Landed statuses
 	bool landed;
 	bool nextFrameLanded;
-
+	//Death vars
 	bool dead;
 	int deadDelay;
 	int deadCounter;
 	int maximumDeadY_map1;
 	int maximumDeadY_map2;
-
+	//God Mode
 	bool godMode;
 
+	//Collision Adjusters
+	int x_CollisionAdjuster;
+	int y_CollisionController;
 
 	//Animations bools
 	bool idle_Bool_Left=false;
