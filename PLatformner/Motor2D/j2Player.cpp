@@ -198,6 +198,12 @@ bool j2Player::CleanUp()
 		player.playerHitbox = nullptr;
 	}
 
+	if (player.playerGodModeHitbox != nullptr)
+	{
+		player.playerGodModeHitbox->to_delete;
+		player.playerGodModeHitbox = nullptr;
+	}
+
 	if (playTex != nullptr)
 	{
 		App->tex->UnLoad(playTex);
@@ -357,6 +363,9 @@ bool j2Player::Update(float dt)
 
 	//Camera Following player logic
 	App->render->followPlayer(player);
+	//Camera Following player logic
+
+	App->render->followPlayer(player);
 
 	//We pass them onto the player Rect
 	player.playerRect.x = player.playerPos.x;
@@ -451,9 +460,7 @@ bool j2Player::Update(float dt)
 // Called each loop iteration
 bool j2Player::PostUpdate()
 {
-	//Camera Following player logic
-
-	App->render->followPlayer(player);
+	
 
 
 	// We reset the colliders collisions
@@ -518,7 +525,6 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			player.y_speed = -1;
 			player.landed = false;
-			//player.colliding.wallDown;
 			player.colliding.wallTop = true;
 		}
 

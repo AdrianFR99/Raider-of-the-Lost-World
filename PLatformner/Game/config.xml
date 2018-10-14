@@ -11,6 +11,9 @@
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
     <cameraOffset left_x="300" right_x="150"/>
+    
+    <cameraLimits_map1 y_max="1346" />
+    <cameraLimits_map2 y_max="2112" x_max="17148"/>
   </renderer>
 
   <window>

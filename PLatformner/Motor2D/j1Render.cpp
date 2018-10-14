@@ -52,6 +52,10 @@ bool j1Render::Awake(pugi::xml_node& config)
 	cameraDisplacement = config.child("cameraDisplacement").attribute("value").as_int();
 	cameraOffset_right = config.child("cameraOffset").attribute("right_x").as_int();
 	cameraOffset_left = config.child("cameraOffset").attribute("left_x").as_int();
+
+	map1_cameraLimit_y = config.child("cameraLimits_map1").attribute("y_max").as_int();
+	map2_cameraLimit_y = config.child("cameraLimits_map2").attribute("y_max").as_int();
+	map2_cameraLimit_x = config.child("cameraLimits_map2").attribute("x_max").as_int();
 	scale = App->win->GetScale();
 
 	return ret;
@@ -261,6 +265,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 //Follow the player around
 void j1Render::followPlayer(const Player &p)
 {
+	//Follow exactly the player's movement
 	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
 	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
@@ -294,16 +299,20 @@ void j1Render::followPlayer(const Player &p)
 	//If first map
 	if (App->scene->CurrentMap2 == false)
 	{
-		if (camera.y > 1346 / scale) // Number of vertical tiles * tile height
+		if (camera.y > map1_cameraLimit_y / scale) 
 		{
-			camera.y = 1346 / scale;
+			camera.y = map1_cameraLimit_y / scale;
 		}
 	}
-	else
+	else //If 2nd Map
 	{
-		if (camera.y > 1056) // Number of vertical tiles * tile height
+		if (camera.y > map2_cameraLimit_y / scale) 
 		{
-			camera.y = 1056;
+			camera.y = map2_cameraLimit_y / scale;
+		}
+		if (camera.x > map2_cameraLimit_x / scale)
+		{
+			camera.x = map2_cameraLimit_x / scale;
 		}
 	}
 }
