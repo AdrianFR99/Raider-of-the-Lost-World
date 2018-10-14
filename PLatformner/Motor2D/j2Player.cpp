@@ -267,8 +267,13 @@ bool j2Player::Update(float dt)
 
 			player.run_Bool_Right = true;
 			player.playerPos.x += player.x_speed;
-	
 
+       
+
+			//moving the offsetx of parallax map2
+			App->map->data2.imagelayers.At(0)->data->SpeedBack -=0;
+			App->map->data2.imagelayers.At(3)->data->SpeedBack -= 0.5f;
+			App->map->data2.imagelayers.At(2)->data->SpeedBack -= 0.25f;
 			
 		}
 
@@ -276,6 +281,16 @@ bool j2Player::Update(float dt)
 		{
 			player.run_Bool_Left = true;
 			player.playerPos.x -= player.x_speed;
+
+
+
+
+			//moving the offsetx of parallax map2
+			App->map->data2.imagelayers.At(0)->data->SpeedBack +=0;
+			App->map->data2.imagelayers.At(3)->data->SpeedBack += 0.5f;
+			App->map->data2.imagelayers.At(2)->data->SpeedBack += 0.25f;
+
+
 		}
 
 		//GODMODE LOGIC

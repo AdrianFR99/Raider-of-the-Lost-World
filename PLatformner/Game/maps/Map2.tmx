@@ -13,31 +13,31 @@
   <image source="CollsionLayer.png" width="60" height="60"/>
  </tileset>
  <imagelayer name="Sky(back)">
-  <image source="skyLine.png" width="4800" height="810"/>
+  <image source="skyLine.png" width="10000" height="810"/>
   <properties>
    <property name="Movement" type="int" value="0"/>
    <property name="Speed" type="float" value="0"/>
   </properties>
  </imagelayer>
  <imagelayer name="Clouds(MiddleUp)">
-  <image source="UpClouds.png" width="4800" height="315"/>
+  <image source="UpClouds.png" width="7900" height="315"/>
   <properties>
    <property name="Movement" type="int" value="1"/>
    <property name="Speed" type="float" value="-0.25"/>
   </properties>
  </imagelayer>
  <imagelayer name="Clouds(MiddleDown)" offsetx="2" offsety="520">
-  <image source="CloudsBack.png" width="4800" height="381"/>
+  <image source="CloudsBack.png" width="13000" height="439"/>
   <properties>
    <property name="Movement" type="int" value="1"/>
-   <property name="Speed" type="float" value="-0.25"/>
+   <property name="Speed" type="float" value="0.15"/>
   </properties>
  </imagelayer>
  <imagelayer name="Clouds(Front)" offsetx="136" offsety="724">
-  <image source="CloudsFront.png" width="4800" height="186"/>
+  <image source="CloudsFront.png" width="13000" height="186"/>
   <properties>
    <property name="Movement" type="int" value="1"/>
-   <property name="Speed" type="float" value="-0.5"/>
+   <property name="Speed" type="float" value="0.2"/>
   </properties>
  </imagelayer>
  <layer name="Background" width="300" height="57">
@@ -26727,9 +26727,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="89"/>
    <tile gid="89"/>
    <tile gid="89"/>
@@ -34254,7 +34254,7 @@
    <tile gid="555"/>
   </data>
  </layer>
- <layer name="Collisions" width="300" height="57" visible="0">
+ <layer name="Collisions" width="300" height="57">
   <properties>
    <property name="Collision" type="int" value="1"/>
    <property name="Draw" type="int" value="0"/>
@@ -43835,9 +43835,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="1511"/>
-   <tile gid="1511"/>
-   <tile gid="1511"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1511"/>
    <tile gid="1511"/>
    <tile gid="1511"/>
@@ -51363,7 +51363,7 @@
   </data>
  </layer>
  <objectgroup name="StartingAndFinishPoint">
-  <object id="4" name="StartingPoint" x="80.5" y="749.25" width="31" height="33"/>
-  <object id="8" name="FinishPoint" x="4752.67" y="558.667" width="30.6667" height="33.3333"/>
+  <object id="4" name="StartingPoint" x="80.5" y="735.25" width="31" height="33"/>
+  <object id="8" name="FinishPoint" x="4741.67" y="552.67" width="30.6667" height="33.3333"/>
  </objectgroup>
 </map>
