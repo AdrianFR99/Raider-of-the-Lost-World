@@ -281,38 +281,50 @@ void j1Render::followPlayer(const Player &p)
 		App->render->camera.x -= p.x_speed;
 	}
 
-	if (p.playerPos.y < (camera.y + camera.h/3 ) / scale)
-	{
-		camera.y -= cameraDisplacement * scale;
-	}
 
-	if (p.playerPos.y > (camera.y + camera.h / 3) / scale)
-	{
-		camera.y += cameraDisplacement * scale;
-	}
+		if (p.playerPos.y < (camera.y + camera.h / 3) / scale)
+		{
+			camera.y -= cameraDisplacement * scale;
+		}
+
+		if (p.playerPos.y > (camera.y + camera.h / 3) / scale)
+		{
+			camera.y += cameraDisplacement * scale;
+		}
+	
+	
 
 	//Controlling that the camera does not leave the map
 	if (camera.x < 0)
 	{
 		camera.x = 0;
 	}
+
+	if (camera.y < 0)
+	{
+		camera.y = 0;
+	}
 	//If first map
 	if (App->scene->CurrentMap2 == false)
-	{
-		if (camera.y > map1_cameraLimit_y / scale) 
+	{		
+		if (camera.y > map1_cameraLimit_y / scale && camera.y > 0 && p.playerRect.y > 0)
 		{
 			camera.y = map1_cameraLimit_y / scale;
 		}
 	}
 	else //If 2nd Map
 	{
-		if (camera.y > map2_cameraLimit_y / scale) 
-		{
-			camera.y = map2_cameraLimit_y / scale;
-		}
+		
 		if (camera.x > map2_cameraLimit_x / scale)
 		{
 			camera.x = map2_cameraLimit_x / scale;
 		}
+		
+		if (camera.y > map2_cameraLimit_y / scale)
+		{
+			camera.y = map2_cameraLimit_y / scale;
+		}
 	}
+
+	
 }
