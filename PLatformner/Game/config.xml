@@ -53,7 +53,7 @@
     <dead boolDead="false" deadDelay="20" deadCounter="0" />
     <maximumDead_Y map1="800" map2="1200"/>
 
-
+    <godMode value="false"/>
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
 

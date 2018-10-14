@@ -73,6 +73,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.maximumDeadY_map1 = config.child("maximumDead_Y").attribute("map1").as_int();
 		player_Init.maximumDeadY_map2 = config.child("maximumDead_Y").attribute("map2").as_int();
 
+		//Player Godmode
+		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
 
 		//PUSHBACKS HARDCODED THAT WILL GO INTO CONFIG (just to test first)
@@ -266,14 +268,27 @@ bool j2Player::Update(float dt)
 			player.deadCounter = player_Init.deadCounter;
 		}
 	}
-	else
+	else 
 	{
-
-		if (player.playerHitbox->type != COLLIDER_PLAYER)
+		//If the player is alive
+		if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
 		{
-			player.playerRect = player_Init.playerRect;
-			player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+				player.playerRect = player_Init.playerRect;
+				/*if (player.playerGodModeHitbox != nullptr)
+				{
+					player.playerGodModeHitbox->to_delete;
+				}*/
+				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
+		//else if (player.playerGodModeHitbox->type != COLLIDER_GODMODE && player.godMode == true)
+		//{
+		//	//player.playerRect = player.playerRect; 
+		//	if (player.playerHitbox != nullptr)
+		//	{
+		//		player.playerHitbox->to_delete;
+		//	}
+		//	player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);;
+		//}
 
 		//Control X speed
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
@@ -286,62 +301,69 @@ bool j2Player::Update(float dt)
 			player.playerPos.x -= player.x_speed;
 		}
 
-
-
-		//LANDED LOGIC:  when landed == false the player 
-		//is not touching a solid surface with its feet
-		//when landed == true the player IS touching a solid surface with its feet
-
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-			&& player.landed == true)
+		//GODMODE LOGIC
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-			player.landed = false;
-			player.y_speed = player_Init.y_speed;
+			player.godMode = !player.godMode;
+			if (player.godMode == true)
+			{
+				player.playerHitbox->to_delete = true;
+				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
+			}
+			else
+			{
+				player.playerGodModeHitbox->to_delete = true;
+				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+			}
 		}
 
-		if (player.landed == false)
+		if (player.godMode == true)
 		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+				player.playerPos.y -= player.y_max_speed;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				player.playerPos.y += player.y_max_speed;
+		}
+		else
+		{
+
+			//LANDED LOGIC:  when landed == false the player 
+			//is not touching a solid surface with its feet
+			//when landed == true the player IS touching a solid surface with its feet
+
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-				&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
-				// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
-				//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
+				&& player.landed == true)
 			{
-				player.doubleJump = false;
+				player.landed = false;
 				player.y_speed = player_Init.y_speed;
 			}
-			player.playerPos.y += player.y_speed;
-			player.y_speed += 1;
 
-			if (player.y_speed > player.y_max_speed)
+			if (player.landed == false)
 			{
-				player.y_speed = player.y_max_speed;
-			}
-			player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
-		}
-		else
-		{
-			player.gravity_speed = 0.0f;
-			player.doubleJump = true;
-			player.doubleJump_counter = player_Init.doubleJump_counter;
-		}
-		/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-		{
-			player.landed = false;
-			player.y_speed = -10;
-		}
-
-		if (player.landed == false)
-		{
-			player.playerPos.y += player.y_speed;
-			if (player.nextFrameLanded == false)
-			{
+				if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+					&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
+					// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
+					//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
+				{
+					player.doubleJump = false;
+					player.y_speed = player_Init.y_speed;
+				}
+				player.playerPos.y += player.y_speed;
 				player.y_speed += 1;
+
+				if (player.y_speed > player.y_max_speed)
+				{
+					player.y_speed = player.y_max_speed;
+				}
+				player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
+			}
+			else
+			{
+				player.gravity_speed = 0.0f;
+				player.doubleJump = true;
+				player.doubleJump_counter = player_Init.doubleJump_counter;
 			}
 		}
-		else
-		{
-			player.y_speed = 0;
-		}*/
 	}
 
 	//If the player falls and surpasses a determined Y position it dies
@@ -387,11 +409,11 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
-	
-
 		//Here we change the values of the rect position
-	
+	if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
 	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
+	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+	player.playerGodModeHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
 	
 	return true;

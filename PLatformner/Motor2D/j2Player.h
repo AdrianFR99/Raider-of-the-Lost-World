@@ -35,10 +35,13 @@ struct Player
 	int x_speed, y_speed;
 	int actual_x_speed, actual_y_speed;
 	int stopped_speed;
+	
 	int d_to_ground;
+	
 	int doubleJump_delay;
 	int doubleJump_counter;
 	bool doubleJump;
+	
 	bool landed;
 	bool nextFrameLanded;
 
@@ -48,7 +51,10 @@ struct Player
 	int maximumDeadY_map1;
 	int maximumDeadY_map2;
 
+	bool godMode;
+
 	Collider* playerHitbox;
+	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
 	animations animations;

@@ -21,6 +21,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WALL][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_WALL][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_WALL][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_TRAP][COLLIDER_WALL] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_TRAP] = false;
@@ -29,6 +30,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_TRAP][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_TRAP][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_ICE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_ICE][COLLIDER_TRAP] = false;
@@ -37,6 +39,8 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_ICE][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_ICE][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_ICE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ICE][COLLIDER_GODMODE] = false;
+
 
 	matrix[COLLIDER_WATER][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WATER][COLLIDER_TRAP] = false;
@@ -45,6 +49,8 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WATER][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_WATER][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_WATER][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_WATER][COLLIDER_GODMODE] = false;
+
 
 	matrix[COLLIDER_PLATFORM][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_TRAP] = false;
@@ -53,6 +59,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLATFORM][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_PLATFORM][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_TRAP] = false;
@@ -61,6 +68,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_TRAP] = true;
@@ -69,6 +77,16 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_CLIMBWALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_GODMODE] = false;
+
+	matrix[COLLIDER_GODMODE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_ICE] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_WATER] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_GODMODE] = false;
 
 
 }
@@ -181,7 +199,7 @@ void j2Collision::DebugDraw()
 		case COLLIDER_WALL: //yellow
 			App->render->DrawQuad(colliders[i]->rect, 225,225, 0, alpha);
 			break;
-		case COLLIDER_PLAYER: // random
+		case COLLIDER_PLAYER: // grey
 			App->render->DrawQuad(colliders[i]->rect, 150, 150, 150, alpha);
 			break;
 		case COLLIDER_TRAP: //red
@@ -202,6 +220,10 @@ void j2Collision::DebugDraw()
 
 		case COLLIDER_CLIMBWALL: //green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+			break;
+
+		case COLLIDER_GODMODE: //green
+			App->render->DrawQuad(colliders[i]->rect, 125, 255, 125, alpha);
 			break;
 		
 
