@@ -3,8 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
-#include "j1Scene.h"
-#include "j1Map.h"
+
 #include "j2player.h"
 
 #define VSYNC true
@@ -286,26 +285,16 @@ void j1Render::followPlayer(const Player &p)
 	{
 		camera.y += cameraDisplacement * scale;
 	}
-	
-	//Controlling that the camera does not leave the map
+
+	//If first map
 	if (camera.x < 0)
 	{
 		camera.x = 0;
 	}
-	//If first map
-	if (App->scene->CurrentMap2 == false)
+
+	if (camera.y > 1346 / scale)
 	{
-		if (camera.y > 1346 / scale) // Number of vertical tiles * tile height
-		{
-			camera.y = 1346 / scale;
-		}
-	}
-	else
-	{
-		if (camera.y > 1056) // Number of vertical tiles * tile height
-		{
-			camera.y = 1056;
-		}
+		camera.y = 1346 / scale;
 	}
 
 }
