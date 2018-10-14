@@ -5,6 +5,8 @@
 #include "j1input.h"
 #include "j2Collision.h"
 #include "j2Animation.h"
+#include "j1Scene.h"
+#include "j1Map.h"
 #include "SDL/include/SDL.h"
 #include "j2Player.h"
 
@@ -47,6 +49,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
 		player_Init.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
 		player_Init.y_max_speed = config.child("y_max_speed").attribute("value").as_int();
+		//Player DoubleJump
 		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
 		player_Init.doubleJump_counter = config.child("doubleJump_counter").attribute("value").as_int();
 		player_Init.doubleJump_delay = config.child("doubleJump_delay").attribute("value").as_int();
@@ -60,6 +63,13 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();
 
+		//Player Death
+		player_Init.dead = config.child("dead").attribute("boolDead").as_bool();
+		player_Init.deadDelay = config.child("dead").attribute("deadDelay").as_int();
+		player_Init.deadCounter = config.child("dead").attribute("deadCounter").as_int();
+		player_Init.maximumDeadY_map1 = config.child("maximumDead_Y").attribute("map1").as_int();
+		player_Init.maximumDeadY_map2 = config.child("maximumDead_Y").attribute("map2").as_int();
+		
 		
 	}
 	else
@@ -129,6 +139,14 @@ bool j2Player::Start()
 	
 	//Player landed
 	player.landed = player_Init.landed;
+
+	//player Dead
+	player.dead = player_Init.dead;
+	player.deadDelay = player_Init.deadDelay;
+	player.deadCounter = player_Init.deadCounter;
+	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
+	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
+
 	/*lateralTest.h = 48;
 	lateralTest.w = 64;
 	lateralTest.x = player.playerPos.x + 128;
@@ -144,10 +162,9 @@ bool j2Player::Start()
 	verticalTest.x = player.playerPos.x + -64;
 	verticalTest.y = player.playerPos.y + 32;*/
 	
-	//lateralTestHitbox = App->collision->AddCollider(lateralTest, COLLIDER_WALL);
-	verticalTestHitbox = App->collision->AddCollider(verticalTest, COLLIDER_WALL);
+	
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER,this);
-	lateralTestHitbox_2 = App->collision->AddCollider(lateralTest_2, COLLIDER_WALL);
+	
 	
 	//PUSHBACKS HARDCODED THAT WILL LATER GO INTO CONFIG (just to test first)
 	player.animations.idle.PushBack({14,6,19,30});
@@ -197,106 +214,147 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
-	if (player.playerHitbox->type != COLLIDER_PLAYER)
+	if (player.dead == true)
 	{
-		player.playerRect = player_Init.playerRect;
-		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-	}
-	//This variable STORES the distance of the player lowest point of the lowest pixel to the ground
-	//d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
+		if (player.deadCounter < player.deadDelay)
+		{
+			player.deadCounter += 1;
+		}
+		else
+		{
+			//Player Goes To inital position of the current stage map
+			if (App->scene->CurrentMap2 == false)
+				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 
-	//Check Horizontal collisions
-	/*if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
-		&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
-	{
-		x_speed = 0;
+			else
+				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
+
+			player.dead = false;
+			player.deadCounter = player_Init.deadCounter;
+		}
 	}
 	else
 	{
-		x_speed = 4;
-	}*/
 
-	//Check vertical collisions and set LANDED
-	//if (CheckVerticalCollision(verticalTest) == true /*|| CheckVerticalCollision(lateralTest) == true*/)
-	//{
-	//	
-	//	
-	//}
-	//else
-	//{
-	//	landed = false;
-	//}
-	
-	//Control X speed
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
-	{
-		player.playerPos.x += player.x_speed;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
-	{
-		player.playerPos.x -= player.x_speed;
-	}
-	
-
-
-	//LANDED LOGIC:  when landed == false the player 
-	//is not touching a solid surface with its feet
-	//when landed == true the player IS touching a solid surface with its feet
-
-
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-		&& player.landed == true )
-	{
-		player.landed = false;
-		player.y_speed = player_Init.y_speed;
-	}
-
-	if (player.landed == false)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-			&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay )
+		if (player.playerHitbox->type != COLLIDER_PLAYER)
 		{
-			player.doubleJump = false;
+			player.playerRect = player_Init.playerRect;
+			player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+		}
+		//This variable STORES the distance of the player lowest point of the lowest pixel to the ground
+		//d_to_ground = verticalTest.y - (playerRect.y + playerRect.h);
+
+		//Check Horizontal collisions
+		/*if ( (CheckCollision(lateralTest) == true || PreCheckCollision(lateralTest) == true)
+			&& App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT )
+		{
+			x_speed = 0;
+		}
+		else
+		{
+			x_speed = 4;
+		}*/
+
+		//Check vertical collisions and set LANDED
+		//if (CheckVerticalCollision(verticalTest) == true /*|| CheckVerticalCollision(lateralTest) == true*/)
+		//{
+		//	
+		//	
+		//}
+		//else
+		//{
+		//	landed = false;
+		//}
+
+		//Control X speed
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
+		{
+			player.playerPos.x += player.x_speed;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
+		{
+			player.playerPos.x -= player.x_speed;
+		}
+
+
+
+		//LANDED LOGIC:  when landed == false the player 
+		//is not touching a solid surface with its feet
+		//when landed == true the player IS touching a solid surface with its feet
+
+
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+			&& player.landed == true)
+		{
+			player.landed = false;
 			player.y_speed = player_Init.y_speed;
 		}
-		player.playerPos.y += player.y_speed;
-		player.y_speed += 1;
-		
-		if (player.y_speed > player.y_max_speed)
+
+		if (player.landed == false)
 		{
-			player.y_speed = player.y_max_speed;
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+				&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
+				// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
+				//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
+			{
+				player.doubleJump = false;
+				player.y_speed = player_Init.y_speed;
+			}
+			player.playerPos.y += player.y_speed;
+			player.y_speed += 1;
+
+			if (player.y_speed > player.y_max_speed)
+			{
+				player.y_speed = player.y_max_speed;
+			}
+			player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
 		}
-		player.doubleJump_counter += 1;
-	}
-	else
-	{
-		player.gravity_speed = 0.0f;
-		player.doubleJump = true;
-		player.doubleJump_counter = player_Init.doubleJump_counter;
-	}
-	/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-	{
-		player.landed = false;
-		player.y_speed = -10;
+		else
+		{
+			player.gravity_speed = 0.0f;
+			player.doubleJump = true;
+			player.doubleJump_counter = player_Init.doubleJump_counter;
+		}
+		/*if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		{
+			player.landed = false;
+			player.y_speed = -10;
+		}
+
+		if (player.landed == false)
+		{
+			player.playerPos.y += player.y_speed;
+			if (player.nextFrameLanded == false)
+			{
+				player.y_speed += 1;
+			}
+		}
+		else
+		{
+			player.y_speed = 0;
+		}*/
 	}
 
-	if (player.landed == false)
+	//If the player falls and surpasses a determined Y position it dies
+	if (App->scene->CurrentMap2 == false)
 	{
-		player.playerPos.y += player.y_speed;
-		if (player.nextFrameLanded == false)
+		if (player.playerPos.y > player.maximumDeadY_map1) 
 		{
-			player.y_speed += 1;
+			player.dead = true;
 		}
 	}
 	else
 	{
-		player.y_speed = 0;
-	}*/
+		if (player.playerPos.y > player.maximumDeadY_map2)
+		{
+			player.dead = true;
+		}
+	}
 	
+	//Camera Following player logic
 	App->render->followPlayer(player);
-	
 	
 	//We pass them onto the player Rect
 	player.playerRect.x = player.playerPos.x;
@@ -310,9 +368,7 @@ bool j2Player::Update(float dt)
 bool j2Player::PostUpdate()
 {
 	//Camera Following player logic
-
 	App->render->followPlayer(player);
-
 
 	// We reset the colliders collisions
 	player.colliding.wallFront = false;
@@ -320,33 +376,15 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 	
-
-	
-
-	
-
-
-
 		//Here we change the values of the rect position
 	
 
 	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
-
-
-
-
-	//Here we draw some quads for DEBUG purposes
-	/*App->render->DrawQuad(player.playerRect, 255, 0, 0, 200);
-	App->render->DrawQuad(lateralTest, 0, 255, 0, 100);
-	App->render->DrawQuad(verticalTest, 0, 0, 255, 100);*/
 	
 	return true;
 }
 
-void j2Player::changedMaps()
-{
 
-}
 
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
@@ -389,6 +427,11 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			player.colliding.wallTop = true;
 		}
 		
+	}
+
+	if (c2->type == COLLIDER_TRAP)
+	{
+		player.dead = true;
 	}
 } 
 

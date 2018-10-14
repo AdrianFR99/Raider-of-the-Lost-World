@@ -41,6 +41,13 @@ struct Player
 	bool doubleJump;
 	bool landed;
 	bool nextFrameLanded;
+
+	bool dead;
+	int deadDelay;
+	int deadCounter;
+	int maximumDeadY_map1;
+	int maximumDeadY_map2;
+
 	
 	Collider* playerHitbox;
 	collisionControl colliding;
@@ -83,7 +90,7 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
-	void changedMaps();
+	
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
@@ -94,18 +101,6 @@ public: //Variables
 
 	Player player;
 	Player player_Init;
-	
-
-
-	//Debug purpose RECTS
-	SDL_Rect lateralTest;
-	SDL_Rect verticalTest;
-	SDL_Rect lateralTest_2;
-	
-	Collider* verticalTestHitbox;
-	Collider* lateralTestHitbox;
-
-	Collider* lateralTestHitbox_2;
 };
 
 

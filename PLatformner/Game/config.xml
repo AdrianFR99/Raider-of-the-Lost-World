@@ -50,6 +50,10 @@
     <doubleJump_delay value="15"/>
     <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
+    <dead boolDead="false" deadDelay="20" deadCounter="0" />
+    <maximumDead_Y map1="800" map2="1200"/>
+   
+   
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
 
