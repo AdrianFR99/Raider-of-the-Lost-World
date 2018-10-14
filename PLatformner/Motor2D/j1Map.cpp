@@ -36,18 +36,24 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw(MapData&DataAux)
 {
-
+	
 
 	if(map_loaded == false)
 		return;
 	
+	ImageLayer*Image;
 
 	for (int x = 0; x < DataAux.imagelayers.count();++x) {
 		
-		App->render->Blit(DataAux.imagelayers[x]->texture,
-			DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY, 
-			&DataAux.imagelayers[x]->GetImageLayerRect());
+		Image = DataAux.imagelayers.At(x)->data;
 
+		/*if (Image->PropImg.GetProperty("Movement", 0) == 1) {*/
+
+
+			App->render->Blit(DataAux.imagelayers[x]->texture,
+				DataAux.imagelayers[x]->OffsetX, DataAux.imagelayers[x]->OffsetY,
+				&DataAux.imagelayers[x]->GetImageLayerRect());
+		
 	}
 
 
@@ -534,16 +540,21 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 
 	LoadProperties(node, Image->PropImg);
 
-
-
 	if (node.attribute("offsetx").as_int() != NULL)
-		Image->OffsetX = node.attribute("offsetx").as_int();
+		Image->OffsetX = node.attribute("offsetx").as_float();
 
 
 	if (node.attribute("offsety").as_int() != NULL)
-	Image->OffsetY = node.attribute("offsety").as_int();
+	Image->OffsetY = node.attribute("offsety").as_float();
 	
 	
+	/*if (Image->PropImg.GetProperty("Movement", 0) == 1) {
+		if (Image->name == "Front")
+			Image->SpeedFront = Image->PropImg.GetProperty("Speed", 0);
+		else if(Image->name == "Back")
+			Image->SpeedBack = Image->PropImg.GetProperty("Speed", 0);
+		
+	}*/
 
 
 
@@ -596,7 +607,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
 	return ret;
 }
-int Properties::GetProperty(const char* value, int def_value) const
+float Properties::GetProperty(const char* value, float def_value) const
 {
 	p2List_item<Property*>* itemP = Propertieslist.start;
 
@@ -713,8 +724,9 @@ float j1Map::SetPlayerToInitial(MapData&DataAux) {
 
 				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->name == "StartingPoint");
 
-				App->player->player.playerPos.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->x;
-				App->player->player.playerPos.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->y;
+				App->player->Start();
+				App->player->player.playerPos.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+				App->player->player.playerPos.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 
 				break;
 			}
@@ -724,7 +736,32 @@ float j1Map::SetPlayerToInitial(MapData&DataAux) {
 }
 
 
+float j1Map::SetLimitPoint(MapData&DataAux) {
 
+	float limitPos;
+	
+
+	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
+
+		if (DataAux.ObjectGamesGroup.At(i)->data->nameGroup == "StartingAndFinishPoint") {
+
+			for (int x = 0; x < DataAux.ObjectGamesGroup.At(i)->data->Objectlist.count(); ++x) {
+
+				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "FinishPoint") {
+					
+					limitPos = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+					 break;
+				}
+			}
+			break;
+		}
+	}
+
+	
+	return limitPos;
+
+
+}
 
 
 

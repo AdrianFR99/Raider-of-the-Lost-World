@@ -19,17 +19,19 @@ struct Player
 
 	struct animations
 	{
-		SDL_Texture* playTex;
+		SDL_Texture* playTex=nullptr;
 		Animation* currentAnimation;
 		Animation idle;
 		Animation run;
 		Animation jump;
-		Animation hurt;
+		Animation die;
+		Animation slide;
 	};
 	
 
 	SDL_Rect playerRect;
 	iPoint playerPos;
+
 	float gravity_speed;
 	int y_max_speed;
 	int x_speed, y_speed;
@@ -42,6 +44,7 @@ struct Player
 	bool landed;
 	bool nextFrameLanded;
 
+
 	bool dead;
 	int deadDelay;
 	int deadCounter;
@@ -49,8 +52,10 @@ struct Player
 	int maximumDeadY_map2;
 
 	
+
 	Collider* playerHitbox;
 	collisionControl colliding;
+
 	animations animations;
 };
 
@@ -100,7 +105,13 @@ public:
 public: //Variables
 
 	Player player;
+
 	Player player_Init;
+
+
+private:
+	p2SString	folder;
+
 };
 
 

@@ -57,5 +57,7 @@
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
 
+    <folder>textures/adventure.png</folder>
+    
   </player>
 </config>

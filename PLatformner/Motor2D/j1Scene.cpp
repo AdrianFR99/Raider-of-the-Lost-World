@@ -7,9 +7,10 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Map.h"
-#include"j2Collision.h"
-#include "j1Scene.h"
+#include "j2Player.h"
 #include "j2Collision.h"
+#include "j1Scene.h"
+
 
 
 j1Scene::j1Scene() : j1Module()
@@ -39,11 +40,11 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		
 		}
 
-	
 
 
 
-	return ret;
+
+		return ret;
 }
 
 // Load Game State
@@ -63,7 +64,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	switchScene.append_attribute("value") = CurrentMap2;
 
-	
+
 
 	return true;
 }
@@ -71,27 +72,27 @@ bool j1Scene::Save(pugi::xml_node& data) const
 // Called before the first frame
 bool j1Scene::Start()
 {
-	
+
 	LOG("Loading Maps");
 
-	for (int i = 0; i < loadedMap.count();i++) {
+	for (int i = 0; i < loadedMap.count(); i++) {
 		if (i == 1) {
 			App->map->Load(loadedMap[i]->GetString(), App->map->data2);
 			continue;
 		}
 
 		App->map->Load(loadedMap[i]->GetString(), App->map->data);
-		
+
 	}
-	
+
 	//Selecting which Colliders create 
 
-	if(CurrentMap2 == false)
-	App->map->CreateColliders(App->map->data);
+	if (CurrentMap2 == false)
+		App->map->CreateColliders(App->map->data);
 
 	else
 		App->map->CreateColliders(App->map->data2);
-	
+
 
 	return true;
 }
@@ -99,50 +100,57 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y += 2 * App->win->GetScale();
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y -= 2 * App->win->GetScale();
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		App->render->camera.x -= 2 * App->win->GetScale();
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 2 * App->win->GetScale();
 
-	
-
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
-
 		switchTheMaps();
 
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		
-		//Player Goes To inital position of the current stage map
-		
-		if(CurrentMap2 == false)
-		App->render->camera.x= App->map->SetPlayerToInitial(App->map->data) ;
+
+		if (CurrentMap2 == false)
+			App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 
 		else
 			App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 	}
- 
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN){
+		
+		if (CurrentMap2 == false)
+			App->render->camera.x =App->map->SetPlayerToInitial(App->map->data);
+
+		else
+			switchTheMaps();
+
+}
+
+
+
+
 
 	if (CurrentMap2==false) {	  	      //Draw Map 1
 		App->map->Draw(App->map->data);
@@ -158,6 +166,11 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x, App->render->camera.y);
 
 		App->win->SetTitle(title.GetString());
+		
+	if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data)) {
+			switchTheMaps();
+		}
+
 		
 	}
 
@@ -175,6 +188,10 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x, App->render->camera.y);
 
 			App->win->SetTitle(title.GetString());
+
+			if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data2)) {
+				switchTheMaps();
+			}
 	}
 
 
@@ -209,6 +226,7 @@ void j1Scene::switchTheMaps()
 	if (CurrentMap2 == false) {
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data2);
+		App->map->SetPlayerToInitial(App->map->data2); 
 		CurrentMap2 = true;
 	}
 
@@ -216,6 +234,7 @@ void j1Scene::switchTheMaps()
 
 		App->collision->CleanUp();
 		App->map->CreateColliders(App->map->data);
+		App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
 
 	}

@@ -9,12 +9,12 @@
 		<switchScene value="false" />
 	</scene>
 	<player>
-		<playerPos x="66" y="8652" />
-		<landed value="false" />
-		<speeds y_speed="128" />
+		<playerPos x="464" y="567" />
+		<landed value="true" />
+		<speeds y_speed="11" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="0" y="673" />
+		<camera x="378" y="673" />
 	</renderer>
 </game_state>
