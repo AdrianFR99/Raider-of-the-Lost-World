@@ -241,8 +241,11 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	/*player.playerRect.x = player.playerHitbox->rect.x;
+	player.playerRect.y = player.playerHitbox->rect.y;
 
-	
+	player.playerPos = { player.playerRect.x , player.playerRect.y };
+	player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);*/
 
 	if (player.dead == true)
 	{
@@ -568,8 +571,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
 			&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
 			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			
-			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
+			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+			&& player.y_speed > 0)
 			//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 		{
 			player.landed = true;
@@ -593,6 +596,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		player.dead = true;
 	}
+
+	
 } 
 
 void j2Player::OnPreCollision(int d) 
