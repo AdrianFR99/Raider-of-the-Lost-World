@@ -550,7 +550,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			player.colliding.wallFront = true;
 			//Before we do anything else, don't allow the collider to enter the tile
-			player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
+			//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
+			player.playerHitbox->rect.x -= overlay.w;
 		}
 		//Conditions to know if the collider that we collided with is Behind of the player
 		else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
@@ -559,9 +560,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			player.colliding.wallBack = true;
 			//Before we do anything else, don't allow the collider to enter the tile
-			player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
-			
-			player.playerRect.y = c2->rect.y - player.playerRect.h;
+			//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
+			player.playerHitbox->rect.x += overlay.w;
+			//player.playerRect.y = c2->rect.y - player.playerRect.h;
 		}
 		//Conditions to know if the collider that we collided with is Under the player
 		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
@@ -570,6 +571,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			player.landed = true;
 			player.colliding.wallDown = true;
+
+			player.playerHitbox->rect.y -= overlay.h;
+			//player.playerHitbox->type-= 
 		}
 		//Conditions to know if the collider that we collided with is over the player
 		//Also, if the collider is a PLATFORM, let us go through it
