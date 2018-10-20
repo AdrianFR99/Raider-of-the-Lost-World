@@ -529,6 +529,15 @@ bool j2Player::PostUpdate()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
+	//Testing new system of collisions
+	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
+	SDL_Rect* col1;
+	SDL_Rect* col2;
+	col1 = &c1->rect;
+	col2 = &c2->rect;
+
+	SDL_IntersectRect(col1, col2, &overlay);
+	
 	if (c2->type == COLLIDER_WALL
 		|| c2->type == COLLIDER_ICE
 		|| c2->type == COLLIDER_PLATFORM
