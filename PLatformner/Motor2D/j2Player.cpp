@@ -567,7 +567,10 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		//Conditions to know if the collider that we collided with is Under the player
 		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
 			&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
-			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
+			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+			
+			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
+			//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 		{
 			player.landed = true;
 			player.colliding.wallDown = true;
