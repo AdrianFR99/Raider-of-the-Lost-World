@@ -290,7 +290,7 @@ bool j2Player::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
 		{
-			player.run_Bool_Left = true;
+			//player.run_Bool_Left = true;
 			player.playerPos.x -= player.x_speed;
 
 			player.GodMode_Left = true;
@@ -391,9 +391,9 @@ bool j2Player::Update(float dt)
 	//Camera Following player
 	App->render->followPlayer(player);
 
-	//We pass them onto the player Rect
-	player.playerRect.x = player.playerPos.x;
-	player.playerRect.y = player.playerPos.y;
+	App->collision->Update(dt);
+	//App->collision->Update(dt);
+
 
 
 
@@ -518,9 +518,9 @@ bool j2Player::PostUpdate()
 
 		//Here we change the values of the rect position
 	if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
-	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
+	player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-	player.playerGodModeHitbox->SetPos(player.playerRect.x, player.playerRect.y);
+	player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 
 	
 	player.run_Bool_Right = false;
@@ -603,8 +603,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	}
 
 	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTIN CHANGE/FIX @Dídac
-	/*player.playerPos.x = player.playerHitbox->rect.x;
-	player.playerPos.y = player.playerHitbox->rect.y;*/
+	player.playerPos.x = player.playerHitbox->rect.x;
+	//player.playerPos.y = player.playerHitbox->rect.y;
 
 } 
 
