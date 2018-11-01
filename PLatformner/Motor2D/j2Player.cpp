@@ -391,7 +391,13 @@ bool j2Player::Update(float dt)
 	//Camera Following player
 	App->render->followPlayer(player);
 
-	App->collision->Update(dt);
+	//Here we change the values of the rect position
+	if (player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
+		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+
+	//App->collision->Update(dt);
 	//App->collision->Update(dt);
 
 
@@ -516,11 +522,11 @@ bool j2Player::PostUpdate()
 
 	player.landed = false;
 
-		//Here we change the values of the rect position
-	if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
-	player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
-	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-	player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+	//	//Here we change the values of the rect position
+	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
+	//player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+	//if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+	//player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 
 	
 	player.run_Bool_Right = false;
