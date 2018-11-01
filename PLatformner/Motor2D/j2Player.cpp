@@ -231,7 +231,6 @@ bool j2Player::PreUpdate()
 {
 	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
-	player.landed = false;
 	player.nextFrameLanded = false;
 	
 	
@@ -353,8 +352,11 @@ bool j2Player::Update(float dt)
 				
 
 				}
+				
 				player.playerPos.y += player.y_speed;
+				
 				player.y_speed += player.gravity_speed;
+
 
 				if (player.y_speed > player.y_max_speed)
 				{
@@ -512,6 +514,8 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
+	player.landed = false;
+
 		//Here we change the values of the rect position
 	if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
 	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
@@ -565,6 +569,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Before we do anything else, don't allow the collider to enter the tile
 			//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
 			player.playerHitbox->rect.x += overlay.w;
+			//player.playerPos.x += overlay.w;
 			//player.playerRect.y = c2->rect.y - player.playerRect.h;
 		}
 		//Conditions to know if the collider that we collided with is Under the player
@@ -597,7 +602,10 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		player.dead = true;
 	}
 
-	
+	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTIN CHANGE/FIX @Dídac
+	/*player.playerPos.x = player.playerHitbox->rect.x;
+	player.playerPos.y = player.playerHitbox->rect.y;*/
+
 } 
 
 void j2Player::OnPreCollision(int d) 
