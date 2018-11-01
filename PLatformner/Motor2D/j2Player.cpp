@@ -188,8 +188,17 @@ bool j2Player::Start()
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
-	if(player.playerHitbox==nullptr)
-	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+	if (player.playerHitbox == nullptr)
+	{
+		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+
+		if (player.lateralFakeHitbox == nullptr)
+		{
+			SDL_Rect fakeLateralCollision = { player.playerHitbox->rect.x -1, player.playerHitbox->rect.y, player.playerHitbox->rect.w +2, player.playerHitbox->rect.h };
+			player.lateralFakeHitbox = App->collision->AddCollider(fakeLateralCollision, COLLIDER_PLAYER, this);
+		}
+	}
+		
 	
 	
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
@@ -388,12 +397,18 @@ bool j2Player::Update(float dt)
 		}
 	}
 
+
+
 	//Camera Following player
 	App->render->followPlayer(player);
 
 	//Here we change the values of the rect position
 	if (player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
+	{
 		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.lateralFakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y);
+	}
+
 	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
 		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 
@@ -611,6 +626,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTIN CHANGE/FIX @Dídac
 	player.playerPos.x = player.playerHitbox->rect.x;
 	//player.playerPos.y = player.playerHitbox->rect.y;
+	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
+	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
 } 
 
@@ -622,6 +639,17 @@ void j2Player::OnPreCollision(int d)
 
 void j2Player::HorCollisionCheck(Collider* c1, Collider* c2)
 {
-	int a = 0;
+	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
+	SDL_Rect* col1;
+	SDL_Rect* col2;
+	col1 = &c1->rect;
+	col2 = &c2->rect;
+
+	SDL_IntersectRect(col1, col2, &overlay);
+
+	if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x)
+	player.colliding.wallBack = true;
+	if(overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x)
+	player.colliding.wallFront = true;
 }
 
