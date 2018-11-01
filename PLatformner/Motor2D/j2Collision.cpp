@@ -153,12 +153,6 @@ bool j2Collision::PreUpdate()
 		}
 	}
 
-	//Check if we will call debugDraw or not at Update
-
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{
-		debugMode = !debugMode;
-	}
 
 	return true;
 }
@@ -166,6 +160,12 @@ bool j2Collision::PreUpdate()
 // Called before render is available
  bool j2Collision::Update(float dt)
 {
+	 //Check if we will call debugDraw or not at Update
+
+	 if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	 {
+		 debugMode = !debugMode;
+	 }
 	 if (debugMode == true)
 	 {
 		 DebugDraw();
