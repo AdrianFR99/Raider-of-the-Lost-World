@@ -74,6 +74,7 @@ struct Player
 	bool GodMode_Left = false;
 
 	Collider* playerHitbox;
+	Collider* lateralFakeHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
@@ -115,6 +116,8 @@ public:
 
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
+
+	void HorCollisionCheck(Collider*, Collider*);
 
 	
 

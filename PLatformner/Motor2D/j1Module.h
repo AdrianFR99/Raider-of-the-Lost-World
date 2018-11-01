@@ -78,6 +78,7 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 	virtual void OnPreCollision(int d) {}
 
+	virtual void HorCollisionCheck(Collider* c1, Collider* c2) {} //Horizontal Collision
 public:
 
 	p2SString	name;

@@ -520,7 +520,7 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
-	player.landed = false;
+	//player.landed = false;
 
 	//	//Here we change the values of the rect position
 	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
@@ -618,5 +618,10 @@ void j2Player::OnPreCollision(int d)
 {
 	/*player.d_to_ground = d;
 	player.nextFrameLanded = true;*/
+}
+
+void j2Player::HorCollisionCheck(Collider* c1, Collider* c2)
+{
+	int a = 0;
 }
 

@@ -43,6 +43,7 @@ struct Collider
 
 	bool CheckCollision(const SDL_Rect& r) const;
 	bool PreCheckCollision(const Player& p) const;
+	bool CheckHorizontalCollision(const SDL_Rect& r) const;
 	int ret_d_to_ground(const Player& p) const;
 };
 
@@ -53,7 +54,7 @@ public:
 	j2Collision();
 	~j2Collision();
 
-	bool PreUpdate() ;
+	bool PreUpdate();
 	bool Update( float dt);
 	bool CleanUp() ;
 

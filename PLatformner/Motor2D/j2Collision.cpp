@@ -139,6 +139,16 @@ bool j2Collision::PreUpdate()
 						c2->callback->OnCollision(c2, c1);
 
 				}
+				
+				if (c1->CheckHorizontalCollision(c2->rect) == true)
+				{
+					if (matrix[c1->type][c2->type] && c1->callback)
+						c1->callback->HorCollisionCheck(c1, c2);
+
+					if (matrix[c2->type][c1->type] && c2->callback)
+						c2->callback->HorCollisionCheck(c2, c1);
+
+				}
 
 				/*if (c1->PreCheckCollision(App->player->player) == true)
 				{
@@ -272,6 +282,11 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
 }
 
+
+bool Collider::CheckHorizontalCollision(const SDL_Rect & r) const
+{
+	return !((rect.y + rect.h) < r.y || rect.y > r.y + r.h || (rect.x + rect.w) < r.x || rect.x > r.x + r.w);
+}
 
 bool Collider::PreCheckCollision(const Player& p) const
 {
