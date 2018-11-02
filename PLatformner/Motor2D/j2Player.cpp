@@ -323,6 +323,7 @@ bool j2Player::Update(float dt)
 				player.idle_Bool_Right = true;
 				player.playerGodModeHitbox->to_delete = true;
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
 			}
 		}
 
