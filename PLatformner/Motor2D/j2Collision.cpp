@@ -221,6 +221,9 @@ void j2Collision::DebugDraw()
 		case COLLIDER_PLAYER: // grey
 			App->render->DrawQuad(colliders[i]->rect, 150, 150, 150, alpha);
 			break;
+		case COLLIDER_PLAYER_CHECK: // darker grey
+			App->render->DrawQuad(colliders[i]->rect, 70, 70,70, alpha);
+			break;
 		case COLLIDER_TRAP: //red
 			App->render->DrawQuad(colliders[i]->rect,255, 0, 0, alpha);
 			break;

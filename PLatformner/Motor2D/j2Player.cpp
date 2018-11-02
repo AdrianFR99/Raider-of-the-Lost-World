@@ -193,8 +193,8 @@ bool j2Player::Start()
 		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 
 		if (player.lateralFakeHitbox == nullptr)
-		{
-			SDL_Rect fakeLateralCollision = { player.playerHitbox->rect.x -1, player.playerHitbox->rect.y, player.playerHitbox->rect.w +2, player.playerHitbox->rect.h };
+		{					//CHANGE/FIX
+			SDL_Rect fakeLateralCollision = { player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1, player.playerHitbox->rect.w +2, player.playerHitbox->rect.h+2};
 			player.lateralFakeHitbox = App->collision->AddCollider(fakeLateralCollision, COLLIDER_PLAYER_CHECK, this);
 		}
 	}
@@ -406,7 +406,7 @@ bool j2Player::Update(float dt)
 	if (player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
 	{
 		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
-		player.lateralFakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y);
+		player.lateralFakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1);
 	}
 
 	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
@@ -535,7 +535,7 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
-	//player.landed = false;
+	player.landed = false;
 
 	//	//Here we change the values of the rect position
 	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
@@ -627,15 +627,28 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	}
 	else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
 	{
-		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x)
+		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 			player.colliding.wallBack = true;
-		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x)
+		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 			player.colliding.wallFront = true;
+		
+		if (overlay.y + overlay.h > c2->rect.y
+			&& overlay.y +overlay.h < c2->rect.y + c2->rect.h
+			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
+		{
+			player.landed = true;
+		}
 	}
 
 	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
 	player.playerPos.x = player.playerHitbox->rect.x;
-	//player.playerPos.y = player.playerHitbox->rect.y;
+	player.playerPos.y = player.playerHitbox->rect.y;
+
+	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
+	
 	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
 	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
