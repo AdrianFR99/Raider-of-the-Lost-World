@@ -36,6 +36,7 @@ struct Player
 	
 	SDL_Rect playerRect;
 	iPoint playerPos;
+	SDL_Rect fakeCollisionRect;
 	//Player Speeds
 	int gravity_speed;
 	int y_max_speed;
@@ -74,7 +75,7 @@ struct Player
 	bool GodMode_Left = false;
 
 	Collider* playerHitbox;
-	Collider* lateralFakeHitbox;
+	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
