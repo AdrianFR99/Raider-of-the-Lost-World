@@ -195,7 +195,7 @@ bool j2Player::Start()
 		if (player.lateralFakeHitbox == nullptr)
 		{
 			SDL_Rect fakeLateralCollision = { player.playerHitbox->rect.x -1, player.playerHitbox->rect.y, player.playerHitbox->rect.w +2, player.playerHitbox->rect.h };
-			player.lateralFakeHitbox = App->collision->AddCollider(fakeLateralCollision, COLLIDER_PLAYER, this);
+			player.lateralFakeHitbox = App->collision->AddCollider(fakeLateralCollision, COLLIDER_PLAYER_CHECK, this);
 		}
 	}
 		
@@ -299,7 +299,7 @@ bool j2Player::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
 		{
-			//player.run_Bool_Left = true;
+			player.run_Bool_Left = true;
 			player.playerPos.x -= player.x_speed;
 
 			player.GodMode_Left = true;
@@ -566,64 +566,74 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 	SDL_IntersectRect(col1, col2, &overlay);
 	
-	if (c2->type == COLLIDER_WALL
-		|| c2->type == COLLIDER_ICE
-		|| c2->type == COLLIDER_PLATFORM
-		|| c2->type == COLLIDER_CLIMBWALL)
+	if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
 	{
-		//Conditions to know if the collider that we collided with is in Front of the player
-		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			&& c2->rect.x - player.playerHitbox->rect.x > 0
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+		if (c2->type == COLLIDER_WALL
+			|| c2->type == COLLIDER_ICE
+			|| c2->type == COLLIDER_PLATFORM
+			|| c2->type == COLLIDER_CLIMBWALL)
 		{
-			player.colliding.wallFront = true;
-			//Before we do anything else, don't allow the collider to enter the tile
-			//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
-			player.playerHitbox->rect.x -= overlay.w;
+			//Conditions to know if the collider that we collided with is in Front of the player
+			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+				&& c2->rect.x - player.playerHitbox->rect.x > 0
+				&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			{
+				player.colliding.wallFront = true;
+				//Before we do anything else, don't allow the collider to enter the tile
+				//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
+				player.playerHitbox->rect.x -= overlay.w;
+			}
+			//Conditions to know if the collider that we collided with is Behind of the player
+			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
+				&& player.playerHitbox->rect.x - c2->rect.x > 0
+				&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			{
+				player.colliding.wallBack = true;
+				//Before we do anything else, don't allow the collider to enter the tile
+				//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
+				player.playerHitbox->rect.x += overlay.w;
+				//player.playerPos.x += overlay.w;
+				//player.playerRect.y = c2->rect.y - player.playerRect.h;
+			}
+			//Conditions to know if the collider that we collided with is Under the player
+			else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
+				&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
+				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+				&& player.y_speed > 0)
+				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
+			{
+				player.landed = true;
+				player.colliding.wallDown = true;
+
+				player.playerHitbox->rect.y -= overlay.h;
+				//player.playerHitbox->type-= 
+			}
+			//Conditions to know if the collider that we collided with is over the player
+			//Also, if the collider is a PLATFORM, let us go through it
+			else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h && c2->type != COLLIDER_PLATFORM)
+			{
+				player.y_speed = -1; // change the speed to inmediately falling (bouncing off the Top)
+				player.landed = false;
+				player.colliding.wallTop = true;
+			}
+
 		}
-		//Conditions to know if the collider that we collided with is Behind of the player
-		else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
-			&& player.playerHitbox->rect.x - c2->rect.x > 0
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+		//If the collider is a killing obstacle DIE
+		if (c2->type == COLLIDER_TRAP)
 		{
+			player.dead = true;
+		}
+	}
+	else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
+	{
+		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x)
 			player.colliding.wallBack = true;
-			//Before we do anything else, don't allow the collider to enter the tile
-			//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
-			player.playerHitbox->rect.x += overlay.w;
-			//player.playerPos.x += overlay.w;
-			//player.playerRect.y = c2->rect.y - player.playerRect.h;
-		}
-		//Conditions to know if the collider that we collided with is Under the player
-		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
-			&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
-			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-			&& player.y_speed > 0)
-			//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
-		{
-			player.landed = true;
-			player.colliding.wallDown = true;
-
-			player.playerHitbox->rect.y -= overlay.h;
-			//player.playerHitbox->type-= 
-		}
-		//Conditions to know if the collider that we collided with is over the player
-		//Also, if the collider is a PLATFORM, let us go through it
-		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h && c2->type != COLLIDER_PLATFORM)
-		{
-			player.y_speed = -1; // change the speed to inmediately falling (bouncing off the Top)
-			player.landed = false;
-			player.colliding.wallTop = true;
-		}
-
-	}
-	//If the collider is a killing obstacle DIE
-	if (c2->type == COLLIDER_TRAP)
-	{
-		player.dead = true;
+		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x)
+			player.colliding.wallFront = true;
 	}
 
-	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTIN CHANGE/FIX @Dídac
+	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
 	player.playerPos.x = player.playerHitbox->rect.x;
 	//player.playerPos.y = player.playerHitbox->rect.y;
 	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
@@ -637,19 +647,4 @@ void j2Player::OnPreCollision(int d)
 	player.nextFrameLanded = true;*/
 }
 
-void j2Player::HorCollisionCheck(Collider* c1, Collider* c2)
-{
-	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
-	SDL_Rect* col1;
-	SDL_Rect* col2;
-	col1 = &c1->rect;
-	col2 = &c2->rect;
-
-	SDL_IntersectRect(col1, col2, &overlay);
-
-	if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x)
-	player.colliding.wallBack = true;
-	if(overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x)
-	player.colliding.wallFront = true;
-}
 

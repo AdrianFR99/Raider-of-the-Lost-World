@@ -117,8 +117,6 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
-	void HorCollisionCheck(Collider*, Collider*);
-
 	
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP

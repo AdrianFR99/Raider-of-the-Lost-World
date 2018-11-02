@@ -17,6 +17,7 @@ enum COLLIDER_TYPE
 	COLLIDER_PLATFORM,
 	COLLIDER_CLIMBWALL,
 	COLLIDER_PLAYER,
+	COLLIDER_PLAYER_CHECK,
 	COLLIDER_GODMODE,
 
 	COLLIDER_MAX
@@ -43,7 +44,6 @@ struct Collider
 
 	bool CheckCollision(const SDL_Rect& r) const;
 	bool PreCheckCollision(const Player& p) const;
-	bool CheckHorizontalCollision(const SDL_Rect& r) const;
 	int ret_d_to_ground(const Player& p) const;
 };
 

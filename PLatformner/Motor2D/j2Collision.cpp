@@ -21,6 +21,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WALL][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_WALL][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER_CHECK] = true;
 	matrix[COLLIDER_WALL][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_TRAP][COLLIDER_WALL] = false;
@@ -30,6 +31,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_TRAP][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_TRAP][COLLIDER_PLAYER_CHECK] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_ICE][COLLIDER_WALL] = false;
@@ -39,6 +41,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_ICE][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_ICE][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_ICE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ICE][COLLIDER_PLAYER_CHECK] = true;
 	matrix[COLLIDER_ICE][COLLIDER_GODMODE] = false;
 
 
@@ -49,6 +52,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WATER][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_WATER][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_WATER][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_WATER][COLLIDER_PLAYER_CHECK] = false;
 	matrix[COLLIDER_WATER][COLLIDER_GODMODE] = false;
 
 
@@ -59,6 +63,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLATFORM][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER_CHECK] = true;
 	matrix[COLLIDER_PLATFORM][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_WALL] = false;
@@ -68,6 +73,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLAYER_CHECK] = true;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_GODMODE] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
@@ -77,7 +83,19 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_CLIMBWALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_CHECK] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_GODMODE] = false;
+
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_WALL] = true;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_ICE] = true;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_WATER] = true;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_PLATFORM] = true;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_CLIMBWALL] = true;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_PLAYER_CHECK] = false;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_GODMODE] = false;
+	
 
 	matrix[COLLIDER_GODMODE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_TRAP] = false;
@@ -86,6 +104,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_GODMODE][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_CLIMBWALL] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_GODMODE][COLLIDER_PLAYER_CHECK] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_GODMODE] = false;
 
 
@@ -137,16 +156,6 @@ bool j2Collision::PreUpdate()
 
 					if (matrix[c2->type][c1->type] && c2->callback)
 						c2->callback->OnCollision(c2, c1);
-
-				}
-				
-				if (c1->CheckHorizontalCollision(c2->rect) == true)
-				{
-					if (matrix[c1->type][c2->type] && c1->callback)
-						c1->callback->HorCollisionCheck(c1, c2);
-
-					if (matrix[c2->type][c1->type] && c2->callback)
-						c2->callback->HorCollisionCheck(c2, c1);
 
 				}
 
@@ -280,12 +289,6 @@ Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
-}
-
-
-bool Collider::CheckHorizontalCollision(const SDL_Rect & r) const
-{
-	return !((rect.y + rect.h) < r.y || rect.y > r.y + r.h || (rect.x + rect.w) < r.x || rect.x > r.x + r.w);
 }
 
 bool Collider::PreCheckCollision(const Player& p) const
