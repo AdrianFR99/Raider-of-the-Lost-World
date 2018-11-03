@@ -52,7 +52,8 @@ class j2Collision : public j1Module
 public:
 
 	j2Collision();
-	~j2Collision();
+	// Destructor
+	virtual ~j2Collision();
 
 	bool PreUpdate();
 	bool Update( float dt);
