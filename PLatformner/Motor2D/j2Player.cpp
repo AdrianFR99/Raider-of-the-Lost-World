@@ -125,6 +125,11 @@ bool j2Player::Load(pugi::xml_node& data)
 	player.dead = data.child("dead").attribute("value").as_bool();
 	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
 
+	if (player.godMode == false)
+	{
+		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.fakeHitbox->SetPos(player.playerHitbox->rect.x - 1, player.playerHitbox->rect.y - 1);
+	}
 
 	return true;
 }
@@ -146,7 +151,6 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave = data.append_child("dead");
 	playerSave.append_attribute("value") = player.dead;
 	playerSave.append_attribute("deadCounter") = player.deadCounter;
-
 
 	return true;
 }
