@@ -272,29 +272,15 @@ bool j2Player::Update(float dt)
 			
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
+
+		//Check Movement 
+		MovementInputs();
+		//switchStates
+		SwithcingStates();
+		//movePlayer
+		MovingPlayer();
 	
-		  
-		//Control X speed
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
-		{
 
-			player.run_Bool_Right = true;
-			player.playerPos.x += player.x_speed;
-			
-			player.GodMode_Left = false;
-       
-			
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
-		{
-			player.run_Bool_Left = true;
-			player.playerPos.x -= player.x_speed;
-
-			player.GodMode_Left = true;
-
-
-		}
 
 		//GODMODE LOGIC
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -585,3 +571,111 @@ void j2Player::OnPreCollision(int d)
 	player.nextFrameLanded = true;*/
 }
 
+void  j2Player::MovementInputs() {
+
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+	{
+		MoveRight = false;
+		
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
+	{
+		MoveRight = true;
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
+	{
+		MoveLeft = false;
+		
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
+	{
+		MoveLeft = true;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE)
+	{
+		MoveUp = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && player.colliding.wallBack == false)
+	{
+		MoveUp = true;
+	}
+	
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
+	{
+		MoveDown = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && player.colliding.wallBack == false)
+	{
+		MoveDown = true;
+	}
+
+}
+
+void j2Player::SwithcingStates() {
+
+	if ((MoveRight == true && MoveLeft==false || MoveRight == false && MoveLeft == true) && player.landed==true  ) {
+
+		CurrentState = Player_State::RUNNING;
+	}
+	else if (MoveRight==false && MoveLeft==false && MoveDown==false && MoveUp==false) {
+
+		CurrentState = Player_State::IDLE;
+	}
+
+
+}
+
+void j2Player::MovingPlayer() {
+
+	if (CurrentState != Player_State::IDLE) {
+
+		if (CurrentState == Player_State::RUNNING) {
+
+			if (MoveRight) {
+
+
+				player.run_Bool_Right = true;
+
+				Speed.x += Acceleration;
+
+				if (Speed.x < 0.00)
+					Speed.x = 0.00;
+
+
+			}
+
+			else if (MoveLeft) {
+
+
+				player.run_Bool_Left = true;
+
+				Speed.x -= Acceleration;
+
+				if (Speed.x > 0.00)
+					Speed.x = 0.00;
+
+			}
+
+
+
+		}
+
+
+		if (Speed.x > MAXspeed)
+			Speed.x = MAXspeed;
+		else if (Speed.x < -MAXspeed)
+			Speed.x = -MAXspeed;
+
+
+		player.playerPos.x += Speed.x;
+	}
+	
+}

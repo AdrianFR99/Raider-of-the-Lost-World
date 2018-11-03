@@ -6,6 +6,15 @@
 
 struct Collider;
 
+enum class Player_State {
+
+	IDLE,
+	RUNNING,
+	CROUCHING,
+	SLIDING,
+
+
+};
 
 struct Player
 {
@@ -35,7 +44,7 @@ struct Player
 	};
 	
 	SDL_Rect playerRect;
-	iPoint playerPos;
+	fPoint playerPos;
 	//Player Speeds
 	int gravity_speed;
 	int y_max_speed;
@@ -116,7 +125,10 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
-	
+
+	void MovementInputs();
+	void SwithcingStates();
+	void MovingPlayer();
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
@@ -126,9 +138,7 @@ public:
 public: //Variables
 
 	Player player;
-
 	Player player_Init;
-	
 	SDL_Texture* playTex = nullptr;
 
 	pugi::xml_node AnimPushBack;
@@ -136,6 +146,19 @@ public: //Variables
 
 	SDL_Rect AnimationRect;
 
+	//new structure for player
+	fPoint Speed;
+	float Acceleration=0.10;
+	float MAXspeed=3.50;
+
+
+	bool MoveRight = false;
+	bool MoveLeft = false;
+	bool MoveUp = false;
+	bool MoveDown = false;
+
+
+	Player_State CurrentState;
 private:
 	p2SString	folder;
 };
