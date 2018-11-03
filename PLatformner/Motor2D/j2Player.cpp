@@ -103,8 +103,6 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Godmode
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
-		
-	
 	}
 	else
 	{
@@ -188,16 +186,22 @@ bool j2Player::Start()
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
-	if (player.playerHitbox == nullptr)
-	{
-		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
+	player.playerHitbox = nullptr;
+	player.playerGodModeHitbox = nullptr;
+	player.fakeHitbox = nullptr;
 
-		if (player.fakeHitbox == nullptr)
-		{					//CHANGE/FIX
-			player.fakeCollisionRect = { player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1, player.playerHitbox->rect.w +2, player.playerHitbox->rect.h+2};
-			player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
-		}
-	}
+	CreatePlayerColliders(player);
+	//if (player.playerHitbox == nullptr)
+	//{
+	//	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+
+	//	if (player.fakeHitbox == nullptr)
+	//	{					//CHANGE/FIX
+	//		
+	//		player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+	//	}
+	//}
 		
 	
 	
@@ -263,6 +267,11 @@ bool j2Player::Update(float dt)
 		}
 		else
 		{
+			//Destroy the player Colliders
+			player.playerHitbox->to_delete = true;
+			player.fakeHitbox->to_delete = true;
+			player.playerHitbox = nullptr;
+			player.fakeHitbox = nullptr;
 			//Player Goes To inital position of the current stage map
 			if (App->scene->CurrentMap2 == false)
 				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
@@ -276,13 +285,13 @@ bool j2Player::Update(float dt)
 	}
 	else 
 	{
-		//If the player is alive
-		if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
-		{
-				player.playerRect = player_Init.playerRect;
-			
-				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-		}
+		////If the player is alive
+		//if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
+		//{
+		//		player.playerRect = player_Init.playerRect;
+		//	
+		//		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+		//}
 	
 		  
 		//Control X speed
@@ -405,14 +414,14 @@ bool j2Player::Update(float dt)
 	App->render->followPlayer(player);
 
 	//Here we change the values of the rect position
-	if (player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
+	if (player.godMode == false
+		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
 		&& player.fakeHitbox != nullptr && player.fakeHitbox->to_delete == false)
 	{
 		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1);
 	}
-
-	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
 		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 
 	//App->collision->Update(dt);
@@ -667,6 +676,44 @@ void j2Player::OnPreCollision(int d)
 {
 	/*player.d_to_ground = d;
 	player.nextFrameLanded = true;*/
+}
+
+void j2Player::NullifyPlayerColliders(Player & p)
+{
+	p.playerHitbox = nullptr;
+	p.playerGodModeHitbox = nullptr;
+	p.fakeHitbox = nullptr;
+}
+
+//This function assumes that there are no player hitboxes and creates them
+bool j2Player::CreatePlayerColliders(Player &p)
+{
+	int ret = -1;
+
+	//In case the players colliders are 
+	if (p.godMode == true)
+	{
+		if (p.playerGodModeHitbox == nullptr)
+		{
+			p.playerGodModeHitbox = App->collision->AddCollider(player_Init.playerRect,COLLIDER_GODMODE, this);
+			p.playerHitbox = nullptr;
+			p.fakeHitbox = nullptr;
+
+			ret = 1;
+		}
+	}
+	else
+	{
+		if (p.playerHitbox == nullptr && p.fakeHitbox == nullptr)
+		{
+			p.playerHitbox = App->collision->AddCollider(player_Init.playerRect, COLLIDER_PLAYER, this);
+			p.fakeHitbox = App->collision->AddCollider(p.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+			p.playerGodModeHitbox = nullptr;
+			ret = 1;
+		}
+	}
+
+	return ret;
 }
 
 

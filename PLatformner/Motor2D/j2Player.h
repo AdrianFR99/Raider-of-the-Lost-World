@@ -118,6 +118,9 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
+	void NullifyPlayerColliders(Player &p);
+	bool CreatePlayerColliders(Player &p);
+
 	
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP

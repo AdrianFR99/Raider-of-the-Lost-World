@@ -282,6 +282,8 @@ void j1Scene::switchTheMaps()
 	
 	if (CurrentMap2 == false) {
 		App->collision->CleanUp();
+		App->player->NullifyPlayerColliders(App->player->player);
+		App->player->CreatePlayerColliders(App->player->player);
 		App->map->CreateColliders(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
@@ -290,9 +292,11 @@ void j1Scene::switchTheMaps()
 	else {
 
 		App->collision->CleanUp();
+		App->player->NullifyPlayerColliders(App->player->player);
 		App->map->CreateColliders(App->map->data);
+		App->player->CreatePlayerColliders(App->player->player);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
-		CurrentMap2 = false;
+		CurrentMap2 = false; 
 
 	}
 }
