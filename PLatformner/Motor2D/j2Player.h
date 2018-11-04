@@ -157,9 +157,9 @@ public: //Variables
 	//new structure for player
 	fPoint Speed;
 	fPoint Maxspeed;
-
+	float JumpForce = 5.00;
 	float Currentacceleration=0.10;
-
+	float gravity = 0.1;
 
 
 	bool ToMoveRight;

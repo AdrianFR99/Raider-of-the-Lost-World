@@ -683,7 +683,7 @@ void j2Player::IdleMoveCheck() {
 		}
 		else if (ToMoveUp == true) {
 			//jump
-			Speed.y = -2;
+			Speed.y = -JumpForce;
 			player.landed = false;
 			CurrentState = Player_State::AIRBORNE;
 		}
@@ -704,7 +704,7 @@ void j2Player::CrouchingMoveCheck() {
 	}
 	else if (ToMoveUp == true) {
 		//jump
-		Speed.y = -2;
+		Speed.y = -JumpForce;
 		player.landed = false;
 		CurrentState = Player_State::AIRBORNE;
 	}
@@ -715,7 +715,7 @@ void j2Player::RunningMoveCheck() {
 
 	if (ToMoveUp == true) {
 		//jump
-		Speed.y = -2;
+		Speed.y = -JumpForce;
 		player.landed = false;
 		CurrentState = Player_State::AIRBORNE;
 	}
@@ -728,17 +728,17 @@ void j2Player::RunningMoveCheck() {
 }
 void j2Player::AirMoveCheck() {
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && player.landed == false) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
 		
 		//Reset Animation
 		//somersaultAnim.Reset();
 		
 		//jump
-		Speed.y = -2;
+		Speed.y =-JumpForce;
 		player.doubleJump = true;
 	}
 
-	if (!player.landed) {		
+	if (player.landed) {		
 
 		//land
 		Speed.y = 0.0;
@@ -793,10 +793,9 @@ void j2Player::MovingPlayer() {
 	}
 
 	// If on air, apply gravity
-	if (CurrentState == Player_State::AIRBORNE) {
+	if ((CurrentState == Player_State::AIRBORNE || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
 		//Fall
-		if(!player.landed)
-		Speed.y += player.gravity_speed;
+		Speed.y += gravity;
 	}
 
 	// Max Speeds
