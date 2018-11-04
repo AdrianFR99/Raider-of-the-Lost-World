@@ -10,6 +10,7 @@ enum class Player_State {
 
 	IDLE,
 	RUNNING,
+	AIRBORNE,
 	CROUCHING,
 	SLIDING,
 
@@ -127,8 +128,15 @@ public:
 
 
 	void MovementInputs();
+	void ChechMovement();
 	void SwithcingStates();
 	void MovingPlayer();
+
+
+	void IdleMoveCheck();
+	void CrouchingMoveCheck();
+	void RunningMoveCheck();
+	void AirMoveCheck();
 
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
@@ -148,14 +156,21 @@ public: //Variables
 
 	//new structure for player
 	fPoint Speed;
-	float Acceleration=0.10;
-	float MAXspeed=3.50;
+	fPoint Maxspeed;
+
+	float Currentacceleration=0.10;
 
 
-	bool MoveRight = false;
-	bool MoveLeft = false;
-	bool MoveUp = false;
-	bool MoveDown = false;
+
+	bool ToMoveRight;
+	bool ToMoveLeft = false;
+	bool ToMoveUp = false;
+	bool ToMoveDown = false;
+
+	bool MovingRight = false;
+	bool MovingLeft = false;
+	bool MovingUp = false;
+	bool MovingDown = false;
 
 
 	Player_State CurrentState;

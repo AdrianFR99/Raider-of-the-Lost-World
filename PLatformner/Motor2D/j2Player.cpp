@@ -188,6 +188,9 @@ bool j2Player::Start()
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
+	Maxspeed.x = 3.00;
+	Maxspeed.y = 3.00;
+
 	if(player.playerHitbox==nullptr)
 	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 	
@@ -273,8 +276,10 @@ bool j2Player::Update(float dt)
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
 
-		//Check Movement 
+		//Chechk inputs
 		MovementInputs();
+		//CheckMovement
+		ChechMovement();
 		//switchStates
 		SwithcingStates();
 		//movePlayer
@@ -315,41 +320,41 @@ bool j2Player::Update(float dt)
 			//is not touching a solid surface with its feet
 			//when landed == true the player IS touching a solid surface with its feet
 
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+		/*	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
 				&& player.landed == true)
 			{
 				player.jump_Bool = true;
 				player.landed = false;
 				player.y_speed = player_Init.y_speed;
-			}
+			}*/
 
-			if (player.landed == false)
-			{
-				if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-					&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
-					// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
-					//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
-				{
-					
-					player.doubleJump = false;
-					player.y_speed = player_Init.y_speed;
-				
+			//if (player.landed == false)
+			//{
+			//	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
+			//		&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
+			//		// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
+			//		//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
+			//	{
+			//		/*player.landed = false;
+			//		player.doubleJump = false;
+			//		player.y_speed = player_Init.y_speed;*/
+			//	
 
-				}
-				player.playerPos.y += player.y_speed;
-				player.y_speed += player.gravity_speed;
+			//	}
+			//	player.playerPos.y += player.y_speed;
+			//	player.y_speed += player.gravity_speed;
 
-				if (player.y_speed > player.y_max_speed)
-				{
-					player.y_speed = player.y_max_speed;
-				}
-				player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
-			}
-			else
-			{
-				player.doubleJump = true;
-				player.doubleJump_counter = player_Init.doubleJump_counter;
-			}
+			//	if (player.y_speed > player.y_max_speed)
+			//	{
+			//		player.y_speed = player.y_max_speed;
+			//	}
+			//	player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
+			//}
+			//else
+			//{
+			//	player.doubleJump = true;
+			//	player.doubleJump_counter = player_Init.doubleJump_counter;
+			//}
 		}
 	}
 
@@ -576,106 +581,239 @@ void  j2Player::MovementInputs() {
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
 	{
-		MoveRight = false;
+		ToMoveRight = false;
 		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
 	{
-		MoveRight = true;
+		ToMoveRight = true;
 
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
 	{
-		MoveLeft = false;
+		ToMoveLeft = false;
 		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
 	{
-		MoveLeft = true;
+		ToMoveLeft = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE)
 	{
-		MoveUp = false;
+		ToMoveUp = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && player.colliding.wallBack == false)
 	{
-		MoveUp = true;
+		ToMoveUp = true;
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 	{
-		MoveDown = false;
+		ToMoveDown = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && player.colliding.wallBack == false)
 	{
-		MoveDown = true;
+		ToMoveDown = true;
+	}
+
+}
+
+void j2Player::ChechMovement(){
+
+	if (Speed.x > 0.0f) {
+		MovingRight = true;
+		MovingLeft = false;
+	}
+	else if (Speed.x < 0.0f) {
+		MovingLeft = true;
+		MovingRight = false;
+	}
+	else if (Speed.x == 0.0f) {
+		MovingLeft = false;
+		MovingRight = false;
+	}
+
+	if (Speed.y < 0.0f) {
+		MovingUp = true;
+		MovingDown = false;
+	}
+	else if (Speed.y > 0.0f) {
+		MovingDown = true;
+		MovingUp = false;
+	}
+	else if (Speed.y == 0.0f) {
+		MovingUp = false;
+		MovingDown = false;
 	}
 
 }
 
 void j2Player::SwithcingStates() {
 
-	if ((MoveRight == true && MoveLeft==false || MoveRight == false && MoveLeft == true) && player.landed==true  ) {
-
-		CurrentState = Player_State::RUNNING;
+	switch (CurrentState) {
+	case Player_State::IDLE:
+		IdleMoveCheck();
+		break;
+	case Player_State::CROUCHING:
+		CrouchingMoveCheck();
+		break;
+	case  Player_State::RUNNING:
+		RunningMoveCheck();
+		break;
+	case  Player_State::AIRBORNE:
+		AirMoveCheck();
+		break;
+	
 	}
-	else if (MoveRight==false && MoveLeft==false && MoveDown==false && MoveUp==false) {
 
-		CurrentState = Player_State::IDLE;
+
+}
+
+void j2Player::IdleMoveCheck() {
+
+	if (player.dead == false) {
+		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
+			CurrentState = Player_State::RUNNING;
+		}
+		else if (ToMoveUp == true) {
+			//jump
+			Speed.y = -2;
+			player.landed = false;
+			CurrentState = Player_State::AIRBORNE;
+		}
+		else if (ToMoveDown == true) {
+			CurrentState = Player_State::CROUCHING;
+		}
 	}
+
+}
+void j2Player::CrouchingMoveCheck() {
+
+	if (ToMoveDown == false) {
+		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
+			CurrentState = Player_State::RUNNING;
+		else {
+			CurrentState = Player_State::IDLE;
+		}
+	}
+	else if (ToMoveUp == true) {
+		//jump
+		Speed.y = -2;
+		player.landed = false;
+		CurrentState = Player_State::AIRBORNE;
+	}
+
+
+}
+void j2Player::RunningMoveCheck() {
+
+	if (ToMoveUp == true) {
+		//jump
+		Speed.y = -2;
+		player.landed = false;
+		CurrentState = Player_State::AIRBORNE;
+	}
+	else if (MovingLeft == false && MovingRight == false) {
+		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
+			CurrentState = Player_State::IDLE;
+		}
+	}
+
+}
+void j2Player::AirMoveCheck() {
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && player.landed == false) {
+		
+		//Reset Animation
+		//somersaultAnim.Reset();
+		
+		//jump
+		Speed.y = -2;
+		player.doubleJump = true;
+	}
+
+	if (!player.landed) {		
+
+		//land
+		Speed.y = 0.0;
+		//jumpAnim.Reset();
+		player.doubleJump = false;
+
+		if (player.dead == true) {
+			CurrentState = Player_State::IDLE;
+		}
+		else {
+			
+			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true) {
+				if (ToMoveDown == false) {
+					CurrentState = Player_State::RUNNING;
+				}
+			
+			}
+			else if (ToMoveDown == true) {
+				CurrentState = Player_State::CROUCHING;
+			}
+			else {
+				CurrentState = Player_State::IDLE;
+			}
+		}
+	}
+
 
 
 }
 
 void j2Player::MovingPlayer() {
 
-	if (CurrentState != Player_State::IDLE) {
-
-		if (CurrentState == Player_State::RUNNING) {
-
-			if (MoveRight) {
-
-
-				player.run_Bool_Right = true;
-
-				Speed.x += Acceleration;
-
-				if (Speed.x < 0.00)
-					Speed.x = 0.00;
-
-
-			}
-
-			else if (MoveLeft) {
-
-
-				player.run_Bool_Left = true;
-
-				Speed.x -= Acceleration;
-
-				if (Speed.x > 0.00)
-					Speed.x = 0.00;
-
-			}
-
-
-
-		}
-
-
-		if (Speed.x > MAXspeed)
-			Speed.x = MAXspeed;
-		else if (Speed.x < -MAXspeed)
-			Speed.x = -MAXspeed;
-
-
-		player.playerPos.x += Speed.x;
+	if (ToMoveRight == true && ToMoveLeft == false) {
+		Speed.x += Currentacceleration;
 	}
+	else if (ToMoveLeft == true && ToMoveRight == false) {
+		Speed.x -= Currentacceleration;
+	}
+	else if (CurrentState != Player_State::AIRBORNE) {	// Natural deacceleration when on ground
+		if (MovingRight == true) {
+			Speed.x -= Currentacceleration;
+
+			if (Speed.x < 0.0f)
+				Speed.x = 0.0f;
+		}
+		else if (MovingLeft == true) {
+			Speed.x += Currentacceleration;
+
+			if (Speed.x > 0.0f)
+				Speed.x = 0.0f;
+		}
+	}
+
+	// If on air, apply gravity
+	if (CurrentState == Player_State::AIRBORNE) {
+		//Fall
+		if(!player.landed)
+		Speed.y += player.gravity_speed;
+	}
+
+	// Max Speeds
+	if (Speed.x > Maxspeed.x)
+		Speed.x = Maxspeed.x;
+	else if (Speed.x < -Maxspeed.x)
+		Speed.x = -Maxspeed.x;
+
+	if (Speed.y > Maxspeed.y)
+		Speed.y = Maxspeed.y;
+	else if (Speed.y < -Maxspeed.y)
+		Speed.y = -Maxspeed.y;
+
+
+	// New position
+	player.playerPos.x +=Speed.x;
+	player.playerPos.y += Speed.y;
+	
 	
 }
