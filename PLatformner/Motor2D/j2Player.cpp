@@ -245,8 +245,6 @@ bool j2Player::PreUpdate()
 bool j2Player::Update(float dt)
 {
 
-	
-
 	if (player.dead == true)
 	{
 		if (player.deadCounter < player.deadDelay)
@@ -285,77 +283,6 @@ bool j2Player::Update(float dt)
 		//movePlayer
 		MovingPlayer();
 	
-
-
-		//GODMODE LOGIC
-		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		{
-			player.godMode = !player.godMode;
-			if (player.godMode == true)
-			{
-				player.idle_Bool_Right = false;
-				player.playerHitbox->to_delete = true;
-				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
-			}
-			else
-			{
-				player.idle_Bool_Right = true;
-				player.playerGodModeHitbox->to_delete = true;
-				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-			}
-		}
-
-		if (player.godMode == true)
-		{
-			//If GodMode Activated, move around FREELY (X vlues aren't affected)
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-				player.playerPos.y -= player.y_max_speed;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-				player.playerPos.y += player.y_max_speed;
-		}
-		else
-		{
-
-			//LANDED LOGIC:  when landed == false the player 
-			//is not touching a solid surface with its feet
-			//when landed == true the player IS touching a solid surface with its feet
-
-		/*	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-				&& player.landed == true)
-			{
-				player.jump_Bool = true;
-				player.landed = false;
-				player.y_speed = player_Init.y_speed;
-			}*/
-
-			//if (player.landed == false)
-			//{
-			//	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.colliding.wallTop == false
-			//		&& player.doubleJump == true && player.doubleJump_counter > player.doubleJump_delay)
-			//		// if the player isn't landed and at least doubleJump_counter is bigger than doubleJump_delay frames
-			//		//This was done to avoid that the player performs accidentally a doubleJump right after performing the first one 
-			//	{
-			//		/*player.landed = false;
-			//		player.doubleJump = false;
-			//		player.y_speed = player_Init.y_speed;*/
-			//	
-
-			//	}
-			//	player.playerPos.y += player.y_speed;
-			//	player.y_speed += player.gravity_speed;
-
-			//	if (player.y_speed > player.y_max_speed)
-			//	{
-			//		player.y_speed = player.y_max_speed;
-			//	}
-			//	player.doubleJump_counter += 1; // We increase the double Jump counter, as we're not on the ground
-			//}
-			//else
-			//{
-			//	player.doubleJump = true;
-			//	player.doubleJump_counter = player_Init.doubleJump_counter;
-			//}
-		}
 	}
 
 	//If the player falls and surpasses a determined Y position it dies
@@ -380,9 +307,6 @@ bool j2Player::Update(float dt)
 	//We pass them onto the player Rect
 	player.playerRect.x = player.playerPos.x;
 	player.playerRect.y = player.playerPos.y;
-
-
-
 
 
 
@@ -621,6 +545,24 @@ void  j2Player::MovementInputs() {
 	{
 		ToMoveDown = true;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+
+		player.godMode = !player.godMode;
+		if (player.godMode == true)
+		{
+			player.idle_Bool_Right = false;
+			player.playerHitbox->to_delete = true;
+			player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
+		}
+		else
+		{
+			player.idle_Bool_Right = true;
+			player.playerGodModeHitbox->to_delete = true;
+			player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+		}
+
+	}
+
 
 }
 
@@ -764,55 +706,68 @@ void j2Player::AirMoveCheck() {
 			}
 		}
 	}
-
-
-
 }
 
 void j2Player::MovingPlayer() {
+	if (player.godMode == false) {
 
-	if (ToMoveRight == true && ToMoveLeft == false) {
-		Speed.x += Currentacceleration;
-	}
-	else if (ToMoveLeft == true && ToMoveRight == false) {
-		Speed.x -= Currentacceleration;
-	}
-	else if (CurrentState != Player_State::AIRBORNE) {	// Natural deacceleration when on ground
-		if (MovingRight == true) {
-			Speed.x -= Currentacceleration;
-
-			if (Speed.x < 0.0f)
-				Speed.x = 0.0f;
-		}
-		else if (MovingLeft == true) {
+		if (ToMoveRight == true && ToMoveLeft == false) {
 			Speed.x += Currentacceleration;
-
-			if (Speed.x > 0.0f)
-				Speed.x = 0.0f;
 		}
+		else if (ToMoveLeft == true && ToMoveRight == false) {
+			Speed.x -= Currentacceleration;
+		}
+		else if (CurrentState != Player_State::AIRBORNE) {	// Natural deacceleration when on ground
+			if (MovingRight == true) {
+				Speed.x -= Currentacceleration;
+
+				if (Speed.x < 0.0f)
+					Speed.x = 0.0f;
+			}
+			else if (MovingLeft == true) {
+				Speed.x += Currentacceleration;
+
+				if (Speed.x > 0.0f)
+					Speed.x = 0.0f;
+			}
+		}
+
+		// If on air, apply gravity
+		if ((CurrentState == Player_State::AIRBORNE || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
+			//Fall
+			Speed.y += gravity;
+		}
+
+		// Max Speeds
+		if (Speed.x > Maxspeed.x)
+			Speed.x = Maxspeed.x;
+		else if (Speed.x < -Maxspeed.x)
+			Speed.x = -Maxspeed.x;
+
+		if (Speed.y > Maxspeed.y)
+			Speed.y = Maxspeed.y;
+		else if (Speed.y < -Maxspeed.y)
+			Speed.y = -Maxspeed.y;
+
+
+		// New position
+		player.playerPos.x += Speed.x;
+		player.playerPos.y += Speed.y;
+
 	}
 
-	// If on air, apply gravity
-	if ((CurrentState == Player_State::AIRBORNE || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
-		//Fall
-		Speed.y += gravity;
+	if (player.godMode == true)
+	{
+		//If GodMode Activated, move around FREELY (X vlues aren't affected)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			player.playerPos.y -=Maxspeed.y;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			player.playerPos.y += Maxspeed.y;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			player.playerPos.x += Maxspeed.x;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			player.playerPos.x += -Maxspeed.x;
+
 	}
 
-	// Max Speeds
-	if (Speed.x > Maxspeed.x)
-		Speed.x = Maxspeed.x;
-	else if (Speed.x < -Maxspeed.x)
-		Speed.x = -Maxspeed.x;
-
-	if (Speed.y > Maxspeed.y)
-		Speed.y = Maxspeed.y;
-	else if (Speed.y < -Maxspeed.y)
-		Speed.y = -Maxspeed.y;
-
-
-	// New position
-	player.playerPos.x +=Speed.x;
-	player.playerPos.y += Speed.y;
-	
-	
 }

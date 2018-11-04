@@ -166,11 +166,14 @@ public: //Variables
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
+	bool ToGodMode = false;
 
 	bool MovingRight = false;
 	bool MovingLeft = false;
 	bool MovingUp = false;
 	bool MovingDown = false;
+
+
 
 
 	Player_State CurrentState;
