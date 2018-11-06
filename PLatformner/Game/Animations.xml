@@ -20,7 +20,7 @@
         <PushBack x="316" y="48" w="20" h="25"/>
       </run>
 
-      <jump loop="false" speed="0.02">
+      <jump loop="false" speed="0.1">
         <PushBack x="15" y="86" w="20" h="24"/>
         <PushBack x="65" y="88" w="20" h="22"/>
         <PushBack x="117" y="81" w="19" h="27"/>
@@ -28,7 +28,7 @@
         <PushBack x="118" y="113" w="17" h="30"/>
       </jump>
 
-      <jumpDouble loop="false" speed="0.08">
+      <jumpDouble loop="false" speed="0.5">
         <PushBack x="164" y="79" w="21" h="23"/>
         <PushBack x="218" y="81" w="15" h="21"/>
         <PushBack x="264" y="84" w="24" h="17"/>

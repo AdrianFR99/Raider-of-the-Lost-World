@@ -34,17 +34,7 @@ struct Player
 	
 	SDL_Rect playerRect;
 	fPoint playerPos;
-	//Player Speeds
-	int gravity_speed;
-	int y_max_speed;
-	int x_speed, y_speed;
-	int actual_x_speed, actual_y_speed;
-	int stopped_speed;
 	
-	int d_to_ground;
-	//DoubleJump
-	int doubleJump_delay;
-	int doubleJump_counter;
 	bool doubleJump;
 	//Landed statuses
 	bool landed;
@@ -62,14 +52,6 @@ struct Player
 	int x_CollisionAdjuster;
 	int y_CollisionController;
 
-	//Animations bools
-	bool idle_Bool_Left=false;
-	bool idle_Bool_Right = false;
-	bool run_Bool_Left = false;
-	bool run_Bool_Right = false;
-	bool jump_Bool = false;
-	bool die_Bool = false;
-	bool GodMode_Left = false;
 
 	Collider* playerHitbox;
 	Collider* playerGodModeHitbox;

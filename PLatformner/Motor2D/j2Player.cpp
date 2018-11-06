@@ -69,17 +69,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.playerRect.x = player_Init.playerPos.x;
 		player_Init.playerRect.y = player_Init.playerPos.y;
 		//Player Speeds
-		player_Init.x_speed = config.child("x_speed").attribute("value").as_int();
-		player_Init.y_speed = config.child("y_speed").attribute("value").as_int();
-		player_Init.gravity_speed = config.child("gravity_speed").attribute("value").as_int();
-		player_Init.actual_x_speed = config.child("actual_x_speed").attribute("value").as_int();
-		player_Init.actual_y_speed = config.child("actual_y_speed").attribute("value").as_int();
-		player_Init.stopped_speed = config.child("stopped_speed").attribute("value").as_int();
-		player_Init.y_max_speed = config.child("y_max_speed").attribute("value").as_int();
+	
 		//Player DoubleJump
 		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
-		player_Init.doubleJump_counter = config.child("doubleJump_counter").attribute("value").as_int();
-		player_Init.doubleJump_delay = config.child("doubleJump_delay").attribute("value").as_int();
+		
 
 		//Player collider Control
 		player_Init.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
@@ -122,7 +115,6 @@ bool j2Player::Load(pugi::xml_node& data)
 
 	player.landed = data.child("landed").attribute("value").as_bool();
 
-	player.y_speed = data.child("speeds").attribute("y_speed").as_int();
 
 	player.dead = data.child("dead").attribute("value").as_bool();
 	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
@@ -143,7 +135,7 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave.append_attribute("value") = player.landed;
 
 	playerSave = data.append_child("speeds");
-	playerSave.append_attribute("y_speed") = player.y_speed;
+	//playerSave.append_attribute("y_speed") = player.y_speed;
 
 	playerSave = data.append_child("dead");
 	playerSave.append_attribute("value") = player.dead;
@@ -164,17 +156,9 @@ bool j2Player::Start()
 	//Player SDL_Rect
 	player.playerRect = player_Init.playerRect;
 	//Player Speeds
-	player.x_speed = player_Init.x_speed;
-	player.y_speed = player_Init.actual_y_speed;
-	player.y_max_speed = player_Init.y_max_speed;
-	player.gravity_speed = player_Init.gravity_speed;
 
-	player.actual_x_speed = player_Init.actual_x_speed;
-	player.actual_y_speed = player_Init.actual_y_speed;
-	player.stopped_speed = player_Init.stopped_speed;
 	player.doubleJump = player_Init.doubleJump;
-	player.doubleJump_counter = player_Init.doubleJump_counter;
-	player.doubleJump_delay = player_Init.doubleJump_delay;
+	
 	//Player collider Control
 	player.colliding = player_Init.colliding;
 
@@ -198,8 +182,6 @@ bool j2Player::Start()
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
 
 	
-	player.idle_Bool_Right =true;
-
 
 	return true;
 }
@@ -323,103 +305,7 @@ AnimationRect = currentAnimation->GetCurrentFrame();
 	else {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
-	//idle
-	//if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool  && !player.dead) {
 
-	//	player.animations.currentAnimation = &player.animations.idle;
-	//	
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-	//}
-	////run right
-	//if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool  && !player.dead && player.landed)
-	//{
-
-	//	player.animations.currentAnimation = &player.animations.run;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-
-	//}
-
-	////run left
-	//if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.dead && player.landed) {
-	//
-	//	player.animations.currentAnimation = &player.animations.run;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
-	//
-	//}
-	////Jump &Run to right and Jump
-	//if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )||
-	//	(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool &&  !player.dead ))
-	//
-	//{
-
-	//	player.animations.currentAnimation = &player.animations.jump;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
-
-	//}
-	////Run to left and Jump
-	//if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )
-
-	//{
-
-	//	player.animations.currentAnimation = &player.animations.jump;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
-
-	//}
-
-
-	//if (player.dead) {
-
-	//	player.animations.currentAnimation = &player.animations.die;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-
-
-
-	//}
-
-
-	//if (player.godMode && !player.idle_Bool_Right && !player.GodMode_Left) {
-
-
-	//	player.animations.currentAnimation = &player.animations.GodMode;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-
-	//}
-
-	//if (player.godMode && !player.idle_Bool_Right && player.GodMode_Left) {
-
-
-	//	player.animations.currentAnimation = &player.animations.GodMode;
-
-	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
-
-
-	//}
 
 	return true;
 	
@@ -442,13 +328,8 @@ bool j2Player::PostUpdate()
 	player.playerGodModeHitbox->SetPos(player.playerRect.x, player.playerRect.y);
 
 	
-	player.run_Bool_Right = false;
-	player.run_Bool_Left = false;
+	
 
-
-	if (player.landed) {
-		player.jump_Bool = false;
-	}
 	return true;
 }
 
@@ -492,7 +373,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		//Also, if the collider is a PLATFORM, let us go through it
 		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h && c2->type != COLLIDER_PLATFORM)
 		{
-			player.y_speed = -1; // change the speed to inmediately falling (bouncing off the Top)
+			Speed.y = -1; // change the speed to inmediately falling (bouncing off the Top)
 			player.landed = false;
 			player.colliding.wallTop = true;
 		}
@@ -561,13 +442,13 @@ void  j2Player::MovementInputs() {
 		player.godMode = !player.godMode;
 		if (player.godMode == true)
 		{
-			player.idle_Bool_Right = false;
+		
 			player.playerHitbox->to_delete = true;
 			player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
 		}
 		else
 		{
-			player.idle_Bool_Right = true;
+		
 			player.playerGodModeHitbox->to_delete = true;
 			player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
