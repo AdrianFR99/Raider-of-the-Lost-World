@@ -330,20 +330,17 @@ void j1Render::followPlayer(const Player &p)
 
 		if (p.playerPos.y < (camera.y + camera.h /3) / scale)
 		{
-			if (App->player->Speed.y > 0)
-		camera.y -= (App->player->Speed.y) * scale;
-			else
-				camera.y += (App->player->Speed.y) * scale;
+			if (App->player->Speed.y < 0)
+		camera.y +=  (App->player->Speed.y) * scale;
+		
 
 		}
 
 		if (p.playerPos.y > (camera.y + (camera.h /3)*2) / scale)
 		{
-			if(App->player->Speed.y<0)
-			camera.y += (-1*App->player->Speed.y) * scale;
+			if(App->player->Speed.y>0)
+			camera.y += (App->player->Speed.y) * scale;
 			
-			else
-				camera.y += (App->player->Speed.y) * scale;
 		}
 	
 	
