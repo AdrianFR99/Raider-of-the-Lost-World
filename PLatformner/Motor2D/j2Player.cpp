@@ -33,6 +33,12 @@ j2Player::j2Player()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jumpDouble");//DoubleJump
 	jumpDouble.LoadPushBack(AnimPushBack);
 
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("fall");//fall
+	fall.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("crouch");//crouch
+	crouch.LoadPushBack(AnimPushBack);
+
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
 	jumpDouble.LoadPushBack(AnimPushBack);
 
@@ -697,7 +703,7 @@ void j2Player::PlayerEffects() {
 	
 		ToMoveRight = false;
 		ToMoveLeft = false;
-		//currentAnimation = &crouching;
+		currentAnimation = &crouch;
 	}
 	void j2Player::RunningEffects() {
 	
@@ -706,7 +712,7 @@ void j2Player::PlayerEffects() {
 	void j2Player::AirEffects() {
 	
 		if (MovingDown == true) {
-			currentAnimation = &jump;
+			currentAnimation = &fall;
 		}
 		else if (player.doubleJump == true) {
 			currentAnimation = &jumpDouble;

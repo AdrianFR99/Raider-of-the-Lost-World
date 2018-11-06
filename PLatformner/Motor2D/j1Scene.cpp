@@ -171,32 +171,6 @@ bool j1Scene::Update(float dt)
 			switchTheMaps();
 		}
 
-
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
-		{
-
-			//moving the offsetx of parallax map1
-			App->map->data.imagelayers.At(1)->data->SpeedBack -= App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed", 0.5); 
-			App->map->data.imagelayers.At(0)->data->SpeedBack -= App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
-		}
-
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
-		{
-
-			//moving the offsetx of parallax map1
-			App->map->data.imagelayers.At(1)->data->SpeedBack += App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed",0.5);
-			App->map->data.imagelayers.At(0)->data->SpeedBack += App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
-		}
-
-		/*if (App->player->player.dead) {
-
-			App->map->data.imagelayers.At(0)->data->SpeedBack = 0.0;
-			App->map->data.imagelayers.At(3)->data->SpeedBack = 0.0;
-			App->map->data.imagelayers.At(2)->data->SpeedBack = 0.0;
-
-		}*/
-
 	}
 
 
@@ -219,35 +193,8 @@ bool j1Scene::Update(float dt)
 				switchTheMaps();
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->player->player.colliding.wallFront == false)
-			{
-
-				//moving the offsetx of parallax map2
-				App->map->data2.imagelayers.At(0)->data->SpeedBack -=App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed",0.0);
-				App->map->data2.imagelayers.At(3)->data->SpeedBack -= App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
-				App->map->data2.imagelayers.At(2)->data->SpeedBack -= App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
-
-			}
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->player->player.colliding.wallBack == false)
-			{
-
-				//moving the offsetx of parallax map2
-				App->map->data2.imagelayers.At(0)->data->SpeedBack += App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.0);
-				App->map->data2.imagelayers.At(3)->data->SpeedBack += App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
-				App->map->data2.imagelayers.At(2)->data->SpeedBack += App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
-
-			}
-
 	}
 
-	//if (App->player->player.dead ) {
-
-	//	App->map->data2.imagelayers.At(0)->data->SpeedBack = 0.0;
-	//	App->map->data2.imagelayers.At(3)->data->SpeedBack = 0.0;
-	//	App->map->data2.imagelayers.At(2)->data->SpeedBack = 0.0;
-
-	//}
 
 	
 

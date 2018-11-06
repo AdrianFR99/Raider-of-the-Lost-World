@@ -57,7 +57,6 @@ struct Player
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
-	
 };
 
 class j2Player : public j1Module
@@ -157,6 +156,8 @@ public: //Variables
 	Animation jumpDouble;
 	Animation die;
 	Animation slide;
+	Animation fall;
+	Animation crouch;
 	Animation GodMode;
 
 
