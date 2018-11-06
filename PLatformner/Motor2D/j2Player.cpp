@@ -40,7 +40,7 @@ j2Player::j2Player()
 	crouch.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
-	jumpDouble.LoadPushBack(AnimPushBack);
+	slide.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
 	die.LoadPushBack(AnimPushBack);
@@ -677,21 +677,23 @@ void j2Player::PlayerEffects() {
 		lookingRight = false;
 	}
 
-	switch (CurrentState) {
-	case Player_State::IDLE:
-		IdleEffects();
-		break;
-	case Player_State::CROUCHING:
-		CrouchingEffects();
-		break;
-	case Player_State::RUNNING:
-		RunningEffects();
-		break;
-	case Player_State::AIRBORNE:
-		AirEffects();
-		break;
+	
+		switch (CurrentState) {
+		case Player_State::IDLE:
+			IdleEffects();
+			break;
+		case Player_State::CROUCHING:
+			CrouchingEffects();
+			break;
+		case Player_State::RUNNING:
+			RunningEffects();
+			break;
+		case Player_State::AIRBORNE:
+			AirEffects();
+			break;
 
-	}
+		}
+	
 }
 
 	void j2Player::IdleEffects(){
@@ -712,6 +714,7 @@ void j2Player::PlayerEffects() {
 	void j2Player::AirEffects() {
 	
 		if (MovingDown == true) {
+		
 			currentAnimation = &fall;
 		}
 		else if (player.doubleJump == true) {

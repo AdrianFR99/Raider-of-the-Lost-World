@@ -34,7 +34,7 @@
         <PushBack x="98" y="93" w="19" h="27"/>
       </jump>
 
-      <jumpDouble loop="false" speed="0.5">
+      <jumpDouble loop="false" speed="0.09">
         <PushBack x="147" y="97" w="21" h="23"/>
         <PushBack x="196" y="99" w="15" h="21"/>
         <PushBack x="247" y="103" w="24" h="17"/>
