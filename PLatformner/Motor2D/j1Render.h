@@ -55,12 +55,15 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	uint scale;
+
 	int cameraDisplacement;
 	int cameraOffset_right;
 	int cameraOffset_left;
 	int map1_cameraLimit_y;
 	int map2_cameraLimit_y;
 	int map2_cameraLimit_x;
+
+	
 };
 
 #endif // __j1RENDER_H__

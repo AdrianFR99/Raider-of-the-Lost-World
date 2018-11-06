@@ -15,6 +15,7 @@ enum class Player_State {
 	SLIDING,
 
 
+
 };
 
 struct Player
@@ -112,6 +113,8 @@ public:
 	void RunningMoveCheck();
 	void AirMoveCheck();
 
+
+	void PlayerDebugF();
 	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
 	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
 	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
@@ -148,6 +151,7 @@ public: //Variables
 	bool MovingDown = false;
 
 	bool lookingRight=false;
+	
 
 	Animation* currentAnimation;
 	Animation idle;

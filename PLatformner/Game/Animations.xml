@@ -63,9 +63,9 @@
         <PushBack x="196" y="713" w="29" h="7"/>
       </die>
 
-      <GodMode loop="true" speed="0.03">
-        <PushBack x="17" y="414" w="23" h="29"/>
-        <PushBack x="68" y="414" w="22" h="29"/>
+      <GodMode loop="true" speed="0.09">
+        <PushBack x="0" y="481" w="23" h="29"/>
+        <PushBack x="49" y="481" w="22" h="29"/>
         
       </GodMode>
 
