@@ -282,7 +282,7 @@ void j1Render::followPlayer(const Player &p)
 	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale)
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-		camera.x += App->player->Speed.x * scale;
+		camera.x += (App->player->Speed.x+ App->player->Currentacceleration) * scale;
 	
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -305,12 +305,15 @@ void j1Render::followPlayer(const Player &p)
 	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-		App->render->camera.x -= App->player->Speed.x * scale;
+		if(App->player->Speed.x<0)
+		App->render->camera.x -=(-1*(App->player->Speed.x+ App->player->Currentacceleration)) * scale;
 
+		App->render->camera.x -= (App->player->Speed.x +App->player->Currentacceleration ) * scale;
 
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
-			if (App->player->MovingLeft) {
+		
+	if (App->player->MovingLeft) {
 				App->map->data.imagelayers.At(1)->data->SpeedBack += App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed", 0.5);
 				App->map->data.imagelayers.At(0)->data->SpeedBack += App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
 			}
@@ -325,14 +328,22 @@ void j1Render::followPlayer(const Player &p)
 	}
 
 
-		if (p.playerPos.y < (camera.y + camera.h / 3) / scale)
+		if (p.playerPos.y < (camera.y + camera.h /3) / scale)
 		{
-			camera.y -= cameraDisplacement * scale;
+			if (App->player->Speed.y > 0)
+		camera.y -= (App->player->Speed.y) * scale;
+			else
+				camera.y += (App->player->Speed.y) * scale;
+
 		}
 
-		if (p.playerPos.y > (camera.y + camera.h / 3) / scale)
+		if (p.playerPos.y > (camera.y + (camera.h /3)*2) / scale)
 		{
-			camera.y += cameraDisplacement * scale;
+			if(App->player->Speed.y<0)
+			camera.y += (-1*App->player->Speed.y) * scale;
+			
+			else
+				camera.y += (App->player->Speed.y) * scale;
 		}
 	
 	
