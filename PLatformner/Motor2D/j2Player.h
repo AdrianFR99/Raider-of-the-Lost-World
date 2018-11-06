@@ -31,18 +31,6 @@ struct Player
 		int y_CollisionController;
 	};
 
-	struct animations
-	{
-		
-		Animation* currentAnimation;
-		Animation idle;
-		Animation run;
-		Animation jump;
-		Animation jumpDouble;
-		Animation die;
-		Animation slide;
-		Animation GodMode;
-	};
 	
 	SDL_Rect playerRect;
 	fPoint playerPos;
@@ -87,7 +75,7 @@ struct Player
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
-	animations animations;
+	
 };
 
 class j2Player : public j1Module
@@ -130,8 +118,13 @@ public:
 	void MovementInputs();
 	void ChechMovement();
 	void SwithcingStates();
+	void PlayerEffects();
 	void MovingPlayer();
 
+	void IdleEffects();
+	void CrouchingEffects();
+	void RunningEffects();
+	void AirEffects();
 
 	void IdleMoveCheck();
 	void CrouchingMoveCheck();
@@ -162,7 +155,7 @@ public: //Variables
 	float gravity = 0.1;
 
 
-	bool ToMoveRight;
+	bool ToMoveRight=false;
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
@@ -173,7 +166,16 @@ public: //Variables
 	bool MovingUp = false;
 	bool MovingDown = false;
 
+	bool lookingRight=false;
 
+	Animation* currentAnimation;
+	Animation idle;
+	Animation run;
+	Animation jump;
+	Animation jumpDouble;
+	Animation die;
+	Animation slide;
+	Animation GodMode;
 
 
 	Player_State CurrentState;

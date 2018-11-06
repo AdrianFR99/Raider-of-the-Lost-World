@@ -22,25 +22,25 @@ j2Player::j2Player()
 
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("idle");//idle
-	player.animations.idle.LoadPushBack(AnimPushBack);
+	idle.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("run");//run
-	player.animations.run.LoadPushBack(AnimPushBack);
+	run.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jump");//jump
-	player.animations.jump.LoadPushBack(AnimPushBack);
+	jump.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jumpDouble");//DoubleJump
-	player.animations.jumpDouble.LoadPushBack(AnimPushBack);
+	jumpDouble.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
-	player.animations.jumpDouble.LoadPushBack(AnimPushBack);
+	jumpDouble.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
-	player.animations.die.LoadPushBack(AnimPushBack);
+	die.LoadPushBack(AnimPushBack);
 	
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("GodMode");//GodMode
-	player.animations.GodMode.LoadPushBack(AnimPushBack);
+	GodMode.LoadPushBack(AnimPushBack);
 }
 
 //DESTRUCTOR
@@ -280,6 +280,8 @@ bool j2Player::Update(float dt)
 		ChechMovement();
 		//switchStates
 		SwithcingStates();
+		//players Effects
+		PlayerEffects();
 		//movePlayer
 		MovingPlayer();
 	
@@ -312,103 +314,112 @@ bool j2Player::Update(float dt)
 
 //AnimationsConditions
 
-	//idle
-	if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool  && !player.dead) {
 
-		player.animations.currentAnimation = &player.animations.idle;
-		
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+AnimationRect = currentAnimation->GetCurrentFrame();
 
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-	}
-	//run right
-	if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool  && !player.dead && player.landed)
-	{
-
-		player.animations.currentAnimation = &player.animations.run;
-
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-
-	}
-
-	//run left
-	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.dead && player.landed) {
-	
-		player.animations.currentAnimation = &player.animations.run;
-
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
-	
-	}
-	//Jump &Run to right and Jump
-	if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )||
-		(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool &&  !player.dead ))
-	
-	{
-
-		player.animations.currentAnimation = &player.animations.jump;
-
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
+	if (lookingRight) {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
-
 	}
-	//Run to left and Jump
-	if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )
-
-	{
-
-		player.animations.currentAnimation = &player.animations.jump;
-
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
+	else {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
-
 	}
+	//idle
+	//if (player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool  && !player.dead) {
+
+	//	player.animations.currentAnimation = &player.animations.idle;
+	//	
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+
+	//}
+	////run right
+	//if (player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && !player.jump_Bool  && !player.dead && player.landed)
+	//{
+
+	//	player.animations.currentAnimation = &player.animations.run;
+
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
 
 
-	if (player.dead) {
+	//}
 
-		player.animations.currentAnimation = &player.animations.die;
+	////run left
+	//if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && !player.jump_Bool && !player.dead && player.landed) {
+	//
+	//	player.animations.currentAnimation = &player.animations.run;
 
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
 
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
+	//
+	//}
+	////Jump &Run to right and Jump
+	//if ((player.idle_Bool_Right && !player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )||
+	//	(player.idle_Bool_Right && !player.run_Bool_Left && player.run_Bool_Right && player.jump_Bool &&  !player.dead ))
+	//
+	//{
+
+	//	player.animations.currentAnimation = &player.animations.jump;
+
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
+
+	//}
+	////Run to left and Jump
+	//if (player.idle_Bool_Right && player.run_Bool_Left && !player.run_Bool_Right && player.jump_Bool &&  !player.dead )
+
+	//{
+
+	//	player.animations.currentAnimation = &player.animations.jump;
+
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+
+	//}
+
+
+	//if (player.dead) {
+
+	//	player.animations.currentAnimation = &player.animations.die;
+
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
 
 
 
 
-	}
+	//}
 
 
-	if (player.godMode && !player.idle_Bool_Right && !player.GodMode_Left) {
+	//if (player.godMode && !player.idle_Bool_Right && !player.GodMode_Left) {
 
 
-		player.animations.currentAnimation = &player.animations.GodMode;
+	//	player.animations.currentAnimation = &player.animations.GodMode;
 
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
 
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
-
-
-	}
-
-	if (player.godMode && !player.idle_Bool_Right && player.GodMode_Left) {
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect);
 
 
-		player.animations.currentAnimation = &player.animations.GodMode;
+	//}
 
-		AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
-
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
+	//if (player.godMode && !player.idle_Bool_Right && player.GodMode_Left) {
 
 
-	}
+	//	player.animations.currentAnimation = &player.animations.GodMode;
+
+	//	AnimationRect = player.animations.currentAnimation->GetCurrentFrame();
+
+	//	App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect,SDL_FLIP_HORIZONTAL);
+
+
+	//}
 
 	return true;
 	
@@ -673,8 +684,7 @@ void j2Player::AirMoveCheck() {
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
 		
 		//Reset Animation
-		//somersaultAnim.Reset();
-		
+		jumpDouble.Reset();
 		//jump
 		Speed.y =-JumpForce;
 		player.doubleJump = true;
@@ -684,7 +694,7 @@ void j2Player::AirMoveCheck() {
 
 		//land
 		Speed.y = 0.0;
-		//jumpAnim.Reset();
+		jump.Reset();
 		player.doubleJump = false;
 
 		if (player.dead == true) {
@@ -771,3 +781,56 @@ void j2Player::MovingPlayer() {
 	}
 
 }
+void j2Player::PlayerEffects() {
+
+	if (ToMoveRight == true && ToMoveLeft == false) {
+		lookingRight = true;
+	}
+	else if (ToMoveLeft == true && ToMoveRight == false) {
+		lookingRight = false;
+	}
+
+	switch (CurrentState) {
+	case Player_State::IDLE:
+		IdleEffects();
+		break;
+	case Player_State::CROUCHING:
+		CrouchingEffects();
+		break;
+	case Player_State::RUNNING:
+		RunningEffects();
+		break;
+	case Player_State::AIRBORNE:
+		AirEffects();
+		break;
+
+	}
+}
+
+	void j2Player::IdleEffects(){
+
+	currentAnimation = &idle;
+
+	}
+	void j2Player::CrouchingEffects() {
+	
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		//currentAnimation = &crouching;
+	}
+	void j2Player::RunningEffects() {
+	
+		currentAnimation = &run;
+	}
+	void j2Player::AirEffects() {
+	
+		if (MovingDown == true) {
+			currentAnimation = &jump;
+		}
+		else if (player.doubleJump == true) {
+			currentAnimation = &jumpDouble;
+		}
+		else {
+			currentAnimation = &jump;
+		}
+	}
