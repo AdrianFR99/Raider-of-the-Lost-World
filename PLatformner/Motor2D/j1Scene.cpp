@@ -93,7 +93,8 @@ bool j1Scene::Start()
 	else
 		App->map->CreateColliders(App->map->data2);
 
-
+	//Play the first song Change/fix
+	App->audio->PlayMusic("audio/music/lvl_1_the_cave.ogg", 2.0f);
 	return true;
 }
 
@@ -282,17 +283,21 @@ void j1Scene::switchTheMaps()
 	
 	if (CurrentMap2 == false) {
 		App->collision->CleanUp();
+		App->player->NullifyPlayerColliders(App->player->player);
 		App->map->CreateColliders(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
+		App->audio->PlayMusic("audio/music/lvl_2_the_mountain.ogg", 1.0f);
 	}
 	
 	else {
 
 		App->collision->CleanUp();
+		App->player->NullifyPlayerColliders(App->player->player);
 		App->map->CreateColliders(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
+		App->audio->PlayMusic("audio/music/lvl_1_the_cave.ogg", 1.0f);
 
 	}
 }

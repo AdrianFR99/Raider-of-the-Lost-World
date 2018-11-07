@@ -103,8 +103,6 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Godmode
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
-		
-	
 	}
 	else
 	{
@@ -127,6 +125,11 @@ bool j2Player::Load(pugi::xml_node& data)
 	player.dead = data.child("dead").attribute("value").as_bool();
 	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
 
+	if (player.godMode == false)
+	{
+		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.fakeHitbox->SetPos(player.playerHitbox->rect.x - 1, player.playerHitbox->rect.y - 1);
+	}
 
 	return true;
 }
@@ -148,7 +151,6 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave = data.append_child("dead");
 	playerSave.append_attribute("value") = player.dead;
 	playerSave.append_attribute("deadCounter") = player.deadCounter;
-
 
 	return true;
 }
@@ -188,8 +190,23 @@ bool j2Player::Start()
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
-	if(player.playerHitbox==nullptr)
-	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
+	player.playerHitbox = nullptr;
+	player.playerGodModeHitbox = nullptr;
+	player.fakeHitbox = nullptr;
+
+	CreatePlayerColliders(player);
+	//if (player.playerHitbox == nullptr)
+	//{
+	//	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+
+	//	if (player.fakeHitbox == nullptr)
+	//	{					//CHANGE/FIX
+	//		
+	//		player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+	//	}
+	//}
+		
 	
 	
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
@@ -231,7 +248,6 @@ bool j2Player::PreUpdate()
 {
 	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
-	player.landed = false;
 	player.nextFrameLanded = false;
 	
 	
@@ -241,8 +257,11 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
+	/*player.playerRect.x = player.playerHitbox->rect.x;
+	player.playerRect.y = player.playerHitbox->rect.y;
 
-	
+	player.playerPos = { player.playerRect.x , player.playerRect.y };
+	player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);*/
 
 	if (player.dead == true)
 	{
@@ -252,6 +271,11 @@ bool j2Player::Update(float dt)
 		}
 		else
 		{
+			//Destroy the player Colliders
+			player.playerHitbox->to_delete = true;
+			player.fakeHitbox->to_delete = true;
+			player.playerHitbox = nullptr;
+			player.fakeHitbox = nullptr;
 			//Player Goes To inital position of the current stage map
 			if (App->scene->CurrentMap2 == false)
 				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
@@ -265,13 +289,13 @@ bool j2Player::Update(float dt)
 	}
 	else 
 	{
-		//If the player is alive
-		if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
-		{
-				player.playerRect = player_Init.playerRect;
-			
-				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-		}
+		////If the player is alive
+		//if (player.playerHitbox->type != COLLIDER_PLAYER && player.godMode == false)
+		//{
+		//		player.playerRect = player_Init.playerRect;
+		//	
+		//		player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+		//}
 	
 		  
 		//Control X speed
@@ -304,6 +328,7 @@ bool j2Player::Update(float dt)
 			{
 				player.idle_Bool_Right = false;
 				player.playerHitbox->to_delete = true;
+				player.fakeHitbox->to_delete = true;
 				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
 			}
 			else
@@ -311,6 +336,7 @@ bool j2Player::Update(float dt)
 				player.idle_Bool_Right = true;
 				player.playerGodModeHitbox->to_delete = true;
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
 			}
 		}
 
@@ -350,8 +376,11 @@ bool j2Player::Update(float dt)
 				
 
 				}
+				
 				player.playerPos.y += player.y_speed;
+				
 				player.y_speed += player.gravity_speed;
+
 
 				if (player.y_speed > player.y_max_speed)
 				{
@@ -383,12 +412,25 @@ bool j2Player::Update(float dt)
 		}
 	}
 
+
+
 	//Camera Following player
 	App->render->followPlayer(player);
 
-	//We pass them onto the player Rect
-	player.playerRect.x = player.playerPos.x;
-	player.playerRect.y = player.playerPos.y;
+	//Here we change the values of the rect position
+	if (player.godMode == false
+		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
+		&& player.fakeHitbox != nullptr && player.fakeHitbox->to_delete == false)
+	{
+		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1);
+	}
+	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+
+	//App->collision->Update(dt);
+	//App->collision->Update(dt);
+
 
 
 
@@ -509,11 +551,13 @@ bool j2Player::PostUpdate()
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
-		//Here we change the values of the rect position
-	if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
-	player.playerHitbox->SetPos(player.playerRect.x, player.playerRect.y);
-	if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-	player.playerGodModeHitbox->SetPos(player.playerRect.x, player.playerRect.y);
+	player.landed = false;
+
+	//	//Here we change the values of the rect position
+	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
+	//player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+	//if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
+	//player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 
 	
 	player.run_Bool_Right = false;
@@ -529,54 +573,107 @@ bool j2Player::PostUpdate()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
-	if (c2->type == COLLIDER_WALL
-		|| c2->type == COLLIDER_ICE
-		|| c2->type == COLLIDER_PLATFORM
-		|| c2->type == COLLIDER_CLIMBWALL)
+	//Testing new system of collisions
+	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
+	SDL_Rect* col1;
+	SDL_Rect* col2;
+	col1 = &c1->rect;
+	col2 = &c2->rect;
+
+	SDL_IntersectRect(col1, col2, &overlay);
+	
+	if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
 	{
-		//Conditions to know if the collider that we collided with is in Front of the player
-		if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			&& c2->rect.x - player.playerHitbox->rect.x > 0
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+		if (c2->type == COLLIDER_WALL
+			|| c2->type == COLLIDER_ICE
+			|| c2->type == COLLIDER_PLATFORM
+			|| c2->type == COLLIDER_CLIMBWALL)
 		{
-			player.colliding.wallFront = true;
-			//Before we do anything else, don't allow the collider to enter the tile
-			player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
-		}
-		//Conditions to know if the collider that we collided with is Behind of the player
-		else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
-			&& player.playerHitbox->rect.x - c2->rect.x > 0
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			//Conditions to know if the collider that we collided with is over the player
+			//Also, if the collider is a PLATFORM, let us go through it
+		if(player.playerHitbox->rect.y > c2->rect.y
+			&& player.playerHitbox->rect.y < c2->rect.y + c2->rect.h
+			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+			&& c2->type != COLLIDER_PLATFORM)
 		{
-			player.colliding.wallBack = true;
-			//Before we do anything else, don't allow the collider to enter the tile
-			player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
-			
-			player.playerRect.y = c2->rect.y - player.playerRect.h;
-		}
-		//Conditions to know if the collider that we collided with is Under the player
-		else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
-			&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
-			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
-		{
-			player.landed = true;
-			player.colliding.wallDown = true;
-		}
-		//Conditions to know if the collider that we collided with is over the player
-		//Also, if the collider is a PLATFORM, let us go through it
-		else if (player.playerHitbox->rect.y > c2->rect.y + c2->rect.h && c2->type != COLLIDER_PLATFORM)
-		{
-			player.y_speed = -1; // change the speed to inmediately falling (bouncing off the Top)
+			player.playerHitbox->rect.y += overlay.h;
+			player.y_speed = -player.y_speed; // change the speed to inmediately falling (bouncing off the Top)
 			player.landed = false;
 			player.colliding.wallTop = true;
 		}
+			//Conditions to know if the collider that we collided with is in Front of the player
+			else if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+				&& c2->rect.x - player.playerHitbox->rect.x > 0
+				&& c2->rect.y < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+			    && player.colliding.wallTop == false)
+			{
+				player.colliding.wallFront = true;
+				//Before we do anything else, don't allow the collider to enter the tile
+				//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
+				player.playerHitbox->rect.x -= overlay.w;
+			}
+			//Conditions to know if the collider that we collided with is Behind of the player
+			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
+				&& player.playerHitbox->rect.x - c2->rect.x > 0
+				&& c2->rect.y + 1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& player.colliding.wallTop == false)
+			{
+				player.colliding.wallBack = true;
+				//Before we do anything else, don't allow the collider to enter the tile
+				//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
+				player.playerHitbox->rect.x += overlay.w;
+				//player.playerPos.x += overlay.w;
+				//player.playerRect.y = c2->rect.y - player.playerRect.h;
+			}
+			//Conditions to know if the collider that we collided with is Under the player
+			else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
+				&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
+				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+				&& player.y_speed > 0)
+				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
+			{
+				player.landed = true;
+				player.colliding.wallDown = true;
 
+				player.playerHitbox->rect.y -= overlay.h;
+				//player.playerHitbox->type-= 
+			}
+		}
+		//If the collider is a killing obstacle DIE
+		if (c2->type == COLLIDER_TRAP)
+		{
+			player.dead = true;
+		}
 	}
-	//If the collider is a killing obstacle DIE
-	if (c2->type == COLLIDER_TRAP)
+	else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
 	{
-		player.dead = true;
+		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			player.colliding.wallBack = true;
+		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x
+			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			player.colliding.wallFront = true;
+		
+		if (overlay.y + overlay.h > c2->rect.y
+			&& overlay.y +overlay.h < c2->rect.y + c2->rect.h
+			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
+		{
+			player.landed = true;
+		}
 	}
+
+	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
+	player.playerPos.x = player.playerHitbox->rect.x;
+	player.playerPos.y = player.playerHitbox->rect.y;
+
+	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
+	
+	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
+	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
+
 } 
 
 void j2Player::OnPreCollision(int d) 
@@ -584,4 +681,43 @@ void j2Player::OnPreCollision(int d)
 	/*player.d_to_ground = d;
 	player.nextFrameLanded = true;*/
 }
+
+void j2Player::NullifyPlayerColliders(Player & p)
+{
+	p.playerHitbox = nullptr;
+	p.playerGodModeHitbox = nullptr;
+	p.fakeHitbox = nullptr;
+}
+
+//This function assumes that there are no player hitboxes and creates them
+bool j2Player::CreatePlayerColliders(Player &p)
+{
+	int ret = -1;
+
+	//In case the players colliders are 
+	if (p.godMode == true)
+	{
+		if (p.playerGodModeHitbox == nullptr)
+		{
+			p.playerGodModeHitbox = App->collision->AddCollider(player_Init.playerRect,COLLIDER_GODMODE, this);
+			p.playerHitbox = nullptr;
+			p.fakeHitbox = nullptr;
+
+			ret = 1;
+		}
+	}
+	else
+	{
+		if (p.playerHitbox == nullptr && p.fakeHitbox == nullptr)
+		{
+			p.playerHitbox = App->collision->AddCollider(player_Init.playerRect, COLLIDER_PLAYER, this);
+			p.fakeHitbox = App->collision->AddCollider(p.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+			p.playerGodModeHitbox = nullptr;
+			ret = 1;
+		}
+	}
+
+	return ret;
+}
+
 
