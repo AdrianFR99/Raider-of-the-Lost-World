@@ -605,7 +605,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Conditions to know if the collider that we collided with is in Front of the player
 			else if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
-				&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 			    && player.colliding.wallTop == false)
 			{
 				player.colliding.wallFront = true;
@@ -616,7 +616,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Conditions to know if the collider that we collided with is Behind of the player
 			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
 				&& player.playerHitbox->rect.x - c2->rect.x > 0
-				&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y + 1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 				&& player.colliding.wallTop == false)
 			{
 				player.colliding.wallBack = true;
