@@ -17,6 +17,7 @@ enum COLLIDER_TYPE
 	COLLIDER_PLATFORM,
 	COLLIDER_CLIMBWALL,
 	COLLIDER_PLAYER,
+	COLLIDER_PLAYER_CHECK,
 	COLLIDER_GODMODE,
 
 	COLLIDER_MAX
@@ -51,9 +52,10 @@ class j2Collision : public j1Module
 public:
 
 	j2Collision();
-	~j2Collision();
+	// Destructor
+	virtual ~j2Collision();
 
-	bool PreUpdate() ;
+	bool PreUpdate();
 	bool Update( float dt);
 	bool CleanUp() ;
 

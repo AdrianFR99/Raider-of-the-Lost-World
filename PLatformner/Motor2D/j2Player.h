@@ -32,7 +32,12 @@ struct Player
 
 	
 	SDL_Rect playerRect;
+  
 	fPoint playerPos;
+
+	iPoint playerPos;
+	SDL_Rect fakeCollisionRect;
+
 	
 	bool doubleJump;
 	//Landed statuses
@@ -53,6 +58,7 @@ struct Player
 
 
 	Collider* playerHitbox;
+	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
@@ -113,7 +119,11 @@ public:
 	void PlayerMovement();
 
 	//Functions apply the Animations and sounds for every state
-	
+
+	void NullifyPlayerColliders(Player &p);
+	bool CreatePlayerColliders(Player &p);
+
+
 	//Chek Conditions to change from the current state to others
 	
 
