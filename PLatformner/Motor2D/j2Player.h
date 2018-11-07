@@ -33,7 +33,7 @@ struct Player
 	
 	SDL_Rect playerRect;
   
-	fPoint playerPos;
+	//fPoint playerPos;
 
 	iPoint playerPos;
 	SDL_Rect fakeCollisionRect;

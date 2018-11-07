@@ -250,7 +250,8 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)
 {
-
+	if (player.dead == true)
+	{
 		if (player.deadCounter < player.deadDelay)
 		{
 			player.deadCounter += 1;
@@ -275,8 +276,9 @@ bool j2Player::Update(float dt)
 			player.dead = false;
 			player.deadCounter = player_Init.deadCounter;
 		}
-	
 	}
+	
+	
 
 		//Check inputs
 		PlayerMovementInputs();
@@ -344,8 +346,7 @@ AnimationRect = currentAnimation->GetCurrentFrame();
 
 
 	return true;
-	
-	
+		
 }
 
 // Called each loop iteration
@@ -400,7 +401,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		{
 
 			player.playerHitbox->rect.y += overlay.h;
-			player.y_speed = -player.y_speed; // change the speed to inmediately falling (bouncing off the Top)
+			Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
 
 			player.landed = false;
 			player.colliding.wallTop = true;
@@ -434,7 +435,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
 				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-				&& player.y_speed > 0)
+				&& Speed.y > 0)
 				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 			{
 				player.landed = true;
