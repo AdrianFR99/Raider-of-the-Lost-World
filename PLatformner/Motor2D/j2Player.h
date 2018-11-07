@@ -6,6 +6,15 @@
 
 struct Collider;
 
+enum class Player_State {
+
+	IDLE,
+	RUNNING,
+	AIR,
+	CROUCHING,
+	SLIDING,
+
+};
 
 struct Player
 {
@@ -21,33 +30,15 @@ struct Player
 		int y_CollisionController;
 	};
 
-	struct animations
-	{
-		
-		Animation* currentAnimation;
-		Animation idle;
-		Animation run;
-		Animation jump;
-		Animation jumpDouble;
-		Animation die;
-		Animation slide;
-		Animation GodMode;
-	};
 	
 	SDL_Rect playerRect;
+  
+	fPoint playerPos;
+
 	iPoint playerPos;
 	SDL_Rect fakeCollisionRect;
-	//Player Speeds
-	int gravity_speed;
-	int y_max_speed;
-	int x_speed, y_speed;
-	int actual_x_speed, actual_y_speed;
-	int stopped_speed;
+
 	
-	int d_to_ground;
-	//DoubleJump
-	int doubleJump_delay;
-	int doubleJump_counter;
 	bool doubleJump;
 	//Landed statuses
 	bool landed;
@@ -65,21 +56,12 @@ struct Player
 	int x_CollisionAdjuster;
 	int y_CollisionController;
 
-	//Animations bools
-	bool idle_Bool_Left=false;
-	bool idle_Bool_Right = false;
-	bool run_Bool_Left = false;
-	bool run_Bool_Right = false;
-	bool jump_Bool = false;
-	bool die_Bool = false;
-	bool GodMode_Left = false;
 
 	Collider* playerHitbox;
 	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
 
-	animations animations;
 };
 
 class j2Player : public j1Module
@@ -118,22 +100,42 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
+	//Main functions
+	void PlayerMovementInputs();
+	void CheckPlayerMovement();
+
+	void SwithcingStates();
+		void IdleStateTo();
+		void CrouchingStateTo();
+		void RunningStateTo();
+		void AirStateTo();
+
+	void PlayerFX();
+		void IdleFX();
+		void CrouchingFX();
+		void RunningFX();
+		void AirFX();
+
+	void PlayerMovement();
+
+	//Functions apply the Animations and sounds for every state
+
 	void NullifyPlayerColliders(Player &p);
 	bool CreatePlayerColliders(Player &p);
 
+
+	//Chek Conditions to change from the current state to others
 	
 
-	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
-	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
-	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
-	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;*/
+
+	void PlayerDebugF();
+
+
 
 public: //Variables
 
 	Player player;
-
 	Player player_Init;
-	
 	SDL_Texture* playTex = nullptr;
 
 	pugi::xml_node AnimPushBack;
@@ -141,6 +143,42 @@ public: //Variables
 
 	SDL_Rect AnimationRect;
 
+	//new structure for player
+	fPoint Speed;
+	fPoint Maxspeed;
+	float JumpForce = 5.00;
+	float Currentacceleration=0.10;
+	float gravity = 0.1;
+
+	//Inputs pressed
+	bool ToMoveRight=false;
+	bool ToMoveLeft = false;
+	bool ToMoveUp = false;
+	bool ToMoveDown = false;
+	bool ToGodMode = false;
+
+	//Current movemvent
+	bool MovingRight = false;
+	bool MovingLeft = false;
+	bool MovingUp = false;
+	bool MovingDown = false;
+
+	bool lookingRight=false;
+	
+
+	Animation* currentAnimation;
+	Animation idle;
+	Animation run;
+	Animation jump;
+	Animation jumpDouble;
+	Animation die;
+	Animation slide;
+	Animation fall;
+	Animation crouch;
+	Animation GodMode;
+
+
+	Player_State CurrentState;
 private:
 	p2SString	folder;
 };

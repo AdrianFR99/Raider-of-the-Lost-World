@@ -54,7 +54,7 @@
   
     <!--Player Landed-->
     <d_to_ground value="0" />
-    <landed value="true" />
+    <landed value="false" />
     <!--Double Jump-->>
     <doubleJump value="true"/>
     <doubleJump_delay value="13"/>

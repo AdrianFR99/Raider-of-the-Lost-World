@@ -296,7 +296,7 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 
 bool Collider::PreCheckCollision(const Player& p) const
 {
-	if (p.y_speed > (rect.y - (p.playerRect.y + p.playerRect.h)) && p.landed == false)
+	if (App->player->Speed.y > (rect.y - (p.playerRect.y + p.playerRect.h)) && p.landed == false)
 	{
 		return true;
 	}
