@@ -684,10 +684,10 @@ void j2Player::PlayerMovement() {
 
 		if (player.godMode == false) {
 
-			if (ToMoveRight == true && ToMoveLeft == false) {
+			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false) {
 				Speed.x += Currentacceleration;
 			}
-			else if (ToMoveLeft == true && ToMoveRight == false) {
+			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false) {
 				Speed.x -= Currentacceleration;
 			}
 			else if (CurrentState != Player_State::AIR) {	
@@ -826,6 +826,7 @@ void j2Player::PlayerFX() {
 			{
 
 				player.playerHitbox->to_delete = true;
+				player.fakeHitbox->to_delete = true;
 				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
 			}
 			else
@@ -833,6 +834,7 @@ void j2Player::PlayerFX() {
 
 				player.playerGodModeHitbox->to_delete = true;
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
+				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
 			}
 
 		}
