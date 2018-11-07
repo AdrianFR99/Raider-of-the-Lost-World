@@ -391,25 +391,11 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			|| c2->type == COLLIDER_PLATFORM
 			|| c2->type == COLLIDER_CLIMBWALL)
 		{
-			//Conditions to know if the collider that we collided with is over the player
-			//Also, if the collider is a PLATFORM, let us go through it
-		if(player.playerHitbox->rect.y > c2->rect.y
-			&& player.playerHitbox->rect.y < c2->rect.y + c2->rect.h
-			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-			&& c2->type != COLLIDER_PLATFORM)
-		{
-
-			player.playerHitbox->rect.y += overlay.h;
-			Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
-
-			player.landed = false;
-			player.colliding.wallTop = true;
-		}
+			
 			//Conditions to know if the collider that we collided with is in Front of the player
-			else if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
-				&& c2->rect.y < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y + 8< player.playerHitbox->rect.y + player.playerHitbox->rect.h
 			    && player.colliding.wallTop == false)
 			{
 				player.colliding.wallFront = true;
@@ -420,7 +406,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Conditions to know if the collider that we collided with is Behind of the player
 			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
 				&& player.playerHitbox->rect.x - c2->rect.x > 0
-				&& c2->rect.y + 1 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 				&& player.colliding.wallTop == false)
 			{
 				player.colliding.wallBack = true;
@@ -443,6 +429,22 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 				player.playerHitbox->rect.y -= overlay.h;
 				//player.playerHitbox->type-= 
+			}
+
+			//Conditions to know if the collider that we collided with is over the player
+			//Also, if the collider is a PLATFORM, let us go through it
+			else if (player.playerHitbox->rect.y > c2->rect.y
+				&& player.playerHitbox->rect.y < c2->rect.y + c2->rect.h
+				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+				&& c2->type != COLLIDER_PLATFORM)
+			{
+
+			player.playerHitbox->rect.y += overlay.h;
+			Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
+
+			player.landed = false;
+			player.colliding.wallTop = true;
 			}
 		}
 		//If the collider is a killing obstacle DIE
@@ -518,7 +520,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveUp = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && player.colliding.wallBack == false)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		ToMoveUp = true;
 	}
@@ -528,7 +530,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveDown = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && player.colliding.wallBack == false)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		ToMoveDown = true;
 	}
@@ -552,7 +554,11 @@ void j2Player::CheckPlayerMovement(){
 		MovingRight = false;
 	}
 
-	if (Speed.y < 0.0f) {
+	if (player.landed == true)
+	{
+		Speed.y = 0.0f;
+	}
+	else if (Speed.y < 0.0f) {
 		MovingUp = true;
 		MovingDown = false;
 	}
@@ -655,7 +661,7 @@ void j2Player::AirStateTo() {
 	if (player.landed) {		
 
 		//land
-		Speed.y = 0.0;
+		Speed.y = 0.0f;
 		jump.Reset();
 		player.doubleJump = false;
 
