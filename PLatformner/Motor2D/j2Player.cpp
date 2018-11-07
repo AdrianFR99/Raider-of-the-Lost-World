@@ -102,6 +102,9 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Godmode
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
+		player.playerHitbox = nullptr;
+		player.playerGodModeHitbox = nullptr;
+		player.fakeHitbox = nullptr;
 	}
 	else
 	{
@@ -185,9 +188,7 @@ bool j2Player::Start()
 	Maxspeed.y = 3.00;
 
 	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
-	player.playerHitbox = nullptr;
-	player.playerGodModeHitbox = nullptr;
-	player.fakeHitbox = nullptr;
+	
 
 	CreatePlayerColliders(player);
 	//if (player.playerHitbox == nullptr)
