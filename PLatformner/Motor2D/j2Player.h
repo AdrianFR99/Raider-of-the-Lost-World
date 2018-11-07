@@ -10,11 +10,9 @@ enum class Player_State {
 
 	IDLE,
 	RUNNING,
-	AIRBORNE,
+	AIR,
 	CROUCHING,
 	SLIDING,
-
-
 
 };
 
@@ -96,29 +94,33 @@ public:
 	void OnCollision(Collider*, Collider*);
 	void OnPreCollision(int d);
 
+	//Main functions
+	void PlayerMovementInputs();
+	void CheckPlayerMovement();
 
-	void MovementInputs();
-	void ChechMovement();
 	void SwithcingStates();
-	void PlayerEffects();
-	void MovingPlayer();
+		void IdleStateTo();
+		void CrouchingStateTo();
+		void RunningStateTo();
+		void AirStateTo();
 
-	void IdleEffects();
-	void CrouchingEffects();
-	void RunningEffects();
-	void AirEffects();
+	void PlayerFX();
+		void IdleFX();
+		void CrouchingFX();
+		void RunningFX();
+		void AirFX();
 
-	void IdleMoveCheck();
-	void CrouchingMoveCheck();
-	void RunningMoveCheck();
-	void AirMoveCheck();
+	void PlayerMovement();
+
+	//Functions apply the Animations and sounds for every state
+	
+	//Chek Conditions to change from the current state to others
+	
 
 
 	void PlayerDebugF();
-	//DEBUG FUNCTIONS THAT SHOULD BE IN SOME COLLISIONS CPP
-	/*bool j2Player::CheckCollision(const SDL_Rect& r) const;
-	bool j2Player::PreCheckCollision(const SDL_Rect& r) const;
-	bool j2Player::CheckVerticalCollision(const SDL_Rect& r) const;*/
+
+
 
 public: //Variables
 
@@ -138,13 +140,14 @@ public: //Variables
 	float Currentacceleration=0.10;
 	float gravity = 0.1;
 
-
+	//Inputs pressed
 	bool ToMoveRight=false;
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
 	bool ToGodMode = false;
 
+	//Current movemvent
 	bool MovingRight = false;
 	bool MovingLeft = false;
 	bool MovingUp = false;

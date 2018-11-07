@@ -265,21 +265,20 @@ bool j2Player::Update(float dt)
 				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
 		}
 
-		//Chechk inputs
-		MovementInputs();
+		//Check inputs
+		PlayerMovementInputs();
 		//DebugFuncionalities
 		PlayerDebugF();
 		//CheckMovement
-		ChechMovement();
+		CheckPlayerMovement();
 		//switchStates
 		SwithcingStates();
 		//players Effects
-		PlayerEffects();
+		PlayerFX();
 		//movePlayer
-		MovingPlayer();
+		PlayerMovement();
 	
 	
-
 	//If the player falls and surpasses a determined Y position it dies
 	if (App->scene->CurrentMap2 == false)
 	{
@@ -403,7 +402,7 @@ void j2Player::OnPreCollision(int d)
 	player.nextFrameLanded = true;*/
 }
 
-void  j2Player::MovementInputs() {
+void  j2Player::PlayerMovementInputs() {
 
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
@@ -453,7 +452,7 @@ void  j2Player::MovementInputs() {
 
 }
 
-void j2Player::ChechMovement(){
+void j2Player::CheckPlayerMovement(){
 
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
@@ -487,16 +486,16 @@ void j2Player::SwithcingStates() {
 
 	switch (CurrentState) {
 	case Player_State::IDLE:
-		IdleMoveCheck();
+		IdleStateTo();
 		break;
 	case Player_State::CROUCHING:
-		CrouchingMoveCheck();
+		CrouchingStateTo();
 		break;
 	case  Player_State::RUNNING:
-		RunningMoveCheck();
+		RunningStateTo();
 		break;
-	case  Player_State::AIRBORNE:
-		AirMoveCheck();
+	case  Player_State::AIR:
+		AirStateTo();
 		break;
 	
 	}
@@ -504,7 +503,7 @@ void j2Player::SwithcingStates() {
 
 }
 
-void j2Player::IdleMoveCheck() {
+void j2Player::IdleStateTo() {
 
 	if (player.dead == false) {
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
@@ -514,7 +513,7 @@ void j2Player::IdleMoveCheck() {
 			//jump
 			Speed.y = -JumpForce;
 			player.landed = false;
-			CurrentState = Player_State::AIRBORNE;
+			CurrentState = Player_State::AIR;
 		}
 		else if (ToMoveDown == true) {
 			CurrentState = Player_State::CROUCHING;
@@ -522,7 +521,7 @@ void j2Player::IdleMoveCheck() {
 	}
 
 }
-void j2Player::CrouchingMoveCheck() {
+void j2Player::CrouchingStateTo() {
 
 	if (ToMoveDown == false) {
 		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
@@ -535,18 +534,18 @@ void j2Player::CrouchingMoveCheck() {
 		//jump
 		Speed.y = -JumpForce;
 		player.landed = false;
-		CurrentState = Player_State::AIRBORNE;
+		CurrentState = Player_State::AIR;
 	}
 
 
 }
-void j2Player::RunningMoveCheck() {
+void j2Player::RunningStateTo() {
 
 	if (ToMoveUp == true) {
 		//jump
 		Speed.y = -JumpForce;
 		player.landed = false;
-		CurrentState = Player_State::AIRBORNE;
+		CurrentState = Player_State::AIR;
 	}
 	else if (MovingLeft == false && MovingRight == false) {
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
@@ -555,7 +554,9 @@ void j2Player::RunningMoveCheck() {
 	}
 
 }
-void j2Player::AirMoveCheck() {
+void j2Player::AirStateTo() {
+
+	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
 		
@@ -592,7 +593,7 @@ void j2Player::AirMoveCheck() {
 	}
 }
 
-void j2Player::MovingPlayer() {
+void j2Player::PlayerMovement() {
 	
 	if (player.dead == false) {
 
@@ -604,7 +605,7 @@ void j2Player::MovingPlayer() {
 			else if (ToMoveLeft == true && ToMoveRight == false) {
 				Speed.x -= Currentacceleration;
 			}
-			else if (CurrentState != Player_State::AIRBORNE) {	// Natural deacceleration when on ground
+			else if (CurrentState != Player_State::AIR) {	
 				if (MovingRight == true) {
 					Speed.x -= Currentacceleration;
 
@@ -619,13 +620,13 @@ void j2Player::MovingPlayer() {
 				}
 			}
 
-			// If on air, apply gravity
-			if ((CurrentState == Player_State::AIRBORNE || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
-				//Fall
+			
+			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
+				//Falling
 				Speed.y += gravity;
 			}
 
-			// Max Speeds
+			// Maximum Speeds
 			if (Speed.x > Maxspeed.x)
 				Speed.x = Maxspeed.x;
 			else if (Speed.x < -Maxspeed.x)
@@ -637,7 +638,7 @@ void j2Player::MovingPlayer() {
 				Speed.y = -Maxspeed.y;
 
 
-			// New position
+			//new current position
 			player.playerPos.x += Speed.x;
 			player.playerPos.y += Speed.y;
 
@@ -659,7 +660,7 @@ void j2Player::MovingPlayer() {
 	}
 
 }
-void j2Player::PlayerEffects() {
+void j2Player::PlayerFX() {
 
 	if (ToMoveRight == true && ToMoveLeft == false) {
 		lookingRight = true;
@@ -674,16 +675,16 @@ void j2Player::PlayerEffects() {
 
 			switch (CurrentState) {
 			case Player_State::IDLE:
-				IdleEffects();
+				IdleFX();
 				break;
 			case Player_State::CROUCHING:
-				CrouchingEffects();
+				CrouchingFX();
 				break;
 			case Player_State::RUNNING:
-				RunningEffects();
+				 RunningFX();
 				break;
-			case Player_State::AIRBORNE:
-				AirEffects();
+			case Player_State::AIR:
+				AirFX();
 				break;
 			}
 		}
@@ -701,22 +702,22 @@ void j2Player::PlayerEffects() {
 	
 }
 
-	void j2Player::IdleEffects(){
+	void j2Player::IdleFX(){
 
 	currentAnimation = &idle;
 
 	}
-	void j2Player::CrouchingEffects() {
+	void j2Player::CrouchingFX() {
 	
 		ToMoveRight = false;
 		ToMoveLeft = false;
 		currentAnimation = &crouch;
 	}
-	void j2Player::RunningEffects() {
+	void j2Player:: RunningFX() {
 	
 		currentAnimation = &run;
 	}
-	void j2Player::AirEffects() {
+	void j2Player::AirFX() {
 	
 		if (MovingDown == true) {
 		
