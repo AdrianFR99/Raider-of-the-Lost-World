@@ -279,10 +279,10 @@ void j1Render::followPlayer(const Player &p)
 	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
 	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale)
+	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale && App->player->Speed.x > 0)
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-		camera.x += (App->player->Speed.x+ App->player->Currentacceleration) * scale;
+		camera.x += (App->player->Speed.x) * scale;
 	
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -302,13 +302,11 @@ void j1Render::followPlayer(const Player &p)
 		}
 	}
 
-	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale)
+	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale && App->player->Speed.x < 0)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
-		if(App->player->Speed.x<0)
-		App->render->camera.x -=(-1*(App->player->Speed.x+ App->player->Currentacceleration)) * scale;
-
-		App->render->camera.x -= (App->player->Speed.x +App->player->Currentacceleration ) * scale;
+		
+		App->render->camera.x += (App->player->Speed.x) * scale;
 
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -328,18 +326,34 @@ void j1Render::followPlayer(const Player &p)
 	}
 
 
-		if (p.playerPos.y < (camera.y + camera.h /3) / scale)
+		if (p.playerPos.y < (camera.y + camera.h /3) / scale && p.playerPos.y != camera.y + (camera.h / 2))
 		{
-			if (App->player->Speed.y < 0)
-		camera.y +=  (App->player->Speed.y) * scale;
 		
+				if (App->player->Speed.y < 0)
+					camera.y += (App->player->Speed.y) * scale;
 
+				else if (App->player->Speed.y == 0) {
+
+					camera.y -= (App->player->Maxspeed.y) * scale;
+
+				}
+
+
+			
 		}
 
-		if (p.playerPos.y > (camera.y + (camera.h /3)*2) / scale)
+		if (p.playerPos.y > (camera.y + (camera.h /3)*2) / scale && p.playerPos.y != camera.y + (camera.h / 2))
 		{
-			if(App->player->Speed.y>0)
-			camera.y += (App->player->Speed.y) * scale;
+		
+			
+				if (App->player->Speed.y > 0)
+					camera.y += (App->player->Speed.y) * scale;
+
+				else if (App->player->Speed.y == 0) {
+
+					camera.y += (App->player->Maxspeed.y) * scale;
+				}
+
 			
 		}
 	
