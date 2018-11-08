@@ -422,7 +422,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
 				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-				&& Speed.y > 0)
+				/*&& Speed.y > 0*/)
 				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 			{
 				player.landed = true;
