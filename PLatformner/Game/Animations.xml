@@ -57,9 +57,6 @@
 
       <push loop="false" speed="0.03">
         <PushBack x="0" y="543" w="21" h="26"/>
-        <PushBack x="49" y="545" w="34" h="15"/>
-        <PushBack x="98" y="545" w="17" h="25"/>
-        <PushBack x="147" y="546" w="27" h="24"/>
       </push>
 
       <attack loop="false" speed="0.03">

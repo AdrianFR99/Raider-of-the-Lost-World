@@ -50,23 +50,29 @@
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
     
-   
     <!--Player Speeds-->
-    <gravity_speed value="1" />
-    <y_max_speed value="4"/>
-    <x_speed value="2" />
-    <y_speed value="-12" />
-    <actual_x_speed value="0" />
-    <actual_y_speed  value="0" />
-    <stopped_speed value="0" />
+    <Jumpforce value="5.00"/>
+    <gravity value="0.1"/>
+    <Currentacceleration value="0.10"/>
+    <Maxspeed x="3.00" y="3.00"/>
   
+    <!--Player Bools Movement-->
+    <ToMoveRight value="false" />
+    <ToMoveLeft value="false" />
+    <ToMoveUp value="false" />
+    <ToMoveDown value="false" />
+
+    <MovingRight value="false" />
+    <MovingLeft value="false" />
+    <MovingUp value="false" />
+    <MovingDown value="false" />
+
+    <lookingRight value="false" />
+
     <!--Player Landed-->
-    <d_to_ground value="0" />
     <landed value="false" />
     <!--Double Jump-->>
     <doubleJump value="true"/>
-    <doubleJump_delay value="13"/>
-    <doubleJump_counter value="0"/>
     <nextFrameLanded value="false" />
 
     <!--Player Death-->>

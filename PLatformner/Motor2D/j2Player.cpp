@@ -80,8 +80,14 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.playerRect.h = config.child("playerRect").attribute("height").as_int();
 		player_Init.playerRect.x = player_Init.playerPos.x;
 		player_Init.playerRect.y = player_Init.playerPos.y;
+
 		//Player Speeds
-	
+		JumpForce = config.child("Jumpforce").attribute("value").as_float();
+		Currentacceleration = config.child("Currentacceleration").attribute("value").as_float();
+		gravity = config.child("gravity").attribute("value").as_float();
+		Maxspeed.x =config.child("Maxspeed").attribute("x").as_float();
+		Maxspeed.y = config.child("Maxspeed").attribute("y").as_float();
+
 		//Player DoubleJump
 		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
 		
@@ -94,6 +100,21 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//PlayerCollision Adjusters
 		player_Init.colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
 		player_Init.colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
+
+		//Player Bools Movement
+		 ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
+		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
+		 ToMoveUp = config.child("ToMoveUp").attribute("value").as_bool();
+		 ToMoveDown = config.child("ToMoveDown").attribute("value").as_bool();
+	
+
+		
+		 MovingRight = config.child("MovingRight").attribute("value").as_bool();
+		 MovingLeft = config.child("MovingLeft").attribute("value").as_bool();
+		 MovingUp = config.child("MovingUp").attribute("value").as_bool();
+		 MovingDown = config.child("MovingDown").attribute("value").as_bool();
+
+		 lookingRight = config.child("lookingRight").attribute("value").as_bool();
 
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();

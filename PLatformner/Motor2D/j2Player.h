@@ -146,16 +146,16 @@ public: //Variables
 	//new structure for player
 	fPoint Speed;
 	fPoint Maxspeed;
-	float JumpForce = 5.00;
-	float Currentacceleration=0.10;
-	float gravity = 0.1;
+	float JumpForce;
+	float Currentacceleration;
+	float gravity;
 
 	//Inputs pressed
 	bool ToMoveRight=false;
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
-	bool ToGodMode = false;
+	
 
 	//Current movemvent
 	bool MovingRight = false;
@@ -166,7 +166,7 @@ public: //Variables
 	bool lookingRight=false;
 	
 
-	Animation* currentAnimation;
+	Animation* currentAnimation=nullptr;
 	Animation idle;
 	Animation run;
 	Animation jump;
