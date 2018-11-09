@@ -32,6 +32,12 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+public: //Vars
+
+	p2SString music_folder;
+	//List containing the strings for each song
+	p2List<p2SString*> songs_list;	
+
 private:
 
 	_Mix_Music*			music = NULL;

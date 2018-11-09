@@ -50,6 +50,22 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	//Initialize the Audio Strings list from config.xml
+
+	if (config != NULL)
+	{
+		music_folder = config.child("music").child_value("folder");
+
+		//This fills the list of Strings with the names of the songs declared in config.xml
+		for (pugi::xml_node music = config.child("music").child("song"); ret && music; music = music.next_sibling("song"))
+		{
+			p2SString* aux = new p2SString;
+			aux->create(music.attribute("name").as_string());
+			songs_list.add(aux);
+		}
+	}
+
+
 	return ret;
 }
 
@@ -71,6 +87,9 @@ bool j1Audio::CleanUp()
 		Mix_FreeChunk(item->data);
 
 	fx.clear();
+
+	//Clear Music strings
+	songs_list.clear();
 
 	Mix_CloseAudio();
 	Mix_Quit();
