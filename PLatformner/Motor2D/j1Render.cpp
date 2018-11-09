@@ -286,20 +286,20 @@ void j1Render::followPlayer(const Player &p)
 	
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
-			if (App->player->MovingRight) {
+			
 				App->map->data.imagelayers.At(1)->data->SpeedBack -= App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed", 0.5);
 				App->map->data.imagelayers.At(0)->data->SpeedBack -= App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
-			}
-			else {
+		}
+		else {
 
 				App->map->data2.imagelayers.At(0)->data->SpeedBack -= App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.0);
 				App->map->data2.imagelayers.At(3)->data->SpeedBack -= App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
 				App->map->data2.imagelayers.At(2)->data->SpeedBack -= App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
 
 
-			}
-
 		}
+
+		
 	}
 
 	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale && App->player->Speed.x < 0)
@@ -311,18 +311,18 @@ void j1Render::followPlayer(const Player &p)
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
 		
-	if (App->player->MovingLeft) {
 				App->map->data.imagelayers.At(1)->data->SpeedBack += App->map->data.imagelayers.At(1)->data->PropImg.GetProperty("speed", 0.5);
 				App->map->data.imagelayers.At(0)->data->SpeedBack += App->map->data.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.25);
-			}
-			else {
+		}
+		else {
+				
 				App->map->data2.imagelayers.At(0)->data->SpeedBack += App->map->data2.imagelayers.At(0)->data->PropImg.GetProperty("speed", 0.0);
 				App->map->data2.imagelayers.At(3)->data->SpeedBack += App->map->data2.imagelayers.At(3)->data->PropImg.GetProperty("speed", 0.2);
 				App->map->data2.imagelayers.At(2)->data->SpeedBack += App->map->data2.imagelayers.At(2)->data->PropImg.GetProperty("speed", 0.15);
 
 
-			}
 		}
+		
 	}
 
 

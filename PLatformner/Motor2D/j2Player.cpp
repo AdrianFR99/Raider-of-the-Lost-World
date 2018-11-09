@@ -191,17 +191,6 @@ bool j2Player::Start()
 	
 
 	CreatePlayerColliders(player);
-	//if (player.playerHitbox == nullptr)
-	//{
-	//	player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-
-	//	if (player.fakeHitbox == nullptr)
-	//	{					//CHANGE/FIX
-	//		
-	//		player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
-	//	}
-	//}
-		
 
 	
 	
