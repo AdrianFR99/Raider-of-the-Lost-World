@@ -93,8 +93,9 @@ bool j1Scene::Start()
 	else
 		App->map->CreateColliders(App->map->data2);
 
-	//Play the first song Change/fix
-	App->audio->PlayMusic("audio/music/lvl_1_the_cave.ogg", 2.0f);
+	//Play the first song
+	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
+	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 	return true;
 }
 
@@ -234,7 +235,8 @@ void j1Scene::switchTheMaps()
 		App->map->CreateColliders(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
-		App->audio->PlayMusic("audio/music/lvl_2_the_mountain.ogg", 1.0f);
+		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->next->data->GetString());
+		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 	}
 	
 	else {
@@ -244,7 +246,8 @@ void j1Scene::switchTheMaps()
 		App->map->CreateColliders(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
-		App->audio->PlayMusic("audio/music/lvl_1_the_cave.ogg", 1.0f);
+		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
+		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 
 	}
 }
