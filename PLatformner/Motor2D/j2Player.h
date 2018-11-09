@@ -176,12 +176,14 @@ public: //Variables
 	Animation fall;
 	Animation crouch;
 	Animation GodMode;
-
+	Animation push;
+	Animation ChargedAttack;
 
 	Player_State CurrentState;
 private:
 	p2SString	folder;
 };
+
 
 
 

@@ -39,6 +39,12 @@ j2Player::j2Player()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("crouch");//crouch
 	crouch.LoadPushBack(AnimPushBack);
 
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("push");//push
+	push.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("attack");//Charged attack
+	ChargedAttack.LoadPushBack(AnimPushBack);
+
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
 	slide.LoadPushBack(AnimPushBack);
 
@@ -796,6 +802,9 @@ void j2Player::PlayerFX() {
 	}
 	void j2Player:: RunningFX() {
 	
+		if(player.colliding.wallFront==true || player.colliding.wallBack == true)
+			currentAnimation = &push;
+		else
 		currentAnimation = &run;
 	}
 	void j2Player::AirFX() {

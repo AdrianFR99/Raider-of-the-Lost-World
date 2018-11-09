@@ -55,6 +55,22 @@
         <PushBack x="196" y="163" w="22" h="17"/>
       </slide>
 
+      <push loop="false" speed="0.03">
+        <PushBack x="0" y="543" w="21" h="26"/>
+        <PushBack x="49" y="545" w="34" h="15"/>
+        <PushBack x="98" y="545" w="17" h="25"/>
+        <PushBack x="147" y="546" w="27" h="24"/>
+      </push>
+
+      <attack loop="false" speed="0.03">
+        <PushBack x="0" y="364" w="20" h="26"/>
+        <PushBack x="49" y="364" w="30" h="26"/>
+        <PushBack x="98" y="367" w="48" h="23"/>
+        <PushBack x="147" y="371" w="31" h="19"/>
+        <PushBack x="196" y="370" w="34" h="20"/>
+        <PushBack x="245" y="370" w="34" h="20"/>
+      </attack>
+      
       <die loop="false" speed="0.03">
         <PushBack x="0" y="696" w="18" h="24"/>
         <PushBack x="49" y="697" w="20" h="23"/>
