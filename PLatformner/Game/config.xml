@@ -33,6 +33,14 @@
     <Map file="Map2.tmx"/>
   </scene>
  
+  <audio>
+      <music>
+        <folder> audio/music/ </folder>
+        <song name="lvl_1_the_cave.ogg"/>
+        <song name="lvl_2_the_mountain.ogg"/>
+
+      </music>
+   </audio>
   <map>
     <folder>maps/</folder>
   </map>
