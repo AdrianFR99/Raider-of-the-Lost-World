@@ -413,6 +413,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
 				&& c2->rect.y + 8< player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& overlay.y < overlay.y + overlay.h
 			    && player.colliding.wallTop == false)
 			{
 				player.colliding.wallFront = true;
@@ -485,6 +486,19 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
 		{
 			player.landed = true;
+			player.colliding.wallDown = true;
+		}
+
+		//if (overlay.y < overlay.y + overlay.h
+		//	/*&& player.fakeHitbox->rect.y + player.fakeHitbox->rect.h > overlay.y + overlay.h*/
+		//	&& player.playerHitbox->rect.x + player.playerHitbox->rect.w < c2->rect.x
+		//	&& c2->rect.x + c2->rect.w < player.playerHitbox->rect.x)
+		if (player.fakeHitbox->rect.y > c2->rect.y
+			&& player.fakeHitbox->rect.y < c2->rect.y + c2->rect.h
+			&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 3> c2->rect.x
+			&& c2->rect.x + c2->rect.w -3> player.fakeHitbox->rect.x)
+		{
+			player.colliding.wallTop = true;
 		}
 	}
 
@@ -895,8 +909,8 @@ bool j2Player::CreatePlayerColliders(Player &p)
 	{
 		if (p.playerHitbox == nullptr && p.fakeHitbox == nullptr)
 		{
-			p.playerHitbox = App->collision->AddCollider(player_Init.playerRect, COLLIDER_PLAYER, this);
 			p.fakeHitbox = App->collision->AddCollider(p.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+			p.playerHitbox = App->collision->AddCollider(player_Init.playerRect, COLLIDER_PLAYER, this);
 			p.playerGodModeHitbox = nullptr;
 			ret = 1;
 		}
