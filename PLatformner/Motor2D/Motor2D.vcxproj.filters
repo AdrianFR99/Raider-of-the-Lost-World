@@ -40,6 +40,9 @@
     <ClCompile Include="j2Collision.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Desenvolupament  ========\Modules\PathFinding</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="j2Animation.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Desenvolupament  ========\Modules\PathFinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -121,6 +127,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Tools\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\PathFinding">
+      <UniqueIdentifier>{2a5009bc-07bd-4073-9b17-e0923c02c125}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
