@@ -70,6 +70,7 @@ struct Properties
 	
 	float GetProperty(const char* value, float def_value) const;
 
+	int Get(const char* name, int default_value = 0) const;
 
 	p2List<Property*>	Propertieslist;
 };
@@ -188,14 +189,13 @@ public:
 
 
 
-	
-
-	TileSet* GetTilesetFromTileId(int id,MapData& DataAux);
+	TileSet* GetTilesetFromTileId(int id,MapData& DataAux) const;
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y, MapData &DataAux) const;
 	iPoint WorldToMap(int x, int y, MapData &DataAux) const;
 
-
+	//For Pathfinding
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapData& DataAux) const;
 	
 
 private:
@@ -208,13 +208,6 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties& list);
 	bool LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjGroup);
 	
-
-	
-
-
-	
-
-
 public:
 
 	MapData data;

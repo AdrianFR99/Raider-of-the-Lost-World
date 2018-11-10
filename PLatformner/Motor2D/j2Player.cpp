@@ -218,8 +218,6 @@ bool j2Player::Start()
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
 
-	Maxspeed.x = 3.00;
-	Maxspeed.y = 3.00;
 
 	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
 	
@@ -509,8 +507,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		//	&& c2->rect.x + c2->rect.w < player.playerHitbox->rect.x)
 		if (player.fakeHitbox->rect.y > c2->rect.y
 			&& player.fakeHitbox->rect.y < c2->rect.y + c2->rect.h
-			&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 3> c2->rect.x
-			&& c2->rect.x + c2->rect.w -3> player.fakeHitbox->rect.x)
+			&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 5> c2->rect.x
+			&& c2->rect.x + c2->rect.w -5> player.fakeHitbox->rect.x)
 		{
 			player.colliding.wallTop = true;
 		}

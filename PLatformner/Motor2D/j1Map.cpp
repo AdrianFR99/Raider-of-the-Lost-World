@@ -27,17 +27,11 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 	folder.create(config.child("folder").child_value());
 
-	
-	
-
-
 	return ret;
 }
 
 void j1Map::Draw(MapData&DataAux)
 {
-	
-
 	if(map_loaded == false)
 		return;
 	
@@ -564,7 +558,7 @@ bool j1Map::LoadImageLayer(pugi::xml_node& node, ImageLayer* Image) {
 }
 
 
-TileSet* j1Map::GetTilesetFromTileId(int id,MapData& DataAux) 
+TileSet* j1Map::GetTilesetFromTileId(int id,MapData& DataAux) const
 {
 
 
@@ -621,6 +615,19 @@ float Properties::GetProperty(const char* value, float def_value) const
 	return def_value;
 }
 
+int Properties::Get(const char* value, int default_value) const
+{
+	p2List_item<Property*>* item = Propertieslist.start;
+
+	while (item)
+	{
+		if (item->data->name == value)
+			return item->data->value;
+		item = item->next;
+	}
+
+	return default_value;
+}
 
 
 bool j1Map::LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjAux) {
@@ -763,6 +770,54 @@ float j1Map::SetLimitPoint(MapData&DataAux) {
 
 }
 
+//Walkability map for Pathfinding
+bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapData &DataAux) const
+{
+	bool ret = false;
+	p2List_item<MapLayer*>* item;
+	item = data.layers.start;
+
+	for (item = data.layers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.Get("Navigation", 0) == 0)
+			continue;
+
+		uchar* map = new uchar[layer->width*layer->height];
+		memset(map, 1, layer->width*layer->height);
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int i = (y*layer->width) + x;
+
+				int tile_id = layer->Get(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id,DataAux) : NULL;		//Change/Fix Dídac
+				//TileSet* tileset = GetTilesetFromTileId(tile_id, MapDataList.start->data);
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					/*TileType* ts = tileset->GetTileType(tile_id);
+					if(ts != NULL)
+					{
+						map[i] = ts->properties.Get("walkable", 1);
+					}*/
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.width;
+		height = data.height;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
+}
 
 
 
