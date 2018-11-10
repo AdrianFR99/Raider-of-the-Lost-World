@@ -38,8 +38,11 @@
         <folder>audio/music/</folder>
         <song name="lvl_1_the_cave.ogg"/>
         <song name="lvl_2_the_mountain.ogg"/>
-
       </music>
+    <FX>
+      <folderFX>audio/FX/</folderFX>
+    </FX>
+    
    </audio>
   <map>
     <folder>maps/</folder>
@@ -87,6 +90,12 @@
     <xCollisionAdjuster x="3"/>
     <vCollision_controller y="8"/>
     <folder>textures/adventure.png</folder>
+
+    <FX>
+      <!--Player Sound effects-->
+      <jump path="audio/FX/Jump5.wav"/>
+      <run path="audio/FX/Run5.wav"/>
+    </FX>
     
   </player>
 </config>

@@ -16,6 +16,13 @@ enum class Player_State {
 
 };
 
+struct FXPlayer {
+
+	p2SString path;
+	uint ChunkSize;
+
+};
+
 struct Player
 {
 	struct collisionControl 
@@ -166,6 +173,8 @@ public: //Variables
 	bool lookingRight=false;
 	
 
+	bool PlayFXJump=false;
+
 	Animation* currentAnimation=nullptr;
 	Animation idle;
 	Animation run;
@@ -178,6 +187,9 @@ public: //Variables
 	Animation GodMode;
 	Animation push;
 	Animation ChargedAttack;
+
+	//Sound FX
+	FXPlayer jumpSound;
 
 	Player_State CurrentState;
 private:

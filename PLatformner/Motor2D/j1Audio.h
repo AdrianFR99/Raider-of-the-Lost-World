@@ -35,6 +35,7 @@ public:
 public: //Vars
 
 	p2SString music_folder;
+	p2SString Chunks_folder;
 	//List containing the strings for each song
 	p2List<p2SString*> songs_list;	
 

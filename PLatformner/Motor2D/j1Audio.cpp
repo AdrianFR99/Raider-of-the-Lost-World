@@ -55,6 +55,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	if (config != NULL)
 	{
 		music_folder = config.child("music").child_value("folder");
+		Chunks_folder = config.child("FX").child_value("folderFX");
 
 		//This fills the list of Strings with the names of the songs declared in config.xml
 		for (pugi::xml_node music = config.child("music").child("song"); ret && music; music = music.next_sibling("song"))

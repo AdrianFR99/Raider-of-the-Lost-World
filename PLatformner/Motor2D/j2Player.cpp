@@ -10,7 +10,7 @@
 #include "SDL/include/SDL.h"
 #include "j1Map.h"
 #include "j2Player.h"
-
+#include "j1audio.h"
 
 
 //CONSTRUCTOR
@@ -132,8 +132,14 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player.playerHitbox = nullptr;
 		player.playerGodModeHitbox = nullptr;
 		player.fakeHitbox = nullptr;
+
+
+		//player SoundFX
+		jumpSound.path=config.child("FX").child("jump").attribute("path").as_string();
+		
+
 	}
-	else
+	else 
 	{
 		LOG("Could not Load Player data on Awake!");
 	}
@@ -223,6 +229,8 @@ bool j2Player::Start()
 	
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
 
+	//Loading SoundEffects
+	jumpSound.ChunkSize = App->audio->LoadFx(jumpSound.path.GetString());
 	
 
 	return true;
@@ -633,7 +641,9 @@ void j2Player::IdleStateTo() {
 		}
 		else if (ToMoveUp == true) {
 			//jump
+			PlayFXJump = true;
 			Speed.y = -JumpForce;
+
 			player.landed = false;
 			CurrentState = Player_State::AIR;
 		}
@@ -654,7 +664,9 @@ void j2Player::CrouchingStateTo() {
 	}
 	else if (ToMoveUp == true) {
 		//jump
+		PlayFXJump = true;
 		Speed.y = -JumpForce;
+
 		player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
@@ -665,7 +677,9 @@ void j2Player::RunningStateTo() {
 
 	if (ToMoveUp == true) {
 		//jump
+		PlayFXJump = true;
 		Speed.y = -JumpForce;
+
 		player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
@@ -684,7 +698,7 @@ void j2Player::AirStateTo() {
 		
 		//Reset Animation
 		jumpDouble.Reset();
-		//jump
+		//Doublejump
 		Speed.y =-JumpForce;
 		player.doubleJump = true;
 	}
@@ -852,6 +866,10 @@ void j2Player::PlayerFX() {
 			currentAnimation = &jumpDouble;
 		}
 		else {
+			if (PlayFXJump == true) {
+				App->audio->PlayFx(jumpSound.ChunkSize, 0);
+				PlayFXJump = false;
+			}
 			currentAnimation = &jump;
 		}
 	}
