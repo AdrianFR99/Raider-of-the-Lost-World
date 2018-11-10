@@ -94,7 +94,9 @@
     <FX>
       <!--Player Sound effects-->
       <jump path="audio/FX/Jump5.wav"/>
+      <jumpDouble path="audio/FX/DoubleJump.wav"/>
       <run path="audio/FX/Run5.wav"/>
+      <die path="audio/FX/Hurt.wav"/>
     </FX>
     
   </player>

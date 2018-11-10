@@ -134,9 +134,7 @@ public:
 	//Chek Conditions to change from the current state to others
 	
 
-
 	void PlayerDebugF();
-
 
 
 public: //Variables
@@ -172,8 +170,10 @@ public: //Variables
 
 	bool lookingRight=false;
 	
-
 	bool PlayFXJump=false;
+	bool playeFXDoublejump = false;
+	bool PlayFXDie = false;
+
 
 	Animation* currentAnimation=nullptr;
 	Animation idle;
@@ -190,6 +190,9 @@ public: //Variables
 
 	//Sound FX
 	FXPlayer jumpSound;
+	FXPlayer DoublejumpSound;
+	FXPlayer runningSound;
+	FXPlayer DieSound;
 
 	Player_State CurrentState;
 private:

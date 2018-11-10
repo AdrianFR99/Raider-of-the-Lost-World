@@ -95,7 +95,7 @@ bool j1Scene::Start()
 
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-//	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 	return true;
 }
 

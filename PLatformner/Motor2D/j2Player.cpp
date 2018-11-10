@@ -136,8 +136,9 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//player SoundFX
 		jumpSound.path=config.child("FX").child("jump").attribute("path").as_string();
-		
-
+		runningSound.path=config.child("FX").child("run").attribute("path").as_string();
+		DoublejumpSound.path= config.child("FX").child("jumpDouble").attribute("path").as_string();
+		DieSound.path= config.child("FX").child("die").attribute("path").as_string();
 	}
 	else 
 	{
@@ -231,7 +232,9 @@ bool j2Player::Start()
 
 	//Loading SoundEffects
 	jumpSound.ChunkSize = App->audio->LoadFx(jumpSound.path.GetString());
-	
+	runningSound.ChunkSize= App->audio->LoadFx(runningSound.path.GetString());
+	DoublejumpSound.ChunkSize= App->audio->LoadFx(DoublejumpSound.path.GetString());
+	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());
 
 	return true;
 }
@@ -277,6 +280,8 @@ bool j2Player::Update(float dt)
 {
 	if (player.dead == true)
 	{
+		PlayFXDie = true;
+
 		if (player.deadCounter < player.deadDelay)
 		{
 			player.deadCounter += 1;
@@ -476,6 +481,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		//If the collider is a killing obstacle DIE
 		if (c2->type == COLLIDER_TRAP)
 		{
+			
 			player.dead = true;
 		}
 	}
@@ -696,6 +702,8 @@ void j2Player::AirStateTo() {
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
 		
+		//playconditon sound
+		playeFXDoublejump = true;
 		//Reset Animation
 		jumpDouble.Reset();
 		//Doublejump
@@ -831,6 +839,13 @@ void j2Player::PlayerFX() {
 		}
 	}
 	else {
+		
+
+	
+		if (PlayFXDie == true) {
+			App->audio->PlayFx(DieSound.ChunkSize, 0);
+			PlayFXDie = false;
+		}
 
 		die.Reset();
 		currentAnimation = &die;
@@ -849,12 +864,17 @@ void j2Player::PlayerFX() {
 		ToMoveLeft = false;
 		currentAnimation = &crouch;
 	}
-	void j2Player:: RunningFX() {
-	
-		if(player.colliding.wallFront==true || player.colliding.wallBack == true)
+	void j2Player::RunningFX() {
+
+		if (player.colliding.wallFront == true || player.colliding.wallBack == true) {
+
 			currentAnimation = &push;
-		else
-		currentAnimation = &run;
+		}
+
+		else {
+		//	App->audio->PlayFx(runningSound.ChunkSize, 0);
+			currentAnimation = &run;
+		}
 	}
 	void j2Player::AirFX() {
 	
@@ -863,6 +883,12 @@ void j2Player::PlayerFX() {
 			currentAnimation = &fall;
 		}
 		else if (player.doubleJump == true) {
+		
+			if (playeFXDoublejump == true) {
+				App->audio->PlayFx(DoublejumpSound.ChunkSize, 0);
+				playeFXDoublejump = false;
+			}
+
 			currentAnimation = &jumpDouble;
 		}
 		else {
