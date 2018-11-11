@@ -125,6 +125,8 @@ public:
 
 	void PlayerMovement();
 
+	void PlayerAttack();
+
 	//Functions apply the Animations and sounds for every state
 
 	void NullifyPlayerColliders(Player &p);
@@ -151,8 +153,11 @@ public: //Variables
 	//new structure for player
 	fPoint Speed;
 	fPoint Maxspeed;
+	fPoint Impulse;
+
 	float JumpForce;
 	float Currentacceleration;
+	float ChargedDesaceleration=0.04;
 	float gravity;
 
 	//Inputs pressed
@@ -170,10 +175,17 @@ public: //Variables
 
 	bool lookingRight=false;
 	
+	//FX Sound Booleans
 	bool PlayFXJump=false;
 	bool playeFXDoublejump = false;
 	bool PlayFXDie = false;
 
+
+	//Attack Booleans
+	bool ChargedAttackB = false;
+	bool BasicAttackB = false;
+	bool AirAttackB = false;
+	bool arealAttackUsed = false;
 
 	Animation* currentAnimation=nullptr;
 	Animation idle;
@@ -187,6 +199,8 @@ public: //Variables
 	Animation GodMode;
 	Animation push;
 	Animation ChargedAttack;
+	Animation BasicAttack;
+	Animation AirAttack;
 
 	//Sound FX
 	FXPlayer jumpSound;

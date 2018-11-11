@@ -13,6 +13,7 @@
 #include "j1audio.h"
 
 
+
 //CONSTRUCTOR
 j2Player::j2Player()
 {
@@ -42,8 +43,14 @@ j2Player::j2Player()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("push");//push
 	push.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("attack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Chargedattack");//Charged attack
 	ChargedAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Basicattack");//Charged attack
+	BasicAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Airattack");//AirAttack
+	AirAttack.LoadPushBack(AnimPushBack);
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
 	slide.LoadPushBack(AnimPushBack);
@@ -234,6 +241,10 @@ bool j2Player::Start()
 	DoublejumpSound.ChunkSize= App->audio->LoadFx(DoublejumpSound.path.GetString());
 	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());
 
+
+	Impulse.x = 1.00;
+	Impulse.y = 2.00;
+
 	return true;
 }
 
@@ -320,7 +331,8 @@ bool j2Player::Update(float dt)
 		PlayerFX();
 		//movePlayer
 		PlayerMovement();
-	
+		//playerCondtions attacks
+		 PlayerAttack();
 	
 	//If the player falls and surpasses a determined Y position it dies
 	if (App->scene->CurrentMap2 == false)
@@ -741,25 +753,51 @@ void j2Player::PlayerMovement() {
 
 		if (player.godMode == false) {
 
-			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false) {
+			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false) {
 				Speed.x += Currentacceleration;
 			}
-			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false) {
+			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
 				Speed.x -= Currentacceleration;
 			}
 			else if (CurrentState != Player_State::AIR) {	
-				if (MovingRight == true) {
+				if (MovingRight == true && ChargedAttackB == false) {
 					Speed.x -= Currentacceleration;
 
 					if (Speed.x < 0.0f)
 						Speed.x = 0.0f;
 				}
-				else if (MovingLeft == true) {
+				else if (MovingLeft == true && ChargedAttackB == false) {
 					Speed.x += Currentacceleration;
 
 					if (Speed.x > 0.0f)
 						Speed.x = 0.0f;
 				}
+				
+				if (ChargedAttackB == true) {
+
+					if (MovingRight) {
+						
+						lookingRight = true;
+						MovingLeft = false;
+
+						Speed.x -= ChargedDesaceleration;
+						if (Speed.x < 0.0f)
+							Speed.x = 0.0f;
+					}
+					else if (MovingLeft) {
+
+						lookingRight = false;
+						MovingRight = false;
+
+						Speed.x += ChargedDesaceleration;
+						
+						if (Speed.x > 0.0f)
+							Speed.x = 0.0f;
+					
+					}
+				
+				}
+
 			}
 
 			
@@ -769,10 +807,19 @@ void j2Player::PlayerMovement() {
 			}
 
 			// Maximum Speeds
-			if (Speed.x > Maxspeed.x)
-				Speed.x = Maxspeed.x;
-			else if (Speed.x < -Maxspeed.x)
-				Speed.x = -Maxspeed.x;
+			if (ChargedAttackB == false) {
+				if (Speed.x > Maxspeed.x)
+					Speed.x = Maxspeed.x;
+				else if (Speed.x < -Maxspeed.x)
+					Speed.x = -Maxspeed.x;
+			}
+			
+			else {
+				if (Speed.x > Maxspeed.x + Impulse.x)
+					Speed.x = Maxspeed.x + Impulse.x;
+				else if (Speed.x < -Maxspeed.x - Impulse.x)
+					Speed.x = -Maxspeed.x - Impulse.x;
+			}
 
 			if (Speed.y > Maxspeed.y)
 				Speed.y = Maxspeed.y;
@@ -802,6 +849,76 @@ void j2Player::PlayerMovement() {
 	}
 
 }
+
+void j2Player::PlayerAttack() {
+	
+	if ((Speed.x == 0 || CurrentState!=Player_State::RUNNING) && ChargedAttackB==true) {
+		ChargedAttackB = false;
+		ChargedAttack.Reset();
+	}
+
+	if ((MovingDown==true || CurrentState != Player_State::AIR) && AirAttackB == true) {
+
+		AirAttackB = false;
+		AirAttack.Reset();
+	}
+
+	if (Speed.y == 0) {
+
+		arealAttackUsed = false;
+	}
+
+	/*if (BasicAttack.Finished()) {
+
+		BasicAttack.Reset();
+		BasicAttackB = false;
+	}*/
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && ChargedAttackB == false) {
+
+		switch (CurrentState) {
+
+		case Player_State::RUNNING:
+			
+			if (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x) {
+				
+				ChargedAttackB = true;
+				if (MovingRight) {
+					Speed.x +=Impulse.x;
+				}
+				else if (MovingLeft) {
+					Speed.x -= Impulse.x;
+
+				}
+			}
+		/*	else {
+				BasicAttackB = true;
+			}
+*/
+			break;
+		
+		case Player_State::IDLE:
+		
+			/*BasicAttackB = true;
+			
+			break;*/
+
+		case Player_State::AIR:
+			
+			if (arealAttackUsed ==false) {
+				AirAttackB = true;
+				Speed.y -= Impulse.y;
+				arealAttackUsed = true;
+			}
+
+			break;
+
+
+		}
+	}
+}
+
+
 void j2Player::PlayerFX() {
 
 	if (ToMoveRight == true && ToMoveLeft == false) {
@@ -852,8 +969,10 @@ void j2Player::PlayerFX() {
 }
 
 	void j2Player::IdleFX(){
-
+		if(BasicAttackB==false)
 	currentAnimation = &idle;
+		/*else
+			currentAnimation = &BasicAttack;*/
 
 	}
 	void j2Player::CrouchingFX() {
@@ -864,37 +983,58 @@ void j2Player::PlayerFX() {
 	}
 	void j2Player::RunningFX() {
 
-		if (player.colliding.wallFront == true || player.colliding.wallBack == true) {
+		if ((player.colliding.wallFront == true || player.colliding.wallBack == true ) && ChargedAttackB==false) {
 
 			currentAnimation = &push;
 		}
+		else if (ChargedAttackB==true) {
+
+			
+			currentAnimation = &ChargedAttack;
+
+		}
+	/*	else if (BasicAttackB == true) {
+
+			currentAnimation = &BasicAttack;
+		}*/
 
 		else {
 			App->audio->PlayFx(runningSound.ChunkSize, 0);
 			currentAnimation = &run;
 		}
+
 	}
 	void j2Player::AirFX() {
 	
-		if (MovingDown == true) {
-		
-			currentAnimation = &fall;
-		}
-		else if (player.doubleJump == true) {
-		
-			if (playeFXDoublejump == true) {
-				App->audio->PlayFx(DoublejumpSound.ChunkSize, 0);
-				playeFXDoublejump = false;
+		if (AirAttackB == false) {
+
+			if (MovingDown == true) {
+
+				currentAnimation = &fall;
 			}
 
-			currentAnimation = &jumpDouble;
-		}
-		else {
-			if (PlayFXJump == true) {
-				App->audio->PlayFx(jumpSound.ChunkSize, 0);
-				PlayFXJump = false;
+			else if (player.doubleJump == true) {
+
+				if (playeFXDoublejump == true) {
+					App->audio->PlayFx(DoublejumpSound.ChunkSize, 0);
+					playeFXDoublejump = false;
+				}
+
+				currentAnimation = &jumpDouble;
 			}
-			currentAnimation = &jump;
+
+			else {
+				if (PlayFXJump == true) {
+					App->audio->PlayFx(jumpSound.ChunkSize, 0);
+					PlayFXJump = false;
+				}
+				currentAnimation = &jump;
+			}
+
+		}
+
+		else {
+			currentAnimation = &AirAttack;
 		}
 	}
 

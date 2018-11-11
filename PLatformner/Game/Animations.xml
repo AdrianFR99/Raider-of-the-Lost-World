@@ -59,14 +59,29 @@
         <PushBack x="0" y="543" w="21" h="26"/>
       </push>
 
-      <attack loop="false" speed="0.03">
+      <Chargedattack loop="false" speed="0.09">
         <PushBack x="0" y="364" w="20" h="26"/>
         <PushBack x="49" y="364" w="30" h="26"/>
         <PushBack x="98" y="367" w="48" h="23"/>
         <PushBack x="147" y="371" w="31" h="19"/>
         <PushBack x="196" y="370" w="34" h="20"/>
         <PushBack x="245" y="370" w="34" h="20"/>
-      </attack>
+      </Chargedattack>
+
+      <Airattack loop="false" speed="0.09">
+        <PushBack x="147" y="570" w="18" h="26"/>
+        <PushBack x="196" y="570" w="46" h="30"/>
+        <PushBack x="245" y="570" w="29" h="30"/>
+        <PushBack x="294" y="570" w="27" h="31"/>
+      </Airattack>
+
+      <Basicattack loop="false" speed="0.09">
+        <PushBack x="0" y="284" w="27" h="22"/>
+        <PushBack x="49" y="286" w="25" h="50"/>
+        <PushBack x="98" y="270" w="34" h="36"/>
+        <PushBack x="147" y="270" w="27" h="36"/>
+        <PushBack x="196" y="274" w="19" h="32"/>
+      </Basicattack>
       
       <die loop="false" speed="0.03">
         <PushBack x="0" y="696" w="18" h="24"/>
@@ -83,6 +98,7 @@
       </GodMode>
 
 
-    </AnimationsPushBacks>
+    
+  </AnimationsPushBacks>
    
 </Anim>
