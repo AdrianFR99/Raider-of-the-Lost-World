@@ -42,8 +42,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		}
 
 
+		pathfinding_image_path = config.child("pathfinding_image").attribute("path").as_string();
+		pathfinding_debug_tex = nullptr;
 
-
+		folder = config.child_value("folder");
 
 		return ret;
 }
@@ -105,13 +107,39 @@ bool j1Scene::Start()
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
 	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+
+	//Load pathfining debug image 
+	p2SString pathfinding_tex_path("%s%s",folder.GetString(), pathfinding_image_path.GetString());
+	pathfinding_debug_tex = App->tex->Load(pathfinding_tex_path.GetString());
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	// debug pathfing ------------------
+	static iPoint origin;
+	static bool origin_selected = false;
 
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
+	p = App->map->WorldToMap(p.x, p.y,App->map->data);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (origin_selected == true)
+		{
+			App->pathfinding->CreatePath(origin, p);
+			origin_selected = false;
+		}
+		else
+		{
+			origin = p;
+			origin_selected = true;
+		}
+	}
 	return true;
 }
 
@@ -208,7 +236,22 @@ bool j1Scene::Update(float dt)
 
 
 	
+	// Debug pathfinding ------------------------------
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
+	p = App->map->WorldToMap(p.x, p.y, App->map->data);
+	p = App->map->MapToWorld(p.x, p.y, App->map->data);
 
+	App->render->Blit(pathfinding_debug_tex, p.x, p.y);
+
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data);
+		App->render->Blit(pathfinding_debug_tex, pos.x, pos.y);
+	}
 	
 	return true;
 }

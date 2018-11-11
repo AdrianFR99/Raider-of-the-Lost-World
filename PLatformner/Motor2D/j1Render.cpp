@@ -144,6 +144,25 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
+iPoint j1Render::ScreenToWorld(int x, int y,MapData& DataAux) const
+{
+	iPoint ret;
+	int scale = App->win->GetScale();
+
+	if (DataAux.type == MapTypes::MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = (x + camera.x / scale);
+		ret.y = (y + camera.y / scale);
+	}
+	else if (DataAux.type == MapTypes::MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - camera.x / scale);
+		ret.y = (y - camera.y / scale);
+	}
+
+	return ret;
+}
+
 // Blit to screen
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
 {

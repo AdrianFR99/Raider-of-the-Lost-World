@@ -29,8 +29,10 @@
   </file_system>
 
   <scene>
+    <folder>maps/</folder>
     <Map file="map1_tiledV0_17.tmx"/>
     <Map file="Map2.tmx"/>
+    <pathfinding_image path= "pathfinder.png" />
   </scene>
  
   <audio>

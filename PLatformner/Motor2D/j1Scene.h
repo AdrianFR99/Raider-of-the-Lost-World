@@ -47,6 +47,10 @@ private:
 
 	p2List<p2SString*> loadedMap;
 	void switchTheMaps();
+
+	p2SString folder;
+	p2SString pathfinding_image_path;
+	SDL_Texture* pathfinding_debug_tex;
 	
 };
 
