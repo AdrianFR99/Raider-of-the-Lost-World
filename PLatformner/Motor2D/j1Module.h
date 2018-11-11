@@ -43,7 +43,14 @@ public:
 		return true;
 	}
 
-	// Called each loop iteration
+	// Called each frame(for logic)
+	virtual bool UpdateTicks(float dt)
+	{
+		return true;
+	}
+
+
+	// Called each loop iteration(for graphics)
 	virtual bool Update(float dt)
 	{
 		return true;
