@@ -798,7 +798,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapDat
 				//TileSet* tileset = GetTilesetFromTileId(tile_id, MapDataList.start->data);
 				if (tileset != NULL)
 				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					map[i] = (tile_id - tileset->firstgid) > -1 ? 0 : 1;
 					/*TileType* ts = tileset->GetTileType(tile_id);
 					if(ts != NULL)
 					{
