@@ -870,7 +870,7 @@ void j2Player::PlayerFX() {
 		}
 
 		else {
-		//	App->audio->PlayFx(runningSound.ChunkSize, 0);
+			App->audio->PlayFx(runningSound.ChunkSize, 0);
 			currentAnimation = &run;
 		}
 	}
