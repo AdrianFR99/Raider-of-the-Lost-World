@@ -228,6 +228,8 @@ void j1App::FinishUpdate()
 	delay = deltaTime - last_frame_ms;
 
 	DelayTimer.Start();
+
+	if(delay>0)
 	SDL_Delay(delay);
 
 
