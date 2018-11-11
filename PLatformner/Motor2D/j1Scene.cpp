@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j2Player.h"
 #include "j2Collision.h"
+#include "j1Pathfinding.h"
 #include "j1Scene.h"
 
 
@@ -84,6 +85,14 @@ bool j1Scene::Start()
 		App->map->Load(loadedMap[i]->GetString(), App->map->data);
 
 	}
+
+	//Load Navigation for the 1st Map
+	int w, h;
+	uchar* data = NULL;
+	if (App->map->CreateWalkabilityMap(w, h, &data,App->map->data))
+		App->pathfinding->SetMap(w, h, data);
+
+	RELEASE_ARRAY(data);
 
 	//Selecting which Colliders create 
 
