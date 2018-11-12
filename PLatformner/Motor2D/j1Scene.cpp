@@ -105,8 +105,8 @@ bool j1Scene::Start()
 		App->map->CreateColliders(App->map->data2);
 
 	//Play the first song
-	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+	/*p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
+	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);*/
 
 	//Load pathfining debug image 
 	p2SString pathfinding_tex_path("%s%s",folder.GetString(), pathfinding_image_path.GetString());
@@ -139,6 +139,30 @@ bool j1Scene::PreUpdate()
 			origin = p;
 			origin_selected = true;
 		}
+	}
+
+	//CHANGE/FIX Dídac
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		int x, y;
+		uint dis;
+		App->input->GetMousePosition(x,y);
+		if (x - App->render->camera.x / 2 > 230)
+		{
+			dis = 230;
+		}
+		else if (x - App->render->camera.x < 1)
+		{
+			dis = 1;
+		}
+		else
+		{
+			dis = x - App->render->camera.x;
+		}
+		App->audio->ApplyDistanceAttenuation(5,dis);
+		App->audio->PlayFx(App->audio->bat_sound,-1,5);
+		App->audio->ApplyDistanceAttenuation(5, dis);
+		//App->audio->ApplyDistanceAttenuation(dis);
 	}
 	return true;
 }
@@ -187,6 +211,7 @@ bool j1Scene::Update(float dt)
 
 }
 
+	//CHANGE/FIX DÍDAC
 
 
 

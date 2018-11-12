@@ -30,7 +30,10 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
+
+	//ApplyDistanceAttenuation
+	void ApplyDistanceAttenuation(int channel, uint distance);
 
 public: //Vars
 
@@ -39,6 +42,9 @@ public: //Vars
 	//List containing the strings for each song
 	p2List<p2SString*> songs_list;	
 
+
+	//Change/Fix Panning and Distance Testing.
+	uint bat_sound;
 private:
 
 	_Mix_Music*			music = NULL;

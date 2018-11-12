@@ -65,7 +65,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 			songs_list.add(aux);
 		}
 	}
+	//Change/FIX
 
+	bat_sound = LoadFx("audio/FX/bat_flying.wav");
 
 	return ret;
 }
@@ -177,7 +179,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(unsigned int id, int repeat, int channel)
 {
 	bool ret = false;
 
@@ -186,8 +188,16 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.count())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		//fx.start->data->volume = 120;
+		Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
 	return ret;
+}
+
+void j1Audio::ApplyDistanceAttenuation(int channel, uint distance)
+{
+	//fx.At(bat_sound)->data->volume = 20;
+	Mix_SetDistance(channel, distance);
+	Mix_SetPanning(channel, 100, 254 - 10);
 }
