@@ -96,6 +96,8 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+
+		framerateCap = config.child("app").attribute("framerate_cap").as_uint();
 	}
 
 	if(ret == true)
@@ -176,6 +178,17 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
+
+	
+
+	//differential time since last frame
+	dt = frame_time.ReadSec();
+	LOG("differential time %f ",dt);
+
+	frame_time.Start();
+
 }
 
 // ---------------------------------------------
@@ -186,6 +199,9 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+
+	CalculateFramerate();
 }
 
 // Call modules before each loop iteration
@@ -401,4 +417,41 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+
+void j1App::CalculateFramerate() {
+
+
+	// Framerate calculations --
+
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	/*static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
+		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+	App->win->SetTitle(title);*/
+
+	//capped framerate
+	deltaTime = 1000 / framerateCap;
+
+	delay = deltaTime - last_frame_ms;
+
+	DelayTimer.Start();
+	SDL_Delay(delay);
+
+
+	LOG("we waited %u and got back %f", delay, DelayTimer.ReadMs());
+
 }
