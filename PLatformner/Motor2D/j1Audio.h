@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include "p2Point.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -33,7 +34,7 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
 
 	//ApplyDistanceAttenuation
-	void ApplyDistanceAttenuation(int channel, uint distance);
+	void PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, const iPoint& sound_listener);
 
 public: //Vars
 

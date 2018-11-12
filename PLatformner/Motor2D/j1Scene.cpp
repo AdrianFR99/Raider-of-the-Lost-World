@@ -159,9 +159,11 @@ bool j1Scene::PreUpdate()
 		{
 			dis = x - App->render->camera.x;
 		}
-		App->audio->ApplyDistanceAttenuation(5,dis);
+		
+		p = App->render->ScreenToWorld(x, y, App->map->data);
+		App->audio->PlayEnvironmentalFx(5,p,App->player->player.playerPos);
 		App->audio->PlayFx(App->audio->bat_sound,-1,5);
-		App->audio->ApplyDistanceAttenuation(5, dis);
+		App->audio->PlayEnvironmentalFx(5, p, App->player->player.playerPos);
 		//App->audio->ApplyDistanceAttenuation(dis);
 	}
 	return true;

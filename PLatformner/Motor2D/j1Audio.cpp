@@ -195,9 +195,23 @@ bool j1Audio::PlayFx(unsigned int id, int repeat, int channel)
 	return ret;
 }
 
-void j1Audio::ApplyDistanceAttenuation(int channel, uint distance)
+void j1Audio::PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, const iPoint& sound_listener)
 {
-	//fx.At(bat_sound)->data->volume = 20;
-	Mix_SetDistance(channel, distance);
+	iPoint distance;
+	distance.x = sound_emmiter.x - sound_listener.x;
+
+
+	//Work around functions limitations
+	if (distance.x > 230)
+		distance.x = 230;
+	else if (distance.x < -230)
+		distance.x = -230;
+	else if (distance.x == 0)
+		distance.x = 1;
+	else
+		distance.x = abs(distance.x);
+	
+	
+	Mix_SetDistance(channel, distance.x);
 	Mix_SetPanning(channel, 100, 254 - 10);
 }
