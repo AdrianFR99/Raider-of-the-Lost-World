@@ -3,6 +3,8 @@
 
 #include "p2List.h"
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules
@@ -33,7 +35,11 @@ public:
 	// Called before the first frame
 	bool Start();
 
-	// Called each loop iteration
+
+	// Called each loop iteration(Logical)
+	bool UpdateTicks();
+
+	// Called each loop iteration(graphics)
 	bool Update();
 
 	// Called before quitting
@@ -94,7 +100,6 @@ private:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
-	float				dt;
 	int					argc;
 	char**				args;
 
@@ -105,6 +110,26 @@ private:
 	bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
+
+
+
+	j1PerfTimer			ptimer;
+	j1PerfTimer			DelayTimer;
+	uint64				frame_count = 0;
+	j1Timer				startup_time;
+	j1Timer				frame_time;
+	j1Timer				last_sec_frame_time;
+
+
+	uint32				last_sec_frame_count = 0;
+	uint32				prev_last_sec_frame_count = 0;
+
+	uint32				framerateCap;
+	uint32				deltaTime;
+	uint32				delay;
+
+	float				dt;
+
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S
