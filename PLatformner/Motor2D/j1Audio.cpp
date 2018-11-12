@@ -200,18 +200,27 @@ void j1Audio::PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, cons
 	iPoint distance;
 	distance.x = sound_emmiter.x - sound_listener.x;
 
-
-	//Work around functions limitations
-	if (distance.x > 230)
-		distance.x = 230;
-	else if (distance.x < -230)
-		distance.x = -230;
-	else if (distance.x == 0)
-		distance.x = 1;
+	//Set the Volume Distance attenuation
+	//Work around function limitations
+	int aux_distance = distance.x;
+	if (aux_distance > 230)
+		aux_distance = 230;
+	else if (aux_distance < -230)
+		aux_distance = -230;
+	else if (aux_distance == 0)
+		aux_distance = 1;
 	else
-		distance.x = abs(distance.x);
+		aux_distance = abs(aux_distance);
 	
-	
-	Mix_SetDistance(channel, distance.x);
-	Mix_SetPanning(channel, 100, 254 - 10);
+	Mix_SetDistance(channel, aux_distance);
+
+	//Set the Panning 
+	uint left = 255;
+
+	if (distance.x > 0)
+		left = 127 - (aux_distance / 2);
+	if (distance.x < 0)
+		left = 127 + (aux_distance / 2);
+
+	Mix_SetPanning(channel, left, 255 - left);
 }
