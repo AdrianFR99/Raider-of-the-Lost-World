@@ -36,9 +36,6 @@ public:
 	bool Start();
 
 
-	// Called each loop iteration(Logical)
-	bool UpdateTicks();
-
 	// Called each loop iteration(graphics)
 	bool Update();
 

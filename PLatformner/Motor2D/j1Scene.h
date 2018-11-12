@@ -24,8 +24,11 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
+
+	bool UpdateTick(float dt);
+
 	// Called each loop iteration
-	bool Update(float dt);
+	bool Update();
 
 	// Called before all Updates
 	bool PostUpdate();

@@ -90,8 +90,11 @@ public:
 	// Called each loop iteration
 	bool PreUpdate();
 	
+	// Called each frame iteration
+	bool UpdateTick(float dt);
+
 	// Called each loop iteration
-	bool Update(float dt);
+	bool Update();
 	
 	// Called each loop iteration
 	bool PostUpdate();
@@ -111,11 +114,11 @@ public:
 	void PlayerMovementInputs();
 	void CheckPlayerMovement();
 
-	void SwithcingStates();
-		void IdleStateTo();
-		void CrouchingStateTo();
-		void RunningStateTo();
-		void AirStateTo();
+	void SwithcingStates(float dt);
+		void IdleStateTo(float dt);
+		void CrouchingStateTo(float dt);
+		void RunningStateTo(float dt);
+		void AirStateTo(float dt);
 
 	void PlayerFX();
 		void IdleFX();
@@ -123,9 +126,10 @@ public:
 		void RunningFX();
 		void AirFX();
 
-	void PlayerMovement();
+	void PlayerMovement(float dt);
 
-	void PlayerAttack();
+	void PlayerAttack(float dt);
+
 
 	//Functions apply the Animations and sounds for every state
 
