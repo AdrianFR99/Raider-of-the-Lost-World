@@ -124,29 +124,12 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 	cell.create(pos.x, pos.y + 1);
 	if(App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-	// north east
-	cell.create(pos.x +1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-	// north west
-	cell.create(pos.x -1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
 	if(App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// south east
-	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
-	//south west
-	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 	// east
 	cell.create(pos.x + 1, pos.y);
 	if(App->pathfinding->IsWalkable(cell))
@@ -246,20 +229,12 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				// If it is NOT found, calculate its F and add it to the open list
 				if (adjacent_pathNode == NULL)
 				{
-					//item->data.parent = &aux_pathNode->data;
 					item->data.CalculateF(destination);
-
-					//Check if it's a diagonal movement
-					if (abs(item->data.pos.x - item->data.parent->pos.x) == abs(item->data.pos.y - item->data.parent->pos.y))
-					{
-						item->data.g += 1;
-						open.list.add(item->data);
-						continue;
-					}
 					open.list.add(item->data);
+
 				}
 				// If it is already in the open list, check if it is a better path (compare G)
-				else if (adjacent_pathNode->data.g > item->data.g + 30) // If it is a better path, Update the parent
+				else if (adjacent_pathNode->data.g > item->data.g + 1) // If it is a better path, Update the parent
 				{
 					adjacent_pathNode->data.parent = item->data.parent;
 					adjacent_pathNode->data.CalculateF(destination);
