@@ -289,6 +289,14 @@ void j1Scene::switchTheMaps()
 		CurrentMap2 = true;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->next->data->GetString());
 		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+		
+		//Load Navigation for the 2nd Map
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data, App->map->data2))
+			App->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
 	}
 	
 	else {
@@ -301,6 +309,13 @@ void j1Scene::switchTheMaps()
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
 		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 
+		//Load Navigation for the 1st Map
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data, App->map->data))
+			App->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
 	}
 }
 

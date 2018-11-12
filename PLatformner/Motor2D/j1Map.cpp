@@ -787,9 +787,9 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapDat
 		uchar* map = new uchar[layer->width*layer->height];
 		memset(map, 1, layer->width*layer->height);
 
-		for (int y = 0; y < data.height; ++y)
+		for (int y = 0; y < DataAux.height; ++y)
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int x = 0; x < DataAux.width; ++x)
 			{
 				int i = (y*layer->width) + x;
 
@@ -809,8 +809,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapDat
 		}
 
 		*buffer = map;
-		width = data.width;
-		height = data.height;
+		width = DataAux.width;
+		height = DataAux.height;
 		ret = true;
 
 		break;
