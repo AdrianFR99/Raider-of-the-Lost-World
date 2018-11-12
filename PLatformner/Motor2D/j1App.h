@@ -124,7 +124,7 @@ private:
 
 	uint32				framerateCap;
 	uint32				deltaTime;
-	uint32				delay;
+	
 
 	float				dt;
 

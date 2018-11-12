@@ -243,7 +243,11 @@ bool j1App::DoUpdate()
 		}
 
 		ret = item->data->UpdateTick(dt);
-		ret = item->data->Update();
+
+		if (ret == true) {
+			ret = item->data->Update();
+		}
+
 	}
 
 	return ret;
@@ -447,10 +451,11 @@ void j1App::CalculateFramerate() {
 	//capped framerate
 	deltaTime = 1000 / framerateCap;
 
-	delay = deltaTime - last_frame_ms;
+	int delay = deltaTime - last_frame_ms;
 
 	DelayTimer.Start();
-	SDL_Delay(delay);
+	if(delay>0)
+	SDL_Delay((uint32)delay);
 
 
 	LOG("we waited %u and got back %f", delay, DelayTimer.ReadMs());
