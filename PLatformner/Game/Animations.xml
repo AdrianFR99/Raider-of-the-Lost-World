@@ -5,95 +5,97 @@
     <AnimationsPushBacks>
 
       <idle loop="true" speed="0.07">
-        <PushBack x="0" y="1 " w="19" h="29"/>
-        <PushBack x="49" y="0" w="17" h="30"/>
-        <PushBack x="99" y="0" w="19" h="30"/>
-        <PushBack x="147" y="1" w="20" h="29"/>
+        <PushBack x="0" y="0 " w="55" h="39"/>
+        <PushBack x="55" y="0" w="55" h="39"/>
+        <PushBack x="110" y="0"  w="55" h="39"/>
+        <PushBack x="165" y="0" w="55" h="39"/>
       </idle>
 
       <crouch loop="false" speed="0.1">
-        <PushBack x="0" y="39 " w="19" h="21 "/>
-        <PushBack x="49" y="38" w="20" h="22"/>
-        <PushBack x="98" y="38" w="19" h="22"/>
-        <PushBack x="147" y="39" w="17" h="21"/>
+        <PushBack x="0" y="39 " w="55" h="39"/>
+        <PushBack x="55" y="39" w="55" h="39"/>
+        <PushBack x="110" y="39"  w="55" h="39"/>
+        <PushBack x="165" y="39" w="55" h="39"/>
       </crouch>
 
 
       <run loop="true" speed="0.1">
-        <PushBack x="0" y="62" w="20" h="28"/>
-        <PushBack x="49" y="63" w="20" h="27"/>
-        <PushBack x="98" y="65" w="20" h="25"/>
-        <PushBack x="147" y="62" w="23" h="28"/>
-        <PushBack x="196" y="63" w="20" h="27"/>
-        <PushBack x="245" y="65" w="20" h="25"/>
+        <PushBack x="0" y="78"  w="55" h="39"/>
+        <PushBack x="55" y="78" w="55" h="39"/>
+        <PushBack x="110" y="78" w="55" h="39"/>
+        <PushBack x="165" y="78" w="55" h="39"/>
+        <PushBack x="220" y="78" w="55" h="39"/>
+        <PushBack x="275" y="78" w="55" h="39"/>
       </run>
-
+  
       <jump loop="false" speed="0.1">
-        <PushBack x="0" y="96" w="20" h="24"/>
-        <PushBack x="49" y="98" w="20" h="22"/>
-        <PushBack x="98" y="93" w="19" h="27"/>
+        <PushBack x="0" y="117"  w="55" h="39"/>
+        <PushBack x="55" y="117" w="55" h="39"/>
+        <PushBack x="110" y="117" w="55" h="39"/>
       </jump>
 
       <jumpDouble loop="false" speed="0.09">
-        <PushBack x="147" y="97" w="21" h="23"/>
-        <PushBack x="196" y="99" w="15" h="21"/>
-        <PushBack x="247" y="103" w="24" h="17"/>
-        <PushBack x="294" y="99" w="18" h="21"/>
-        <PushBack x="343" y="103" w="26" h="17"/>
+        <PushBack x="165" y="117" w="55" h="39"/>
+        <PushBack x="220" y="117"  w="55" h="39"/>
+        <PushBack x="275" y="117"  w="55" h="39"/>
+        <PushBack x="330" y="117" w="55" h="39"/>
+        <PushBack x="0"   y="156" w="55" h="39"/>
       </jumpDouble>
 
       <fall loop="true" speed="0.3">
-        <PushBack x="0" y="120" w="17" h="31"/>
-        <PushBack x="49" y="121" w="17" h="30"/>
+        <PushBack x="55" y="156"  w="55" h="39"/>
+        <PushBack x="110" y="156"  w="55" h="39"/>
       </fall>
 
       <slide loop="false" speed="0.03">
-        <PushBack x="0" y="165" w="34" h="15"/>
-        <PushBack x="49" y="165" w="34" h="15"/>
-        <PushBack x="98" y="164" w="34" h="16"/>
-        <PushBack x="147" y="163" w="30" h="17"/>
-        <PushBack x="196" y="163" w="22" h="17"/>
+        <PushBack x="0" y="195"  w="55" h="39"/>
+        <PushBack x="55" y="195"  w="55" h="39"/>
+        <PushBack x="110" y="195"  w="55" h="39"/>
+        <PushBack x="165" y="195" w="55" h="39"/>
+        <PushBack x="220" y="195" w="55" h="39"/>
       </slide>
 
       <push loop="false" speed="0.03">
-        <PushBack x="0" y="543" w="21" h="26"/>
+        <PushBack x="0" y="741" w="55" h="39"/>
       </push>
 
       <Chargedattack loop="false" speed="0.09">
-        <PushBack x="0" y="364" w="20" h="26"/>
-        <PushBack x="49" y="364" w="30" h="26"/>
-        <PushBack x="98" y="367" w="48" h="23"/>
-        <PushBack x="147" y="371" w="31" h="19"/>
-        <PushBack x="196" y="370" w="34" h="20"/>
-        <PushBack x="245" y="370" w="34" h="20"/>
+        <PushBack x="0" y="429"  w="55" h="39"/>
+        <PushBack x="55" y="429" w="55" h="39"/>
+        <PushBack x="110" y="429" w="55" h="39"/>
+        <PushBack x="165" y="429" w="55" h="39"/>
+        <PushBack x="220" y="429" w="55" h="39"/>
+        <PushBack x="275" y="429" w="55" h="39"/>
       </Chargedattack>
-
+  
       <Airattack loop="false" speed="0.09">
-        <PushBack x="147" y="570" w="18" h="26"/>
-        <PushBack x="196" y="570" w="46" h="30"/>
-        <PushBack x="245" y="570" w="29" h="30"/>
-        <PushBack x="294" y="570" w="27" h="31"/>
+        <PushBack x="165" y="819"  w="55" h="39"/>
+        <PushBack x="220" y="819"  w="55" h="39"/>
+        <PushBack x="275" y="819"  w="55" h="39"/>
+        <PushBack x="330" y="819"  w="55" h="39"/>
       </Airattack>
 
       <Basicattack loop="false" speed="0.09">
-        <PushBack x="0" y="284" w="27" h="22"/>
-        <PushBack x="49" y="286" w="25" h="50"/>
-        <PushBack x="98" y="270" w="34" h="36"/>
-        <PushBack x="147" y="270" w="27" h="36"/>
-        <PushBack x="196" y="274" w="19" h="32"/>
+        <PushBack x="0" y="351" w="55" h="39"/>
+        <PushBack x="55" y="351" w="55" h="39"/>
+        <PushBack x="110" y="351"  w="55" h="39"/>
+        <PushBack x="165" y="351"  w="55" h="39"/>
+        <PushBack x="220" y="351" w="55" h="39"/>
+        <PushBack x="275" y="351"  w="55" h="39"/>
+        <PushBack x="330" y="351" w="55" h="39"/>
       </Basicattack>
       
       <die loop="false" speed="0.03">
-        <PushBack x="0" y="696" w="18" h="24"/>
-        <PushBack x="49" y="697" w="20" h="23"/>
-        <PushBack x="98" y="702" w="29" h="18"/>
-        <PushBack x="147" y="713" w="29" h="7"/>
-        <PushBack x="196" y="713" w="29" h="7"/>
+        <PushBack x="0" y="936" w="55" h="39"/>
+        <PushBack x="55" y="936" w="55" h="39"/>
+        <PushBack x="110" y="936"  w="55" h="39"/>
+        <PushBack x="165" y="936" w="55" h="39"/>
+        <PushBack x="220" y="936"  w="55" h="39"/>
       </die>
 
       <GodMode loop="true" speed="0.09">
-        <PushBack x="0" y="481" w="23" h="29"/>
-        <PushBack x="49" y="481" w="22" h="29"/>
+        <PushBack x="0" y="624" w="55" h="39"/>
+        <PushBack x="55" y="624"  w="55" h="39"/>
         
       </GodMode>
 
