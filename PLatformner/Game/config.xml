@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="30">
+  <app framerate_cap="60">
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
@@ -56,17 +56,19 @@
     <playerPos  x="64" y="576" />
 
     <!--Player Speeds-->
+    <ChargedDesaceleration value="70"/>
     <Jumpforce value="225.00"/>
-    <gravity value="5.0"/>
-    <Currentacceleration value="700.10"/>
+    <gravity value="200.0"/>
+    <Currentacceleration value="250.10"/>
     <Maxspeed x="150.00" y="150.00"/>
-    <Impulse x="1.00" y="2.00"/>
+    <Impulse x="25.00" y="50.00"/>
 
     <!--Player Speeds before dt
     <Jumpforce value="5.00"/>
     <gravity value="0.1"/>
     <Currentacceleration value="0.10"/>
-    <Maxspeed x="3.00" y="3.00"/>-->
+    <Maxspeed x="3.00" y="3.00"/>
+    ChargedDesaceleration value="0.04"-->
 
     <!--Player Bools Movement-->
     <ToMoveRight value="false" />

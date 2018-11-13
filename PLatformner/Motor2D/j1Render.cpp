@@ -301,7 +301,7 @@ void j1Render::followPlayer(const Player &p,float dt)
 	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale && App->player->Speed.x > 0)
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-		camera.x += ((App->player->Speed.x) * scale)*dt;
+		camera.x += ceil(((App->player->Speed.x) * scale)*dt);
 	
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -325,7 +325,7 @@ void j1Render::followPlayer(const Player &p,float dt)
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		
-		App->render->camera.x += ((App->player->Speed.x) * scale)*dt;
+		App->render->camera.x += floor(((App->player->Speed.x) * scale)*dt);
 
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -349,11 +349,11 @@ void j1Render::followPlayer(const Player &p,float dt)
 		{
 		
 				if (App->player->Speed.y < 0)
-					camera.y += ((App->player->Speed.y) * scale)*dt;
+					camera.y += ceil(((App->player->Speed.y) * scale)*dt);
 
 				else if (App->player->Speed.y == 0) {
 
-					camera.y -= ((App->player->Maxspeed.y) * scale)*dt;
+					camera.y -= ceil(((App->player->Maxspeed.y) * scale)*dt);
 
 				}
 
@@ -366,11 +366,11 @@ void j1Render::followPlayer(const Player &p,float dt)
 		
 			
 				if (App->player->Speed.y > 0)
-					camera.y += ((App->player->Speed.y) * scale)*dt;
+					camera.y += ceil(((App->player->Speed.y) * scale)*dt);
 
 				else if (App->player->Speed.y == 0) {
 
-					camera.y += ((App->player->Maxspeed.y) * scale)*dt;
+					camera.y += ceil(((App->player->Maxspeed.y) * scale)*dt);
 				}
 
 			

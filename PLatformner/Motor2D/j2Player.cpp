@@ -91,6 +91,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
 		Currentacceleration = config.child("Currentacceleration").attribute("value").as_float();
+		ChargedDesaceleration= config.child("ChargedDesaceleration").attribute("value").as_float();
 		gravity = config.child("gravity").attribute("value").as_float();
 		Maxspeed.x =config.child("Maxspeed").attribute("x").as_float();
 		Maxspeed.y = config.child("Maxspeed").attribute("y").as_float();
@@ -753,20 +754,20 @@ void j2Player::PlayerMovement(float dt) {
 		if (player.godMode == false) {
 
 			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false) {
-				Speed.x += Currentacceleration;
+				Speed.x += Currentacceleration*dt;
 			}
 			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
-				Speed.x -= Currentacceleration;
+				Speed.x -= Currentacceleration*dt;
 			}
 			else if (CurrentState != Player_State::AIR) {	
 				if (MovingRight == true && ChargedAttackB == false) {
-					Speed.x -= Currentacceleration;
+					Speed.x -= Currentacceleration*dt;
 
 					if (Speed.x < 0.0f)
 						Speed.x = 0.0f;
 				}
 				else if (MovingLeft == true && ChargedAttackB == false) {
-					Speed.x += Currentacceleration;
+					Speed.x += Currentacceleration*dt;
 
 					if (Speed.x > 0.0f)
 						Speed.x = 0.0f;
@@ -802,7 +803,7 @@ void j2Player::PlayerMovement(float dt) {
 			
 			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
 				//Falling
-				Speed.y += gravity;
+				Speed.y += gravity*dt;
 			}
 
 			// Maximum Speeds
@@ -836,13 +837,13 @@ void j2Player::PlayerMovement(float dt) {
 		{
 			//If GodMode Activated, move around FREELY 
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-				player.playerPos.y -= Maxspeed.y;
+				player.playerPos.y -= Maxspeed.y*dt;
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-				player.playerPos.y += Maxspeed.y;
+				player.playerPos.y += Maxspeed.y*dt;
 			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-				player.playerPos.x += Maxspeed.x;
+				player.playerPos.x += Maxspeed.x*dt;
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-				player.playerPos.x += -Maxspeed.x;
+				player.playerPos.x += -Maxspeed.x*dt;
 
 		}
 	}
@@ -883,10 +884,10 @@ void j2Player::PlayerAttack(float dt) {
 				
 				ChargedAttackB = true;
 				if (MovingRight) {
-					Speed.x +=Impulse.x;
+					Speed.x +=Impulse.x*dt;
 				}
 				else if (MovingLeft) {
-					Speed.x -= Impulse.x;
+					Speed.x -= Impulse.x*dt;
 
 				}
 			}
@@ -906,7 +907,7 @@ void j2Player::PlayerAttack(float dt) {
 			
 			if (arealAttackUsed ==false) {
 				AirAttackB = true;
-				Speed.y -= Impulse.y;
+				Speed.y -= Impulse.y*dt;
 				arealAttackUsed = true;
 			}
 

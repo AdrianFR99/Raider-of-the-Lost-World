@@ -158,7 +158,7 @@ public: //Variables
 
 	float JumpForce;
 	float Currentacceleration;
-	float ChargedDesaceleration=0.04;
+	float ChargedDesaceleration;
 	float gravity;
 
 	//Inputs pressed
