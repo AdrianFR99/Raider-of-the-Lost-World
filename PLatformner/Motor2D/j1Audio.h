@@ -43,6 +43,8 @@ public: //Vars
 	//List containing the strings for each song
 	p2List<p2SString*> songs_list;	
 
+	int max_attenuation_distance;
+
 
 	//Change/Fix Panning and Distance Testing.
 	uint bat_sound;

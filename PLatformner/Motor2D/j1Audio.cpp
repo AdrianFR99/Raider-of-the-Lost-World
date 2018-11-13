@@ -64,6 +64,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 			aux->create(music.attribute("name").as_string());
 			songs_list.add(aux);
 		}
+		//MaxAttenuation assignment
+		max_attenuation_distance = config.child("FX").child("max_attenuation_distance").attribute("value").as_int();
+		assert((max_attenuation_distance > 1 && max_attenuation_distance < 255),"max_attenuation_distance value is out of bounds! Distance attenuation won't work! Remember values from 1 to 255 only");
 	}
 	//Change/FIX
 
@@ -203,28 +206,29 @@ void j1Audio::PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& so
 	distance.y = sound_emmiter.y - sound_listener.y;
 	//Calculate distance to sound_listener and adjust the value for the function Thresshold
 	int hypotenuse = sqrt(distance.x*distance.x + distance.y*distance.y);
-	if (hypotenuse > 230)
-		hypotenuse = 230;
+	if (hypotenuse > max_attenuation_distance)
+		hypotenuse = max_attenuation_distance;
 	
-	//Work around function limitations
-	int aux_distance = distance.x;
+	//Calculate X distance for panning purposes
+	int aux_distance_x = distance.x;
 
-	if (aux_distance > 230)
-		aux_distance = 230;
-	else if (aux_distance < -230)
-		aux_distance = 230;
-	else if (aux_distance == 0)
-		aux_distance = 1;
+	if (aux_distance_x > max_attenuation_distance)
+		aux_distance_x = max_attenuation_distance;
+	else if (aux_distance_x < -max_attenuation_distance)
+		aux_distance_x = max_attenuation_distance;
+	else if (aux_distance_x == 0)
+		aux_distance_x = 1;
 	else
-		aux_distance = abs(aux_distance);
+		aux_distance_x = abs(aux_distance_x);
 
-	//Set the Panning 
-	uint left = 255;
+	//Set the Panning: for the situation in which the emmiter and listener have very similar positions in x axis, we want the total volume to equal 255
+	//					if both speakers/Headphones where playing at 255 in the function for Panning we would play the volume twice as loud.
+	uint left = 127; //In case the listener and the emitter share the same exact x pos
 
 	if (distance.x > 0)
-		left = 127 - (aux_distance / 2);
-	if (distance.x < 0)
-		left = 127 + (abs(aux_distance / 2));
+		left = 127 - (aux_distance_x / 2);
+	else
+		left = 127 + (abs(aux_distance_x / 2));
 
 	//Play the Effect
 	PlayFx(id,repeat,channel);
