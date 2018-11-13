@@ -805,7 +805,6 @@ void j2Player::PlayerMovement(float dt) {
 
 			}
 
-			
 			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
 				//Falling
 				Speed.y += gravity*dt;
@@ -841,14 +840,22 @@ void j2Player::PlayerMovement(float dt) {
 		if (player.godMode == true)
 		{
 			//If GodMode Activated, move around FREELY 
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-				player.playerPos.y -= Maxspeed.y*dt;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				Speed.y = -Maxspeed.y;
+				player.playerPos.y += Speed.y*dt;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				Speed.y = +Maxspeed.y;
 				player.playerPos.y += Maxspeed.y*dt;
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			}
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				Speed.x = +Maxspeed.x;
 				player.playerPos.x += Maxspeed.x*dt;
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			}
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				Speed.x = -Maxspeed.x;
 				player.playerPos.x += -Maxspeed.x*dt;
+			}
 
 		}
 	}
