@@ -30,7 +30,7 @@
   
       <jump loop="false" speed="8.00">
         <PushBack x="0" y="117"  w="55" h="39"/>
-        <PushBack x="55" y="117" w="55" h="39"/>
+        <PushBack x="54" y="117" w="55" h="39"/>
         <PushBack x="110" y="117" w="55" h="39"/>
       </jump>
 

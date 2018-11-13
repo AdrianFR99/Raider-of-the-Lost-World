@@ -699,6 +699,11 @@ void j2Player::RunningStateTo() {
 		player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
+	else if (Speed.y!=0 && MovingDown == true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
 	else if (MovingLeft == false && MovingRight == false) {
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
 			CurrentState = Player_State::IDLE;
