@@ -105,8 +105,8 @@ bool j1Scene::Start()
 		App->map->CreateColliders(App->map->data2);
 
 	//Play the first song
-	/*p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);*/
+	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
+	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 
 	//Load pathfining debug image 
 	p2SString pathfinding_tex_path("%s%s",folder.GetString(), pathfinding_image_path.GetString());
@@ -144,26 +144,13 @@ bool j1Scene::PreUpdate()
 	//CHANGE/FIX Dídac
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		int x, y;
-		uint dis;
-		App->input->GetMousePosition(x,y);
-		if (x - App->render->camera.x / 2 > 230)
-		{
-			dis = 230;
-		}
-		else if (x - App->render->camera.x < 1)
-		{
-			dis = 1;
-		}
-		else
-		{
-			dis = x - App->render->camera.x;
-		}
-		
 		p = App->render->ScreenToWorld(x, y, App->map->data);
-		App->audio->PlayEnvironmentalFx(5,p,App->player->player.playerPos);
-		App->audio->PlayFx(App->audio->bat_sound,-1,5);
-		App->audio->PlayEnvironmentalFx(5, p, App->player->player.playerPos);
+		//App->audio->PlayFx(App->audio->bat_sound, 0, 5);
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound,5,p,App->player->player.playerPos);
+		/*App->audio->PlayFx(App->audio->bat_sound, 0, 5);
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, p, App->player->player.playerPos);*/
+		//App->audio->PlayFx(App->audio->bat_sound,-1,5);
+		//App->audio->PlayEnvironmentalFx(5, p, App->player->player.playerPos);
 		//App->audio->ApplyDistanceAttenuation(dis);
 	}
 	return true;

@@ -91,6 +91,8 @@ bool j1Audio::CleanUp()
 
 	fx.clear();
 
+	//Unregistering all Effects (Panning and Distance)
+	Mix_UnregisterAllEffects(5); //Change/Fix Dídac
 	//Clear Music strings
 	songs_list.clear();
 
@@ -188,31 +190,33 @@ bool j1Audio::PlayFx(unsigned int id, int repeat, int channel)
 
 	if(id > 0 && id <= fx.count())
 	{
-		//fx.start->data->volume = 120;
 		Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
 	return ret;
 }
 
-void j1Audio::PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, const iPoint& sound_listener)
+void j1Audio::PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& sound_emmiter, const iPoint& sound_listener, int repeat)
 {
 	iPoint distance;
 	distance.x = sound_emmiter.x - sound_listener.x;
-
-	//Set the Volume Distance attenuation
+	distance.y = sound_emmiter.y - sound_listener.y;
+	//Calculate distance to sound_listener and adjust the value for the function Thresshold
+	int hypotenuse = sqrt(distance.x*distance.x + distance.y*distance.y);
+	if (hypotenuse > 230)
+		hypotenuse = 230;
+	
 	//Work around function limitations
 	int aux_distance = distance.x;
+
 	if (aux_distance > 230)
 		aux_distance = 230;
 	else if (aux_distance < -230)
-		aux_distance = -230;
+		aux_distance = 230;
 	else if (aux_distance == 0)
 		aux_distance = 1;
 	else
 		aux_distance = abs(aux_distance);
-	
-	Mix_SetDistance(channel, aux_distance);
 
 	//Set the Panning 
 	uint left = 255;
@@ -220,7 +224,11 @@ void j1Audio::PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, cons
 	if (distance.x > 0)
 		left = 127 - (aux_distance / 2);
 	if (distance.x < 0)
-		left = 127 + (aux_distance / 2);
+		left = 127 + (abs(aux_distance / 2));
 
-	Mix_SetPanning(channel, left, 255 - left);
+	//Play the Effect
+	PlayFx(id,repeat,channel);
+	//Process the information for the Effect
+	Mix_SetDistance(channel, hypotenuse);			//Attenuation depending on distance
+	Mix_SetPanning(channel, left, 255 - left);		//Panning (Right or Left speakers/headphones volumes)
 }

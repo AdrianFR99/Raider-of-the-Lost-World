@@ -34,7 +34,7 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
 
 	//ApplyDistanceAttenuation
-	void PlayEnvironmentalFx(int channel, const iPoint& sound_emmiter, const iPoint& sound_listener);
+	void PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& sound_emmiter, const iPoint& sound_listener, int repeat = 0);
 
 public: //Vars
 
