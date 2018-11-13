@@ -89,12 +89,9 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate();
-	
-	// Called each frame iteration
-	bool UpdateTick(float dt);
 
 	// Called each loop iteration
-	bool Update();
+	bool Update(float dt);
 	
 	// Called each loop iteration
 	bool PostUpdate();
@@ -114,11 +111,11 @@ public:
 	void PlayerMovementInputs();
 	void CheckPlayerMovement();
 
-	void SwithcingStates(float dt);
-		void IdleStateTo(float dt);
-		void CrouchingStateTo(float dt);
-		void RunningStateTo(float dt);
-		void AirStateTo(float dt);
+	void SwithcingStates();
+		void IdleStateTo();
+		void CrouchingStateTo();
+		void RunningStateTo();
+		void AirStateTo();
 
 	void PlayerFX();
 		void IdleFX();

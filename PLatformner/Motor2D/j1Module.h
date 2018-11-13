@@ -42,15 +42,10 @@ public:
 	{
 		return true;
 	}
-	// Called each frame (logic)
 	
-	virtual bool UpdateTick(float dt)
-	{
-		return true;
-	}
 
 	// Called each loop iteration
-	virtual bool Update()
+	virtual bool Update(float dt)
 	{
 		return true;
 	}

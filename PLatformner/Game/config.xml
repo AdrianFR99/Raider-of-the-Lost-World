@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="10">
+  <app framerate_cap="30">
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
@@ -54,13 +54,20 @@
     <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
-    
+
     <!--Player Speeds-->
+    <Jumpforce value="225.00"/>
+    <gravity value="5.0"/>
+    <Currentacceleration value="700.10"/>
+    <Maxspeed x="150.00" y="150.00"/>
+    <Impulse x="1.00" y="2.00"/>
+
+    <!--Player Speeds before dt
     <Jumpforce value="5.00"/>
     <gravity value="0.1"/>
     <Currentacceleration value="0.10"/>
-    <Maxspeed x="3.00" y="3.00"/>
-  
+    <Maxspeed x="3.00" y="3.00"/>-->
+
     <!--Player Bools Movement-->
     <ToMoveRight value="false" />
     <ToMoveLeft value="false" />
@@ -100,6 +107,6 @@
       <run path="audio/FX/Run5.wav"/>
       <die path="audio/FX/Hurt.wav"/>
     </FX>
-    
+
   </player>
 </config>

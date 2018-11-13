@@ -48,7 +48,7 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 	//Follow Player
-	void followPlayer(const Player &p);
+	void followPlayer(const Player &p,float dt);
 
 public:
 

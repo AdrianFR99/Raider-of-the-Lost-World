@@ -144,7 +144,7 @@ bool j1Scene::PreUpdate()
 }
 
 // Called each loop iteration
-bool j1Scene::Update()
+bool j1Scene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
@@ -185,10 +185,7 @@ bool j1Scene::Update()
 		else
 			switchTheMaps();
 
-}
-
-
-
+	}
 
 
 	if (CurrentMap2 == false) {	  	      //Draw Map 1
@@ -256,14 +253,6 @@ bool j1Scene::Update()
 	return true;
 }
 
-bool j1Scene::UpdateTick(float dt) {
-
-
-
-
-
-	return true;
-}
 
 // Called each loop iteration
 bool j1Scene::PostUpdate()

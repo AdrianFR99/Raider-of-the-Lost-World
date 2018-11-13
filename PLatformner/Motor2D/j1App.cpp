@@ -242,11 +242,9 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->UpdateTick(dt);
+		ret = item->data->Update(dt);
 
-		if (ret == true) {
-			ret = item->data->Update();
-		}
+		
 
 	}
 
@@ -443,10 +441,10 @@ void j1App::CalculateFramerate() {
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	/*static char title[256];
+	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
-	App->win->SetTitle(title);*/
+	App->win->SetTitle(title);
 
 	//capped framerate
 	deltaTime = 1000 / framerateCap;
