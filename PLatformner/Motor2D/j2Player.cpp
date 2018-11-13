@@ -373,7 +373,7 @@ bool j2Player::Update(float dt)
 	App->render->followPlayer(player,dt);
 	//AnimationsConditions
 
-	AnimationRect = currentAnimation->GetCurrentFrame();
+	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 	if (lookingRight) {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);

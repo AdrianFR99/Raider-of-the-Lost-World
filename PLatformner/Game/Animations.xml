@@ -4,14 +4,14 @@
  
     <AnimationsPushBacks>
 
-      <idle loop="true" speed="0.07">
+      <idle loop="true" speed="8.00">
         <PushBack x="0" y="0 " w="55" h="39"/>
         <PushBack x="55" y="0" w="55" h="39"/>
         <PushBack x="110" y="0"  w="55" h="39"/>
         <PushBack x="165" y="0" w="55" h="39"/>
       </idle>
 
-      <crouch loop="false" speed="0.1">
+      <crouch loop="false" speed="8.00">
         <PushBack x="0" y="39 " w="55" h="39"/>
         <PushBack x="55" y="39" w="55" h="39"/>
         <PushBack x="110" y="39"  w="55" h="39"/>
@@ -19,7 +19,7 @@
       </crouch>
 
 
-      <run loop="true" speed="0.1">
+      <run loop="true" speed="8.00">
         <PushBack x="0" y="78"  w="55" h="39"/>
         <PushBack x="55" y="78" w="55" h="39"/>
         <PushBack x="110" y="78" w="55" h="39"/>
@@ -28,13 +28,13 @@
         <PushBack x="275" y="78" w="55" h="39"/>
       </run>
   
-      <jump loop="false" speed="0.1">
+      <jump loop="false" speed="8.00">
         <PushBack x="0" y="117"  w="55" h="39"/>
         <PushBack x="55" y="117" w="55" h="39"/>
         <PushBack x="110" y="117" w="55" h="39"/>
       </jump>
 
-      <jumpDouble loop="false" speed="0.09">
+      <jumpDouble loop="false" speed="8.00">
         <PushBack x="165" y="117" w="55" h="39"/>
         <PushBack x="220" y="117"  w="55" h="39"/>
         <PushBack x="275" y="117"  w="55" h="39"/>
@@ -42,12 +42,12 @@
         <PushBack x="0"   y="156" w="55" h="39"/>
       </jumpDouble>
 
-      <fall loop="true" speed="0.3">
+      <fall loop="true" speed="8.00">
         <PushBack x="55" y="156"  w="55" h="39"/>
         <PushBack x="110" y="156"  w="55" h="39"/>
       </fall>
 
-      <slide loop="false" speed="0.03">
+      <slide loop="false" speed="8.00">
         <PushBack x="0" y="195"  w="55" h="39"/>
         <PushBack x="55" y="195"  w="55" h="39"/>
         <PushBack x="110" y="195"  w="55" h="39"/>
@@ -55,11 +55,11 @@
         <PushBack x="220" y="195" w="55" h="39"/>
       </slide>
 
-      <push loop="false" speed="0.03">
+      <push loop="false" speed="8.03">
         <PushBack x="0" y="741" w="55" h="39"/>
       </push>
 
-      <Chargedattack loop="false" speed="0.09">
+      <Chargedattack loop="false" speed="8.00">
         <PushBack x="0" y="429"  w="55" h="39"/>
         <PushBack x="55" y="429" w="55" h="39"/>
         <PushBack x="110" y="429" w="55" h="39"/>
@@ -68,14 +68,14 @@
         <PushBack x="275" y="429" w="55" h="39"/>
       </Chargedattack>
   
-      <Airattack loop="false" speed="0.09">
+      <Airattack loop="false" speed="8.00">
         <PushBack x="165" y="819"  w="55" h="39"/>
         <PushBack x="220" y="819"  w="55" h="39"/>
         <PushBack x="275" y="819"  w="55" h="39"/>
         <PushBack x="330" y="819"  w="55" h="39"/>
       </Airattack>
 
-      <Basicattack loop="false" speed="0.09">
+      <Basicattack loop="false" speed="8.00">
         <PushBack x="0" y="351" w="55" h="39"/>
         <PushBack x="55" y="351" w="55" h="39"/>
         <PushBack x="110" y="351"  w="55" h="39"/>
@@ -85,7 +85,7 @@
         <PushBack x="330" y="351" w="55" h="39"/>
       </Basicattack>
       
-      <die loop="false" speed="0.03">
+      <die loop="false" speed="8.00">
         <PushBack x="0" y="936" w="55" h="39"/>
         <PushBack x="55" y="936" w="55" h="39"/>
         <PushBack x="110" y="936"  w="55" h="39"/>
@@ -93,7 +93,7 @@
         <PushBack x="220" y="936"  w="55" h="39"/>
       </die>
 
-      <GodMode loop="true" speed="0.09">
+      <GodMode loop="true" speed="8.00">
         <PushBack x="0" y="624" w="55" h="39"/>
         <PushBack x="55" y="624"  w="55" h="39"/>
         
