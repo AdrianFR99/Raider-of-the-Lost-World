@@ -47,6 +47,9 @@
       <Filter>Desenvolupament  ========</Filter>
     </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp" />
+    <ClCompile Include="j2EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -116,6 +119,12 @@
       <Filter>Desenvolupament  ========</Filter>
     </ClInclude>
     <ClInclude Include="j1PerfTimer.h" />
+    <ClInclude Include="j2EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j2Entity.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -138,6 +147,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\PathFinding">
       <UniqueIdentifier>{2a5009bc-07bd-4073-9b17-e0923c02c125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities">
+      <UniqueIdentifier>{4817569c-9b36-4d6c-9b37-36f9b98980c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
