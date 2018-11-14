@@ -89,7 +89,7 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate();
-	
+
 	// Called each loop iteration
 	bool Update(float dt);
 	
@@ -123,9 +123,10 @@ public:
 		void RunningFX();
 		void AirFX();
 
-	void PlayerMovement();
+	void PlayerMovement(float dt);
 
-	void PlayerAttack();
+	void PlayerAttack(float dt);
+
 
 	//Functions apply the Animations and sounds for every state
 
@@ -157,7 +158,7 @@ public: //Variables
 
 	float JumpForce;
 	float Currentacceleration;
-	float ChargedDesaceleration=0.04;
+	float ChargedDesaceleration;
 	float gravity;
 
 	//Inputs pressed

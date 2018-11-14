@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	/*if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y += 2 * App->win->GetScale();
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -162,7 +162,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 2 * App->win->GetScale();
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 2 * App->win->GetScale();
+		App->render->camera.x += 2 * App->win->GetScale();*/
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		switchTheMaps();
@@ -185,10 +185,7 @@ bool j1Scene::Update(float dt)
 		else
 			switchTheMaps();
 
-}
-
-
-
+	}
 
 
 	if (CurrentMap2 == false) {	  	      //Draw Map 1
@@ -256,6 +253,7 @@ bool j1Scene::Update(float dt)
 	return true;
 }
 
+
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
@@ -282,6 +280,7 @@ void j1Scene::switchTheMaps()
 {
 	
 	if (CurrentMap2 == false) {
+		
 		App->collision->CleanUp();
 		App->player->NullifyPlayerColliders(App->player->player);
 		App->map->CreateColliders(App->map->data2);
