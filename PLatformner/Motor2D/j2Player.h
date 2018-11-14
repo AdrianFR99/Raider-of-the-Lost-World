@@ -17,10 +17,17 @@ enum class Player_State {
 };
 
 struct FXPlayer {
+	//Sound FX
+	uint jumpSound;
+	uint doublejumpSound;
+	uint runningSound;
+	uint dieSound;
 
-	p2SString path;
-	uint ChunkSize;
-
+	//Sound FX Paths
+	p2SString jumpSoundPath;
+	p2SString runningSoundPath;
+	p2SString doublejumpSoundPath;
+	p2SString dieSoundPath;
 };
 
 struct Player
@@ -144,6 +151,7 @@ public: //Variables
 
 	Player player;
 	Player player_Init;
+	FXPlayer player_fx;
 	SDL_Texture* playTex = nullptr;
 
 	pugi::xml_node AnimPushBack;
@@ -203,13 +211,9 @@ public: //Variables
 	Animation BasicAttack;
 	Animation AirAttack;
 
-	//Sound FX
-	FXPlayer jumpSound;
-	FXPlayer DoublejumpSound;
-	FXPlayer runningSound;
-	FXPlayer DieSound;
 
 	Player_State CurrentState;
+
 private:
 	p2SString	folder;
 };

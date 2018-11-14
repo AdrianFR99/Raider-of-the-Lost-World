@@ -140,6 +140,19 @@ bool j1Scene::PreUpdate()
 			origin_selected = true;
 		}
 	}
+
+	//CHANGE/FIX D�dac
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		p = App->render->ScreenToWorld(x, y, App->map->data);
+		//App->audio->PlayFx(App->audio->bat_sound, 0, 5);
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound,5,p,App->player->player.playerPos);
+		/*App->audio->PlayFx(App->audio->bat_sound, 0, 5);
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, p, App->player->player.playerPos);*/
+		//App->audio->PlayFx(App->audio->bat_sound,-1,5);
+		//App->audio->PlayEnvironmentalFx(5, p, App->player->player.playerPos);
+		//App->audio->ApplyDistanceAttenuation(dis);
+	}
 	return true;
 }
 
@@ -184,8 +197,7 @@ bool j1Scene::Update(float dt)
 
 		else
 			switchTheMaps();
-
-	}
+  }
 
 
 	if (CurrentMap2 == false) {	  	      //Draw Map 1

@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include "p2Point.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -30,7 +31,10 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
+
+	//ApplyDistanceAttenuation
+	void PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& sound_emmiter, const iPoint& sound_listener, int repeat = 0);
 
 public: //Vars
 
@@ -39,6 +43,11 @@ public: //Vars
 	//List containing the strings for each song
 	p2List<p2SString*> songs_list;	
 
+	int max_attenuation_distance;
+
+
+	//Change/Fix Panning and Distance Testing.
+	uint bat_sound;
 private:
 
 	_Mix_Music*			music = NULL;

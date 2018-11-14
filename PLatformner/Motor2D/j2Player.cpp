@@ -143,12 +143,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player.playerGodModeHitbox = nullptr;
 		player.fakeHitbox = nullptr;
 
-
-		//player SoundFX
-		jumpSound.path=config.child("FX").child("jump").attribute("path").as_string();
-		runningSound.path=config.child("FX").child("run").attribute("path").as_string();
-		DoublejumpSound.path= config.child("FX").child("jumpDouble").attribute("path").as_string();
-		DieSound.path= config.child("FX").child("die").attribute("path").as_string();
+		//LoadFX Paths
+		player_fx.jumpSoundPath =config.child("FX").child("jump").attribute("path").as_string();
+		player_fx.runningSoundPath =config.child("FX").child("run").attribute("path").as_string();
+		player_fx.doublejumpSoundPath = config.child("FX").child("jumpDouble").attribute("path").as_string();
+		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
 	}
 	else 
 	{
@@ -227,7 +226,11 @@ bool j2Player::Start()
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
 	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
-
+	//player SoundFX
+	player_fx.jumpSound = App->audio->LoadFx(player_fx.jumpSoundPath.GetString());
+	player_fx.runningSound = App->audio->LoadFx(player_fx.runningSoundPath.GetString());
+	player_fx.doublejumpSound = App->audio->LoadFx(player_fx.doublejumpSoundPath.GetString());
+	player_fx.dieSound = App->audio->LoadFx(player_fx.dieSoundPath.GetString());
 
 	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
 	
@@ -239,10 +242,10 @@ bool j2Player::Start()
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
 
 	//Loading SoundEffects
-	jumpSound.ChunkSize = App->audio->LoadFx(jumpSound.path.GetString());
+	/*jumpSound.ChunkSize = App->audio->LoadFx(jumpSound.path.GetString());
 	runningSound.ChunkSize= App->audio->LoadFx(runningSound.path.GetString());
 	DoublejumpSound.ChunkSize= App->audio->LoadFx(DoublejumpSound.path.GetString());
-	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());
+	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());*/
 
 
 	return true;
@@ -970,7 +973,7 @@ void j2Player::PlayerFX() {
 
 	
 		if (PlayFXDie == true) {
-			App->audio->PlayFx(DieSound.ChunkSize, 0);
+			App->audio->PlayFx(player_fx.dieSound, 0);
 			PlayFXDie = false;
 		}
 
@@ -1011,7 +1014,7 @@ void j2Player::PlayerFX() {
 		}*/
 
 		else {
-			App->audio->PlayFx(runningSound.ChunkSize, 0);
+			App->audio->PlayFx(player_fx.runningSound, 0);
 			currentAnimation = &run;
 		}
 
@@ -1028,7 +1031,7 @@ void j2Player::PlayerFX() {
 			else if (player.doubleJump == true) {
 
 				if (playeFXDoublejump == true) {
-					App->audio->PlayFx(DoublejumpSound.ChunkSize, 0);
+					App->audio->PlayFx(player_fx.doublejumpSound, 0);
 					playeFXDoublejump = false;
 				}
 
@@ -1037,7 +1040,7 @@ void j2Player::PlayerFX() {
 
 			else {
 				if (PlayFXJump == true) {
-					App->audio->PlayFx(jumpSound.ChunkSize, 0);
+					App->audio->PlayFx(player_fx.jumpSound, 0);
 					PlayFXJump = false;
 				}
 				currentAnimation = &jump;

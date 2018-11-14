@@ -43,6 +43,7 @@
       </music>
     <FX>
       <folderFX>audio/FX/</folderFX>
+      <max_attenuation_distance value="230"/>
     </FX>
     
    </audio>
