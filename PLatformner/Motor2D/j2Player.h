@@ -43,13 +43,15 @@ struct Player
 		int x_CollisionAdjuster;
 		int y_CollisionController;
 
-		int colliderOffset;
+		iPoint colliderOffset;
 		int colliderOffsetGroundBasic;
 		int colliderOffsetGroundSlash;
+
 	};
 
 	
 	SDL_Rect playerRect;
+	SDL_Rect playerRectCrouched;
   
 	//fPoint playerPos;
 
