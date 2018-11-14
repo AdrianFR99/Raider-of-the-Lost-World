@@ -107,10 +107,14 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
 		player_Init.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
 		player_Init.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
-		//PlayerCollision Adjusters
+
+		//PlayerCollision Adjusters;
 		player_Init.colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
 		player_Init.colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
 
+		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
+		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
+		player_Init.colliding.colliderOffset = player_Init.colliding.colliderOffsetGroundBasic;
 		//Player Bools Movement
 		 ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
 		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
@@ -139,9 +143,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Godmode
 		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
 	
-		player.playerHitbox = nullptr;
-		player.playerGodModeHitbox = nullptr;
-		player.fakeHitbox = nullptr;
+		NullifyPlayerColliders(player);
 
 		//LoadFX Paths
 		player_fx.jumpSoundPath =config.child("FX").child("jump").attribute("path").as_string();
@@ -151,6 +153,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 	}
 	else 
 	{
+		NullifyPlayerColliders(player);
 		LOG("Could not Load Player data on Awake!");
 	}
 
@@ -215,7 +218,6 @@ bool j2Player::Start()
 	
 	//Player collider Control
 	player.colliding = player_Init.colliding;
-
 	//Player landed
 	player.landed = player_Init.landed;
 

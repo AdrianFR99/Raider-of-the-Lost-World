@@ -102,6 +102,10 @@
     <xCollisionAdjuster x="3"/>
     <vCollision_controller y="8"/>
     <folder>textures/adventure.png</folder>
+    
+    
+    <colliderOffsetGroundBasic value="20"/>
+    <colliderOffsetGroundSlash value="30"/>
 
     <FX>
       <!--Player Sound effects-->

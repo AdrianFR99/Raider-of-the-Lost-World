@@ -42,6 +42,10 @@ struct Player
 		//Collision Adjusters
 		int x_CollisionAdjuster;
 		int y_CollisionController;
+
+		int colliderOffset;
+		int colliderOffsetGroundBasic;
+		int colliderOffsetGroundSlash;
 	};
 
 	
