@@ -91,9 +91,12 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
 		Currentacceleration = config.child("Currentacceleration").attribute("value").as_float();
+		ChargedDesaceleration= config.child("ChargedDesaceleration").attribute("value").as_float();
 		gravity = config.child("gravity").attribute("value").as_float();
 		Maxspeed.x =config.child("Maxspeed").attribute("x").as_float();
 		Maxspeed.y = config.child("Maxspeed").attribute("y").as_float();
+		Impulse.x = config.child("Impulse").attribute("x").as_float();
+		Impulse.y = config.child("Impulse").attribute("y").as_float();
 
 		//Player DoubleJump
 		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
@@ -245,9 +248,6 @@ bool j2Player::Start()
 	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());*/
 
 
-	Impulse.x = 1.00;
-	Impulse.y = 2.00;
-
 	return true;
 }
 
@@ -288,7 +288,7 @@ bool j2Player::PreUpdate()
 }
 
 
-bool j2Player::Update(float dt)
+bool j2Player::Update(float dt)      
 {
 	if (player.dead == true)
 	{
@@ -332,10 +332,11 @@ bool j2Player::Update(float dt)
 		SwithcingStates();
 		//players Effects
 		PlayerFX();
-		//movePlayer
-		PlayerMovement();
 		//playerCondtions attacks
-		 PlayerAttack();
+		PlayerAttack(dt);
+		//movePlayer
+		PlayerMovement(dt);
+		
 	
 	//If the player falls and surpasses a determined Y position it dies
 	if (App->scene->CurrentMap2 == false)
@@ -355,9 +356,6 @@ bool j2Player::Update(float dt)
 
 
 
-	//Camera Following player
-	App->render->followPlayer(player);
-
 	//Here we change the values of the rect position
 	if (player.godMode == false
 		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
@@ -374,11 +372,11 @@ bool j2Player::Update(float dt)
 
 
 
+	//Camera Following player
+	App->render->followPlayer(player,dt);
+	//AnimationsConditions
 
-//AnimationsConditions
-
-
-AnimationRect = currentAnimation->GetCurrentFrame();
+	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 	if (lookingRight) {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
@@ -388,20 +386,22 @@ AnimationRect = currentAnimation->GetCurrentFrame();
 	}
 
 
-	return true;
-		
-}
-
-// Called each loop iteration
-bool j2Player::PostUpdate()
-{
-	// We reset the colliders collisions
 	player.colliding.wallFront = false;
 	player.colliding.wallBack = false;
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
 	player.landed = false;
+
+	return true;
+
+}
+
+// Called each loop iteration
+bool j2Player::PostUpdate()
+{
+	// We reset the colliders collisions
+	
 
 	//	//Here we change the values of the rect position
 	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
@@ -702,6 +702,11 @@ void j2Player::RunningStateTo() {
 		player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
+	else if (Speed.y!=0 && MovingDown == true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
 	else if (MovingLeft == false && MovingRight == false) {
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
 			CurrentState = Player_State::IDLE;
@@ -750,27 +755,27 @@ void j2Player::AirStateTo() {
 	}
 }
 
-void j2Player::PlayerMovement() {
+void j2Player::PlayerMovement(float dt) {
 	
 	if (player.dead == false) {
 
 		if (player.godMode == false) {
 
 			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false) {
-				Speed.x += Currentacceleration;
+				Speed.x += Currentacceleration*dt;
 			}
 			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
-				Speed.x -= Currentacceleration;
+				Speed.x -= Currentacceleration*dt;
 			}
 			else if (CurrentState != Player_State::AIR) {	
 				if (MovingRight == true && ChargedAttackB == false) {
-					Speed.x -= Currentacceleration;
+					Speed.x -= Currentacceleration*dt;
 
 					if (Speed.x < 0.0f)
 						Speed.x = 0.0f;
 				}
 				else if (MovingLeft == true && ChargedAttackB == false) {
-					Speed.x += Currentacceleration;
+					Speed.x += Currentacceleration*dt;
 
 					if (Speed.x > 0.0f)
 						Speed.x = 0.0f;
@@ -783,7 +788,7 @@ void j2Player::PlayerMovement() {
 						lookingRight = true;
 						MovingLeft = false;
 
-						Speed.x -= ChargedDesaceleration;
+						Speed.x -= ChargedDesaceleration*dt;
 						if (Speed.x < 0.0f)
 							Speed.x = 0.0f;
 					}
@@ -792,7 +797,7 @@ void j2Player::PlayerMovement() {
 						lookingRight = false;
 						MovingRight = false;
 
-						Speed.x += ChargedDesaceleration;
+						Speed.x += ChargedDesaceleration*dt;
 						
 						if (Speed.x > 0.0f)
 							Speed.x = 0.0f;
@@ -803,10 +808,9 @@ void j2Player::PlayerMovement() {
 
 			}
 
-			
 			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
 				//Falling
-				Speed.y += gravity;
+				Speed.y += gravity*dt;
 			}
 
 			// Maximum Speeds
@@ -819,9 +823,9 @@ void j2Player::PlayerMovement() {
 			
 			else {
 				if (Speed.x > Maxspeed.x + Impulse.x)
-					Speed.x = Maxspeed.x + Impulse.x;
+					Speed.x = (Maxspeed.x + Impulse.x);
 				else if (Speed.x < -Maxspeed.x - Impulse.x)
-					Speed.x = -Maxspeed.x - Impulse.x;
+					Speed.x = (-Maxspeed.x - Impulse.x);
 			}
 
 			if (Speed.y > Maxspeed.y)
@@ -831,29 +835,37 @@ void j2Player::PlayerMovement() {
 
 
 			//new current position
-			player.playerPos.x += Speed.x;
-			player.playerPos.y += Speed.y;
+			player.playerPos.x += Speed.x*dt;
+			player.playerPos.y += Speed.y*dt;
 
 		}
 
 		if (player.godMode == true)
 		{
 			//If GodMode Activated, move around FREELY 
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-				player.playerPos.y -= Maxspeed.y;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-				player.playerPos.y += Maxspeed.y;
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-				player.playerPos.x += Maxspeed.x;
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-				player.playerPos.x += -Maxspeed.x;
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				Speed.y = -Maxspeed.y;
+				player.playerPos.y += Speed.y*dt;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				Speed.y = +Maxspeed.y;
+				player.playerPos.y += Maxspeed.y*dt;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				Speed.x = +Maxspeed.x;
+				player.playerPos.x += Maxspeed.x*dt;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				Speed.x = -Maxspeed.x;
+				player.playerPos.x += -Maxspeed.x*dt;
+			}
 
 		}
 	}
 
 }
 
-void j2Player::PlayerAttack() {
+void j2Player::PlayerAttack(float dt) {
 	
 	if ((Speed.x == 0 || CurrentState!=Player_State::RUNNING) && ChargedAttackB==true) {
 		ChargedAttackB = false;
@@ -887,10 +899,10 @@ void j2Player::PlayerAttack() {
 				
 				ChargedAttackB = true;
 				if (MovingRight) {
-					Speed.x +=Impulse.x;
+					Speed.x +=Impulse.x*dt;
 				}
 				else if (MovingLeft) {
-					Speed.x -= Impulse.x;
+					Speed.x -= Impulse.x*dt;
 
 				}
 			}
@@ -910,7 +922,7 @@ void j2Player::PlayerAttack() {
 			
 			if (arealAttackUsed ==false) {
 				AirAttackB = true;
-				Speed.y -= Impulse.y;
+				Speed.y -= Impulse.y*dt;
 				arealAttackUsed = true;
 			}
 

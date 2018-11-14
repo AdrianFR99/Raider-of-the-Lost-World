@@ -1,13 +1,13 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="60">
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
     <cameraOffset left_x="300" right_x="150"/>
@@ -55,13 +55,22 @@
     <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
-    
+
     <!--Player Speeds-->
+    <ChargedDesaceleration value="70"/>
+    <Jumpforce value="225.00"/>
+    <gravity value="200.0"/>
+    <Currentacceleration value="250.10"/>
+    <Maxspeed x="150.00" y="150.00"/>
+    <Impulse x="25.00" y="50.00"/>
+
+    <!--Player Speeds before dt
     <Jumpforce value="5.00"/>
     <gravity value="0.1"/>
     <Currentacceleration value="0.10"/>
     <Maxspeed x="3.00" y="3.00"/>
-  
+    ChargedDesaceleration value="0.04"-->
+
     <!--Player Bools Movement-->
     <ToMoveRight value="false" />
     <ToMoveLeft value="false" />
@@ -101,6 +110,6 @@
       <run path="audio/FX/Run5.wav"/>
       <die path="audio/FX/Hurt.wav"/>
     </FX>
-    
+
   </player>
 </config>

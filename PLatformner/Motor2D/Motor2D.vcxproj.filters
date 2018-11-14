@@ -43,6 +43,10 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Desenvolupament  ========\Modules\PathFinding</Filter>
     </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Desenvolupament  ========</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -108,6 +112,10 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Desenvolupament  ========\Modules\PathFinding</Filter>
     </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Desenvolupament  ========</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
