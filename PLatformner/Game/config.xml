@@ -57,6 +57,7 @@
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
     <playerCrouchedWH  width="20" height="21" />
+  
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
@@ -103,12 +104,13 @@
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
     <!--Collision adjusters-->>
+ 
     <xCollisionAdjuster x="3"/>
     <vCollision_controller y="8"/>
     <folder>textures/adventure.png</folder>
-    
-    
-    <colliderOffsetGroundBasic value="10"/>
+
+    <colliderRectOffsetY value="10"/>
+    <colliderOffsetGroundBasic value="15"/>
     <colliderOffsetGroundSlash value="16"/>
     
 

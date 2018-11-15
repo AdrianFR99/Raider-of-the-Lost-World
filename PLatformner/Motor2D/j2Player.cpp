@@ -118,11 +118,14 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
 		player_Init.colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
 
+		//integers
 		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
 		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
-
-		player_Init.colliding.colliderOffset = player_Init.colliding.colliderOffsetGroundBasic;
+		player_Init.colliding.collisionOffsetY = config.child("colliderRectOffsetY").attribute("value").as_int();
 		
+		//iPoint
+		player_Init.colliding.colliderOffset.x = player_Init.colliding.colliderOffsetGroundBasic;
+		player_Init.colliding.colliderOffset.y = player_Init.colliding.collisionOffsetY;
 
 		//Player Bools Movement
 		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
@@ -693,7 +696,7 @@ void j2Player::IdleStateTo() {
 			player.playerHitbox->rect.w = player.playerRectCrouched.w;
 			player.playerHitbox->rect.h = player.playerRectCrouched.h;
 			//player.playerHitbox->rect.y += player.colliding.colliderOffsetCrouching.y;
-			player.colliding.colliderOffset.y = player.playerRect.h - player.playerRectCrouched.h;
+			player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectCrouched.h) + player.colliding.collisionOffsetY;
 			player.fakeHitbox->rect.h = player.playerHitbox->rect.h +2;
 			player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 		}
@@ -715,7 +718,7 @@ void j2Player::CrouchingStateTo() {
 		player.playerHitbox->rect.h = player.playerRect.h;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
-		player.colliding.colliderOffset.y = 0;
+		player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
     
 	}
 	else if (ToMoveUp == true && ToMoveLeft==false && ToMoveRight==false) {
@@ -729,7 +732,7 @@ void j2Player::CrouchingStateTo() {
 		player.playerHitbox->rect.h = player.playerRect.h;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
-		player.colliding.colliderOffset.y = 0;
+		player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
 	}
 
 

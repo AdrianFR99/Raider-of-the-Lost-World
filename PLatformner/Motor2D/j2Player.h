@@ -45,8 +45,11 @@ struct Player
 		int y_CollisionController;
 
 		iPoint colliderOffset;
+
 		int colliderOffsetGroundBasic;
 		int colliderOffsetGroundSlash;
+
+		int collisionOffsetY;
 
 	};
 
