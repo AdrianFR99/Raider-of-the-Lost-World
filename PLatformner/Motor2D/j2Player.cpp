@@ -22,43 +22,43 @@ j2Player::j2Player()
 	pugi::xml_parse_result result =configAnim.load_file("Animations.xml");
 
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("idle");//idle
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("idle");//idle
 	idle.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("run");//run
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("run");//run
 	run.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jump");//jump
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jump");//jump
 	jump.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jumpDouble");//DoubleJump
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jumpDouble");//DoubleJump
 	jumpDouble.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("fall");//fall
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("fall");//fall
 	fall.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("crouch");//crouch
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("crouch");//crouch
 	crouch.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("push");//push
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("push");//push
 	push.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Chargedattack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Chargedattack");//Charged attack
 	ChargedAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Basicattack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//Charged attack
 	BasicAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Airattack");//AirAttack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Airattack");//AirAttack
 	AirAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("slide");//slide
 	slide.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
 	die.LoadPushBack(AnimPushBack);
 	
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("GodMode");//GodMode
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
 	GodMode.LoadPushBack(AnimPushBack);
 }
 
