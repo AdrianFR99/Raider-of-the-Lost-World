@@ -4,6 +4,7 @@
 #include "j2Player.h"
 #include "j2Enemy.h"
 #include "j1App.h"
+#include "Brofiler/Brofiler.h"
 
 j2EntityManager::j2EntityManager() : j1Module()
 {
@@ -27,16 +28,19 @@ bool j2EntityManager::Start()
 
 bool j2EntityManager::PreUpdate()
 {
+	BROFILER_CATEGORY("Entities_PreUpdate", Profiler::Color::GhostWhite);
 	return true;
 }
 
 bool j2EntityManager::Update(float dt)
 {
+	BROFILER_CATEGORY("Entities_Update", Profiler::Color::Gainsboro);
 	return true;
 }
 
 bool j2EntityManager::PostUpdate()
 {
+	BROFILER_CATEGORY("Entities_PostUpdate", Profiler::Color::Azure);
 	return true;
 }
 
