@@ -321,9 +321,13 @@ bool j2Player::Update(float dt)
 			player.deadCounter = player_Init.deadCounter;
 		}
 	}
-	
-	
 
+	if (Speed.y == 0) {
+
+		arealAttackUsed = false;
+	}
+	
+	
 		//Check inputs
 		PlayerMovementInputs();
 		//DebugFuncionalities
@@ -331,11 +335,9 @@ bool j2Player::Update(float dt)
 		//CheckMovement
 		CheckPlayerMovement();
 		//switchStates
-		SwithcingStates();
+		SwithcingStates(dt);
 		//players Effects
 		PlayerFX();
-		//playerCondtions attacks
-		PlayerAttack(dt);
 		//movePlayer
 		PlayerMovement(dt);
 		
@@ -564,7 +566,7 @@ void  j2Player::PlayerMovementInputs() {
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE )
 	{
 		ToMoveLeft = false;
 		
@@ -580,7 +582,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveUp = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT )
 	{
 		ToMoveUp = true;
 	}
@@ -595,6 +597,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveDown = true;
 	}
 	
+
 
 
 }
@@ -633,7 +636,7 @@ void j2Player::CheckPlayerMovement(){
 
 }
 
-void j2Player::SwithcingStates() {
+void j2Player::SwithcingStates(float dt) {
 
 	switch (CurrentState) {
 	case Player_State::IDLE:
@@ -643,12 +646,13 @@ void j2Player::SwithcingStates() {
 		CrouchingStateTo();
 		break;
 	case  Player_State::RUNNING:
-		RunningStateTo();
+		RunningStateTo(dt);
 		break;
 	case  Player_State::AIR:
-		AirStateTo();
+		AirStateTo(dt);
 		break;
-	
+	case Player_State::ATTACK:
+		AttackStateTo();
 	}
 
 
@@ -657,105 +661,169 @@ void j2Player::SwithcingStates() {
 void j2Player::IdleStateTo() {
 
 	if (player.dead == false) {
+
+
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
 			CurrentState = Player_State::RUNNING;
 		}
-		else if (ToMoveUp == true) {
+		else if (ToMoveUp == true && Speed.y==0) {
 			//jump
+			FirstJump = true;
 			PlayFXJump = true;
 			Speed.y = -JumpForce;
-
 			player.landed = false;
 			CurrentState = Player_State::AIR;
+			
 		}
-		else if (ToMoveDown == true) {
+		else if (player.landed == false)
+		{
+			CurrentState = Player_State::AIR;
+		}
+		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
 		}
 	}
+
 
 }
 void j2Player::CrouchingStateTo() {
 
 	if (ToMoveDown == false) {
+		
 		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
 			CurrentState = Player_State::RUNNING;
-		else {
+		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && player.landed==true ) {
 			CurrentState = Player_State::IDLE;
 		}
+	
 	}
-	else if (ToMoveUp == true) {
+	else if (ToMoveUp == true && ToMoveLeft==false && ToMoveRight==false) {
 		//jump
+		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-
-		player.landed = false;
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
 
 
 }
-void j2Player::RunningStateTo() {
+void j2Player::RunningStateTo(float dt) {
 
-	if (ToMoveUp == true) {
+	if (ToMoveUp == true && ToMoveDown==false && Speed.y == 0) {
 		//jump
+
+		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-
-		player.landed = false;
-		CurrentState = Player_State::AIR;
-	}
-	else if (Speed.y!=0 && MovingDown == true) {
-
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}
+	else if(player.landed!=true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
+
 	else if (MovingLeft == false && MovingRight == false) {
+		
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
 			CurrentState = Player_State::IDLE;
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
+
+		CurrentState = Player_State::ATTACK;
+
+		ChargedAttackB = true;
+		if (MovingRight) {
+			Speed.x += Impulse.x*dt;
+		}
+		else if (MovingLeft) {
+			Speed.x -= Impulse.x*dt;
+
+		}
+
+	}
 }
-void j2Player::AirStateTo() {
+void j2Player::AirStateTo(float dt) {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true) {
 		
+		FirstJump = false;
 		//playconditon sound
 		playeFXDoublejump = true;
 		//Reset Animation
 		jumpDouble.Reset();
+
 		//Doublejump
 		Speed.y =-JumpForce;
 		player.doubleJump = true;
 	}
 
-	if (player.landed) {		
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && player.landed==false && MovingUp) {
+
+		if (arealAttackUsed == false) {
+			AirAttackB = true;
+			Speed.y = -Impulse.y;
+			CurrentState = Player_State::ATTACK;
+			arealAttackUsed = true;
+		}
+
+	}
+
+	if (player.landed==true ) {		
 
 		//land
-		Speed.y = 0.0f;
+		FirstJump == false;
 		jump.Reset();
 		player.doubleJump = false;
 
 	
 		if (player.dead == false) {
 			
-			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true) {
+			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true  ) {
+				
 				if (ToMoveDown == false) {
 					CurrentState = Player_State::RUNNING;
 				}
-			
-			}
-			else if (ToMoveDown == true) {
-				CurrentState = Player_State::CROUCHING;
+				else {
+
+					CurrentState = Player_State::CROUCHING;
+
+				}
 			}
 			else {
 				CurrentState = Player_State::IDLE;
 			}
 		}
 	}
+	
+
 }
+
+void j2Player::AttackStateTo() {
+
+	if (Speed.x == 0 && ChargedAttackB == true) {
+	
+		ChargedAttackB = false;
+		CurrentState = Player_State::IDLE;
+		ChargedAttack.Reset();
+
+	}
+
+	if (MovingDown == true && AirAttackB == true) {
+
+		AirAttackB = false;
+		CurrentState = Player_State::AIR;
+		AirAttack.Reset();
+	}
+}
+
 
 void j2Player::PlayerMovement(float dt) {
 	
@@ -769,7 +837,7 @@ void j2Player::PlayerMovement(float dt) {
 			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
 				Speed.x -= Currentacceleration*dt;
 			}
-			else if (CurrentState != Player_State::AIR) {	
+			else if (CurrentState != Player_State::AIR ) {	
 				if (MovingRight == true && ChargedAttackB == false) {
 					Speed.x -= Currentacceleration*dt;
 
@@ -810,7 +878,7 @@ void j2Player::PlayerMovement(float dt) {
 
 			}
 
-			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
+			if (CurrentState == Player_State::AIR && !player.landed || CurrentState == Player_State::ATTACK && AirAttackB==true) {
 				//Falling
 				Speed.y += gravity*dt;
 			}
@@ -867,75 +935,6 @@ void j2Player::PlayerMovement(float dt) {
 
 }
 
-void j2Player::PlayerAttack(float dt) {
-	
-	if ((Speed.x == 0 || CurrentState!=Player_State::RUNNING) && ChargedAttackB==true) {
-		ChargedAttackB = false;
-		ChargedAttack.Reset();
-	}
-
-	if ((MovingDown==true || CurrentState != Player_State::AIR) && AirAttackB == true) {
-
-		AirAttackB = false;
-		AirAttack.Reset();
-	}
-
-	if (Speed.y == 0) {
-
-		arealAttackUsed = false;
-	}
-
-	/*if (BasicAttack.Finished()) {
-
-		BasicAttack.Reset();
-		BasicAttackB = false;
-	}*/
-
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && ChargedAttackB == false) {
-
-		switch (CurrentState) {
-
-		case Player_State::RUNNING:
-			
-			if (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x) {
-				
-				ChargedAttackB = true;
-				if (MovingRight) {
-					Speed.x +=Impulse.x*dt;
-				}
-				else if (MovingLeft) {
-					Speed.x -= Impulse.x*dt;
-
-				}
-			}
-		/*	else {
-				BasicAttackB = true;
-			}
-*/
-			break;
-		
-		case Player_State::IDLE:
-		
-			/*BasicAttackB = true;
-			
-			break;*/
-
-		case Player_State::AIR:
-			
-			if (arealAttackUsed ==false) {
-				AirAttackB = true;
-				Speed.y -= Impulse.y*dt;
-				arealAttackUsed = true;
-			}
-
-			break;
-
-
-		}
-	}
-}
-
-
 void j2Player::PlayerFX() {
 
 	if (ToMoveRight == true && ToMoveLeft == false) {
@@ -962,6 +961,10 @@ void j2Player::PlayerFX() {
 			case Player_State::AIR:
 				AirFX();
 				break;
+
+			case Player_State::ATTACK:
+				AttackFX();
+				break;
 			}
 		}
 		else {
@@ -986,6 +989,7 @@ void j2Player::PlayerFX() {
 }
 
 	void j2Player::IdleFX(){
+		
 		if(BasicAttackB==false)
 	currentAnimation = &idle;
 		/*else
@@ -1004,12 +1008,7 @@ void j2Player::PlayerFX() {
 
 			currentAnimation = &push;
 		}
-		else if (ChargedAttackB==true) {
-
-			
-			currentAnimation = &ChargedAttack;
-
-		}
+		
 	/*	else if (BasicAttackB == true) {
 
 			currentAnimation = &BasicAttack;
@@ -1023,7 +1022,6 @@ void j2Player::PlayerFX() {
 	}
 	void j2Player::AirFX() {
 	
-		if (AirAttackB == false) {
 
 			if (MovingDown == true) {
 
@@ -1040,19 +1038,30 @@ void j2Player::PlayerFX() {
 				currentAnimation = &jumpDouble;
 			}
 
-			else {
+			else if(MovingUp==true) {
+			
 				if (PlayFXJump == true) {
 					App->audio->PlayFx(player_fx.jumpSound, 0);
 					PlayFXJump = false;
 				}
+				
 				currentAnimation = &jump;
 			}
 
+	
+	}
+
+	void j2Player::AttackFX() {
+
+		if(AirAttackB==true){
+		currentAnimation = &AirAttack;
+		}
+		else if (ChargedAttackB == true) {
+
+			currentAnimation = &ChargedAttack;
 		}
 
-		else {
-			currentAnimation = &AirAttack;
-		}
+
 	}
 
 	void j2Player::PlayerDebugF() {

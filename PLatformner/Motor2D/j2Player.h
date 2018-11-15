@@ -13,6 +13,7 @@ enum class Player_State {
 	AIR,
 	CROUCHING,
 	SLIDING,
+	ATTACK,
 
 };
 
@@ -122,21 +123,24 @@ public:
 	void PlayerMovementInputs();
 	void CheckPlayerMovement();
 
-	void SwithcingStates();
+	void SwithcingStates(float dt);
 		void IdleStateTo();
 		void CrouchingStateTo();
-		void RunningStateTo();
-		void AirStateTo();
+		void RunningStateTo(float dt);
+		void AirStateTo(float dt);
+		void AttackStateTo();
+
 
 	void PlayerFX();
 		void IdleFX();
 		void CrouchingFX();
 		void RunningFX();
 		void AirFX();
+		void AttackFX();
 
 	void PlayerMovement(float dt);
 
-	void PlayerAttack(float dt);
+
 
 
 	//Functions apply the Animations and sounds for every state
@@ -178,7 +182,7 @@ public: //Variables
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
-	
+	bool ToAttack = false;
 
 	//Current movemvent
 	bool MovingRight = false;
@@ -188,6 +192,7 @@ public: //Variables
 
 	bool lookingRight=false;
 	
+	bool FirstJump = false;
 	//FX Sound Booleans
 	bool PlayFXJump=false;
 	bool playeFXDoublejump = false;
