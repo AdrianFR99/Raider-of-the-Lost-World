@@ -15,7 +15,7 @@
  <tileset firstgid="1520" name="NavigationLayer" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="NavigationLayerTex.png" width="16" height="16"/>
  </tileset>
- <imagelayer name="Sky(back)">
+ <imagelayer name="Sky(back)" offsetx="1" offsety="37">
   <image source="skyLine.png" width="8640" height="729"/>
   <properties>
    <property name="Movement" type="int" value="0"/>
@@ -68475,6 +68475,6 @@
  </layer>
  <objectgroup name="StartingAndFinishPoint">
   <object id="4" name="StartingPoint" x="80.5625" y="750.813" width="31" height="33"/>
-  <object id="8" name="FinishPoint" x="4741.67" y="552.67" width="30.6667" height="33.3333"/>
+  <object id="8" name="FinishPoint" x="4735.42" y="552.67" width="32.4167" height="39.3333"/>
  </objectgroup>
 </map>
