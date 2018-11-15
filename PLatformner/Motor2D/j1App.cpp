@@ -184,6 +184,7 @@ void j1App::PrepareUpdate()
 	
 
 	//differential time since last frame
+	
 	dt = frame_time.ReadSec();
 	LOG("differential time %f ",dt);
 

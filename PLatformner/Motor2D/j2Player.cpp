@@ -394,10 +394,10 @@ bool j2Player::Update(float dt)
 
 	player.colliding.wallFront = false;
 	player.colliding.wallBack = false;
+	if (player.landed == false)
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
-	player.landed = false;
 
 	return true;
 
@@ -444,9 +444,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Conditions to know if the collider that we collided with is in Front of the player
 			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
-				&& c2->rect.y + 8< player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 				&& overlay.y < overlay.y + overlay.h
-			    && player.colliding.wallTop == false)
+				&& player.colliding.wallTop == false)
 			{
 				player.colliding.wallFront = true;
 				//Before we do anything else, don't allow the collider to enter the tile
@@ -490,12 +490,14 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				&& c2->type != COLLIDER_PLATFORM)
 			{
 
-			player.playerHitbox->rect.y += overlay.h;
-			Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
+				player.playerHitbox->rect.y += overlay.h;
+				Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
 
-			player.landed = false;
-			player.colliding.wallTop = true;
+				player.landed = false;
+				player.colliding.wallTop = true;
 			}
+
+			
 		}
 		//If the collider is a killing obstacle DIE
 		if (c2->type == COLLIDER_TRAP)
@@ -544,12 +546,15 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
 	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
+	
+
+
 } 
 
 void j2Player::OnPreCollision(int d) 
 {
-	/*player.d_to_ground = d;
-	player.nextFrameLanded = true;*/
+
+
 }
 
 
@@ -677,10 +682,7 @@ void j2Player::IdleStateTo() {
 			CurrentState = Player_State::AIR;
 			
 		}
-		else if (player.landed == false)
-		{
-			CurrentState = Player_State::AIR;
-		}
+	
 		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
 		}
@@ -704,7 +706,7 @@ void j2Player::CrouchingStateTo() {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-	//	player.landed = false;
+		player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
 
@@ -718,7 +720,7 @@ void j2Player::RunningStateTo(float dt) {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-	//	player.landed = false;
+		player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}
@@ -754,7 +756,7 @@ void j2Player::AirStateTo() {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true && player.landed == false) {
 		
 		FirstJump = false;
 		//playconditon sound
