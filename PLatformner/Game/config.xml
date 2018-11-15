@@ -56,7 +56,7 @@
     <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
-
+    <playerCrouchedWH  width="20" height="21" />
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
@@ -108,8 +108,9 @@
     <folder>textures/adventure.png</folder>
     
     
-    <colliderOffsetGroundBasic value="20"/>
-    <colliderOffsetGroundSlash value="30"/>
+    <colliderOffsetGroundBasic value="10"/>
+    <colliderOffsetGroundSlash value="16"/>
+    
 
     <FX>
       <!--Player Sound effects-->

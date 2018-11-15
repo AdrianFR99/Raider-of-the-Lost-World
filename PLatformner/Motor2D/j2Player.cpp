@@ -87,6 +87,12 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.playerRect.h = config.child("playerRect").attribute("height").as_int();
 		player_Init.playerRect.x = player_Init.playerPos.x;
 		player_Init.playerRect.y = player_Init.playerPos.y;
+		
+		//PlayerCrouchedRect
+		player_Init.playerRectCrouched.w = config.child("playerCrouchedWH").attribute("width").as_int();
+		player_Init.playerRectCrouched.h = config.child("playerCrouchedWH").attribute("height").as_int();
+		player_Init.playerRectCrouched.x = player_Init.playerRect.x;
+		player_Init.playerRectCrouched.y = player_Init.playerPos.y;
 
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
@@ -114,8 +120,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
 		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
+
 		player_Init.colliding.colliderOffset = player_Init.colliding.colliderOffsetGroundBasic;
 		
+
 		//Player Bools Movement
 		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
 		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
@@ -212,8 +220,9 @@ bool j2Player::Start()
 	//Load all data from player_Init into the player we will be using
 	//Player Position
 	player.playerPos = player_Init.playerPos;
-	//Player SDL_Rect
+	//Player SDL_Rects
 	player.playerRect = player_Init.playerRect;
+	player.playerRectCrouched = player_Init.playerRectCrouched;
 	//Player Speeds
 
 	player.doubleJump = player_Init.doubleJump;
@@ -236,6 +245,7 @@ bool j2Player::Start()
 	player_fx.doublejumpSound = App->audio->LoadFx(player_fx.doublejumpSoundPath.GetString());
 	player_fx.dieSound = App->audio->LoadFx(player_fx.dieSoundPath.GetString());
 
+	
 	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
 	
 
@@ -244,13 +254,6 @@ bool j2Player::Start()
 	
 	
 	playTex = App->tex->Load(folder.GetString());//loading Player textures
-
-	//Loading SoundEffects
-	/*jumpSound.ChunkSize = App->audio->LoadFx(jumpSound.path.GetString());
-	runningSound.ChunkSize= App->audio->LoadFx(runningSound.path.GetString());
-	DoublejumpSound.ChunkSize= App->audio->LoadFx(DoublejumpSound.path.GetString());
-	DieSound.ChunkSize= App->audio->LoadFx(DieSound.path.GetString());*/
-
 
 	return true;
 }
@@ -371,8 +374,8 @@ bool j2Player::Update(float dt)
 		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
 		&& player.fakeHitbox != nullptr && player.fakeHitbox->to_delete == false)
 	{
-		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
-		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1, player.playerHitbox->rect.y -1);
+		player.playerHitbox->SetPos(player.playerPos.x + player.colliding.colliderOffset.x, player.playerPos.y + player.colliding.colliderOffset.y);
+		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1 , player.playerHitbox->rect.y -1);
 	}
 	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
 		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
@@ -397,12 +400,6 @@ bool j2Player::Update(float dt)
 	}
 
 
-	player.colliding.wallFront = false;
-	player.colliding.wallBack = false;
-	player.colliding.wallDown = false;
-	player.colliding.wallTop = false;
-
-
 	return true;
 
 }
@@ -413,6 +410,11 @@ bool j2Player::PostUpdate()
 	// We reset the colliders collisions
 	
 
+	player.colliding.wallFront = false;
+	player.colliding.wallBack = false;
+	player.colliding.wallDown = false;
+	player.colliding.wallTop = false;
+  
 	//	//Here we change the values of the rect position
 	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
 	//player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
@@ -542,8 +544,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	}
 
 	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
-	player.playerPos.x = player.playerHitbox->rect.x;
-	player.playerPos.y = player.playerHitbox->rect.y;
+	player.playerPos.x = player.playerHitbox->rect.x - player.colliding.colliderOffset.x;
+	player.playerPos.y = player.playerHitbox->rect.y - player.colliding.colliderOffset.y;
 
 	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
 	
@@ -688,6 +690,12 @@ void j2Player::IdleStateTo() {
 		}
 		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
+			player.playerHitbox->rect.w = player.playerRectCrouched.w;
+			player.playerHitbox->rect.h = player.playerRectCrouched.h;
+			//player.playerHitbox->rect.y += player.colliding.colliderOffsetCrouching.y;
+			player.colliding.colliderOffset.y = player.playerRect.h - player.playerRectCrouched.h;
+			player.fakeHitbox->rect.h = player.playerHitbox->rect.h +2;
+			player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 		}
 	}
 
@@ -702,7 +710,13 @@ void j2Player::CrouchingStateTo() {
 		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && player.landed==true ) {
 			CurrentState = Player_State::IDLE;
 		}
-	
+
+		player.playerHitbox->rect.w = player.playerRect.w;
+		player.playerHitbox->rect.h = player.playerRect.h;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+		player.colliding.colliderOffset.y = 0;
+    
 	}
 	else if (ToMoveUp == true && ToMoveLeft==false && ToMoveRight==false) {
 		//jump
@@ -711,6 +725,11 @@ void j2Player::CrouchingStateTo() {
 		Speed.y = -JumpForce;
 	//	player.landed = false;
 		CurrentState = Player_State::AIR;
+		player.playerHitbox->rect.w = player.playerRect.w;
+		player.playerHitbox->rect.h = player.playerRect.h;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+		player.colliding.colliderOffset.y = 0;
 	}
 
 
@@ -941,6 +960,7 @@ void j2Player::PlayerMovement(float dt) {
 	}
 
 }
+
 
 void j2Player::PlayerFX() {
 
