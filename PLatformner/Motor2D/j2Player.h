@@ -127,7 +127,7 @@ public:
 		void IdleStateTo();
 		void CrouchingStateTo();
 		void RunningStateTo(float dt);
-		void AirStateTo(float dt);
+		void AirStateTo();
 		void AttackStateTo();
 
 

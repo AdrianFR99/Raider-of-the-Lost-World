@@ -85,10 +85,13 @@
     <lookingRight value="false" />
 
     <!--Player Landed-->
-    <landed value="false" />
+    <landed value="true" />
     <!--Double Jump-->>
-    <doubleJump value="true"/>
+    <doubleJump value="false"/>
     <nextFrameLanded value="false" />
+   
+    <!--Player Initial State-->>
+    <IntilaPState State="IDLE"/>
 
     <!--Player Death-->>
     <dead boolDead="false" deadDelay="20" deadCounter="0" />

@@ -29,7 +29,7 @@
    <property name="Speed" type="float" value="-0.25"/>
   </properties>
  </imagelayer>
- <imagelayer name="Clouds(MiddleDown)" offsetx="2" offsety="520">
+ <imagelayer name="Clouds(MiddleDown)" offsetx="-0.666667" offsety="580.667">
   <image source="CloudsBack.png" width="9000" height="304"/>
   <properties>
    <property name="Movement" type="int" value="1"/>
@@ -68474,7 +68474,7 @@
   </data>
  </layer>
  <objectgroup name="StartingAndFinishPoint">
-  <object id="4" name="StartingPoint" x="80.5" y="735.25" width="31" height="33"/>
+  <object id="4" name="StartingPoint" x="80.5625" y="750.813" width="31" height="33"/>
   <object id="8" name="FinishPoint" x="4741.67" y="552.67" width="30.6667" height="33.3333"/>
  </objectgroup>
 </map>

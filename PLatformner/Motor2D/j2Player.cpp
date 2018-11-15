@@ -115,20 +115,22 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
 		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
 		player_Init.colliding.colliderOffset = player_Init.colliding.colliderOffsetGroundBasic;
+		
 		//Player Bools Movement
-		 ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
+		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
 		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
 		 ToMoveUp = config.child("ToMoveUp").attribute("value").as_bool();
 		 ToMoveDown = config.child("ToMoveDown").attribute("value").as_bool();
 	
-
-		
 		 MovingRight = config.child("MovingRight").attribute("value").as_bool();
 		 MovingLeft = config.child("MovingLeft").attribute("value").as_bool();
 		 MovingUp = config.child("MovingUp").attribute("value").as_bool();
 		 MovingDown = config.child("MovingDown").attribute("value").as_bool();
 
 		 lookingRight = config.child("lookingRight").attribute("value").as_bool();
+
+		 //CurrentState
+		 CurrentState =(Player_State)config.child("IntilaPState").attribute("State").as_int();
 
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();
@@ -386,7 +388,7 @@ bool j2Player::Update(float dt)
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(playTex, player.playerPos.x-10, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
 
@@ -649,7 +651,7 @@ void j2Player::SwithcingStates(float dt) {
 		RunningStateTo(dt);
 		break;
 	case  Player_State::AIR:
-		AirStateTo(dt);
+		AirStateTo();
 		break;
 	case Player_State::ATTACK:
 		AttackStateTo();
@@ -748,7 +750,7 @@ void j2Player::RunningStateTo(float dt) {
 
 	}
 }
-void j2Player::AirStateTo(float dt) {
+void j2Player::AirStateTo() {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
@@ -970,12 +972,9 @@ void j2Player::PlayerFX() {
 		else {
 
 			currentAnimation = &GodMode;
-
 		}
 	}
 	else {
-		
-
 	
 		if (PlayFXDie == true) {
 			App->audio->PlayFx(player_fx.dieSound, 0);
@@ -989,12 +988,9 @@ void j2Player::PlayerFX() {
 }
 
 	void j2Player::IdleFX(){
-		
-		if(BasicAttackB==false)
+				
 	currentAnimation = &idle;
-		/*else
-			currentAnimation = &BasicAttack;*/
-
+		
 	}
 	void j2Player::CrouchingFX() {
 	
@@ -1023,7 +1019,7 @@ void j2Player::PlayerFX() {
 	void j2Player::AirFX() {
 	
 
-			if (MovingDown == true) {
+			if (MovingDown == true && Speed.y>0) {
 
 				currentAnimation = &fall;
 			}
