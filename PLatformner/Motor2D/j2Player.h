@@ -53,7 +53,6 @@ struct Player
 	SDL_Rect playerRect;
   
 	//fPoint playerPos;
-
 	iPoint playerPos;
 	SDL_Rect fakeCollisionRect;
 
@@ -176,6 +175,9 @@ public: //Variables
 	float Currentacceleration;
 	float ChargedDesaceleration;
 	float gravity;
+	
+	//Vars for Blitig
+	int PivotAdjustment = 10;
 
 	//Inputs pressed
 	bool ToMoveRight=false;

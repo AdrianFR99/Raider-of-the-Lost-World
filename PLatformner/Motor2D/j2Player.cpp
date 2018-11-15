@@ -287,7 +287,11 @@ bool j2Player::PreUpdate()
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
 	player.nextFrameLanded = false;
 	
-	
+	if (player.colliding.wallDown == false) {
+		player.landed = false;
+
+	}
+
 	return true;
 }
 
@@ -383,18 +387,18 @@ bool j2Player::Update(float dt)
 	//AnimationsConditions
 
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
+	
 
 	if (lookingRight) {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(playTex, player.playerPos.x-10, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(playTex, player.playerPos.x- PivotAdjustment, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
 
 	player.colliding.wallFront = false;
 	player.colliding.wallBack = false;
-	if (player.landed == false)
 	player.colliding.wallDown = false;
 	player.colliding.wallTop = false;
 
@@ -678,11 +682,10 @@ void j2Player::IdleStateTo() {
 			FirstJump = true;
 			PlayFXJump = true;
 			Speed.y = -JumpForce;
-			player.landed = false;
+		//	player.landed = false;
 			CurrentState = Player_State::AIR;
 			
 		}
-	
 		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
 		}
@@ -706,7 +709,7 @@ void j2Player::CrouchingStateTo() {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-		player.landed = false;
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 	}
 
@@ -720,7 +723,7 @@ void j2Player::RunningStateTo(float dt) {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-		player.landed = false;
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}

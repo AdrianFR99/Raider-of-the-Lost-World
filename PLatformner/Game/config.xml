@@ -7,6 +7,7 @@
   </app>
 	
   <renderer>
+  
     <vsync value="false"/>
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
@@ -59,7 +60,7 @@
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
-    <gravity value="200.0"/>
+    <gravity value="250.0"/>
     <Currentacceleration value="250.10"/>
     <Maxspeed x="150.00" y="150.00"/>
     <Impulse x="25.00" y="100.00"/>
