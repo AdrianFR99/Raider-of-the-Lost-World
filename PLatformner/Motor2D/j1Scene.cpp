@@ -11,6 +11,7 @@
 #include "j2Collision.h"
 #include "j1Pathfinding.h"
 #include "j1Scene.h"
+#include "Brofiler/Brofiler.h"
 
 
 
@@ -118,6 +119,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	BROFILER_CATEGORY("Scene_PreUpdate", Profiler::Color::DarkGray);
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -159,6 +161,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	BROFILER_CATEGORY("Scene_Update", Profiler::Color::Gray);
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
@@ -269,6 +272,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+	BROFILER_CATEGORY("Scene_PostUpdate", Profiler::Color::DimGray);
 	bool ret = true;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
