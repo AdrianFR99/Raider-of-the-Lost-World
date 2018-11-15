@@ -49,14 +49,20 @@ struct Player
 
 		int colliderOffsetGroundBasic;
 		int colliderOffsetGroundSlash;
-
 		int collisionOffsetY;
+
+	
 
 	};
 
 	
 	SDL_Rect playerRect;
 	SDL_Rect playerRectCrouched;
+	SDL_Rect playerRectJump;
+	SDL_Rect playerRectDJump;
+	SDL_Rect PlayerRectRunning;
+	SDL_Rect PlayerRectAttackCharged;
+	SDL_Rect PlayerRectAttackAir;
   
 	//fPoint playerPos;
 	iPoint playerPos;
@@ -151,7 +157,17 @@ public:
 	//Functions apply the Animations and sounds for every state
 
 	void NullifyPlayerColliders(Player &p);
+	void ColliderShapeStates();
+		void IdleColliderShape();
+		void CrouchColliderShape();
+		void JumpColliderShape();
+		void RunnigColliderShape();
+		void ChargedAttackColliderShape();
+
+
 	bool CreatePlayerColliders(Player &p);
+	
+	
 
 
 	//Chek Conditions to change from the current state to others
@@ -183,7 +199,7 @@ public: //Variables
 	float gravity;
 	
 	//Vars for Blitig
-	int PivotAdjustment = 10;
+	int PivotAdjustment;
 
 	//Inputs pressed
 	bool ToMoveRight=false;

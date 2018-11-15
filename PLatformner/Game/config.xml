@@ -56,8 +56,13 @@
     <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
-    <playerCrouchedWH  width="20" height="21" />
-  
+    <playerCrouchCollider  width="20" height="21" />
+    <playerJumpCollider width="20" height="21"/>
+    <PlayerRectRunning  width="20" height="30"/>
+    <PlayerRectAttackCharged width="20" height="21"/>
+    <PlayerRectAttackAir width="20" height="30"/>
+    <playerJumpDCollider width="10" height="10"/>
+    
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
@@ -91,11 +96,11 @@
     <!--Double Jump-->>
     <doubleJump value="false"/>
     <nextFrameLanded value="false" />
-   
-    <!--Player Initial State-->>
+
+    <!--Player Initial State-->
     <IntilaPState State="IDLE"/>
 
-    <!--Player Death-->>
+    <!--Player Death-->
     <dead boolDead="false" deadDelay="20" deadCounter="0" />
 
     <maximumDead_Y map1="800" map2="1200"/>
@@ -103,8 +108,8 @@
     <godMode value="false"/>
 
     <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
-    <!--Collision adjusters-->>
- 
+    <!--Collision adjusters-->
+
     <xCollisionAdjuster x="3"/>
     <vCollision_controller y="8"/>
     <folder>textures/adventure.png</folder>
@@ -112,7 +117,10 @@
     <colliderRectOffsetY value="10"/>
     <colliderOffsetGroundBasic value="15"/>
     <colliderOffsetGroundSlash value="16"/>
-    
+
+    <!--Blit values-->
+    <PivotAdjustment value="4"/>
+
 
     <FX>
       <!--Player Sound effects-->

@@ -88,11 +88,42 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.playerRect.x = player_Init.playerPos.x;
 		player_Init.playerRect.y = player_Init.playerPos.y;
 		
-		//PlayerCrouchedRect
-		player_Init.playerRectCrouched.w = config.child("playerCrouchedWH").attribute("width").as_int();
-		player_Init.playerRectCrouched.h = config.child("playerCrouchedWH").attribute("height").as_int();
+		//PlayerCrouchedRect(collider)
+		player_Init.playerRectCrouched.w = config.child("playerCrouchCollider").attribute("width").as_int();
+		player_Init.playerRectCrouched.h = config.child("playerCrouchCollider").attribute("height").as_int();
 		player_Init.playerRectCrouched.x = player_Init.playerRect.x;
 		player_Init.playerRectCrouched.y = player_Init.playerPos.y;
+		
+		//playerJumpRects(colliders)
+		player_Init.playerRectJump.w = config.child("playerJumpCollider").attribute("width").as_int();
+		player_Init.playerRectJump.h = config.child("playerJumpCollider").attribute("height").as_int();
+		player_Init.playerRectJump.x = player_Init.playerRect.x;
+		player_Init.playerRectJump.y = player_Init.playerPos.y;
+
+		player_Init.playerRectDJump.w = config.child("playerJumpDCollider").attribute("width").as_int();
+		player_Init.playerRectDJump.h = config.child("playerJumpDCollider").attribute("height").as_int();
+		player_Init.playerRectDJump.x = player_Init.playerRect.x;
+		player_Init.playerRectDJump.y = player_Init.playerPos.y;
+
+
+		
+		//PlayerRunningRect(collider)
+		player_Init.PlayerRectRunning.w = config.child("PlayerRectRunning").attribute("width").as_int();
+		player_Init.PlayerRectRunning.h = config.child("PlayerRectRunning").attribute("height").as_int();
+		player_Init.PlayerRectRunning.x = player_Init.playerRect.x;
+		player_Init.PlayerRectRunning.y = player_Init.playerPos.y;
+
+		//playerAttackingRects(colliders)
+		player_Init.PlayerRectAttackCharged.w = config.child("PlayerRectAttackCharged").attribute("width").as_int();
+		player_Init.PlayerRectAttackCharged.h = config.child("PlayerRectAttackCharged").attribute("height").as_int();
+		player_Init.PlayerRectAttackCharged.x = player_Init.playerRect.x;
+		player_Init.PlayerRectAttackCharged.y = player_Init.playerPos.y;
+
+		player_Init.PlayerRectAttackAir.w = config.child("PlayerRectAttackAir").attribute("width").as_int();
+		player_Init.PlayerRectAttackAir.h = config.child("PlayerRectAttackAir").attribute("height").as_int();
+		player_Init.PlayerRectAttackAir.x = player_Init.playerRect.x;
+		player_Init.PlayerRectAttackAir.y = player_Init.playerPos.y;
+
 
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
@@ -163,6 +194,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_fx.runningSoundPath =config.child("FX").child("run").attribute("path").as_string();
 		player_fx.doublejumpSoundPath = config.child("FX").child("jumpDouble").attribute("path").as_string();
 		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
+
+
+		//Blit Values
+		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
+
 	}
 	else 
 	{
@@ -226,6 +262,12 @@ bool j2Player::Start()
 	//Player SDL_Rects
 	player.playerRect = player_Init.playerRect;
 	player.playerRectCrouched = player_Init.playerRectCrouched;
+	player.playerRectJump= player_Init.playerRectJump;
+	player.PlayerRectRunning = player_Init.PlayerRectRunning;
+	player.PlayerRectAttackCharged = player_Init.PlayerRectAttackCharged;
+	player.PlayerRectAttackAir = player_Init.PlayerRectAttackAir;
+	player.playerRectDJump = player_Init.playerRectDJump;
+
 	//Player Speeds
 
 	player.doubleJump = player_Init.doubleJump;
@@ -348,6 +390,9 @@ bool j2Player::Update(float dt)
 		CheckPlayerMovement();
 		//switchStates
 		SwithcingStates(dt);
+		//Switch the colliders shape depending of the state
+		ColliderShapeStates();
+
 		//players Effects
 		PlayerFX();
 		//movePlayer
@@ -693,12 +738,7 @@ void j2Player::IdleStateTo() {
 		}
 		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
-			player.playerHitbox->rect.w = player.playerRectCrouched.w;
-			player.playerHitbox->rect.h = player.playerRectCrouched.h;
-			//player.playerHitbox->rect.y += player.colliding.colliderOffsetCrouching.y;
-			player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectCrouched.h) + player.colliding.collisionOffsetY;
-			player.fakeHitbox->rect.h = player.playerHitbox->rect.h +2;
-			player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+			
 		}
 	}
 
@@ -713,12 +753,6 @@ void j2Player::CrouchingStateTo() {
 		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && player.landed==true ) {
 			CurrentState = Player_State::IDLE;
 		}
-
-		player.playerHitbox->rect.w = player.playerRect.w;
-		player.playerHitbox->rect.h = player.playerRect.h;
-		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
-		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
-		player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
     
 	}
 	else if (ToMoveUp == true && ToMoveLeft==false && ToMoveRight==false) {
@@ -728,11 +762,7 @@ void j2Player::CrouchingStateTo() {
 		Speed.y = -JumpForce;
 	//	player.landed = false;
 		CurrentState = Player_State::AIR;
-		player.playerHitbox->rect.w = player.playerRect.w;
-		player.playerHitbox->rect.h = player.playerRect.h;
-		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
-		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
-		player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
+
 	}
 
 
@@ -821,8 +851,8 @@ void j2Player::AirStateTo() {
 					CurrentState = Player_State::RUNNING;
 				}
 				else {
-
 					CurrentState = Player_State::CROUCHING;
+			
 
 				}
 			}
@@ -1152,3 +1182,113 @@ bool j2Player::CreatePlayerColliders(Player &p)
 }
 
 
+void j2Player::ColliderShapeStates() {
+
+
+
+		switch (CurrentState) {
+		case Player_State::IDLE:
+
+			IdleColliderShape();
+
+			break;
+		case Player_State::CROUCHING:
+
+			CrouchColliderShape();
+
+			break;
+		case Player_State::RUNNING:
+			RunnigColliderShape();
+
+			break;
+		case Player_State::AIR:
+
+			JumpColliderShape();
+
+			break;
+
+		case Player_State::ATTACK:
+
+			
+				ChargedAttackColliderShape();
+
+			break;
+		}
+
+
+}
+
+void j2Player::IdleColliderShape() {
+
+	player.playerHitbox->rect.w = player.playerRect.w;
+	player.playerHitbox->rect.h = player.playerRect.h;
+	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+	player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
+
+}
+
+void j2Player::CrouchColliderShape() {
+
+	player.playerHitbox->rect.w = player.playerRectCrouched.w;
+	player.playerHitbox->rect.h = player.playerRectCrouched.h;
+	player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectCrouched.h) + player.colliding.collisionOffsetY;
+	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+
+}
+
+void j2Player::JumpColliderShape() {
+
+	if (FirstJump == true) {
+	
+		player.playerHitbox->rect.w = player.playerRectJump.w;
+		player.playerHitbox->rect.h = player.playerRectJump.h;
+		player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectJump.h) + player.colliding.collisionOffsetY;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+
+	}
+	else if (player.doubleJump == true) {
+
+
+		player.playerHitbox->rect.w = player.playerRectDJump.w;
+		player.playerHitbox->rect.h = player.playerRectDJump.h;
+		player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectDJump.h) + player.colliding.collisionOffsetY;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+
+	}
+
+}
+
+void j2Player::RunnigColliderShape() {
+
+
+	player.playerHitbox->rect.w = player.PlayerRectRunning.w;
+	player.playerHitbox->rect.h = player.PlayerRectRunning.h;
+	player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectRunning.h) + player.colliding.collisionOffsetY;
+	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+
+}
+
+void j2Player::ChargedAttackColliderShape() {
+
+	if (ChargedAttackB == true) {
+		player.playerHitbox->rect.w = player.PlayerRectAttackCharged.w;
+		player.playerHitbox->rect.h = player.PlayerRectAttackCharged.h;
+		player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectAttackCharged.h) + player.colliding.collisionOffsetY;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+	}
+
+	else if (AirAttackB == true) {
+		player.playerHitbox->rect.w = player.PlayerRectAttackAir.w;
+		player.playerHitbox->rect.h = player.PlayerRectAttackAir.h;
+		player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectAttackAir.h) + player.colliding.collisionOffsetY;
+		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
+		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+	}
+
+}
