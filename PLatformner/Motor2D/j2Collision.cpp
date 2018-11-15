@@ -6,6 +6,7 @@
 #include "j1Window.h"
 #include "p2Defs.h"
 #include "p2Log.h"
+#include "Brofiler/Brofiler.h"
 
 j2Collision::j2Collision()
 {
@@ -116,6 +117,7 @@ j2Collision::~j2Collision()
 
 bool j2Collision::PreUpdate()
 {
+	BROFILER_CATEGORY("Collision_PreUpdate", Profiler::Color::Crimson);
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{

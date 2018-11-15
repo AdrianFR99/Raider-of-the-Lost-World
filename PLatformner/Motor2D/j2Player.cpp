@@ -12,6 +12,8 @@
 #include "j2Player.h"
 #include "j1audio.h"
 
+#include "Brofiler/Brofiler.h"
+
 
 
 //CONSTRUCTOR
@@ -427,6 +429,7 @@ bool j2Player::CleanUp()
 
 bool j2Player::PreUpdate()
 {
+	BROFILER_CATEGORY("Player_PreUpdate", Profiler::Color::Aqua);
 	//PREUPDATE is called before any On Collision or Pre-Collision from the player is called
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
 	player.nextFrameLanded = false;
@@ -442,6 +445,7 @@ bool j2Player::PreUpdate()
 
 bool j2Player::Update(float dt)      
 {
+	BROFILER_CATEGORY("Player_Update", Profiler::Color::Aquamarine);
 	if (player.dead == true)
 	{
 		PlayFXDie = true;
@@ -551,6 +555,7 @@ bool j2Player::Update(float dt)
 // Called each loop iteration
 bool j2Player::PostUpdate()
 {
+	BROFILER_CATEGORY("Player_PostUpdate", Profiler::Color::CadetBlue);
 	// We reset the colliders collisions
 	
 
@@ -574,6 +579,7 @@ bool j2Player::PostUpdate()
 
 void j2Player::OnCollision(Collider* c1, Collider* c2) 
 {
+	BROFILER_CATEGORY("Player_OnCollision", Profiler::Color::Cyan);
 	//Testing new system of collisions
 	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
 	SDL_Rect* col1;
