@@ -4,7 +4,9 @@
  
     <AnimationsPushBacks>
 
-      <idle loop="true" speed="8.00">
+      <Player>
+     
+        <idle loop="true" speed="8.00">
         <PushBack x="0" y="0 " w="55" h="39"/>
         <PushBack x="55" y="0" w="55" h="39"/>
         <PushBack x="110" y="0"  w="55" h="39"/>
@@ -30,7 +32,7 @@
   
       <jump loop="false" speed="8.00">
         <PushBack x="0" y="117"  w="55" h="39"/>
-        <PushBack x="54" y="117" w="55" h="39"/>
+        <PushBack x="55" y="117" w="55" h="39"/>
         <PushBack x="110" y="117" w="55" h="39"/>
       </jump>
 
@@ -93,13 +95,126 @@
         <PushBack x="220" y="936"  w="55" h="39"/>
       </die>
 
-      <GodMode loop="true" speed="8.00">
-        <PushBack x="0" y="624" w="55" h="39"/>
-        <PushBack x="55" y="624"  w="55" h="39"/>
-        
-      </GodMode>
+        <GodMode loop="true" speed="8.00">
+          <PushBack x="0" y="624" w="55" h="39"/>
+          <PushBack x="55" y="624"  w="55" h="39"/>
 
+        </GodMode>
+   </Player>
+      
+      
+      
+    <Enemies>
+       
+      <Undead>
+          <idle loop="true" speed="8.00">
+            <PushBack x="0" y="105 " w="47" h="35"/>
+            <PushBack x="47" y="105" w="47" h="35"/>
+            <PushBack x="94" y="105" w="47" h="35"/>
+            <PushBack x="141" y="105" w="47" h="35"/>
+            <PushBack x="188"  y="105" w="47" h="35"/>
+            <PushBack x="235" y="105" w="47" h="35"/>
+            <PushBack x="282" y="105" w="47" h="35"/>
+            <PushBack x="329" y="105" w="47" h="35"/>
+            <PushBack x="376" y="105" w="47" h="35"/>
+            <PushBack x="423" y="105" w="47" h="35"/>
+            <PushBack x="466" y="105" w="47" h="35"/>
+            <PushBack x="513" y="105" w="47" h="35"/>
+            <PushBack x="560" y="105" w="47" h="35"/>
+            <PushBack x="607" y="105" w="47" h="35"/>
+            <PushBack x="654" y="105" w="47" h="35"/>
+            <PushBack x="701" y="105" w="47" h="35"/>
+          </idle>
 
+          <Walk loop="true" speed="8.00">
+            <PushBack x="0" y="140 " w="47" h="35"/>
+            <PushBack x="47" y="140" w="47" h="35"/>
+            <PushBack x="94" y="140" w="47" h="35"/>
+            <PushBack x="141" y="140" w="47" h="35"/>
+            <PushBack x="188" y="140" w="47" h="35"/>
+            <PushBack x="235" y="140" w="47" h="35"/>
+            <PushBack x="282" y="140" w="47" h="35"/>
+            <PushBack x="329" y="140" w="47" h="35"/>
+            <PushBack x="376" y="140" w="47" h="35"/>
+            <PushBack x="423" y="140" w="47" h="35"/>
+            <PushBack x="466" y="140" w="47" h="35"/>
+            <PushBack x="513" y="140" w="47" h="35"/>
+            <PushBack x="560" y="140" w="47" h="35"/>
+            <PushBack x="607" y="140" w="47" h="35"/>
+            <PushBack x="654" y="140" w="47" h="35"/>
+            <PushBack x="701" y="140" w="47" h="35"/>
+            <PushBack x="795" y="140" w="47" h="35"/>
+            <PushBack x="842" y="140" w="47" h="35"/>
+            <PushBack x="889" y="140" w="47" h="35"/>
+            <PushBack x="936" y="140" w="47" h="35"/>
+          </Walk>
+
+          <Attack loop="false" speed="8.00">           
+            <PushBack x="0" y="0 " w="47" h="35"/>
+            <PushBack x="47" y="0" w="47" h="35"/>
+            <PushBack x="94" y="0" w="47" h="35"/>
+            <PushBack x="141" y="0" w="47" h="35"/>
+            <PushBack x="188" y="0" w="47" h="35"/>
+            <PushBack x="235" y="0" w="47" h="35"/>
+            <PushBack x="282" y="0" w="47" h="35"/>
+            <PushBack x="329" y="0" w="47" h="35"/>
+            <PushBack x="376" y="0" w="47" h="35"/>
+            <PushBack x="423" y="0" w="47" h="35"/>
+            <PushBack x="466" y="0" w="47" h="35"/>
+            <PushBack x="513" y="0" w="47" h="35"/>
+            <PushBack x="560" y="0" w="47" h="35"/>
+            <PushBack x="607" y="0" w="47" h="35"/>
+            <PushBack x="654" y="0" w="47" h="35"/>
+            <PushBack x="701" y="0" w="47" h="35"/>
+            <PushBack x="795" y="0" w="47" h="35"/>
+            <PushBack x="842" y="0" w="47" h="35"/>
+            <PushBack x="889" y="0" w="47" h="35"/>
+            <PushBack x="936" y="0" w="47" h="35"/>
+          </Attack>
+
+          <Hurt loop="true" speed="8.00">
+            <PushBack x="0" y="70" w="47" h="35"/>
+            <PushBack x="47" y="70" w="47" h="35"/>
+            <PushBack x="94" y="70" w="47" h="35"/>
+            <PushBack x="141" y="70" w="47" h="35"/>
+            <PushBack x="188" y="70" w="47" h="35"/>
+            <PushBack x="235" y="70" w="47" h="35"/>
+            <PushBack x="282" y="70" w="47" h="35"/>
+            <PushBack x="329" y="70" w="47" h="35"/>
+            <PushBack x="376" y="70" w="47" h="35"/>
+            <PushBack x="423" y="70" w="47" h="35"/>
+            <PushBack x="466" y="70" w="47" h="35"/>
+            <PushBack x="513" y="70" w="47" h="35"/>
+          </Hurt>
+          
+          <Death  loop="false" speed="8.00">
+            <PushBack x="0" y="47" w="47" h="35"/>
+            <PushBack x="47" y="47" w="47" h="35"/>
+            <PushBack x="94" y="47" w="47" h="35"/>
+            <PushBack x="141" y="47" w="47" h="35"/>
+            <PushBack x="188" y="47" w="47" h="35"/>
+            <PushBack x="235" y="47" w="47" h="35"/>
+            <PushBack x="282" y="47" w="47" h="35"/>
+            <PushBack x="329" y="47" w="47" h="35"/>
+            <PushBack x="376" y="47" w="47" h="35"/>
+            <PushBack x="423" y="47" w="47" h="35"/>
+            <PushBack x="466" y="47" w="47" h="35"/>
+            <PushBack x="513" y="47" w="47" h="35"/>
+            <PushBack x="560" y="47" w="47" h="35"/>   
+          </Death>
+        </Undead>
+
+      
+        <Bat>
+          <Idle>
+             <PushBack x="0" y="0" w="16" h="16"/>
+             <PushBack x="16" y="0" w="16" h="16"/>
+            <PushBack x="32" y="0" w="16" h="16"/>  
+           </Idle>
+         </Bat>
+      
+      
+      </Enemies>
     
   </AnimationsPushBacks>
    

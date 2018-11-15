@@ -22,43 +22,43 @@ j2Player::j2Player()
 	pugi::xml_parse_result result =configAnim.load_file("Animations.xml");
 
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("idle");//idle
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("idle");//idle
 	idle.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("run");//run
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("run");//run
 	run.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jump");//jump
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jump");//jump
 	jump.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("jumpDouble");//DoubleJump
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jumpDouble");//DoubleJump
 	jumpDouble.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("fall");//fall
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("fall");//fall
 	fall.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("crouch");//crouch
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("crouch");//crouch
 	crouch.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("push");//push
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("push");//push
 	push.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Chargedattack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Chargedattack");//Charged attack
 	ChargedAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Basicattack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//Charged attack
 	BasicAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Airattack");//AirAttack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Airattack");//AirAttack
 	AirAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("slide");//slide
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("slide");//slide
 	slide.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("die");//die
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
 	die.LoadPushBack(AnimPushBack);
 	
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("GodMode");//GodMode
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
 	GodMode.LoadPushBack(AnimPushBack);
 }
 
@@ -120,22 +120,25 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
 		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
-		player_Init.colliding.colliderOffset.x = player_Init.colliding.colliderOffsetGroundBasic;
+
+		player_Init.colliding.colliderOffset = player_Init.colliding.colliderOffsetGroundBasic;
+		
 
 		//Player Bools Movement
-		 ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
+		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
 		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
 		 ToMoveUp = config.child("ToMoveUp").attribute("value").as_bool();
 		 ToMoveDown = config.child("ToMoveDown").attribute("value").as_bool();
 	
-
-		
 		 MovingRight = config.child("MovingRight").attribute("value").as_bool();
 		 MovingLeft = config.child("MovingLeft").attribute("value").as_bool();
 		 MovingUp = config.child("MovingUp").attribute("value").as_bool();
 		 MovingDown = config.child("MovingDown").attribute("value").as_bool();
 
 		 lookingRight = config.child("lookingRight").attribute("value").as_bool();
+
+		 //CurrentState
+		 CurrentState =(Player_State)config.child("IntilaPState").attribute("State").as_int();
 
 		//Player landed
 		player_Init.landed = config.child("landed").attribute("value").as_bool();
@@ -287,7 +290,11 @@ bool j2Player::PreUpdate()
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
 	player.nextFrameLanded = false;
 	
-	
+	if (player.colliding.wallDown == false) {
+		player.landed = false;
+
+	}
+
 	return true;
 }
 
@@ -323,9 +330,13 @@ bool j2Player::Update(float dt)
 			player.deadCounter = player_Init.deadCounter;
 		}
 	}
-	
-	
 
+	if (Speed.y == 0) {
+
+		arealAttackUsed = false;
+	}
+	
+	
 		//Check inputs
 		PlayerMovementInputs();
 		//DebugFuncionalities
@@ -333,11 +344,9 @@ bool j2Player::Update(float dt)
 		//CheckMovement
 		CheckPlayerMovement();
 		//switchStates
-		SwithcingStates();
+		SwithcingStates(dt);
 		//players Effects
 		PlayerFX();
-		//playerCondtions attacks
-		PlayerAttack(dt);
 		//movePlayer
 		PlayerMovement(dt);
 		
@@ -381,21 +390,15 @@ bool j2Player::Update(float dt)
 	//AnimationsConditions
 
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
+	
 
 	if (lookingRight) {
 		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(playTex, player.playerPos.x- PivotAdjustment, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
-
-	player.colliding.wallFront = false;
-	player.colliding.wallBack = false;
-	player.colliding.wallDown = false;
-	player.colliding.wallTop = false;
-
-	player.landed = false;
 
 	return true;
 
@@ -407,6 +410,11 @@ bool j2Player::PostUpdate()
 	// We reset the colliders collisions
 	
 
+	player.colliding.wallFront = false;
+	player.colliding.wallBack = false;
+	player.colliding.wallDown = false;
+	player.colliding.wallTop = false;
+  
 	//	//Here we change the values of the rect position
 	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
 	//player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
@@ -442,9 +450,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			//Conditions to know if the collider that we collided with is in Front of the player
 			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
-				&& c2->rect.y + 8< player.playerHitbox->rect.y + player.playerHitbox->rect.h
+				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 				&& overlay.y < overlay.y + overlay.h
-			    && player.colliding.wallTop == false)
+				&& player.colliding.wallTop == false)
 			{
 				player.colliding.wallFront = true;
 				//Before we do anything else, don't allow the collider to enter the tile
@@ -488,12 +496,14 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				&& c2->type != COLLIDER_PLATFORM)
 			{
 
-			player.playerHitbox->rect.y += overlay.h;
-			Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
+				player.playerHitbox->rect.y += overlay.h;
+				Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
 
-			player.landed = false;
-			player.colliding.wallTop = true;
+				player.landed = false;
+				player.colliding.wallTop = true;
 			}
+
+			
 		}
 		//If the collider is a killing obstacle DIE
 		if (c2->type == COLLIDER_TRAP)
@@ -542,12 +552,15 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
 	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
+	
+
+
 } 
 
 void j2Player::OnPreCollision(int d) 
 {
-	/*player.d_to_ground = d;
-	player.nextFrameLanded = true;*/
+
+
 }
 
 
@@ -566,7 +579,7 @@ void  j2Player::PlayerMovementInputs() {
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE )
 	{
 		ToMoveLeft = false;
 		
@@ -582,7 +595,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveUp = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT )
 	{
 		ToMoveUp = true;
 	}
@@ -597,6 +610,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveDown = true;
 	}
 	
+
 
 
 }
@@ -635,7 +649,7 @@ void j2Player::CheckPlayerMovement(){
 
 }
 
-void j2Player::SwithcingStates() {
+void j2Player::SwithcingStates(float dt) {
 
 	switch (CurrentState) {
 	case Player_State::IDLE:
@@ -645,12 +659,13 @@ void j2Player::SwithcingStates() {
 		CrouchingStateTo();
 		break;
 	case  Player_State::RUNNING:
-		RunningStateTo();
+		RunningStateTo(dt);
 		break;
 	case  Player_State::AIR:
 		AirStateTo();
 		break;
-	
+	case Player_State::ATTACK:
+		AttackStateTo();
 	}
 
 
@@ -659,18 +674,21 @@ void j2Player::SwithcingStates() {
 void j2Player::IdleStateTo() {
 
 	if (player.dead == false) {
+
+
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
 			CurrentState = Player_State::RUNNING;
 		}
-		else if (ToMoveUp == true) {
+		else if (ToMoveUp == true && Speed.y==0) {
 			//jump
+			FirstJump = true;
 			PlayFXJump = true;
 			Speed.y = -JumpForce;
-
-			player.landed = false;
+		//	player.landed = false;
 			CurrentState = Player_State::AIR;
+			
 		}
-		else if (ToMoveDown == true) {
+		else if (ToMoveDown == true && player.landed==true) {
 			CurrentState = Player_State::CROUCHING;
 			player.playerHitbox->rect.w = player.playerRectCrouched.w;
 			player.playerHitbox->rect.h = player.playerRectCrouched.h;
@@ -681,27 +699,31 @@ void j2Player::IdleStateTo() {
 		}
 	}
 
+
 }
 void j2Player::CrouchingStateTo() {
 
 	if (ToMoveDown == false) {
+		
 		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
 			CurrentState = Player_State::RUNNING;
-		else {
+		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && player.landed==true ) {
 			CurrentState = Player_State::IDLE;
 		}
+
 		player.playerHitbox->rect.w = player.playerRect.w;
 		player.playerHitbox->rect.h = player.playerRect.h;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 		player.colliding.colliderOffset.y = 0;
+    
 	}
-	else if (ToMoveUp == true) {
+	else if (ToMoveUp == true && ToMoveLeft==false && ToMoveRight==false) {
 		//jump
+		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-
-		player.landed = false;
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 		player.playerHitbox->rect.w = player.playerRect.w;
 		player.playerHitbox->rect.h = player.playerRect.h;
@@ -712,68 +734,122 @@ void j2Player::CrouchingStateTo() {
 
 
 }
-void j2Player::RunningStateTo() {
+void j2Player::RunningStateTo(float dt) {
 
-	if (ToMoveUp == true) {
+	if (ToMoveUp == true && ToMoveDown==false && Speed.y == 0) {
 		//jump
+
+		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-
-		player.landed = false;
-		CurrentState = Player_State::AIR;
-	}
-	else if (Speed.y!=0 && MovingDown == true) {
-
+	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}
+	else if(player.landed!=true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
+
 	else if (MovingLeft == false && MovingRight == false) {
+		
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
 			CurrentState = Player_State::IDLE;
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
+
+		CurrentState = Player_State::ATTACK;
+
+		ChargedAttackB = true;
+		if (MovingRight) {
+			Speed.x += Impulse.x*dt;
+		}
+		else if (MovingLeft) {
+			Speed.x -= Impulse.x*dt;
+
+		}
+
+	}
 }
 void j2Player::AirStateTo() {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false ) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true && player.landed == false) {
 		
+		FirstJump = false;
 		//playconditon sound
 		playeFXDoublejump = true;
 		//Reset Animation
 		jumpDouble.Reset();
+
 		//Doublejump
 		Speed.y =-JumpForce;
 		player.doubleJump = true;
 	}
 
-	if (player.landed) {		
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && player.landed==false && MovingUp) {
+
+		if (arealAttackUsed == false) {
+			AirAttackB = true;
+			Speed.y = -Impulse.y;
+			CurrentState = Player_State::ATTACK;
+			arealAttackUsed = true;
+		}
+
+	}
+
+	if (player.landed==true ) {		
 
 		//land
-		Speed.y = 0.0f;
+		FirstJump == false;
 		jump.Reset();
 		player.doubleJump = false;
 
 	
 		if (player.dead == false) {
 			
-			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true) {
+			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true  ) {
+				
 				if (ToMoveDown == false) {
 					CurrentState = Player_State::RUNNING;
 				}
-			
-			}
-			else if (ToMoveDown == true) {
-				CurrentState = Player_State::CROUCHING;
+				else {
+
+					CurrentState = Player_State::CROUCHING;
+
+				}
 			}
 			else {
 				CurrentState = Player_State::IDLE;
 			}
 		}
 	}
+	
+
 }
+
+void j2Player::AttackStateTo() {
+
+	if (Speed.x == 0 && ChargedAttackB == true) {
+	
+		ChargedAttackB = false;
+		CurrentState = Player_State::IDLE;
+		ChargedAttack.Reset();
+
+	}
+
+	if (MovingDown == true && AirAttackB == true) {
+
+		AirAttackB = false;
+		CurrentState = Player_State::AIR;
+		AirAttack.Reset();
+	}
+}
+
 
 void j2Player::PlayerMovement(float dt) {
 	
@@ -787,7 +863,7 @@ void j2Player::PlayerMovement(float dt) {
 			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
 				Speed.x -= Currentacceleration*dt;
 			}
-			else if (CurrentState != Player_State::AIR) {	
+			else if (CurrentState != Player_State::AIR ) {	
 				if (MovingRight == true && ChargedAttackB == false) {
 					Speed.x -= Currentacceleration*dt;
 
@@ -828,7 +904,7 @@ void j2Player::PlayerMovement(float dt) {
 
 			}
 
-			if ((CurrentState == Player_State::AIR || CurrentState == Player_State::RUNNING || CurrentState == Player_State::IDLE || CurrentState == Player_State::CROUCHING) && !player.landed) {
+			if (CurrentState == Player_State::AIR && !player.landed || CurrentState == Player_State::ATTACK && AirAttackB==true) {
 				//Falling
 				Speed.y += gravity*dt;
 			}
@@ -885,76 +961,6 @@ void j2Player::PlayerMovement(float dt) {
 
 }
 
-void j2Player::PlayerAttack(float dt) {
-	
-	if ((Speed.x == 0 || CurrentState!=Player_State::RUNNING) && ChargedAttackB==true) {
-		ChargedAttackB = false;
-		ChargedAttack.Reset();
-		player.colliding.colliderOffset.x = player.colliding.colliderOffsetGroundBasic;
-	}
-
-	if ((MovingDown==true || CurrentState != Player_State::AIR) && AirAttackB == true) {
-
-		AirAttackB = false;
-		AirAttack.Reset();
-	}
-
-	if (Speed.y == 0) {
-
-		arealAttackUsed = false;
-	}
-
-	/*if (BasicAttack.Finished()) {
-
-		BasicAttack.Reset();
-		BasicAttackB = false;
-	}*/
-
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && ChargedAttackB == false) {
-
-		switch (CurrentState) {
-
-		case Player_State::RUNNING:
-			
-			if (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x) {
-				
-				ChargedAttackB = true;
-				player.colliding.colliderOffset.x = player.colliding.colliderOffsetGroundSlash;
-				if (MovingRight) {
-					Speed.x +=Impulse.x*dt;
-				}
-				else if (MovingLeft) {
-					Speed.x -= Impulse.x*dt;
-
-				}
-			}
-		/*	else {
-				BasicAttackB = true;
-			}
-*/
-			break;
-		
-		case Player_State::IDLE:
-		
-			/*BasicAttackB = true;
-			
-			break;*/
-
-		case Player_State::AIR:
-			
-			if (arealAttackUsed ==false) {
-				AirAttackB = true;
-				Speed.y -= Impulse.y*dt;
-				arealAttackUsed = true;
-			}
-
-			break;
-
-
-		}
-	}
-}
-
 
 void j2Player::PlayerFX() {
 
@@ -982,17 +988,18 @@ void j2Player::PlayerFX() {
 			case Player_State::AIR:
 				AirFX();
 				break;
+
+			case Player_State::ATTACK:
+				AttackFX();
+				break;
 			}
 		}
 		else {
 
 			currentAnimation = &GodMode;
-
 		}
 	}
 	else {
-		
-
 	
 		if (PlayFXDie == true) {
 			App->audio->PlayFx(player_fx.dieSound, 0);
@@ -1006,11 +1013,9 @@ void j2Player::PlayerFX() {
 }
 
 	void j2Player::IdleFX(){
-		if(BasicAttackB==false)
+				
 	currentAnimation = &idle;
-		/*else
-			currentAnimation = &BasicAttack;*/
-
+		
 	}
 	void j2Player::CrouchingFX() {
 	
@@ -1024,12 +1029,7 @@ void j2Player::PlayerFX() {
 
 			currentAnimation = &push;
 		}
-		else if (ChargedAttackB==true) {
-
-			
-			currentAnimation = &ChargedAttack;
-
-		}
+		
 	/*	else if (BasicAttackB == true) {
 
 			currentAnimation = &BasicAttack;
@@ -1043,9 +1043,8 @@ void j2Player::PlayerFX() {
 	}
 	void j2Player::AirFX() {
 	
-		if (AirAttackB == false) {
 
-			if (MovingDown == true) {
+			if (MovingDown == true && Speed.y>0) {
 
 				currentAnimation = &fall;
 			}
@@ -1060,19 +1059,30 @@ void j2Player::PlayerFX() {
 				currentAnimation = &jumpDouble;
 			}
 
-			else {
+			else if(MovingUp==true) {
+			
 				if (PlayFXJump == true) {
 					App->audio->PlayFx(player_fx.jumpSound, 0);
 					PlayFXJump = false;
 				}
+				
 				currentAnimation = &jump;
 			}
 
+	
+	}
+
+	void j2Player::AttackFX() {
+
+		if(AirAttackB==true){
+		currentAnimation = &AirAttack;
+		}
+		else if (ChargedAttackB == true) {
+
+			currentAnimation = &ChargedAttack;
 		}
 
-		else {
-			currentAnimation = &AirAttack;
-		}
+
 	}
 
 	void j2Player::PlayerDebugF() {

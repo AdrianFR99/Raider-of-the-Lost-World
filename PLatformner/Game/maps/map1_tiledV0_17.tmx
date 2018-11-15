@@ -57667,7 +57667,7 @@
   </data>
  </layer>
  <objectgroup name="StartingAndFinishPoint">
-  <object id="1" name="StartingPoint" x="28.5" y="562.75" width="27.75" height="30.5"/>
+  <object id="1" name="StartingPoint" x="33.3617" y="577.386" width="27.75" height="30.5"/>
   <object id="3" name="FinishPoint" x="3855.33" y="540.67" width="26.6667" height="28"/>
  </objectgroup>
 </map>

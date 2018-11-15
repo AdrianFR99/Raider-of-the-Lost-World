@@ -7,6 +7,7 @@
   </app>
 	
   <renderer>
+  
     <vsync value="false"/>
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
@@ -57,12 +58,12 @@
     <playerPos  x="64" y="576" />
     <playerCrouchedWH  width="20" height="21" />
     <!--Player Speeds-->
-    <ChargedDesaceleration value="70"/>
+    <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
-    <gravity value="200.0"/>
+    <gravity value="250.0"/>
     <Currentacceleration value="250.10"/>
     <Maxspeed x="150.00" y="150.00"/>
-    <Impulse x="25.00" y="50.00"/>
+    <Impulse x="25.00" y="100.00"/>
 
     <!--Player Speeds before dt
     <Jumpforce value="5.00"/>
@@ -85,10 +86,13 @@
     <lookingRight value="false" />
 
     <!--Player Landed-->
-    <landed value="false" />
+    <landed value="true" />
     <!--Double Jump-->>
-    <doubleJump value="true"/>
+    <doubleJump value="false"/>
     <nextFrameLanded value="false" />
+   
+    <!--Player Initial State-->>
+    <IntilaPState State="IDLE"/>
 
     <!--Player Death-->>
     <dead boolDead="false" deadDelay="20" deadCounter="0" />
