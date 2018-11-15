@@ -8,14 +8,16 @@
 	<scene>
 		<switchScene value="false" />
 	</scene>
+	<collisions />
 	<player>
-		<playerPos x="28.5" y="646.75" />
+		<playerPos x="271" y="578" />
 		<landed value="false" />
-		<speeds y_speed="0" />
+		<speeds />
 		<dead value="false" deadCounter="0" />
 	</player>
-	<collisions />
+	<entities />
+	<pathfinding />
 	<renderer>
-		<camera x="0" y="673" />
+		<camera x="28" y="646" />
 	</renderer>
 </game_state>

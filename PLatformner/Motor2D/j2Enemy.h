@@ -7,7 +7,7 @@ class j2Enemy : public j2Entity
 {
 public:
 
-
+	
 	//Start
 	bool Start();
 	//Update
@@ -15,11 +15,12 @@ public:
 	//CleanUp
 	bool CleanUp();
 
-
+	//Save & Load Functions
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
 
 
 private:
-
 
 
 };

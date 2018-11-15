@@ -5,6 +5,20 @@
 #include "j2Enemy.h"
 #include "j1App.h"
 
+j2EntityManager::j2EntityManager() : j1Module()
+{
+	name.create("entities");
+}
+
+j2EntityManager::~j2EntityManager()
+{
+}
+
+bool j2EntityManager::Awake(pugi::xml_node & config)
+{
+	return true;
+}
+
 bool j2EntityManager::Start()
 {
 	CreateEntity(ENTITY_TYPE::ENEMY);

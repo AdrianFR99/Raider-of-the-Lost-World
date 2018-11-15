@@ -3,17 +3,17 @@
 
 #include "p2SString.h"
 #include "p2Point.h"
+#include "PugiXml/src/pugixml.hpp"
 
+class j2EntityManager;
 class j2Entity
 {
 public:
 
 	//Constructor
-	j2Entity() : name("Unnamed") {}
-	virtual ~j2Entity() {}
-
+	j2Entity() : name("Unnamed"),manager(NULL) {}
 	//Destructor
-	
+	virtual ~j2Entity() {}
 	//Start
 	virtual bool Start() { return true; }
 	//Update
@@ -22,18 +22,18 @@ public:
 	virtual bool CleanUp() { return true; }
 
 
-
-
-
+	//Load
+	virtual bool Load(pugi::xml_node&) { return true; }
+	//Save
+	virtual bool Save(pugi::xml_node&) const { return true; }
 
 public:
 	iPoint position;
 	p2SString name;
-	
+	bool active;
+
+private:
+	j2EntityManager* manager;
 };
-
-
-
-
 
 #endif
