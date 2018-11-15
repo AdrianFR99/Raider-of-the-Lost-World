@@ -14,6 +14,7 @@
 #include "j2Player.h"
 #include "j2Collision.h"
 #include "j1Pathfinding.h"
+#include "j2EntityManager.h"
 #include "j1App.h"
 
 // Constructor
@@ -34,6 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player = new j2Player();
 	collision = new j2Collision();
 	pathfinding = new j1PathFinding();
+	entities = new j2EntityManager();
 
 	
 	// Ordered for awake / Start / Update
@@ -46,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(collision);
 	AddModule(player);
+	AddModule(entities);
 	
 	//Pathfinding module
 	AddModule(pathfinding);

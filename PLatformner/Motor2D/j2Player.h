@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "j2Animation.h"
+#include "p2Point.h"
 
 struct Collider;
 
