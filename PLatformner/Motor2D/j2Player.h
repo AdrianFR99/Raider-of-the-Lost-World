@@ -51,7 +51,6 @@ struct Player
 		int colliderOffsetGroundSlash;
 		int collisionOffsetY;
 
-	
 
 	};
 
@@ -79,8 +78,7 @@ struct Player
 	int deadCounter;
 	int maximumDeadY_map1;
 	int maximumDeadY_map2;
-	//God Mode
-	bool godMode;
+	
 
 	//Collision Adjusters
 	int x_CollisionAdjuster;
@@ -206,7 +204,6 @@ public: //Variables
 	bool ToMoveLeft = false;
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
-	bool ToAttack = false;
 
 	//Current movemvent
 	bool MovingRight = false;
@@ -222,12 +219,14 @@ public: //Variables
 	bool playeFXDoublejump = false;
 	bool PlayFXDie = false;
 
-
 	//Attack Booleans
 	bool ChargedAttackB = false;
 	bool BasicAttackB = false;
 	bool AirAttackB = false;
 	bool arealAttackUsed = false;
+
+	//God Mode
+	bool GodModeB;
 
 	Animation* currentAnimation=nullptr;
 	Animation idle;

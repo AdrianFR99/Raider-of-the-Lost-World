@@ -57,11 +57,11 @@
     <playerRect  x="64" y="576" width="20" height="30" />
     <playerPos  x="64" y="576" />
     <playerCrouchCollider  width="20" height="21" />
-    <playerJumpCollider width="20" height="21"/>
+    <playerJumpCollider width="20" height="25"/>
     <PlayerRectRunning  width="20" height="30"/>
     <PlayerRectAttackCharged width="20" height="21"/>
-    <PlayerRectAttackAir width="20" height="30"/>
-    <playerJumpDCollider width="10" height="10"/>
+    <PlayerRectAttackAir width="20" height="25"/>
+    <playerJumpDCollider width="20" height="22"/>
     
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
@@ -117,6 +117,7 @@
     <colliderRectOffsetY value="10"/>
     <colliderOffsetGroundBasic value="15"/>
     <colliderOffsetGroundSlash value="16"/>
+    
 
     <!--Blit values-->
     <PivotAdjustment value="4"/>

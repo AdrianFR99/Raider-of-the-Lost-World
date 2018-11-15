@@ -157,7 +157,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		//iPoint
 		player_Init.colliding.colliderOffset.x = player_Init.colliding.colliderOffsetGroundBasic;
 		player_Init.colliding.colliderOffset.y = player_Init.colliding.collisionOffsetY;
-
+		
 		//Player Bools Movement
 		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
 		 ToMoveLeft = config.child("ToMoveLeft").attribute("value").as_bool();
@@ -185,7 +185,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.maximumDeadY_map2 = config.child("maximumDead_Y").attribute("map2").as_int();
 
 		//Player Godmode
-		player_Init.godMode = config.child("godMode").attribute("value").as_bool();
+		GodModeB = config.child("godMode").attribute("value").as_bool();
 	
 		NullifyPlayerColliders(player);
 
@@ -215,13 +215,42 @@ bool j2Player::Load(pugi::xml_node& data)
 	player.playerPos.x = data.child("playerPos").attribute("x").as_int();
 	player.playerPos.y = data.child("playerPos").attribute("y").as_int();
 
-	player.landed = data.child("landed").attribute("value").as_bool();
+	Speed.x= data.child("Speed").attribute("x").as_int();
+	Speed.y = data.child("Speed").attribute("y").as_int();
 
+
+	/*playerSave = data.append_child("ToMoveRight");
+	playerSave.append_attribute("value") = ToMoveRight;*/
+	//bools
+
+	ToMoveRight = data.child("ToMoveRight").attribute("value").as_bool();
+	ToMoveLeft = data.child("ToMoveLeft").attribute("value").as_bool();
+	ToMoveUp = data.child("ToMoveUp").attribute("value").as_bool();
+	ToMoveDown= data.child("ToMoveDown").attribute("value").as_bool();
+
+	MovingRight = data.child("MovingRight").attribute("value").as_bool();
+	MovingLeft = data.child("MovingLeft").attribute("value").as_bool();
+	MovingUp = data.child("MovingUp").attribute("value").as_bool();
+	MovingDown = data.child("MovingDown").attribute("value").as_bool();
+
+	ChargedAttackB = data.child("ChargedAttackB").attribute("value").as_bool();
+	BasicAttackB = data.child("BasicAttackB").attribute("value").as_bool();
+	AirAttackB = data.child("AirAttackB").attribute("value").as_bool();
+	arealAttackUsed = data.child("arealAttackUsed").attribute("value").as_bool();
+
+	player.colliding.wallTop=data.child("WallTop").attribute("value").as_bool();
+	player.colliding.wallDown = data.child("WallDown").attribute("value").as_bool();
+	player.colliding.wallFront = data.child("wallFront").attribute("value").as_bool();
+	player.colliding.wallBack = data.child("wallBack").attribute("value").as_bool();
 
 	player.dead = data.child("dead").attribute("value").as_bool();
+
+	player.landed = data.child("landed").attribute("value").as_bool();
+
+	//counters
 	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
 
-	if (player.godMode == false)
+	if (GodModeB == false)
 	{
 		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x - 1, player.playerHitbox->rect.y - 1);
@@ -238,15 +267,82 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave.append_attribute("x") = player.playerPos.x;
 	playerSave.append_attribute("y") = player.playerPos.y;
 
+	
+
+	//Speeds&&Accelerations
+	playerSave = data.append_child("Speed");
+	playerSave.append_attribute("x") = Speed.x;
+	playerSave.append_attribute("y") = Speed.y;
+
+	//counters
+	playerSave.append_attribute("deadCounter") = player.deadCounter;
+
+	//bools
+
+	playerSave = data.append_child("ToMoveRight");
+	playerSave.append_attribute("value") = ToMoveRight;
+
+	playerSave = data.append_child("ToMoveLeft");
+	playerSave.append_attribute("value") = ToMoveLeft;
+
+	playerSave = data.append_child("ToMoveUp");
+	playerSave.append_attribute("value") = ToMoveUp;
+
+	playerSave = data.append_child("ToMoveDown");
+	playerSave.append_attribute("value") = ToMoveDown;
+
+	playerSave = data.append_child("MovingRight");
+	playerSave.append_attribute("value") = MovingRight;
+
+	playerSave = data.append_child("MovingLeft");
+	playerSave.append_attribute("value") = MovingLeft;
+
+	playerSave = data.append_child("MovingUp");
+	playerSave.append_attribute("value") = MovingUp;
+
+	playerSave = data.append_child("MovingDown");
+	playerSave.append_attribute("value") = MovingDown;
+
+	playerSave = data.append_child("lookingRight");
+	playerSave.append_attribute("value") = lookingRight;
+
+	playerSave = data.append_child("FirstJump");
+	playerSave.append_attribute("value") = FirstJump;
+
+	playerSave = data.append_child("ChargedAttackB");
+	playerSave.append_attribute("value") = ChargedAttackB;
+
+	playerSave = data.append_child("BasicAttackB");
+	playerSave.append_attribute("value") = BasicAttackB;
+
+	playerSave = data.append_child("AirAttackB");
+	playerSave.append_attribute("value") = AirAttackB;
+
+	playerSave = data.append_child("arealAttackUsed");
+	playerSave.append_attribute("arealAttackUsed") = AirAttackB;
+
+	playerSave = data.append_child("GodModeB");
+	playerSave.append_attribute("GodModeB") = AirAttackB;
+
+	playerSave = data.append_child("wallFront");
+	playerSave.append_attribute("wallFront") = player.colliding.wallFront;
+
+	playerSave = data.append_child("wallDown");
+	playerSave.append_attribute("wallDown") = player.colliding.wallDown;
+
+	playerSave = data.append_child("wallTop");
+	playerSave.append_attribute("wallTop") = player.colliding.wallTop;
+
+	playerSave = data.append_child("wallBack");
+	playerSave.append_attribute("wallBack") = player.colliding.wallBack;
+
 	playerSave = data.append_child("landed");
 	playerSave.append_attribute("value") = player.landed;
 
-	playerSave = data.append_child("speeds");
-	//playerSave.append_attribute("y_speed") = player.y_speed;
-
 	playerSave = data.append_child("dead");
 	playerSave.append_attribute("value") = player.dead;
-	playerSave.append_attribute("deadCounter") = player.deadCounter;
+
+	
 
 	return true;
 }
@@ -418,7 +514,7 @@ bool j2Player::Update(float dt)
 
 
 	//Here we change the values of the rect position
-	if (player.godMode == false
+	if (GodModeB == false
 		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
 		&& player.fakeHitbox != nullptr && player.fakeHitbox->to_delete == false)
 	{
@@ -888,7 +984,7 @@ void j2Player::PlayerMovement(float dt) {
 	
 	if (player.dead == false) {
 
-		if (player.godMode == false) {
+		if (GodModeB == false) {
 
 			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false) {
 				Speed.x += Currentacceleration*dt;
@@ -969,7 +1065,7 @@ void j2Player::PlayerMovement(float dt) {
 
 		}
 
-		if (player.godMode == true)
+		if (GodModeB == true)
 		{
 			//If GodMode Activated, move around FREELY 
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
@@ -1006,7 +1102,7 @@ void j2Player::PlayerFX() {
 	
 	if (player.dead == false) {
 
-		if (player.godMode == false) {
+		if (GodModeB == false) {
 
 			switch (CurrentState) {
 			case Player_State::IDLE:
@@ -1122,9 +1218,9 @@ void j2Player::PlayerFX() {
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 
-			player.godMode = !player.godMode;
+			GodModeB = !GodModeB;
 
-			if (player.godMode == true)
+			if (GodModeB == true)
 			{
 
 				player.playerHitbox->to_delete = true;
@@ -1156,7 +1252,7 @@ bool j2Player::CreatePlayerColliders(Player &p)
 	int ret = -1;
 
 	//In case the players colliders are 
-	if (p.godMode == true)
+	if (GodModeB == true)
 	{
 		if (p.playerGodModeHitbox == nullptr)
 		{
