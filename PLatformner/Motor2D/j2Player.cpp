@@ -492,7 +492,6 @@ bool j2Player::Update(float dt)
 		SwithcingStates(dt);
 		//Switch the colliders shape depending of the state
 		ColliderShapeStates();
-
 		//players Effects
 		PlayerFX();
 		//movePlayer
@@ -848,6 +847,12 @@ void j2Player::IdleStateTo() {
 }
 void j2Player::CrouchingStateTo() {
 
+	if (player.landed != true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
+	
 	if (ToMoveDown == false) {
 		
 		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
@@ -862,14 +867,19 @@ void j2Player::CrouchingStateTo() {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}
-
+	
 
 }
 void j2Player::RunningStateTo(float dt) {
+
+	if (player.landed != true) {
+
+		CurrentState = Player_State::AIR;
+
+	}
 
 	if (ToMoveUp == true && ToMoveDown==false && Speed.y == 0) {
 		//jump
@@ -877,16 +887,11 @@ void j2Player::RunningStateTo(float dt) {
 		FirstJump = true;
 		PlayFXJump = true;
 		Speed.y = -JumpForce;
-	//	player.landed = false;
 		CurrentState = Player_State::AIR;
 
 	}
-	else if(player.landed!=true) {
-
-		CurrentState = Player_State::AIR;
-
-	}
-
+	
+	
 	else if (MovingLeft == false && MovingRight == false) {
 		
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
@@ -969,6 +974,12 @@ void j2Player::AirStateTo() {
 
 void j2Player::AttackStateTo() {
 
+	if (player.landed != true && ChargedAttackB == true) {
+
+		Speed.y += gravity;
+
+	}
+
 	if (Speed.x == 0 && ChargedAttackB == true) {
 	
 		ChargedAttackB = false;
@@ -977,7 +988,7 @@ void j2Player::AttackStateTo() {
 
 	}
 
-	if (MovingDown == true && AirAttackB == true) {
+	else if (MovingDown == true && AirAttackB == true) {
 
 		AirAttackB = false;
 		CurrentState = Player_State::AIR;
