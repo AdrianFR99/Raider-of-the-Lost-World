@@ -1,10 +1,10 @@
 #include "j2EntityManager.h"
-//#include "j2Entity.h"
 
 #include "j2Player.h"
 #include "j2Enemy.h"
 #include "j1App.h"
 #include "Brofiler/Brofiler.h"
+
 
 j2EntityManager::j2EntityManager() : j1Module()
 {
@@ -23,30 +23,92 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 bool j2EntityManager::Start()
 {
 	CreateEntity(ENTITY_TYPE::ENEMY);
-	return true;
+
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->Start();
+		if (!ret)
+			break;
+	}
+	return ret;
 }
 
 bool j2EntityManager::PreUpdate()
 {
 	BROFILER_CATEGORY("Entities_PreUpdate", Profiler::Color::GhostWhite);
-	return true;
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->PreUpdate();
+		if (!ret)
+			break;
+	}
+	return ret;
 }
 
 bool j2EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("Entities_Update", Profiler::Color::Gainsboro);
-	return true;
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->Update(dt);
+		if (!ret)
+			break;
+	}
+	return ret;
 }
 
 bool j2EntityManager::PostUpdate()
 {
 	BROFILER_CATEGORY("Entities_PostUpdate", Profiler::Color::Azure);
-	return true;
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->PostUpdate();
+		if (!ret)
+			break;
+	}
+	return ret;
 }
 
 bool j2EntityManager::CleanUp()
 {
-	return true;
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->CleanUp();
+		if (!ret)
+			break;
+	}
+	return ret;
+}
+
+bool j2EntityManager::Load(pugi::xml_node &save_game_manager)
+{
+	bool ret = true;
+	
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->Load(save_game_manager);
+		if (!ret)
+			break;
+	}
+	return ret;
+}
+
+bool j2EntityManager::Save(pugi::xml_node &save_game_manager)
+{
+	bool ret = true;
+
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->Load(save_game_manager);
+		if (!ret)
+			break;
+	}
+	return ret;
 }
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)

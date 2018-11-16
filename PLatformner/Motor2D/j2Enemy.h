@@ -2,7 +2,7 @@
 #define __ENEMY_H__
 
 #include "j2Entity.h"
-
+#include "PugiXml/src/pugixml.hpp"
 class j2Enemy : public j2Entity 
 {
 public:
@@ -10,8 +10,14 @@ public:
 	
 	//Start
 	bool Start();
-	//Update
+
+	//PreUpdate		Called each loop iteration
+	bool PreUpdate();
+	//Update		Called each loop iteration
 	bool Update(float dt);
+	//PostUpdate	Called each loop iteration
+	bool PostUpdate();
+
 	//CleanUp
 	bool CleanUp();
 

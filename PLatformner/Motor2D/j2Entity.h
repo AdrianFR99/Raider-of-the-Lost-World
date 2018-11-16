@@ -16,8 +16,12 @@ public:
 	virtual ~j2Entity() {}
 	//Start
 	virtual bool Start() { return true; }
-	//Update
+	//PreUpdate		Called each loop iteration
+	virtual bool PreUpdate() { return true; }
+	//Update		Called each loop iteration
 	virtual bool Update(float dt) { return true; }
+	//PostUpdate	Called each loop iteration
+	virtual bool PostUpdate() {return true;}
 	//CleanUp
 	virtual bool CleanUp() { return true; }
 

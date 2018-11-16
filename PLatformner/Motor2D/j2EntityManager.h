@@ -3,7 +3,7 @@
 
 #include "j1Module.h"
 #include "p2List.h"
-
+#include "PugiXml\src\pugixml.hpp"
 
 class j2Entity;
 
@@ -36,6 +36,11 @@ public:
 	bool PostUpdate();
 
 	bool CleanUp();
+
+	//Load
+	bool Load(pugi::xml_node&);
+	//Save
+	bool Save(pugi::xml_node&);
 
 
 public:
