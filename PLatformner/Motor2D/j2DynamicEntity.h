@@ -9,10 +9,10 @@ struct Collider;
 
 class j2DynamicEntity:public j2Entity
 {
+public:
+	j2DynamicEntity() : j2Entity() {}
 
-	j2DynamicEntity(): j2Entity()  {}
-
-	virtual ~j2DynamicEntity(){}
+	virtual ~j2DynamicEntity() {}
 
 	//Start
 	virtual	bool Start()override { return true; }

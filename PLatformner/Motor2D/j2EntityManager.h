@@ -8,6 +8,17 @@
 class j2Entity;
 enum class ENTITY_TYPE;
 
+struct FlyingEnemyVars
+{
+	//Basic Entity variables
+	//iPoint position;
+	bool active;
+	p2SString texturePath;
+
+	//Dynamic Entity variables
+
+};
+
 class j2EntityManager : public j1Module
 {
 public:

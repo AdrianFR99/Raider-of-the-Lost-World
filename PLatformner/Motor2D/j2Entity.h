@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "SDL_image/include/SDL_image.h"
 
 class j2EntityManager;
 struct Collider;
@@ -48,6 +49,8 @@ public:
 	iPoint position;
 	p2SString name;
 	bool active;
+
+	SDL_Texture* entityTex = nullptr;
 	
 	p2List<Collider*> colliders;
 

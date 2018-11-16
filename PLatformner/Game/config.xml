@@ -52,89 +52,97 @@
     <folder>maps/</folder>
   </map>
 
-  <player>
-    <!--Player Rect and pos-->
-    <playerRect  x="64" y="576" width="20" height="30" />
-    <playerPos  x="64" y="576" />
-    <playerCrouchCollider  width="20" height="21" />
-    <playerJumpCollider width="20" height="25"/>
-    <PlayerRectRunning  width="20" height="30"/>
-    <PlayerRectAttackCharged width="20" height="21"/>
-    <PlayerRectAttackAir width="20" height="25"/>
-    <playerJumpDCollider width="20" height="22"/>
+  
+    <player>
+      <!--Player Rect and pos-->
+      <playerRect  x="64" y="576" width="20" height="30" />
+      <playerPos  x="64" y="576" />
+      <playerCrouchCollider  width="20" height="21" />
+      <playerJumpCollider width="20" height="25"/>
+      <PlayerRectRunning  width="20" height="30"/>
+      <PlayerRectAttackCharged width="20" height="21"/>
+      <PlayerRectAttackAir width="20" height="25"/>
+      <playerJumpDCollider width="20" height="22"/>
    
-    <!--PlayerRectAttacks-->
-    <ChargedAttackCollider Adjustmentx="35" Adjustmenty="20" w="15" h="21"/>
-    <AirAttackCollider Adjustmentx="25" Adjustmenty="7" w="23" h="27"/>
-    <BasicAttackCollider Adjustmentx="25" Adjustmenty="10" w="23" h="30"/>
+      <!--PlayerRectAttacks-->
+      <ChargedAttackCollider Adjustmentx="35" Adjustmenty="20" w="15" h="21"/>
+      <AirAttackCollider Adjustmentx="25" Adjustmenty="7" w="23" h="27"/>
+      <BasicAttackCollider Adjustmentx="25" Adjustmenty="10" w="23" h="30"/>
 
-    <!--Player Speeds-->
-    <ChargedDesaceleration value="150"/>
-    <Jumpforce value="225.00"/>
-    <gravity value="250.0"/>
-    <Currentacceleration value="250.10"/>
-    <Maxspeed x="150.00" y="150.00"/>
-    <Impulse x="25.00" y="100.00"/>
+      <!--Player Speeds-->
+      <ChargedDesaceleration value="150"/>
+      <Jumpforce value="225.00"/>
+      <gravity value="250.0"/>
+      <Currentacceleration value="250.10"/>
+      <Maxspeed x="150.00" y="150.00"/>
+      <Impulse x="25.00" y="100.00"/>
 
-    <!--Player Speeds before dt
-    <Jumpforce value="5.00"/>
-    <gravity value="0.1"/>
-    <Currentacceleration value="0.10"/>
-    <Maxspeed x="3.00" y="3.00"/>
-    ChargedDesaceleration value="0.04"-->
+      <!--Player Speeds before dt
+      <Jumpforce value="5.00"/>
+      <gravity value="0.1"/>
+      <Currentacceleration value="0.10"/>
+      <Maxspeed x="3.00" y="3.00"/>
+      ChargedDesaceleration value="0.04"-->
 
-    <!--Player Bools Movement-->
-    <ToMoveRight value="false" />
-    <ToMoveLeft value="false" />
-    <ToMoveUp value="false" />
-    <ToMoveDown value="false" />
+      <!--Player Bools Movement-->
+      <ToMoveRight value="false" />
+      <ToMoveLeft value="false" />
+      <ToMoveUp value="false" />
+      <ToMoveDown value="false" />
 
-    <MovingRight value="false" />
-    <MovingLeft value="false" />
-    <MovingUp value="false" />
-    <MovingDown value="false" />
+      <MovingRight value="false" />
+      <MovingLeft value="false" />
+      <MovingUp value="false" />
+      <MovingDown value="false" />
 
-    <lookingRight value="false" />
+      <lookingRight value="false" />
 
-    <!--Player Landed-->
-    <landed value="true" />
-    <!--Double Jump-->>
-    <doubleJump value="false"/>
-    <nextFrameLanded value="false" />
+      <!--Player Landed-->
+      <landed value="true" />
+      <!--Double Jump-->>
+      <doubleJump value="false"/>
+      <nextFrameLanded value="false" />
 
-    <!--Player Initial State-->
-    <IntilaPState State="IDLE"/>
+      <!--Player Initial State-->
+      <IntilaPState State="IDLE"/>
 
-    <!--Player Death-->
-    <dead boolDead="false" deadDelay="20" deadCounter="0" />
+      <!--Player Death-->
+      <dead boolDead="false" deadDelay="20" deadCounter="0" />
 
-    <maximumDead_Y map1="800" map2="1200"/>
-    <!--God Mode-->>
-    <godMode value="false"/>
+      <maximumDead_Y map1="800" map2="1200"/>
+      <!--God Mode-->>
+      <godMode value="false"/>
 
-    <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
-    <!--Collision adjusters-->
+      <collisionControlcolliding wallFront="false" wallBack="false" wallTop="false" wallDown ="false"/>
+      <!--Collision adjusters-->
 
-    <xCollisionAdjuster x="3"/>
-    <vCollision_controller y="8"/>
-    <folder>textures/adventure.png</folder>
+      <xCollisionAdjuster x="3"/>
+      <vCollision_controller y="8"/>
+      <folder>textures/adventure.png</folder>
 
-    <colliderRectOffsetY value="10"/>
-    <colliderOffsetGroundBasic value="15"/>
-    <colliderOffsetGroundSlash value="16"/>
-    <colliderOffsetGodMode valueX="15" valueY="10"/>
+      <colliderRectOffsetY value="10"/>
+      <colliderOffsetGroundBasic value="15"/>
+      <colliderOffsetGroundSlash value="16"/>
+      <colliderOffsetGodMode valueX="15" valueY="10"/>
 
-    <!--Blit values-->
-    <PivotAdjustment value="4"/>
+      <!--Blit values-->
+      <PivotAdjustment value="4"/>
    
 
-    <FX>
-      <!--Player Sound effects-->
-      <jump path="audio/FX/Jump5.wav"/>
-      <jumpDouble path="audio/FX/DoubleJump.wav"/>
-      <run path="audio/FX/Run5.wav"/>
-      <die path="audio/FX/Hurt.wav"/>
-    </FX>
+      <FX>
+        <!--Player Sound effects-->
+        <jump path="audio/FX/Jump5.wav"/>
+        <jumpDouble path="audio/FX/DoubleJump.wav"/>
+        <run path="audio/FX/Run5.wav"/>
+        <die path="audio/FX/Hurt.wav"/>
+      </FX>
 
-  </player>
+    </player>
+  
+  <entities>
+    <flyingEnemy>
+      <Texture path="textures/bat.png"/>
+    </flyingEnemy>
+  </entities>
+
 </config>
