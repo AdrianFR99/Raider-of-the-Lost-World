@@ -122,3 +122,16 @@ j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 		entities.add(ret);
 	return ret;
 }
+
+void j2EntityManager::DestroyEntity(j2Entity* entity_to_destroy)
+{
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		if (item->data == entity_to_destroy)
+		{
+			entities.del(item);
+			RELEASE(item->data);
+			break;
+		}
+	}
+}
