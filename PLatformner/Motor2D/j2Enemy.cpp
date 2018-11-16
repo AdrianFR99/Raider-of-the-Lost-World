@@ -10,7 +10,7 @@ bool j2Enemy::PreUpdate()
 	return true;
 }
 
-bool j2Enemy::Update(float dt)
+bool j2Enemy::Update(float dt,bool do_logic)
 {
 	return true;
 }

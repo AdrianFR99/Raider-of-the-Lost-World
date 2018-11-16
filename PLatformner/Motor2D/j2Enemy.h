@@ -14,7 +14,7 @@ public:
 	//PreUpdate		Called each loop iteration
 	bool PreUpdate();
 	//Update		Called each loop iteration
-	bool Update(float dt);
+	bool Update(float dt,bool do_logic);
 	//PostUpdate	Called each loop iteration
 	bool PostUpdate();
 

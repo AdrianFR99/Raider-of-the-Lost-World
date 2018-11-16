@@ -51,12 +51,24 @@ bool j2EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("Entities_Update", Profiler::Color::Gainsboro);
 	bool ret = true;
+	
+	accumulated_time += dt;
+	if (accumulated_time >= update_ms_cycle)
+		do_logic = true;
+	
+	
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->Update(dt);
+		ret = item->data->Update(dt,do_logic);
 		if (!ret)
 			break;
 	}
+
+	if (do_logic == true) {
+		accumulated_time = 0.0f;
+		do_logic = false;
+	}
+
 	return ret;
 }
 

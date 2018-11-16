@@ -29,7 +29,7 @@ public:
 	//PreUpdate		Called each loop iteration
 	virtual bool PreUpdate() { return true; }
 	//Update		Called each loop iteration
-	virtual bool Update(float dt) { return true; }
+	virtual bool Update(float dt, bool do_logic) { return true; }
 	//PostUpdate	Called each loop iteration
 	virtual bool PostUpdate() {return true;}
 	//CleanUp

@@ -26,6 +26,7 @@ public:
 	bool PreUpdate();
 	//Update
 	bool Update(float dt);
+
 	//PostUpdate
 	bool PostUpdate();
 
