@@ -131,6 +131,12 @@ bool j2Player::Awake(pugi::xml_node& config)
 		 player_Init.colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
 		 player_Init.colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
+		 //playerAttackCOlliders
+		 player_Init.ChargedAttackCollider.w = config.child("ChargedAttackCollider").attribute("w").as_int();
+		 player_Init.ChargedAttackCollider.h = config.child("ChargedAttackCollider").attribute("h").as_int();
+
+
+
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
 		Currentacceleration = config.child("Currentacceleration").attribute("value").as_float();
@@ -371,6 +377,9 @@ bool j2Player::Start()
 	player.PlayerRectAttackCharged = player_Init.PlayerRectAttackCharged;
 	player.PlayerRectAttackAir = player_Init.PlayerRectAttackAir;
 	player.playerRectDJump = player_Init.playerRectDJump;
+
+	player.ChargedAttackCollider= player_Init.ChargedAttackCollider;
+
 
 	//Player Speeds
 
@@ -1052,8 +1061,8 @@ void j2Player::PlayerAttacks(float dt) {
 		Guard.Start();
 	}
 
-	
-	
+
+	CollidersAttacks();
 	CurrentState = Player_State::ATTACK;
 }
 
@@ -1464,6 +1473,35 @@ void j2Player::ChargedAttackColliderShape() {
 		player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectAttackAir.h) + player.colliding.collisionOffsetY;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
+	}
+
+}
+
+void j2Player::CollidersAttacks() {
+
+	if (player.PlayerAttackCollider == nullptr) {
+	
+		if (ChargedAttackB == true) {
+
+			if (MovingRight) {
+		//player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
+				
+			}
+			else if (MovingLeft) {
+
+
+			}
+
+		}
+		else if (AirAttackB == true) {
+
+		}
+
+		else if (BasicAttackB == true) {
+
+
+
+		}
 	}
 
 }

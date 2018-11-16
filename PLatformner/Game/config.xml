@@ -62,6 +62,11 @@
     <PlayerRectAttackCharged width="20" height="21"/>
     <PlayerRectAttackAir width="20" height="25"/>
     <playerJumpDCollider width="20" height="22"/>
+   
+    <!--PlayerRectAttacks-->
+    
+    <ChargedAttackCollider Adjustmentx="" Adjustmenty="" w="10" h="10"/>
+    
     
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>

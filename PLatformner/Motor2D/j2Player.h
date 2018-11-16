@@ -56,7 +56,7 @@ struct Player
 
 	};
 
-	
+	//playerCollisionsRects
 	SDL_Rect playerRect;
 	SDL_Rect playerRectCrouched;
 	SDL_Rect playerRectJump;
@@ -64,7 +64,10 @@ struct Player
 	SDL_Rect PlayerRectRunning;
 	SDL_Rect PlayerRectAttackCharged;
 	SDL_Rect PlayerRectAttackAir;
-  
+
+  //PlayerAttacksCollisionsREcts
+	SDL_Rect ChargedAttackCollider;
+
 	//fPoint playerPos;
 	iPoint playerPos;
 	SDL_Rect fakeCollisionRect;
@@ -88,6 +91,7 @@ struct Player
 
 
 	Collider* playerHitbox;
+	Collider* PlayerAttackCollider;
 	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
 	collisionControl colliding;
@@ -150,12 +154,11 @@ public:
 		void AttackFX();
 
 	void PlayerMovement(float dt);
-
 	void PlayerAttacks(float dt);
 
 
 
-	//Functions apply the Animations and sounds for every state
+	
 
 	void NullifyPlayerColliders(Player &p);
 	void ColliderShapeStates();
@@ -165,13 +168,15 @@ public:
 		void RunnigColliderShape();
 		void ChargedAttackColliderShape();
 
+		void CollidersAttacks();
 
 	bool CreatePlayerColliders(Player &p);
 	
 	
+	
 
 
-	//Chek Conditions to change from the current state to others
+	
 	
 
 	void PlayerDebugF();
