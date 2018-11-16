@@ -15,14 +15,14 @@
  <tileset firstgid="1520" name="NavigationLayer" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="NavigationLayerTex.png" width="16" height="16"/>
  </tileset>
- <imagelayer name="Sky(back)" offsetx="1" offsety="42">
-  <image source="skyLine.png" width="5000" height="422"/>
+ <imagelayer name="Sky(back)" offsetx="-9.1212" offsety="162.182">
+  <image source="skyLine.png" width="7699" height="650"/>
   <properties>
    <property name="Movement" type="int" value="0"/>
    <property name="Speed" type="float" value="0"/>
   </properties>
  </imagelayer>
- <imagelayer name="Clouds(MiddleUp)">
+ <imagelayer name="Clouds(MiddleUp)" offsetx="380" offsety="78">
   <image source="UpClouds.png" width="5000" height="199"/>
   <properties>
    <property name="Movement" type="int" value="1"/>
