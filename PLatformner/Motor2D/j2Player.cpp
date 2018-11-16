@@ -117,7 +117,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.PlayerRectRunning.x = player_Init.playerRect.x;
 		player_Init.PlayerRectRunning.y = player_Init.playerPos.y;
 
-		//playerAttackingRects(colliders)
+		//playerStateOfActionRects(colliders)
 		player_Init.PlayerRectAttackCharged.w = config.child("PlayerRectAttackCharged").attribute("width").as_int();
 		player_Init.PlayerRectAttackCharged.h = config.child("PlayerRectAttackCharged").attribute("height").as_int();
 		player_Init.PlayerRectAttackCharged.x = player_Init.playerRect.x;
@@ -131,14 +131,22 @@ bool j2Player::Awake(pugi::xml_node& config)
 		 player_Init.colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
 		 player_Init.colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
-		 //playerAttackCOlliders
+		 //playerAttackColliders
 		 player_Init.ChargedAttackCollider.x=  config.child("ChargedAttackCollider").attribute("Adjustmentx").as_int();
 		 player_Init.ChargedAttackCollider.y =  config.child("ChargedAttackCollider").attribute("Adjustmenty").as_int();
 		 player_Init.ChargedAttackCollider.w = config.child("ChargedAttackCollider").attribute("w").as_int();
 		 player_Init.ChargedAttackCollider.h = config.child("ChargedAttackCollider").attribute("h").as_int();
 
+		 player_Init.AirAttackCollider.x= config.child("AirAttackCollider").attribute("Adjustmentx").as_int();
+		 player_Init.AirAttackCollider.y = config.child("AirAttackCollider").attribute("Adjustmenty").as_int();
+		 player_Init.AirAttackCollider.w = config.child("AirAttackCollider").attribute("w").as_int();
+		 player_Init.AirAttackCollider.h = config.child("AirAttackCollider").attribute("h").as_int();
 
-
+		 player_Init.BasicAttackCollider.x = config.child("BasicAttackCollider").attribute("Adjustmentx").as_int();
+		 player_Init.BasicAttackCollider.y = config.child("BasicAttackCollider").attribute("Adjustmenty").as_int();
+		 player_Init.BasicAttackCollider.w = config.child("BasicAttackCollider").attribute("w").as_int();
+		 player_Init.BasicAttackCollider.h = config.child("BasicAttackCollider").attribute("h").as_int();
+		
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
 		Currentacceleration = config.child("Currentacceleration").attribute("value").as_float();
@@ -381,8 +389,8 @@ bool j2Player::Start()
 	player.playerRectDJump = player_Init.playerRectDJump;
 
 	player.ChargedAttackCollider= player_Init.ChargedAttackCollider;
-
-
+	player.AirAttackCollider = player_Init.AirAttackCollider;
+	player.BasicAttackCollider = player_Init.BasicAttackCollider;
 	//Player Speeds
 
 	player.doubleJump = player_Init.doubleJump;
@@ -544,9 +552,24 @@ bool j2Player::Update(float dt)
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1 , player.playerHitbox->rect.y -1);
 		
 		if (player.PlayerAttackCollider != nullptr) {
-			if(ChargedAttackB==true)
-			player.PlayerAttackCollider->SetPos(player.playerPos.x + player.ChargedAttackCollider.x, player.playerPos.y + player.ChargedAttackCollider.y);
+
+			if (ChargedAttackB == true) {
 			
+				SetColliderRespectPivot(lookingRight,player.PlayerAttackCollider,player.playerPos, player.ChargedAttackCollider.x, player.ChargedAttackCollider.y);
+		
+			} 
+			else if (AirAttackB==true) {
+
+				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, player.playerPos, player.AirAttackCollider.x, player.AirAttackCollider.y);
+
+			}
+			else if (BasicAttackB==true) {
+
+				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, player.playerPos, player.BasicAttackCollider.x, player.BasicAttackCollider.y);
+
+
+			}
+	
 		}
 	}
 	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
@@ -1060,15 +1083,19 @@ void j2Player::PlayerAttacks(float dt) {
 
 		}
 
+		player.DeleteColliderChargeA = true;
 	}
 	 else if (AirAttackB == true) {
 		Speed.y = -Impulse.y;
 		arealAttackUsed = true;
+
+		player.DeleteColliderAirA = true;
 	}
 
 	 else if (BasicAttackB==true) {
 
 		Guard.Start();
+		player.DeleteColliderBasicA = true;
 	}
 
 
@@ -1489,41 +1516,61 @@ void j2Player::ChargedAttackColliderShape() {
 
 void j2Player::CollidersAttacks() {
 
+
 	if (player.PlayerAttackCollider == nullptr) {
-	
+
 		if (ChargedAttackB == true) {
 
-			if (MovingRight) {
-		player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
-		
-			}
-			else if (MovingLeft) {
-
-
-			}
-
+			player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
 		}
+
+
 		else if (AirAttackB == true) {
+
+			player.PlayerAttackCollider = App->collision->AddCollider(player.AirAttackCollider, COLLIDER_PLAYERATTACK, this);
 
 		}
 
 		else if (BasicAttackB == true) {
 
-
+			player.PlayerAttackCollider = App->collision->AddCollider(player.BasicAttackCollider, COLLIDER_PLAYERATTACK, this);
 
 		}
 	}
-	
 }
+	
+
 void j2Player::CheckCollidersAttacks() {
 	
 	if (player.PlayerAttackCollider != nullptr) {
 	
-		if (ChargedAttackB == false) {
+		if (ChargedAttackB == false && player.DeleteColliderChargeA==true) {
 			player.PlayerAttackCollider->to_delete = true;
 			player.PlayerAttackCollider = nullptr;
+			player.DeleteColliderChargeA = false;
+		}
+		else if (AirAttackB==false && player.DeleteColliderAirA==true) {
+		
+			player.PlayerAttackCollider->to_delete = true;
+			player.PlayerAttackCollider = nullptr;
+			player.DeleteColliderAirA = false;
 
 		}
+		else if (BasicAttackB==false && player.DeleteColliderBasicA == true) {
 
+			player.PlayerAttackCollider->to_delete = true;
+			player.PlayerAttackCollider = nullptr;
+			player.DeleteColliderBasicA = false;
+
+		}
 	}
+}
+
+void j2Player::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx,int Displacementy) {
+
+	if(lookingTo) 
+		col->SetPos(CharacterPos.x + Displacementx, CharacterPos.y + Displacementy);
+	else
+		col->SetPos(CharacterPos.x, CharacterPos.y + Displacementy);
+
 }

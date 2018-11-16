@@ -67,6 +67,8 @@ struct Player
 
   //PlayerAttacksCollisionsREcts
 	SDL_Rect ChargedAttackCollider;
+	SDL_Rect AirAttackCollider;
+	SDL_Rect BasicAttackCollider;
 
 	//fPoint playerPos;
 	iPoint playerPos;
@@ -74,11 +76,15 @@ struct Player
 
 	
 	bool doubleJump;
-	//Landed statuses
 	bool landed;
 	bool nextFrameLanded;
-	//Death vars
 	bool dead;
+
+	bool DeleteColliderChargeA;
+	bool DeleteColliderAirA;
+	bool DeleteColliderBasicA;
+
+
 	int deadDelay;
 	int deadCounter;
 	int maximumDeadY_map1;
@@ -170,6 +176,7 @@ public:
 
 		void CollidersAttacks();
 		void CheckCollidersAttacks();
+		void SetColliderRespectPivot(bool lookingTo, Collider*col,iPoint CharacterPos ,int Displacementx, int Displacementy);
 
 	bool CreatePlayerColliders(Player &p);
 	

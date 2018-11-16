@@ -10,14 +10,33 @@
 	</scene>
 	<collisions />
 	<player>
-		<playerPos x="271" y="578" />
-		<landed value="false" />
-		<speeds />
-		<dead value="false" deadCounter="0" />
+		<playerPos x="53" y="568" />
+		<Speed x="0" y="0" deadCounter="0" />
+		<ToMoveRight value="false" />
+		<ToMoveLeft value="false" />
+		<ToMoveUp value="false" />
+		<ToMoveDown value="false" />
+		<MovingRight value="false" />
+		<MovingLeft value="false" />
+		<MovingUp value="false" />
+		<MovingDown value="false" />
+		<lookingRight value="true" />
+		<FirstJump value="false" />
+		<ChargedAttackB value="false" />
+		<BasicAttackB value="false" />
+		<AirAttackB value="false" />
+		<arealAttackUsed arealAttackUsed="false" />
+		<GodModeB GodModeB="false" />
+		<wallFront wallFront="false" />
+		<wallDown wallDown="false" />
+		<wallTop wallTop="false" />
+		<wallBack wallBack="false" />
+		<landed value="true" />
+		<dead value="false" />
 	</player>
 	<entities />
 	<pathfinding />
 	<renderer>
-		<camera x="28" y="646" />
+		<camera x="0" y="625" />
 	</renderer>
 </game_state>

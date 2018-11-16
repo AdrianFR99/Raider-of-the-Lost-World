@@ -64,10 +64,10 @@
     <playerJumpDCollider width="20" height="22"/>
    
     <!--PlayerRectAttacks-->
-    
     <ChargedAttackCollider Adjustmentx="35" Adjustmenty="20" w="15" h="21"/>
-    
-    
+    <AirAttackCollider Adjustmentx="25" Adjustmenty="7" w="23" h="27"/>
+    <BasicAttackCollider Adjustmentx="25" Adjustmenty="10" w="23" h="30"/>
+
     <!--Player Speeds-->
     <ChargedDesaceleration value="150"/>
     <Jumpforce value="225.00"/>
