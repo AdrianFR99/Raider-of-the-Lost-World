@@ -15,7 +15,7 @@
  <tileset firstgid="1520" name="NavigationLayer" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="NavigationLayerTex.png" width="16" height="16"/>
  </tileset>
- <imagelayer name="Sky(back)" offsetx="1" offsety="37">
+ <imagelayer name="Sky(back)" offsetx="1" offsety="42">
   <image source="skyLine.png" width="8640" height="729"/>
   <properties>
    <property name="Movement" type="int" value="0"/>
