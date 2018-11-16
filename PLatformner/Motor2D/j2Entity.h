@@ -2,10 +2,20 @@
 #define __J2ENTITIES_H__
 
 #include "p2SString.h"
+#include "p2List.h"
 #include "p2Point.h"
 #include "PugiXml/src/pugixml.hpp"
 
 class j2EntityManager;
+struct Collider;
+
+enum class ENTITY_TYPE
+{
+	ENEMY,
+	PLAYER,
+	UNKNOWN
+};
+
 class j2Entity
 {
 public:
@@ -31,10 +41,15 @@ public:
 	//Save
 	virtual bool Save(pugi::xml_node&) const { return true; }
 
+	//OnCollision Callback
+	virtual void OnCollision(Collider* c1, Collider* c2) {}
+
 public:
 	iPoint position;
 	p2SString name;
 	bool active;
+	
+	p2List<Collider*> colliders;
 
 private:
 	j2EntityManager* manager;

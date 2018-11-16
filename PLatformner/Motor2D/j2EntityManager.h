@@ -6,13 +6,7 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j2Entity;
-
-enum class ENTITY_TYPE
-{
-	ENEMY,
-	PLAYER,
-	UNKNOWN
-};
+enum class ENTITY_TYPE;
 
 class j2EntityManager : public j1Module
 {
@@ -41,6 +35,9 @@ public:
 	bool Load(pugi::xml_node&);
 	//Save
 	bool Save(pugi::xml_node&);
+
+	//OnCollision Callback
+	void OnCollision(Collider* c1, Collider* c2);
 
 
 public:

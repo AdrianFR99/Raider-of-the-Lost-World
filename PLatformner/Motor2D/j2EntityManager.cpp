@@ -111,6 +111,21 @@ bool j2EntityManager::Save(pugi::xml_node &save_game_manager)
 	return ret;
 }
 
+void j2EntityManager::OnCollision(Collider * c1, Collider * c2)
+{
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		//Some Entities manage/have more than 1 collider
+		for (p2List_item<Collider*>* entity_collider = item->data->colliders.start; entity_collider; entity_collider = entity_collider->next)
+		{
+			if (c1 == entity_collider->data)
+			{
+				item->data->OnCollision(c1, c2);
+			}
+		}
+	}
+}
+
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 {
 	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(2), "code needs update");
