@@ -48,8 +48,12 @@ j2Player::j2Player()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Chargedattack");//Charged attack
 	ChargedAttack.LoadPushBack(AnimPushBack);
 
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//Charged attack
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//basic attack
 	BasicAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack2");//basic2 attack
+	BasicAttack2.LoadPushBack(AnimPushBack);
+
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Airattack");//AirAttack
 	AirAttack.LoadPushBack(AnimPushBack);
@@ -200,8 +204,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
-		LastFrameBasicAttack.x= config.child("LastFrameBasicAttack").attribute("x").as_uint();
-		LastFrameBasicAttack.y = config.child("LastFrameBasicAttack").attribute("y").as_uint();
+		
 
 
 	}
@@ -809,7 +812,7 @@ void j2Player::SwithcingStates(float dt) {
 		IdleStateTo(dt);
 		break;
 	case Player_State::CROUCHING:
-		CrouchingStateTo();
+		CrouchingStateTo(dt);
 		break;
 	case  Player_State::RUNNING:
 		RunningStateTo(dt);
@@ -859,7 +862,7 @@ void j2Player::IdleStateTo(float dt) {
 	}
 
 }
-void j2Player::CrouchingStateTo() {
+void j2Player::CrouchingStateTo(float dt) {
 
 	if (player.landed != true) {
 
@@ -884,7 +887,14 @@ void j2Player::CrouchingStateTo() {
 		CurrentState = Player_State::AIR;
 
 	}
-	
+	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+
+
+		BasicAttackB = true;
+		PlayerAttacks(dt);
+
+
+	}
 
 }
 void j2Player::RunningStateTo(float dt) {
@@ -905,7 +915,6 @@ void j2Player::RunningStateTo(float dt) {
 
 	}
 	
-	
 	else if (MovingLeft == false && MovingRight == false) {
 		
 		if (ToMoveRight == false && ToMoveLeft == false || ToMoveRight == true && ToMoveLeft == true) {
@@ -916,6 +925,14 @@ void j2Player::RunningStateTo(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
 
 		ChargedAttackB = true;
+		PlayerAttacks(dt);
+
+
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x != Maxspeed.x || Speed.x != -Maxspeed.x)) {
+
+
+		BasicAttackB = true;
 		PlayerAttacks(dt);
 
 
@@ -979,7 +996,8 @@ void j2Player::AirStateTo(float dt) {
 
 void j2Player::AttackStateTo(float dt) {
 
-	if (Guard.Read() > 1000 && BasicAttackB == true) {
+
+	if (Guard.Read() >=1200 && BasicAttackB == true ) {
 
 		BasicAttack.Reset();
 		BasicAttackB = false;
@@ -1012,8 +1030,7 @@ void j2Player::AttackStateTo(float dt) {
 
 void j2Player::PlayerAttacks(float dt) {
 
-	
-	
+
 	if (ChargedAttackB == true) {
 		
 		if (MovingRight) {
@@ -1035,8 +1052,8 @@ void j2Player::PlayerAttacks(float dt) {
 		Guard.Start();
 	}
 
-
-
+	
+	
 	CurrentState = Player_State::ATTACK;
 }
 
@@ -1046,27 +1063,27 @@ void j2Player::PlayerMovement(float dt) {
 
 		if (GodModeB == false) {
 
-			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false) {
+			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false && BasicAttackB==false) {
 				Speed.x += Currentacceleration*dt;
 			}
-			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false) {
+			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false && BasicAttackB == false) {
 				Speed.x -= Currentacceleration*dt;
 			}
 			else if (CurrentState != Player_State::AIR ) {	
-				if (MovingRight == true && ChargedAttackB == false) {
+				if (MovingRight == true && ChargedAttackB == false && BasicAttackB == false) {
 					Speed.x -= Currentacceleration*dt;
 
 					if (Speed.x < 0.0f)
 						Speed.x = 0.0f;
 				}
-				else if (MovingLeft == true && ChargedAttackB == false) {
+				else if (MovingLeft == true && ChargedAttackB == false && BasicAttackB == false) {
 					Speed.x += Currentacceleration*dt;
 
 					if (Speed.x > 0.0f)
 						Speed.x = 0.0f;
 				}
 				
-				if (ChargedAttackB == true) {
+				if (ChargedAttackB == true || BasicAttackB == true) {
 
 					if (MovingRight) {
 						
@@ -1273,7 +1290,7 @@ void j2Player::PlayerFX() {
 		else if (BasicAttackB == true) {
 			currentAnimation = &BasicAttack;
 		}
-
+	
 	}
 
 	void j2Player::PlayerDebugF() {

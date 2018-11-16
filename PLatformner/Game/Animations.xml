@@ -86,6 +86,15 @@
         <PushBack x="275" y="351"  w="55" h="39"/>
         <PushBack x="330" y="351" w="55" h="39"/>
       </Basicattack>
+
+        <Basicattack2 loop="false" speed="8.00">
+          <PushBack x="0" y="390" w="55" h="39"/>
+          <PushBack x="55" y="390" w="55" h="39"/>
+          <PushBack x="110" y="390"  w="55" h="39"/>
+          <PushBack x="165" y="390"  w="55" h="39"/>
+          
+        </Basicattack2>
+        
       
       <die loop="false" speed="8.00">
         <PushBack x="0" y="936" w="55" h="39"/>

@@ -136,7 +136,7 @@ public:
 
 	void SwithcingStates(float dt);
 		void IdleStateTo(float dt);
-		void CrouchingStateTo();
+		void CrouchingStateTo(float dt);
 		void RunningStateTo(float dt);
 		void AirStateTo(float dt);
 		void AttackStateTo(float dt);
@@ -227,9 +227,10 @@ public: //Variables
 	//Attack Booleans
 	bool ChargedAttackB = false;
 	bool BasicAttackB = false;
+	//bool BasicAttackB2 = false;
 	bool AirAttackB = false;
 	bool arealAttackUsed = false;
-	bool guardReady = false;
+	//bool combo = false;
 	//God Mode
 	bool GodModeB;
 
@@ -246,14 +247,15 @@ public: //Variables
 	Animation push;
 	Animation ChargedAttack;
 	Animation BasicAttack;
+	Animation BasicAttack2;
 	Animation AirAttack;
 
-	SDL_Rect LastFrameBasicAttack;
 
 	Player_State CurrentState;
 
 
 	j1Timer Guard;
+	
 
 private:
 	p2SString	folder;
