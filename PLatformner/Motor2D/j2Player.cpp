@@ -132,6 +132,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 		 player_Init.colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
 		 //playerAttackCOlliders
+		 player_Init.ChargedAttackCollider.x=  config.child("ChargedAttackCollider").attribute("Adjustmentx").as_int();
+		 player_Init.ChargedAttackCollider.y =  config.child("ChargedAttackCollider").attribute("Adjustmenty").as_int();
 		 player_Init.ChargedAttackCollider.w = config.child("ChargedAttackCollider").attribute("w").as_int();
 		 player_Init.ChargedAttackCollider.h = config.child("ChargedAttackCollider").attribute("h").as_int();
 
@@ -507,6 +509,8 @@ bool j2Player::Update(float dt)
 		SwithcingStates(dt);
 		//Switch the colliders shape depending of the state
 		ColliderShapeStates();
+		//Delete AttackCOlliders if its needed
+		CheckCollidersAttacks();
 		//players Effects
 		PlayerFX();
 		//movePlayer
@@ -538,6 +542,12 @@ bool j2Player::Update(float dt)
 	{
 		player.playerHitbox->SetPos(player.playerPos.x + player.colliding.colliderOffset.x, player.playerPos.y + player.colliding.colliderOffset.y);
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1 , player.playerHitbox->rect.y -1);
+		
+		if (player.PlayerAttackCollider != nullptr) {
+			if(ChargedAttackB==true)
+			player.PlayerAttackCollider->SetPos(player.playerPos.x + player.ChargedAttackCollider.x, player.playerPos.y + player.ChargedAttackCollider.y);
+			
+		}
 	}
 	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
 		player.playerGodModeHitbox->SetPos(player.playerPos.x + player_Init.colliding.colliderOffsetGodMode.x, player.playerPos.y+ player_Init.colliding.colliderOffsetGodMode.y);
@@ -1484,8 +1494,8 @@ void j2Player::CollidersAttacks() {
 		if (ChargedAttackB == true) {
 
 			if (MovingRight) {
-		//player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
-				
+		player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
+		
 			}
 			else if (MovingLeft) {
 
@@ -1503,5 +1513,17 @@ void j2Player::CollidersAttacks() {
 
 		}
 	}
+	
+}
+void j2Player::CheckCollidersAttacks() {
+	
+	if (player.PlayerAttackCollider != nullptr) {
+	
+		if (ChargedAttackB == false) {
+			player.PlayerAttackCollider->to_delete = true;
+			player.PlayerAttackCollider = nullptr;
 
+		}
+
+	}
 }

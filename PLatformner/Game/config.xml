@@ -65,7 +65,7 @@
    
     <!--PlayerRectAttacks-->
     
-    <ChargedAttackCollider Adjustmentx="" Adjustmenty="" w="10" h="10"/>
+    <ChargedAttackCollider Adjustmentx="35" Adjustmenty="20" w="15" h="21"/>
     
     
     <!--Player Speeds-->

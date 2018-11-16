@@ -169,6 +169,7 @@ public:
 		void ChargedAttackColliderShape();
 
 		void CollidersAttacks();
+		void CheckCollidersAttacks();
 
 	bool CreatePlayerColliders(Player &p);
 	

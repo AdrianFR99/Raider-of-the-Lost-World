@@ -255,7 +255,9 @@ void j2Collision::DebugDraw()
 		case COLLIDER_GODMODE: //green
 			App->render->DrawQuad(colliders[i]->rect, 125, 255, 125, alpha);
 			break;
-		
+		case COLLIDER_PLAYERATTACK:
+			App->render->DrawQuad(colliders[i]->rect, 163, 73, 164, alpha);
+			break;
 
 		}
 	}
