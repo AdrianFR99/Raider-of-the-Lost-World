@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "j2Animation.h"
 #include "p2Point.h"
+#include "j1Timer.h"
 
 struct Collider;
 
@@ -15,7 +16,7 @@ enum class Player_State {
 	CROUCHING,
 	SLIDING,
 	ATTACK,
-	GOD,
+	
 };
 
 struct FXPlayer {
@@ -134,11 +135,11 @@ public:
 	void CheckPlayerMovement();
 
 	void SwithcingStates(float dt);
-		void IdleStateTo();
+		void IdleStateTo(float dt);
 		void CrouchingStateTo();
 		void RunningStateTo(float dt);
-		void AirStateTo();
-		void AttackStateTo();
+		void AirStateTo(float dt);
+		void AttackStateTo(float dt);
 
 
 	void PlayerFX();
@@ -150,6 +151,7 @@ public:
 
 	void PlayerMovement(float dt);
 
+	void PlayerAttacks(float dt);
 
 
 
@@ -227,7 +229,7 @@ public: //Variables
 	bool BasicAttackB = false;
 	bool AirAttackB = false;
 	bool arealAttackUsed = false;
-
+	bool guardReady = false;
 	//God Mode
 	bool GodModeB;
 
@@ -246,8 +248,12 @@ public: //Variables
 	Animation BasicAttack;
 	Animation AirAttack;
 
+	SDL_Rect LastFrameBasicAttack;
 
 	Player_State CurrentState;
+
+
+	j1Timer Guard;
 
 private:
 	p2SString	folder;

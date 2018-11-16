@@ -198,8 +198,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
 
 
-		//Blit Values
+		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
+		LastFrameBasicAttack.x= config.child("LastFrameBasicAttack").attribute("x").as_uint();
+		LastFrameBasicAttack.y = config.child("LastFrameBasicAttack").attribute("y").as_uint();
+
 
 	}
 	else 
@@ -803,7 +806,7 @@ void j2Player::SwithcingStates(float dt) {
 	switch (CurrentState) {
 
 	case Player_State::IDLE:
-		IdleStateTo();
+		IdleStateTo(dt);
 		break;
 	case Player_State::CROUCHING:
 		CrouchingStateTo();
@@ -812,16 +815,16 @@ void j2Player::SwithcingStates(float dt) {
 		RunningStateTo(dt);
 		break;
 	case  Player_State::AIR:
-		AirStateTo();
+		AirStateTo(dt);
 		break;
 	case Player_State::ATTACK:
-		AttackStateTo();
+		AttackStateTo(dt);
 	}
 
 
 }
 
-void j2Player::IdleStateTo() {
+void j2Player::IdleStateTo(float dt) {
 
 	if (player.dead == false) {
 
@@ -842,8 +845,18 @@ void j2Player::IdleStateTo() {
 			CurrentState = Player_State::CROUCHING;
 			
 		}
-	}
 
+		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN ) {
+			
+			
+			BasicAttackB = true;
+			PlayerAttacks(dt);
+			
+				
+
+		}
+
+	}
 
 }
 void j2Player::CrouchingStateTo() {
@@ -902,20 +915,13 @@ void j2Player::RunningStateTo(float dt) {
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
 
-		CurrentState = Player_State::ATTACK;
-
 		ChargedAttackB = true;
-		if (MovingRight) {
-			Speed.x += Impulse.x*dt;
-		}
-		else if (MovingLeft) {
-			Speed.x -= Impulse.x*dt;
+		PlayerAttacks(dt);
 
-		}
 
 	}
 }
-void j2Player::AirStateTo() {
+void j2Player::AirStateTo(float dt) {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
@@ -936,9 +942,7 @@ void j2Player::AirStateTo() {
 
 		if (arealAttackUsed == false) {
 			AirAttackB = true;
-			Speed.y = -Impulse.y;
-			CurrentState = Player_State::ATTACK;
-			arealAttackUsed = true;
+			PlayerAttacks(dt);
 		}
 
 	}
@@ -973,7 +977,15 @@ void j2Player::AirStateTo() {
 
 }
 
-void j2Player::AttackStateTo() {
+void j2Player::AttackStateTo(float dt) {
+
+	if (Guard.Read() > 1000 && BasicAttackB == true) {
+
+		BasicAttack.Reset();
+		BasicAttackB = false;
+		CurrentState = Player_State::IDLE;
+
+	}
 
 	if (player.landed != true && ChargedAttackB == true) {
 
@@ -988,15 +1000,45 @@ void j2Player::AttackStateTo() {
 		ChargedAttack.Reset();
 
 	}
-
 	else if (MovingDown == true && AirAttackB == true) {
 
 		AirAttackB = false;
 		CurrentState = Player_State::AIR;
 		AirAttack.Reset();
 	}
+	
+
 }
 
+void j2Player::PlayerAttacks(float dt) {
+
+	
+	
+	if (ChargedAttackB == true) {
+		
+		if (MovingRight) {
+			Speed.x += Impulse.x*dt;
+		}
+		else if (MovingLeft) {
+			Speed.x -= Impulse.x*dt;
+
+		}
+
+	}
+	 else if (AirAttackB == true) {
+		Speed.y = -Impulse.y;
+		arealAttackUsed = true;
+	}
+
+	 else if (BasicAttackB==true) {
+
+		Guard.Start();
+	}
+
+
+
+	CurrentState = Player_State::ATTACK;
+}
 
 void j2Player::PlayerMovement(float dt) {
 	
@@ -1221,14 +1263,16 @@ void j2Player::PlayerFX() {
 
 	void j2Player::AttackFX() {
 
-		if(AirAttackB==true){
-		currentAnimation = &AirAttack;
+		if (AirAttackB == true) {
+			currentAnimation = &AirAttack;
 		}
 		else if (ChargedAttackB == true) {
 
 			currentAnimation = &ChargedAttack;
 		}
-
+		else if (BasicAttackB == true) {
+			currentAnimation = &BasicAttack;
+		}
 
 	}
 
