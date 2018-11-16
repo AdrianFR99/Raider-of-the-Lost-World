@@ -15,7 +15,7 @@ enum class Player_State {
 	CROUCHING,
 	SLIDING,
 	ATTACK,
-
+	GOD,
 };
 
 struct FXPlayer {
@@ -46,11 +46,12 @@ struct Player
 		int y_CollisionController;
 
 		iPoint colliderOffset;
+		iPoint colliderOffsetGodMode;
 
 		int colliderOffsetGroundBasic;
 		int colliderOffsetGroundSlash;
 		int collisionOffsetY;
-
+	
 
 	};
 
@@ -177,6 +178,8 @@ public:
 public: //Variables
 
 	Player player;
+
+	//As a security Aux player
 	Player player_Init;
 	FXPlayer player_fx;
 	SDL_Texture* playTex = nullptr;

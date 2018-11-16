@@ -107,8 +107,6 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.playerRectDJump.x = player_Init.playerRect.x;
 		player_Init.playerRectDJump.y = player_Init.playerPos.y;
 
-
-		
 		//PlayerRunningRect(collider)
 		player_Init.PlayerRectRunning.w = config.child("PlayerRectRunning").attribute("width").as_int();
 		player_Init.PlayerRectRunning.h = config.child("PlayerRectRunning").attribute("height").as_int();
@@ -126,6 +124,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_Init.PlayerRectAttackAir.x = player_Init.playerRect.x;
 		player_Init.PlayerRectAttackAir.y = player_Init.playerPos.y;
 
+		 player_Init.colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
+		 player_Init.colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
@@ -525,7 +525,7 @@ bool j2Player::Update(float dt)
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1 , player.playerHitbox->rect.y -1);
 	}
 	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-		player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.playerGodModeHitbox->SetPos(player.playerPos.x + player_Init.colliding.colliderOffsetGodMode.x, player.playerPos.y+ player_Init.colliding.colliderOffsetGodMode.y);
 
 	//App->collision->Update(dt);
 	//App->collision->Update(dt);
@@ -801,6 +801,7 @@ void j2Player::CheckPlayerMovement(){
 void j2Player::SwithcingStates(float dt) {
 
 	switch (CurrentState) {
+
 	case Player_State::IDLE:
 		IdleStateTo();
 		break;
@@ -1297,7 +1298,7 @@ bool j2Player::CreatePlayerColliders(Player &p)
 
 void j2Player::ColliderShapeStates() {
 
-
+	if (player.playerHitbox != nullptr) {
 
 		switch (CurrentState) {
 		case Player_State::IDLE:
@@ -1322,13 +1323,13 @@ void j2Player::ColliderShapeStates() {
 
 		case Player_State::ATTACK:
 
-			
-				ChargedAttackColliderShape();
+
+			ChargedAttackColliderShape();
 
 			break;
 		}
 
-
+	}
 }
 
 void j2Player::IdleColliderShape() {

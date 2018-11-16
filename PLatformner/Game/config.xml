@@ -117,7 +117,7 @@
     <colliderRectOffsetY value="10"/>
     <colliderOffsetGroundBasic value="15"/>
     <colliderOffsetGroundSlash value="16"/>
-    
+    <colliderOffsetGodMode valueX="15" valueY="10"/>
 
     <!--Blit values-->
     <PivotAdjustment value="4"/>
