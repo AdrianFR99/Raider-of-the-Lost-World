@@ -93,7 +93,7 @@ bool j1App::Awake()
 	bool ret = false;
 		
 	config = LoadConfig(config_file);
-
+	
 	if(config.empty() == false)
 	{
 		// self-config

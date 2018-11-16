@@ -50,7 +50,7 @@
     <ClCompile Include="j2EntityManager.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="j2Enemy.cpp">
+    <ClCompile Include="j2FlyingEnemy.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,11 +128,11 @@
     <ClInclude Include="j2Entity.h">
       <Filter>Desenvolupament  ========\Modules\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="j2Enemy.h">
-      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="j2DynamicEntity.h">
       <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j2FlyingEnemy.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

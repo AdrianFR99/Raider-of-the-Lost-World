@@ -1,7 +1,7 @@
 #include "j2EntityManager.h"
 
 #include "j2Player.h"
-#include "j2Enemy.h"
+#include "j2FlyingEnemy.h"
 #include "j1App.h"
 #include "Brofiler/Brofiler.h"
 
@@ -17,13 +17,12 @@ j2EntityManager::~j2EntityManager()
 
 bool j2EntityManager::Awake(pugi::xml_node & config)
 {
+	CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
 	return true;
 }
 
 bool j2EntityManager::Start()
 {
-	CreateEntity(ENTITY_TYPE::ENEMY);
-
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
@@ -143,7 +142,7 @@ j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(2), "code needs update");
 	j2Entity* ret = nullptr;
 	switch (type) {
-		case ENTITY_TYPE::ENEMY : ret = new j2Enemy(); break;
+		case ENTITY_TYPE::FLYING_ENEMY : ret = new j2FlyingEnemy(); break;
 	}
 	if (ret != nullptr)
 		entities.add(ret);

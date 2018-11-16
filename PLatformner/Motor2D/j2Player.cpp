@@ -80,7 +80,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-
+	
 	if (config != NULL)
 	{
 		//We load everything player_Init so Player will always have a reference for the initial conditions
@@ -220,8 +220,6 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
-		
-
 
 	}
 	else 

@@ -120,7 +120,7 @@
       <vCollision_controller y="8"/>
       <folder>textures/adventure.png</folder>
 
-      <colliderRectOffsetY value="10"/>
+      <colliderRectOffsetY value="9"/>
       <colliderOffsetGroundBasic value="15"/>
       <colliderOffsetGroundSlash value="16"/>
       <colliderOffsetGodMode valueX="15" valueY="10"/>
