@@ -14,7 +14,6 @@ enum class Player_State {
 	RUNNING,
 	AIR,
 	CROUCHING,
-	SLIDING,
 	ATTACK,
 	
 };
@@ -57,7 +56,7 @@ struct Player
 	};
 
 	//playerCollisionsRects
-	SDL_Rect playerRect;
+	SDL_Rect playerRect;//DynamiucEntityREct
 	SDL_Rect playerRectCrouched;
 	SDL_Rect playerRectJump;
 	SDL_Rect playerRectDJump;
@@ -71,14 +70,14 @@ struct Player
 	SDL_Rect BasicAttackCollider;
 
 	//fPoint playerPos;
-	iPoint playerPos;
+	iPoint playerPos;//entityPos
 	SDL_Rect fakeCollisionRect;
 
 	
 	bool doubleJump;
-	bool landed;
+	bool landed; //dynamicEntity
 	bool nextFrameLanded;
-	bool dead;
+	bool dead; //dynamicEntity
 
 	bool DeleteColliderChargeA;
 	bool DeleteColliderAirA;
@@ -96,7 +95,7 @@ struct Player
 	int y_CollisionController;
 
 
-	Collider* playerHitbox;
+	Collider* playerHitbox; 
 	Collider* PlayerAttackCollider;
 	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
@@ -142,9 +141,9 @@ public:
 
 	//Main functions
 	void PlayerMovementInputs();
-	void CheckPlayerMovement();
+	void CheckPlayerMovement();//DynamicEntity
 
-	void SwithcingStates(float dt);
+	void SwithcingStates(float dt);//DynamicEntity
 		void IdleStateTo(float dt);
 		void CrouchingStateTo(float dt);
 		void RunningStateTo(float dt);
@@ -152,15 +151,15 @@ public:
 		void AttackStateTo(float dt);
 
 
-	void PlayerFX();
+	void PlayerFX();//DynamicEntity
 		void IdleFX();
 		void CrouchingFX();
 		void RunningFX();
 		void AirFX();
 		void AttackFX();
 
-	void PlayerMovement(float dt);
-	void PlayerAttacks(float dt);
+	void PlayerMovement(float dt);//DynamicEntity
+	void PlayerAttacks(float dt);//DynamicEntity
 
 
 
@@ -176,7 +175,7 @@ public:
 
 		void CollidersAttacks();
 		void CheckCollidersAttacks();
-		void SetColliderRespectPivot(bool lookingTo, Collider*col,iPoint CharacterPos ,int Displacementx, int Displacementy);
+		void SetColliderRespectPivot(bool lookingTo, Collider*col,iPoint CharacterPos ,int Displacementx, int Displacementy);//DynamicEntity
 
 	bool CreatePlayerColliders(Player &p);
 	

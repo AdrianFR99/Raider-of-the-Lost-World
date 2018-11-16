@@ -131,6 +131,9 @@
     <ClInclude Include="j2Enemy.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="j2DynamicEntity.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

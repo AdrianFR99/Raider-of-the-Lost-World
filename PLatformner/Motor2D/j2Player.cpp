@@ -1047,7 +1047,7 @@ void j2Player::AttackStateTo(float dt) {
 
 	}
 
-	if (player.landed != true && ChargedAttackB == true) {
+	if (player.landed != true && (ChargedAttackB == true || BasicAttackB==true)) {
 
 		Speed.y += gravity;
 
