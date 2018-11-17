@@ -296,7 +296,6 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave.append_attribute("y") = position.y;
 
 	
-
 	//Speeds&&Accelerations
 	playerSave = data.append_child("Speed");
 	playerSave.append_attribute("x") = Speed.x;

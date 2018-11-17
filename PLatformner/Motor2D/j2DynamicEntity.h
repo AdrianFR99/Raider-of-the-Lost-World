@@ -31,7 +31,7 @@ public:
 
 
 	//Load
-	virtual bool Load(pugi::xml_node&)override { return true; }
+	virtual bool Load(pugi::xml_node&) override { return true; }
 	//Save
 	virtual bool Save(pugi::xml_node&) const override { return true; }
 	//OnCollision Callback
