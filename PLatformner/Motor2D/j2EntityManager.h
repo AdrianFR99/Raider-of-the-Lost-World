@@ -6,18 +6,10 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j2Entity;
+class j2Player;
 enum class ENTITY_TYPE;
 
-struct FlyingEnemyVars
-{
-	//Basic Entity variables
-	//iPoint position;
-	bool active;
-	p2SString texturePath;
 
-	//Dynamic Entity variables
-
-};
 
 class j2EntityManager : public j1Module
 {
@@ -57,6 +49,11 @@ public:
 	j2Entity* CreateEntity(ENTITY_TYPE type);
 	void DestroyEntity(j2Entity* entity_to_destroy);
 
+	p2List<j2Entity*> entities;
+	j2Player*player;
+	
+
+
 private:
 
 	bool	do_logic;
@@ -64,7 +61,7 @@ private:
 	float	update_ms_cycle;
 	float   accumulated_time;
 
-	p2List<j2Entity*> entities;
+	
 };
 
 

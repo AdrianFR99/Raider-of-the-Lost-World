@@ -6,6 +6,7 @@
 #include "j1Module.h"
 
 struct Player;
+class j2Entity;
 
 enum COLLIDER_TYPE
 {
@@ -27,6 +28,7 @@ enum COLLIDER_TYPE
 
 struct Collider
 {
+
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
@@ -44,9 +46,10 @@ struct Collider
 		rect.y = y;
 	}
 
+
 	bool CheckCollision(const SDL_Rect& r) const;
-	bool PreCheckCollision(const Player& p) const;
-	int ret_d_to_ground(const Player& p) const;
+	/*bool PreCheckCollision(const Player& p) const;*/
+	/*int ret_d_to_ground(const Player& p) const;*/
 };
 
 class j2Collision : public j1Module
@@ -64,6 +67,8 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void DebugDraw();
 
+public:
+	p2List<Collider> collidersList;
 	
 private:
 

@@ -7,13 +7,16 @@
 struct Collider;
 
 
-class j2DynamicEntity:public j2Entity
+class j2DynamicEntity : public j2Entity
 {
 public:
 	j2DynamicEntity() : j2Entity(type) {}
 
-	virtual ~j2DynamicEntity() {}
+	virtual ~j2DynamicEntity(){}
 
+
+
+	virtual bool Awake(pugi::xml_node& config) { return true; }
 	//Start
 	virtual	bool Start()override { return true; }
 	//PreUpdate		Called each loop iteration
@@ -27,7 +30,7 @@ public:
 
 
 	//Load
-	virtual bool Load(pugi::xml_node&)override { return true; }
+	virtual bool Load(pugi::xml_node&) override { return true; }
 	//Save
 	virtual bool Save(pugi::xml_node&) const override { return true; }
 	//OnCollision Callback
@@ -39,9 +42,11 @@ public:
 
 public:
 //vars
+
+public:
+
 	struct collisionControl
 	{
-
 		bool wallFront;
 		bool wallBack;
 		bool wallTop;
@@ -62,7 +67,7 @@ public:
 
 //playerCollisionsRects
 	//Rects
-	SDL_Rect EntityRect;
+	
 	//fpoints
 	fPoint Speed;
 	fPoint Maxspeed;
@@ -70,7 +75,6 @@ public:
 	//bools
 	bool landed;
 	bool dead;
-	
 	
 
 	bool ToMoveRight = false;
@@ -88,12 +92,14 @@ public:
 	//Blit ints
 	int PivotAdjustment;
 
+	
 
 public:
 	//funcitons
 	
-	void CheckEntityMovement(){}
-	virtual void SwithcingStates(float dt){}
+
+	virtual void CheckEntityMovement(){}
+	virtual void SwithcingStates(float dt){} //readablefunction
 	virtual void EntityFX(){}
 	virtual void EntityMovement(float dt){}
 	virtual void EntityAttacks(float dt){}

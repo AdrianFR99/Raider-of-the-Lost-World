@@ -11,6 +11,7 @@
 #include "j2Collision.h"
 #include "j1Pathfinding.h"
 #include "j1Scene.h"
+#include "j2EntityManager.h"
 #include "Brofiler/Brofiler.h"
 
 
@@ -148,7 +149,7 @@ bool j1Scene::PreUpdate()
 	{
 		p = App->render->ScreenToWorld(x, y, App->map->data);
 		//App->audio->PlayFx(App->audio->bat_sound, 0, 5);
-		App->audio->PlayEnvironmentalFx(App->audio->bat_sound,5,p,App->player->player.playerPos);
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound,5,p, App->entities->entities.start->data->position);
 		/*App->audio->PlayFx(App->audio->bat_sound, 0, 5);
 		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, p, App->player->player.playerPos);*/
 		//App->audio->PlayFx(App->audio->bat_sound,-1,5);
@@ -218,7 +219,7 @@ bool j1Scene::Update(float dt)
 
 		App->win->SetTitle(title.GetString());*/
 
-		if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data)) {
+		if (App->entities->entities.start->data->position.x >= App->map->SetLimitPoint(App->map->data)) {
 			switchTheMaps();
 		}
 
@@ -240,7 +241,7 @@ bool j1Scene::Update(float dt)
 
 			/*App->win->SetTitle(title.GetString());*/
 
-			if (App->player->player.playerPos.x >= App->map->SetLimitPoint(App->map->data2)) {
+			if (App->entities->entities.start->data->position.x >= App->map->SetLimitPoint(App->map->data2)) {
 				switchTheMaps();
 			}
 
@@ -298,7 +299,7 @@ void j1Scene::switchTheMaps()
 	if (CurrentMap2 == false) {
 		
 		App->collision->CleanUp();
-		App->player->NullifyPlayerColliders(App->player->player);
+		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
 		App->map->CreateColliders(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
@@ -317,7 +318,7 @@ void j1Scene::switchTheMaps()
 	else {
 
 		App->collision->CleanUp();
-		App->player->NullifyPlayerColliders(App->player->player);
+		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
 		App->map->CreateColliders(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;

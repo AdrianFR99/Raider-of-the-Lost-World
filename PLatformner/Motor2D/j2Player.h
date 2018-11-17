@@ -1,7 +1,9 @@
 #ifndef __j2Player_H__
 #define __j2Player_H__
 
-#include "j1Module.h"
+
+#include "j2DynamicEntity.h"
+#include "j2Collision.h"
 #include "j2Animation.h"
 #include "p2Point.h"
 #include "j1Timer.h"
@@ -24,39 +26,22 @@ struct FXPlayer {
 	uint doublejumpSound;
 	uint runningSound;
 	uint dieSound;
+	uint SlashSwordSound;
+	uint StrongSlashSound;
 
 	//Sound FX Paths
 	p2SString jumpSoundPath;
 	p2SString runningSoundPath;
 	p2SString doublejumpSoundPath;
 	p2SString dieSoundPath;
+	p2SString SlashSoundPath;
+	p2SString StrongSlashPath;
 };
 
 struct Player
 {
-	struct collisionControl 
-	{
-		bool wallFront;
-		bool wallBack;
-		bool wallTop;
-		bool wallDown;
-		
-		//Collision Adjusters
-		int x_CollisionAdjuster;
-		int y_CollisionController;
-
-		iPoint colliderOffset;
-		iPoint colliderOffsetGodMode;
-
-		int colliderOffsetGroundBasic;
-		int colliderOffsetGroundSlash;
-		int collisionOffsetY;
-	
-
-	};
-
 	//playerCollisionsRects
-	SDL_Rect playerRect;//DynamiucEntityREct
+	//SDL_Rect playerRect;//DynamiucEntityREct
 	SDL_Rect playerRectCrouched;
 	SDL_Rect playerRectJump;
 	SDL_Rect playerRectDJump;
@@ -70,14 +55,14 @@ struct Player
 	SDL_Rect BasicAttackCollider;
 
 	//fPoint playerPos;
-	iPoint playerPos;//entityPos
+	//iPoint playerPos;//entityPos
 	SDL_Rect fakeCollisionRect;
 
 	
 	bool doubleJump;
-	bool landed; //dynamicEntity
+	//bool landed; //dynamicEntity
 	bool nextFrameLanded;
-	bool dead; //dynamicEntity
+	//bool dead; //dynamicEntity
 
 	bool DeleteColliderChargeA;
 	bool DeleteColliderAirA;
@@ -99,11 +84,10 @@ struct Player
 	Collider* PlayerAttackCollider;
 	Collider* fakeHitbox;
 	Collider* playerGodModeHitbox;
-	collisionControl colliding;
-
+	
 };
 
-class j2Player : public j1Module
+class j2Player : public j2DynamicEntity
 {
 public:
 
@@ -114,36 +98,38 @@ public:
 	virtual ~j2Player();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node& config);
+	bool Awake(pugi::xml_node& config) override;
 
 	// Called before the first frame
-	bool Start();
+	bool Start() override;
 
 	// Called each loop iteration
-	bool PreUpdate();
+	bool PreUpdate() override;
 
 	// Called each loop iteration
-	bool Update(float dt);
+	bool Update(float dt,bool do_logic)override;
 	
 	// Called each loop iteration
-	bool PostUpdate();
+	bool PostUpdate()override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
 
-	void OnCollision(Collider*, Collider*);
-	void OnPreCollision(int d);
+	void OnCollision(Collider*c1, Collider*c2) override;
+	
 
 	//Main functions
 	void PlayerMovementInputs();
-	void CheckPlayerMovement();//DynamicEntity
+	//void CheckPlayerMovement();//DynamicEntity
+	void CheckEntityMovement()override;
 
-	void SwithcingStates(float dt);//DynamicEntity
+	void SwithcingStates(float dt) override;//DynamicEntity
+
 		void IdleStateTo(float dt);
 		void CrouchingStateTo(float dt);
 		void RunningStateTo(float dt);
@@ -151,21 +137,22 @@ public:
 		void AttackStateTo(float dt);
 
 
-	void PlayerFX();//DynamicEntity
+	void EntityFX() override;//DynamicEntity
 		void IdleFX();
 		void CrouchingFX();
 		void RunningFX();
 		void AirFX();
 		void AttackFX();
 
-	void PlayerMovement(float dt);//DynamicEntity
-	void PlayerAttacks(float dt);//DynamicEntity
+	void EntityMovement(float dt) override;//DynamicEntity
+	void EntityAttacks(float dt)override;//DynamicEntity
 
 
 
 	
 
 	void NullifyPlayerColliders(Player &p);
+
 	void ColliderShapeStates();
 		void IdleColliderShape();
 		void CrouchColliderShape();
@@ -175,16 +162,9 @@ public:
 
 		void CollidersAttacks();
 		void CheckCollidersAttacks();
-		void SetColliderRespectPivot(bool lookingTo, Collider*col,iPoint CharacterPos ,int Displacementx, int Displacementy);//DynamicEntity
 
 	bool CreatePlayerColliders(Player &p);
-	
-	
-	
-
-
-	
-	
+	void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy)override;
 
 	void PlayerDebugF();
 
@@ -196,7 +176,7 @@ public: //Variables
 	//As a security Aux player
 	Player player_Init;
 	FXPlayer player_fx;
-	SDL_Texture* playTex = nullptr;
+	
 
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
@@ -204,8 +184,7 @@ public: //Variables
 	SDL_Rect AnimationRect;
 
 	//new structure for player
-	fPoint Speed;
-	fPoint Maxspeed;
+
 	fPoint Impulse;
 
 	float JumpForce;
@@ -216,25 +195,14 @@ public: //Variables
 	//Vars for Blitig
 	int PivotAdjustment;
 
-	//Inputs pressed
-	bool ToMoveRight=false;
-	bool ToMoveLeft = false;
-	bool ToMoveUp = false;
-	bool ToMoveDown = false;
-
-	//Current movemvent
-	bool MovingRight = false;
-	bool MovingLeft = false;
-	bool MovingUp = false;
-	bool MovingDown = false;
-
-	bool lookingRight=false;
 	
 	bool FirstJump = false;
 	//FX Sound Booleans
 	bool PlayFXJump=false;
 	bool playeFXDoublejump = false;
 	bool PlayFXDie = false;
+	bool PlayFxSwordSwing = false;
+	bool playFxSwordStrongSwing = false;
 
 	//Attack Booleans
 	bool ChargedAttackB = false;
@@ -268,6 +236,7 @@ public: //Variables
 
 	j1Timer Guard;
 	
+	collisionControl colliding;
 
 private:
 	p2SString	folder;

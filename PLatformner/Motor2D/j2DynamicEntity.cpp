@@ -1,6 +1,14 @@
-#include "j2DynamicEntity.h"
-#include "j2Collision.h"
 
+//#include "j2DynamicEntity.h"
+//#include "j2Collision.h"
+//
+//j2DynamicEntity::j2DynamicEntity() : j2Entity(type) {
+//
+//
+//
+//
+//}
+//
 
 //void j2DynamicEntity::CheckEntityMovement() {
 //

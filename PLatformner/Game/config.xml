@@ -53,16 +53,18 @@
   </map>
 
   
-    <player>
-      <!--Player Rect and pos-->
-      <playerRect  x="64" y="576" width="20" height="30" />
-      <playerPos  x="64" y="576" />
-      <playerCrouchCollider  width="20" height="21" />
-      <playerJumpCollider width="20" height="25"/>
-      <PlayerRectRunning  width="20" height="30"/>
-      <PlayerRectAttackCharged width="20" height="21"/>
-      <PlayerRectAttackAir width="20" height="25"/>
-      <playerJumpDCollider width="20" height="22"/>
+<entities>
+  <player>
+    <!--Player Rect and pos-->
+    <playerRect  x="64" y="576" width="20" height="30" />
+    <playerPos  x="64" y="576" />
+    <playerCrouchCollider  width="20" height="21" />
+    <playerJumpCollider width="20" height="25"/>
+    <PlayerRectRunning  width="20" height="30"/>
+    <PlayerRectAttackCharged width="20" height="21"/>
+    <PlayerRectAttackAir width="20" height="25"/>
+    <playerJumpDCollider width="20" height="22"/>
+
    
       <!--PlayerRectAttacks-->
       <ChargedAttackCollider Adjustmentx="35" Adjustmenty="20" w="15" h="21"/>
@@ -129,20 +131,17 @@
       <PivotAdjustment value="4"/>
    
 
-      <FX>
-        <!--Player Sound effects-->
-        <jump path="audio/FX/Jump5.wav"/>
-        <jumpDouble path="audio/FX/DoubleJump.wav"/>
-        <run path="audio/FX/Run5.wav"/>
-        <die path="audio/FX/Hurt.wav"/>
-      </FX>
+    <FX>
+      <!--Player Sound effects-->
+      <jump path="audio/FX/Jump5.wav"/>
+      <jumpDouble path="audio/FX/DoubleJump.wav"/>
+      <run path="audio/FX/Run5.wav"/>
+      <die path="audio/FX/Hurt.wav"/>
+      <Slash path="audio/FX/Sword_Swing.wav"/>
+      <StrongSlash path="audio/FX/Strong_Swing.wav"/>
+      
+    </FX>
 
-    </player>
-  
-  <entities>
-    <flyingEnemy>
-      <Texture path="textures/bat.png"/>
-    </flyingEnemy>
-  </entities>
-
+  </player>
+ </entities>
 </config>

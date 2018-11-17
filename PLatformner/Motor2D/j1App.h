@@ -57,6 +57,8 @@ public:
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 	void CalculateFramerate();
 
+	pugi::xml_node GetLoadConfig();
+
 private:
 
 	// Load config file
@@ -91,7 +93,6 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Map*				map;
-	j2Player*			player;
 	j2Collision*		collision;
 	j1PathFinding*		pathfinding;
 	j2EntityManager*	entities;

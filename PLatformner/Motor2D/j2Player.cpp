@@ -1,27 +1,25 @@
+#include "j2Player.h"
 #include "j1App.h"
 #include "p2Log.h"
 #include "j1render.h"
 #include "j1window.h"
 #include "j1input.h"
-#include "j2Collision.h"
-#include "j2Animation.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
 #include "SDL/include/SDL.h"
 #include "j1Map.h"
-#include "j2Player.h"
 #include "j1audio.h"
+#include "j2EntityManager.h"
 
 #include "Brofiler/Brofiler.h"
 
 
 
 //CONSTRUCTOR
-j2Player::j2Player()
+j2Player::j2Player(): j2DynamicEntity()
 {
-	name.create("player");
-
-	pugi::xml_parse_result result =configAnim.load_file("Animations.xml");
+	/*name.create("player");*/
+	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
 
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("idle");//idle
@@ -63,9 +61,10 @@ j2Player::j2Player()
 
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
 	die.LoadPushBack(AnimPushBack);
-	
+
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
 	GodMode.LoadPushBack(AnimPushBack);
+
 }
 
 //DESTRUCTOR
@@ -80,56 +79,58 @@ bool j2Player::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-	
+	config = config.child("player");
+
+
 	if (config != NULL)
 	{
 		//We load everything player_Init so Player will always have a reference for the initial conditions
 		//Player Position
-		player_Init.playerPos.x = config.child("playerPos").attribute("x").as_int();
-		player_Init.playerPos.y = config.child("playerPos").attribute("y").as_int();
+		position.x = config.child("playerPos").attribute("x").as_int();
+		position.y = config.child("playerPos").attribute("y").as_int();
 
 		//Player SDL_Rect
-		player_Init.playerRect.w = config.child("playerRect").attribute("width").as_int();
-		player_Init.playerRect.h = config.child("playerRect").attribute("height").as_int();
-		player_Init.playerRect.x = player_Init.playerPos.x;
-		player_Init.playerRect.y = player_Init.playerPos.y;
+		EntityRect.w = config.child("playerRect").attribute("width").as_int();
+		EntityRect.h = config.child("playerRect").attribute("height").as_int();
+		EntityRect.x = position.x;
+		EntityRect.y = position.y;
 		
 		//PlayerCrouchedRect(collider)
 		player_Init.playerRectCrouched.w = config.child("playerCrouchCollider").attribute("width").as_int();
 		player_Init.playerRectCrouched.h = config.child("playerCrouchCollider").attribute("height").as_int();
-		player_Init.playerRectCrouched.x = player_Init.playerRect.x;
-		player_Init.playerRectCrouched.y = player_Init.playerPos.y;
+		player_Init.playerRectCrouched.x = EntityRect.x;
+		player_Init.playerRectCrouched.y = position.y;
 		
 		//playerJumpRects(colliders)
 		player_Init.playerRectJump.w = config.child("playerJumpCollider").attribute("width").as_int();
 		player_Init.playerRectJump.h = config.child("playerJumpCollider").attribute("height").as_int();
-		player_Init.playerRectJump.x = player_Init.playerRect.x;
-		player_Init.playerRectJump.y = player_Init.playerPos.y;
+		player_Init.playerRectJump.x = EntityRect.x;
+		player_Init.playerRectJump.y = position.y;
 
 		player_Init.playerRectDJump.w = config.child("playerJumpDCollider").attribute("width").as_int();
 		player_Init.playerRectDJump.h = config.child("playerJumpDCollider").attribute("height").as_int();
-		player_Init.playerRectDJump.x = player_Init.playerRect.x;
-		player_Init.playerRectDJump.y = player_Init.playerPos.y;
+		player_Init.playerRectDJump.x = EntityRect.x;
+		player_Init.playerRectDJump.y = position.y;
 
 		//PlayerRunningRect(collider)
 		player_Init.PlayerRectRunning.w = config.child("PlayerRectRunning").attribute("width").as_int();
 		player_Init.PlayerRectRunning.h = config.child("PlayerRectRunning").attribute("height").as_int();
-		player_Init.PlayerRectRunning.x = player_Init.playerRect.x;
-		player_Init.PlayerRectRunning.y = player_Init.playerPos.y;
+		player_Init.PlayerRectRunning.x = EntityRect.x;
+		player_Init.PlayerRectRunning.y = position.y;
 
 		//playerStateOfActionRects(colliders)
 		player_Init.PlayerRectAttackCharged.w = config.child("PlayerRectAttackCharged").attribute("width").as_int();
 		player_Init.PlayerRectAttackCharged.h = config.child("PlayerRectAttackCharged").attribute("height").as_int();
-		player_Init.PlayerRectAttackCharged.x = player_Init.playerRect.x;
-		player_Init.PlayerRectAttackCharged.y = player_Init.playerPos.y;
+		player_Init.PlayerRectAttackCharged.x = EntityRect.x;
+		player_Init.PlayerRectAttackCharged.y = position.y;
 
 		player_Init.PlayerRectAttackAir.w = config.child("PlayerRectAttackAir").attribute("width").as_int();
 		player_Init.PlayerRectAttackAir.h = config.child("PlayerRectAttackAir").attribute("height").as_int();
-		player_Init.PlayerRectAttackAir.x = player_Init.playerRect.x;
-		player_Init.PlayerRectAttackAir.y = player_Init.playerPos.y;
+		player_Init.PlayerRectAttackAir.x =EntityRect.x;
+		player_Init.PlayerRectAttackAir.y = position.y;
 
-		 player_Init.colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
-		 player_Init.colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
+		colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
+		colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
 		 //playerAttackColliders
 		 player_Init.ChargedAttackCollider.x=  config.child("ChargedAttackCollider").attribute("Adjustmentx").as_int();
@@ -162,23 +163,23 @@ bool j2Player::Awake(pugi::xml_node& config)
 		
 
 		//Player collider Control
-		player_Init.colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
-		player_Init.colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
-		player_Init.colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
-		player_Init.colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
+		colliding.wallFront = config.child("collisionControlcolliding").attribute("wallFront").as_bool();
+		colliding.wallBack = config.child("collisionControlcolliding").attribute("wallBack").as_bool();
+		colliding.wallDown = config.child("collisionControlcolliding").attribute("wallDown").as_bool();
+		colliding.wallTop = config.child("collisionControlcolliding").attribute("wallTop").as_bool();
 
 		//PlayerCollision Adjusters;
-		player_Init.colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
-		player_Init.colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
+		colliding.x_CollisionAdjuster = config.child("xCollisionAdjuster").attribute("x").as_int();
+		colliding.y_CollisionController = config.child("vCollision_controller").attribute("y").as_int();
 
 		//integers
-		player_Init.colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
-		player_Init.colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
-		player_Init.colliding.collisionOffsetY = config.child("colliderRectOffsetY").attribute("value").as_int();
+		colliding.colliderOffsetGroundBasic = config.child("colliderOffsetGroundBasic").attribute("value").as_int();
+		colliding.colliderOffsetGroundSlash = config.child("colliderOffsetGroundSlash").attribute("value").as_int();
+		colliding.collisionOffsetY = config.child("colliderRectOffsetY").attribute("value").as_int();
 		
 		//iPoint
-		player_Init.colliding.colliderOffset.x = player_Init.colliding.colliderOffsetGroundBasic;
-		player_Init.colliding.colliderOffset.y = player_Init.colliding.collisionOffsetY;
+		colliding.colliderOffset.x = colliding.colliderOffsetGroundBasic;
+		colliding.colliderOffset.y = colliding.collisionOffsetY;
 		
 		//Player Bools Movement
 		ToMoveRight = config.child("ToMoveRight").attribute("value").as_bool();
@@ -197,10 +198,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		 CurrentState =(Player_State)config.child("IntilaPState").attribute("State").as_int();
 
 		//Player landed
-		player_Init.landed = config.child("landed").attribute("value").as_bool();
+
+		landed = config.child("landed").attribute("value").as_bool();
 
 		//Player Death
-		player_Init.dead = config.child("dead").attribute("boolDead").as_bool();
+		dead = config.child("dead").attribute("boolDead").as_bool();
 		player_Init.deadDelay = config.child("dead").attribute("deadDelay").as_int();
 		player_Init.deadCounter = config.child("dead").attribute("deadCounter").as_int();
 		player_Init.maximumDeadY_map1 = config.child("maximumDead_Y").attribute("map1").as_int();
@@ -216,7 +218,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_fx.runningSoundPath =config.child("FX").child("run").attribute("path").as_string();
 		player_fx.doublejumpSoundPath = config.child("FX").child("jumpDouble").attribute("path").as_string();
 		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
-
+		player_fx.SlashSoundPath = config.child("FX").child("Slash").attribute("path").as_string();
+		player_fx.StrongSlashPath= config.child("FX").child("StrongSlash").attribute("path").as_string();
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
@@ -228,14 +231,16 @@ bool j2Player::Awake(pugi::xml_node& config)
 		LOG("Could not Load Player data on Awake!");
 	}
 
+
+
 	return ret;
 }
 
 // Load Game State
 bool j2Player::Load(pugi::xml_node& data)
 {
-	player.playerPos.x = data.child("playerPos").attribute("x").as_int();
-	player.playerPos.y = data.child("playerPos").attribute("y").as_int();
+	position.x = data.child("playerPos").attribute("x").as_int();
+	position.y = data.child("playerPos").attribute("y").as_int();
 
 	Speed.x= data.child("Speed").attribute("x").as_int();
 	Speed.y = data.child("Speed").attribute("y").as_int();
@@ -260,21 +265,21 @@ bool j2Player::Load(pugi::xml_node& data)
 	AirAttackB = data.child("AirAttackB").attribute("value").as_bool();
 	arealAttackUsed = data.child("arealAttackUsed").attribute("value").as_bool();
 
-	player.colliding.wallTop=data.child("WallTop").attribute("value").as_bool();
-	player.colliding.wallDown = data.child("WallDown").attribute("value").as_bool();
-	player.colliding.wallFront = data.child("wallFront").attribute("value").as_bool();
-	player.colliding.wallBack = data.child("wallBack").attribute("value").as_bool();
+	colliding.wallTop=data.child("WallTop").attribute("value").as_bool();
+	colliding.wallDown = data.child("WallDown").attribute("value").as_bool();
+	colliding.wallFront = data.child("wallFront").attribute("value").as_bool();
+	colliding.wallBack = data.child("wallBack").attribute("value").as_bool();
 
-	player.dead = data.child("dead").attribute("value").as_bool();
+	dead = data.child("dead").attribute("value").as_bool();
 
-	player.landed = data.child("landed").attribute("value").as_bool();
+	landed = data.child("landed").attribute("value").as_bool();
 
 	//counters
 	player.deadCounter = data.child("dead").attribute("deadCounter").as_int();
 
 	if (GodModeB == false)
 	{
-		player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+		player.playerHitbox->SetPos(position.x, position.y);
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x - 1, player.playerHitbox->rect.y - 1);
 	}
 
@@ -286,11 +291,10 @@ bool j2Player::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node playerSave = data.append_child("playerPos");
 	
-	playerSave.append_attribute("x") = player.playerPos.x;
-	playerSave.append_attribute("y") = player.playerPos.y;
+	playerSave.append_attribute("x") = position.x;
+	playerSave.append_attribute("y") = position.y;
 
 	
-
 	//Speeds&&Accelerations
 	playerSave = data.append_child("Speed");
 	playerSave.append_attribute("x") = Speed.x;
@@ -347,22 +351,22 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave.append_attribute("GodModeB") = AirAttackB;
 
 	playerSave = data.append_child("wallFront");
-	playerSave.append_attribute("wallFront") = player.colliding.wallFront;
+	playerSave.append_attribute("wallFront") =colliding.wallFront;
 
 	playerSave = data.append_child("wallDown");
-	playerSave.append_attribute("wallDown") = player.colliding.wallDown;
+	playerSave.append_attribute("wallDown") =colliding.wallDown;
 
 	playerSave = data.append_child("wallTop");
-	playerSave.append_attribute("wallTop") = player.colliding.wallTop;
+	playerSave.append_attribute("wallTop") = colliding.wallTop;
 
 	playerSave = data.append_child("wallBack");
-	playerSave.append_attribute("wallBack") = player.colliding.wallBack;
+	playerSave.append_attribute("wallBack") = colliding.wallBack;
 
 	playerSave = data.append_child("landed");
-	playerSave.append_attribute("value") = player.landed;
+	playerSave.append_attribute("value") = landed;
 
 	playerSave = data.append_child("dead");
-	playerSave.append_attribute("value") = player.dead;
+	playerSave.append_attribute("value") = dead;
 
 	
 
@@ -376,9 +380,9 @@ bool j2Player::Start()
 	
 	//Load all data from player_Init into the player we will be using
 	//Player Position
-	player.playerPos = player_Init.playerPos;
+	/*player.playerPos = player_Init.playerPos;*/
 	//Player SDL_Rects
-	player.playerRect = player_Init.playerRect;
+	//player.playerRect = player_Init.playerRect;
 	player.playerRectCrouched = player_Init.playerRectCrouched;
 	player.playerRectJump= player_Init.playerRectJump;
 	player.PlayerRectRunning = player_Init.PlayerRectRunning;
@@ -394,12 +398,10 @@ bool j2Player::Start()
 	player.doubleJump = player_Init.doubleJump;
 	
 	//Player collider Control
-	player.colliding = player_Init.colliding;
-	//Player landed
-	player.landed = player_Init.landed;
-
-	//player Dead
-	player.dead = player_Init.dead;
+	/*player.colliding = player_Init.colliding;*/
+	
+	////player Dead
+	//dead = player_Init.dead;
 	player.deadDelay = player_Init.deadDelay;
 	player.deadCounter = player_Init.deadCounter;
 	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
@@ -410,16 +412,15 @@ bool j2Player::Start()
 	player_fx.runningSound = App->audio->LoadFx(player_fx.runningSoundPath.GetString());
 	player_fx.doublejumpSound = App->audio->LoadFx(player_fx.doublejumpSoundPath.GetString());
 	player_fx.dieSound = App->audio->LoadFx(player_fx.dieSoundPath.GetString());
-
+	player_fx.SlashSwordSound = App->audio->LoadFx(player_fx.SlashSoundPath.GetString());
+	player_fx.StrongSlashSound = App->audio->LoadFx(player_fx.StrongSlashPath.GetString());
 	
-	player.fakeCollisionRect = { player.playerRect.x - 1, player.playerRect.y - 1, player.playerRect.w + 2, player.playerRect.h + 2 };
+	player.fakeCollisionRect = { EntityRect.x - 1, EntityRect.y - 1, EntityRect.w + 2, EntityRect.h + 2 };
 	
 
 	CreatePlayerColliders(player);
 
-	
-	
-	playTex = App->tex->Load(folder.GetString());//loading Player textures
+	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures
 
 	return true;
 }
@@ -440,9 +441,9 @@ bool j2Player::CleanUp()
 		player.playerGodModeHitbox = nullptr;
 	}
 
-	if (playTex != nullptr)
+	if (EntityText != nullptr)
 	{
-		App->tex->UnLoad(playTex);
+		App->tex->UnLoad(EntityText);
 
 	}
 
@@ -457,8 +458,8 @@ bool j2Player::PreUpdate()
 	// so we set vars like landed to false and in case we get a call back that the player is landed it will be changed in said functions.
 	player.nextFrameLanded = false;
 	
-	if (player.colliding.wallDown == false) {
-		player.landed = false;
+	if (colliding.wallDown == false) {
+		landed = false;
 
 	}
 
@@ -466,10 +467,10 @@ bool j2Player::PreUpdate()
 }
 
 
-bool j2Player::Update(float dt)      
+bool j2Player::Update(float dt, bool do_logic)
 {
 	BROFILER_CATEGORY("Player_Update", Profiler::Color::Aquamarine);
-	if (player.dead == true)
+	if (dead == true)
 	{
 		PlayFXDie = true;
 
@@ -494,7 +495,7 @@ bool j2Player::Update(float dt)
 			else
 				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 
-			player.dead = false;
+			dead = false;
 			player.deadCounter = player_Init.deadCounter;
 		}
 	}
@@ -510,7 +511,7 @@ bool j2Player::Update(float dt)
 		//DebugFuncionalities
 		PlayerDebugF();
 		//CheckMovement
-		CheckPlayerMovement();
+		CheckEntityMovement();
 		//switchStates
 		SwithcingStates(dt);
 		//Switch the colliders shape depending of the state
@@ -518,24 +519,24 @@ bool j2Player::Update(float dt)
 		//Delete AttackCOlliders if its needed
 		CheckCollidersAttacks();
 		//players Effects
-		PlayerFX();
+		 EntityFX();
 		//movePlayer
-		PlayerMovement(dt);
+		 EntityMovement(dt);
 		
 	
 	//If the player falls and surpasses a determined Y position it dies
 	if (App->scene->CurrentMap2 == false)
 	{
-		if (player.playerPos.y > player.maximumDeadY_map1)
+		if (position.y > player.maximumDeadY_map1)
 		{
-			player.dead = true;
+			dead = true;
 		}
 	}
 	else
 	{
-		if (player.playerPos.y > player.maximumDeadY_map2)
+		if (position.y > player.maximumDeadY_map2)
 		{
-			player.dead = true;
+			dead = true;
 		}
 	}
 
@@ -546,24 +547,24 @@ bool j2Player::Update(float dt)
 		&& player.playerHitbox != nullptr && player.playerHitbox->to_delete == false
 		&& player.fakeHitbox != nullptr && player.fakeHitbox->to_delete == false)
 	{
-		player.playerHitbox->SetPos(player.playerPos.x + player.colliding.colliderOffset.x, player.playerPos.y + player.colliding.colliderOffset.y);
+		player.playerHitbox->SetPos(position.x + colliding.colliderOffset.x, position.y + colliding.colliderOffset.y);
 		player.fakeHitbox->SetPos(player.playerHitbox->rect.x -1 , player.playerHitbox->rect.y -1);
 		
 		if (player.PlayerAttackCollider != nullptr) {
 
 			if (ChargedAttackB == true) {
 			
-				SetColliderRespectPivot(lookingRight,player.PlayerAttackCollider,player.playerPos, player.ChargedAttackCollider.x, player.ChargedAttackCollider.y);
+				SetColliderRespectPivot(lookingRight,player.PlayerAttackCollider, position, player.ChargedAttackCollider.x, player.ChargedAttackCollider.y);
 		
 			} 
 			else if (AirAttackB==true) {
 
-				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, player.playerPos, player.AirAttackCollider.x, player.AirAttackCollider.y);
+				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, position, player.AirAttackCollider.x, player.AirAttackCollider.y);
 
 			}
 			else if (BasicAttackB==true) {
 
-				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, player.playerPos, player.BasicAttackCollider.x, player.BasicAttackCollider.y);
+				SetColliderRespectPivot(lookingRight, player.PlayerAttackCollider, position, player.BasicAttackCollider.x, player.BasicAttackCollider.y);
 
 
 			}
@@ -571,7 +572,7 @@ bool j2Player::Update(float dt)
 		}
 	}
 	else if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-		player.playerGodModeHitbox->SetPos(player.playerPos.x + player_Init.colliding.colliderOffsetGodMode.x, player.playerPos.y+ player_Init.colliding.colliderOffsetGodMode.y);
+		player.playerGodModeHitbox->SetPos(position.x + colliding.colliderOffsetGodMode.x, position.y+ colliding.colliderOffsetGodMode.y);
 
 	//App->collision->Update(dt);
 	//App->collision->Update(dt);
@@ -586,10 +587,10 @@ bool j2Player::Update(float dt)
 	
 
 	if (lookingRight) {
-		App->render->Blit(playTex, player.playerPos.x, player.playerPos.y, &AnimationRect, SDL_FLIP_NONE);
+		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(playTex, player.playerPos.x- PivotAdjustment, player.playerPos.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(EntityText, position.x- PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
 
@@ -604,19 +605,13 @@ bool j2Player::PostUpdate()
 	// We reset the colliders collisions
 	
 
-	player.colliding.wallFront = false;
-	player.colliding.wallBack = false;
-	player.colliding.wallDown = false;
-	player.colliding.wallTop = false;
+	colliding.wallFront = false;
+	colliding.wallBack = false;
+	colliding.wallDown = false;
+	colliding.wallTop = false;
   
-	//	//Here we change the values of the rect position
-	//if(player.playerHitbox != nullptr && player.playerHitbox->to_delete == false)
-	//player.playerHitbox->SetPos(player.playerPos.x, player.playerPos.y);
-	//if (player.playerGodModeHitbox != nullptr && player.playerGodModeHitbox->to_delete == false)
-	//player.playerGodModeHitbox->SetPos(player.playerPos.x, player.playerPos.y);
+	
 
-	
-	
 
 	return true;
 }
@@ -647,9 +642,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				&& c2->rect.x - player.playerHitbox->rect.x > 0
 				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
 				&& overlay.y < overlay.y + overlay.h
-				&& player.colliding.wallTop == false)
+				&& colliding.wallTop == false)
 			{
-				player.colliding.wallFront = true;
+				colliding.wallFront = true;
 				//Before we do anything else, don't allow the collider to enter the tile
 				//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
 				player.playerHitbox->rect.x -= overlay.w;
@@ -658,9 +653,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
 				&& player.playerHitbox->rect.x - c2->rect.x > 0
 				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
-				&& player.colliding.wallTop == false)
+				&& colliding.wallTop == false)
 			{
-				player.colliding.wallBack = true;
+				colliding.wallBack = true;
 				//Before we do anything else, don't allow the collider to enter the tile
 				//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
 				player.playerHitbox->rect.x += overlay.w;
@@ -675,8 +670,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				/*&& Speed.y > 0*/)
 				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
 			{
-				player.landed = true;
-				player.colliding.wallDown = true;
+				landed = true;
+				colliding.wallDown = true;
 
 				player.playerHitbox->rect.y -= overlay.h;
 				//player.playerHitbox->type-= 
@@ -694,8 +689,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				player.playerHitbox->rect.y += overlay.h;
 				Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
 
-				player.landed = false;
-				player.colliding.wallTop = true;
+				landed = false;
+				colliding.wallTop = true;
 			}
 
 			
@@ -704,25 +699,25 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		if (c2->type == COLLIDER_TRAP)
 		{
 			
-			player.dead = true;
+			dead = true;
 		}
 	}
 	else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
 	{
 		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
-			player.colliding.wallBack = true;
+			&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			colliding.wallBack = true;
 		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x
-			&& c2->rect.y + player.colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
-			player.colliding.wallFront = true;
+			&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+			colliding.wallFront = true;
 		
 		if (overlay.y + overlay.h > c2->rect.y
 			&& overlay.y +overlay.h < c2->rect.y + c2->rect.h
 			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
 			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
 		{
-			player.landed = true;
-			player.colliding.wallDown = true;
+			landed = true;
+			colliding.wallDown = true;
 		}
 
 		//if (overlay.y < overlay.y + overlay.h
@@ -734,13 +729,13 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 5> c2->rect.x
 			&& c2->rect.x + c2->rect.w -5> player.fakeHitbox->rect.x)
 		{
-			player.colliding.wallTop = true;
+			colliding.wallTop = true;
 		}
 	}
 
 	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
-	player.playerPos.x = player.playerHitbox->rect.x - player.colliding.colliderOffset.x;
-	player.playerPos.y = player.playerHitbox->rect.y - player.colliding.colliderOffset.y;
+	position.x = player.playerHitbox->rect.x -colliding.colliderOffset.x;
+	position.y = player.playerHitbox->rect.y -colliding.colliderOffset.y;
 
 	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
 	
@@ -752,13 +747,6 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 } 
 
-void j2Player::OnPreCollision(int d) 
-{
-
-
-}
-
-
 void  j2Player::PlayerMovementInputs() {
 
 
@@ -768,7 +756,7 @@ void  j2Player::PlayerMovementInputs() {
 		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player.colliding.wallFront == false)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && colliding.wallFront == false)
 	{
 		ToMoveRight = true;
 
@@ -780,7 +768,7 @@ void  j2Player::PlayerMovementInputs() {
 		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player.colliding.wallBack == false)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && colliding.wallBack == false)
 	{
 		ToMoveLeft = true;
 	}
@@ -810,7 +798,9 @@ void  j2Player::PlayerMovementInputs() {
 
 }
 
-void j2Player::CheckPlayerMovement(){
+
+
+void j2Player::CheckEntityMovement(){
 
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
@@ -825,7 +815,7 @@ void j2Player::CheckPlayerMovement(){
 		MovingRight = false;
 	}
 
-	if (player.landed == true)
+	if (landed == true)
 	{
 		Speed.y = 0.0f;
 	}
@@ -864,12 +854,12 @@ void j2Player::SwithcingStates(float dt) {
 		AttackStateTo(dt);
 	}
 
-
 }
 
 void j2Player::IdleStateTo(float dt) {
 
-	if (player.dead == false) {
+	if (dead == false) {
+
 
 
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
@@ -884,27 +874,28 @@ void j2Player::IdleStateTo(float dt) {
 			CurrentState = Player_State::AIR;
 			
 		}
-		else if (ToMoveDown == true && player.landed==true) {
+		else if (ToMoveDown == true && landed==true) {
 			CurrentState = Player_State::CROUCHING;
 			
 		}
+	
 
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN ) {
 			
-			
+			PlayFxSwordSwing = true;
 			BasicAttackB = true;
-			PlayerAttacks(dt);
-			
-				
+			EntityAttacks(dt);
 
 		}
+	
+		
 
 	}
 
 }
 void j2Player::CrouchingStateTo(float dt) {
 
-	if (player.landed != true) {
+	if (landed != true) {
 
 		CurrentState = Player_State::AIR;
 
@@ -914,7 +905,7 @@ void j2Player::CrouchingStateTo(float dt) {
 		
 		if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true)
 			CurrentState = Player_State::RUNNING;
-		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && player.landed==true ) {
+		else if(ToMoveRight ==false && ToMoveLeft== false && ToMoveUp==false && ToMoveDown==false && landed==true ) {
 			CurrentState = Player_State::IDLE;
 		}
     
@@ -929,9 +920,9 @@ void j2Player::CrouchingStateTo(float dt) {
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 
-
+		PlayFxSwordSwing = true;
 		BasicAttackB = true;
-		PlayerAttacks(dt);
+		EntityAttacks(dt);
 
 
 	}
@@ -939,7 +930,7 @@ void j2Player::CrouchingStateTo(float dt) {
 }
 void j2Player::RunningStateTo(float dt) {
 
-	if (player.landed != true) {
+	if (landed != true) {
 
 		CurrentState = Player_State::AIR;
 
@@ -964,16 +955,17 @@ void j2Player::RunningStateTo(float dt) {
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
 
+		playFxSwordStrongSwing = true;
 		ChargedAttackB = true;
-		PlayerAttacks(dt);
+		EntityAttacks(dt);
 
 
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x != Maxspeed.x || Speed.x != -Maxspeed.x)) {
 
-
+		PlayFxSwordSwing = true;
 		BasicAttackB = true;
-		PlayerAttacks(dt);
+		EntityAttacks(dt);
 
 
 	}
@@ -982,7 +974,7 @@ void j2Player::AirStateTo(float dt) {
 
 	//Double jump is true when the doublejump is used, but if this one is false is that it has not been used
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true && player.landed == false) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && player.doubleJump == false && FirstJump == true && landed == false) {
 		
 		FirstJump = false;
 		//playconditon sound
@@ -995,16 +987,17 @@ void j2Player::AirStateTo(float dt) {
 		player.doubleJump = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && player.landed==false && MovingUp) {
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && landed==false && MovingUp) {
 
 		if (arealAttackUsed == false) {
+			PlayFxSwordSwing = true;
 			AirAttackB = true;
-			PlayerAttacks(dt);
+			EntityAttacks(dt);
 		}
 
 	}
 
-	if (player.landed==true ) {		
+	if (landed==true ) {		
 
 		//land
 		FirstJump == false;
@@ -1012,7 +1005,7 @@ void j2Player::AirStateTo(float dt) {
 		player.doubleJump = false;
 
 	
-		if (player.dead == false) {
+		if (dead == false) {
 			
 			if (ToMoveRight == true || ToMoveLeft == true || MovingRight == true || MovingLeft == true  ) {
 				
@@ -1045,7 +1038,7 @@ void j2Player::AttackStateTo(float dt) {
 
 	}
 
-	if (player.landed != true && (ChargedAttackB == true || BasicAttackB==true)) {
+	if (landed != true && (ChargedAttackB == true || BasicAttackB==true)) {
 
 		Speed.y += gravity;
 
@@ -1068,7 +1061,7 @@ void j2Player::AttackStateTo(float dt) {
 
 }
 
-void j2Player::PlayerAttacks(float dt) {
+void j2Player::EntityAttacks(float dt) {
 
 
 	if (ChargedAttackB == true) {
@@ -1101,16 +1094,16 @@ void j2Player::PlayerAttacks(float dt) {
 	CurrentState = Player_State::ATTACK;
 }
 
-void j2Player::PlayerMovement(float dt) {
+void j2Player::EntityMovement(float dt) {
 	
-	if (player.dead == false) {
+	if (dead == false) {
 
 		if (GodModeB == false) {
 
-			if (ToMoveRight == true && ToMoveLeft == false && player.colliding.wallFront == false && ChargedAttackB == false && BasicAttackB==false) {
+			if (ToMoveRight == true && ToMoveLeft == false && colliding.wallFront == false && ChargedAttackB == false && BasicAttackB==false) {
 				Speed.x += Currentacceleration*dt;
 			}
-			else if (ToMoveLeft == true && ToMoveRight == false && player.colliding.wallBack == false && ChargedAttackB == false && BasicAttackB == false) {
+			else if (ToMoveLeft == true && ToMoveRight == false && colliding.wallBack == false && ChargedAttackB == false && BasicAttackB == false) {
 				Speed.x -= Currentacceleration*dt;
 			}
 			else if (CurrentState != Player_State::AIR ) {	
@@ -1154,7 +1147,7 @@ void j2Player::PlayerMovement(float dt) {
 
 			}
 
-			if (CurrentState == Player_State::AIR && !player.landed || CurrentState == Player_State::ATTACK && AirAttackB==true) {
+			if (CurrentState == Player_State::AIR && landed==false || CurrentState == Player_State::ATTACK && AirAttackB==true) {
 				//Falling
 				Speed.y += gravity*dt;
 			}
@@ -1181,8 +1174,8 @@ void j2Player::PlayerMovement(float dt) {
 
 
 			//new current position
-			player.playerPos.x += Speed.x*dt;
-			player.playerPos.y += Speed.y*dt;
+			position.x += Speed.x*dt;
+			position.y += Speed.y*dt;
 
 		}
 
@@ -1191,19 +1184,19 @@ void j2Player::PlayerMovement(float dt) {
 			//If GodMode Activated, move around FREELY 
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 				Speed.y = -Maxspeed.y;
-				player.playerPos.y += Speed.y*dt;
+				position.y += Speed.y*dt;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				Speed.y = +Maxspeed.y;
-				player.playerPos.y += Maxspeed.y*dt;
+				position.y += Maxspeed.y*dt;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				Speed.x = +Maxspeed.x;
-				player.playerPos.x += Maxspeed.x*dt;
+				position.x += Maxspeed.x*dt;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 				Speed.x = -Maxspeed.x;
-				player.playerPos.x += -Maxspeed.x*dt;
+				position.x += -Maxspeed.x*dt;
 			}
 
 		}
@@ -1212,7 +1205,7 @@ void j2Player::PlayerMovement(float dt) {
 }
 
 
-void j2Player::PlayerFX() {
+void j2Player::EntityFX() {
 
 	if (ToMoveRight == true && ToMoveLeft == false) {
 		lookingRight = true;
@@ -1221,7 +1214,7 @@ void j2Player::PlayerFX() {
 		lookingRight = false;
 	}
 	
-	if (player.dead == false) {
+	if (dead == false) {
 
 		if (GodModeB == false) {
 
@@ -1275,7 +1268,7 @@ void j2Player::PlayerFX() {
 	}
 	void j2Player::RunningFX() {
 
-		if ((player.colliding.wallFront == true || player.colliding.wallBack == true ) && ChargedAttackB==false) {
+		if ((colliding.wallFront == true || colliding.wallBack == true ) && ChargedAttackB==false) {
 
 			currentAnimation = &push;
 		}
@@ -1286,7 +1279,8 @@ void j2Player::PlayerFX() {
 		}*/
 
 		else {
-			App->audio->PlayFx(player_fx.runningSound, 0);
+
+		//	App->audio->PlayFx(player_fx.runningSound, 0);
 			currentAnimation = &run;
 		}
 
@@ -1318,20 +1312,41 @@ void j2Player::PlayerFX() {
 				
 				currentAnimation = &jump;
 			}
-
+			
 	
 	}
 
 	void j2Player::AttackFX() {
 
 		if (AirAttackB == true) {
+
+			if (PlayFxSwordSwing == true) {
+				App->audio->PlayFx(player_fx.SlashSwordSound, 0);
+				PlayFxSwordSwing = false;
+			}
 			currentAnimation = &AirAttack;
 		}
 		else if (ChargedAttackB == true) {
 
+			if (playFxSwordStrongSwing == true) {
+
+				App->audio->PlayFx(player_fx.StrongSlashSound, 0);
+
+				playFxSwordStrongSwing = false;
+			
+			}
 			currentAnimation = &ChargedAttack;
+		
 		}
 		else if (BasicAttackB == true) {
+			
+			if (PlayFxSwordSwing == true) {
+			
+				App->audio->PlayFx(player_fx.SlashSwordSound, 0);
+				
+				PlayFxSwordSwing = false;
+			}		
+
 			currentAnimation = &BasicAttack;
 		}
 	
@@ -1348,14 +1363,14 @@ void j2Player::PlayerFX() {
 
 				player.playerHitbox->to_delete = true;
 				player.fakeHitbox->to_delete = true;
-				player.playerGodModeHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_GODMODE, this);
+				player.playerGodModeHitbox = App->collision->AddCollider(EntityRect, COLLIDER_GODMODE,App->entities);
 			}
 			else
 			{
 
 				player.playerGodModeHitbox->to_delete = true;
-				player.playerHitbox = App->collision->AddCollider(player.playerRect, COLLIDER_PLAYER, this);
-				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
+				player.playerHitbox = App->collision->AddCollider(EntityRect, COLLIDER_PLAYER, App->entities);
+				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, App->entities);
 			}
 
 		}
@@ -1379,7 +1394,7 @@ bool j2Player::CreatePlayerColliders(Player &p)
 	{
 		if (p.playerGodModeHitbox == nullptr)
 		{
-			p.playerGodModeHitbox = App->collision->AddCollider(player_Init.playerRect,COLLIDER_GODMODE, this);
+			p.playerGodModeHitbox = App->collision->AddCollider(EntityRect,COLLIDER_GODMODE, App->entities);
 			p.playerHitbox = nullptr;
 			p.fakeHitbox = nullptr;
 
@@ -1390,8 +1405,8 @@ bool j2Player::CreatePlayerColliders(Player &p)
 	{
 		if (p.playerHitbox == nullptr && p.fakeHitbox == nullptr)
 		{
-			p.fakeHitbox = App->collision->AddCollider(p.fakeCollisionRect, COLLIDER_PLAYER_CHECK, this);
-			p.playerHitbox = App->collision->AddCollider(player_Init.playerRect, COLLIDER_PLAYER, this);
+			p.fakeHitbox = App->collision->AddCollider(p.fakeCollisionRect, COLLIDER_PLAYER_CHECK, App->entities);
+			p.playerHitbox = App->collision->AddCollider(EntityRect, COLLIDER_PLAYER, App->entities);
 			p.playerGodModeHitbox = nullptr;
 			ret = 1;
 		}
@@ -1439,11 +1454,11 @@ void j2Player::ColliderShapeStates() {
 
 void j2Player::IdleColliderShape() {
 
-	player.playerHitbox->rect.w = player.playerRect.w;
-	player.playerHitbox->rect.h = player.playerRect.h;
+	player.playerHitbox->rect.w = EntityRect.w;
+	player.playerHitbox->rect.h = EntityRect.h;
 	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
-	player.colliding.colliderOffset.y = player.colliding.collisionOffsetY;
+	colliding.colliderOffset.y =colliding.collisionOffsetY;
 
 }
 
@@ -1451,7 +1466,7 @@ void j2Player::CrouchColliderShape() {
 
 	player.playerHitbox->rect.w = player.playerRectCrouched.w;
 	player.playerHitbox->rect.h = player.playerRectCrouched.h;
-	player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectCrouched.h) + player.colliding.collisionOffsetY;
+	colliding.colliderOffset.y = (EntityRect.h - player.playerRectCrouched.h) + colliding.collisionOffsetY;
 	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 
@@ -1463,7 +1478,7 @@ void j2Player::JumpColliderShape() {
 	
 		player.playerHitbox->rect.w = player.playerRectJump.w;
 		player.playerHitbox->rect.h = player.playerRectJump.h;
-		player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectJump.h) + player.colliding.collisionOffsetY;
+		colliding.colliderOffset.y = (EntityRect.h - player.playerRectJump.h) + colliding.collisionOffsetY;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 
@@ -1473,7 +1488,7 @@ void j2Player::JumpColliderShape() {
 
 		player.playerHitbox->rect.w = player.playerRectDJump.w;
 		player.playerHitbox->rect.h = player.playerRectDJump.h;
-		player.colliding.colliderOffset.y = (player.playerRect.h - player.playerRectDJump.h) + player.colliding.collisionOffsetY;
+	colliding.colliderOffset.y = (EntityRect.h - player.playerRectDJump.h) + colliding.collisionOffsetY;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 
@@ -1486,7 +1501,7 @@ void j2Player::RunnigColliderShape() {
 
 	player.playerHitbox->rect.w = player.PlayerRectRunning.w;
 	player.playerHitbox->rect.h = player.PlayerRectRunning.h;
-	player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectRunning.h) + player.colliding.collisionOffsetY;
+colliding.colliderOffset.y = (EntityRect.h - player.PlayerRectRunning.h) + colliding.collisionOffsetY;
 	player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 	player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 
@@ -1497,7 +1512,7 @@ void j2Player::ChargedAttackColliderShape() {
 	if (ChargedAttackB == true) {
 		player.playerHitbox->rect.w = player.PlayerRectAttackCharged.w;
 		player.playerHitbox->rect.h = player.PlayerRectAttackCharged.h;
-		player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectAttackCharged.h) + player.colliding.collisionOffsetY;
+	colliding.colliderOffset.y = (EntityRect.h - player.PlayerRectAttackCharged.h) + colliding.collisionOffsetY;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 	}
@@ -1505,7 +1520,7 @@ void j2Player::ChargedAttackColliderShape() {
 	else if (AirAttackB == true) {
 		player.playerHitbox->rect.w = player.PlayerRectAttackAir.w;
 		player.playerHitbox->rect.h = player.PlayerRectAttackAir.h;
-		player.colliding.colliderOffset.y = (player.playerRect.h - player.PlayerRectAttackAir.h) + player.colliding.collisionOffsetY;
+		colliding.colliderOffset.y = (EntityRect.h - player.PlayerRectAttackAir.h) + colliding.collisionOffsetY;
 		player.fakeHitbox->rect.h = player.playerHitbox->rect.h + 2;
 		player.fakeHitbox->rect.y = player.playerHitbox->rect.y - 1;
 	}
@@ -1519,19 +1534,19 @@ void j2Player::CollidersAttacks() {
 
 		if (ChargedAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, this);
+			player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
 		}
 
 
 		else if (AirAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.AirAttackCollider, COLLIDER_PLAYERATTACK, this);
+			player.PlayerAttackCollider = App->collision->AddCollider(player.AirAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
 
 		}
 
 		else if (BasicAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.BasicAttackCollider, COLLIDER_PLAYERATTACK, this);
+			player.PlayerAttackCollider = App->collision->AddCollider(player.BasicAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
 
 		}
 	}
@@ -1563,12 +1578,13 @@ void j2Player::CheckCollidersAttacks() {
 		}
 	}
 }
-
-void j2Player::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx,int Displacementy) {
-
-	if(lookingTo) 
-		col->SetPos(CharacterPos.x + Displacementx, CharacterPos.y + Displacementy);
-	else
-		col->SetPos(CharacterPos.x, CharacterPos.y + Displacementy);
-
-}
+void j2Player::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy) {
+	
+		if (lookingTo)
+			col->SetPos(CharacterPos.x + Displacementx, CharacterPos.y + Displacementy);
+		else
+			col->SetPos(CharacterPos.x, CharacterPos.y + Displacementy);
+	
+	
+	
+	}

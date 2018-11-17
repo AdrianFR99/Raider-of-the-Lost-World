@@ -34,7 +34,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
-	player = new j2Player();
 	collision = new j2Collision();
 	pathfinding = new j1PathFinding();
 	entities = new j2EntityManager();
@@ -49,9 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(collision);
-	AddModule(player);
 	AddModule(entities);
-	
 	//Pathfinding module
 	AddModule(pathfinding);
 	// render last to swap buffer
@@ -172,12 +169,22 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
+
 	if(result == NULL)
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
 	else
 		ret = config_file.child("config");
 
 	return ret;
+}
+
+
+pugi::xml_node j1App::GetLoadConfig(){
+
+	pugi::xml_document	config_file;
+
+	return LoadConfig(config_file);
+
 }
 
 // ---------------------------------------------
