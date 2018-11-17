@@ -3,12 +3,15 @@
 
 #include "j2DynamicEntity.h"
 #include "j2Animation.h"
+#include "p2DynArray.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
 enum class GROUND_ENEMY_STATE
 {
 	PATROLLING,
+	IDLE,
+	WALKING,
 	CHASING_PLAYER,
 	ATTACKING,
 	HURT,
@@ -41,6 +44,13 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
 
+
+	void OnCollision(Collider* c1, Collider* c2);
+
+	void EntityMovement(float dt);
+
+	void CheckRelativePosition();
+
 	void EntityFX();
 	void PatrollingFX();
 	void WalkingFX();
@@ -58,9 +68,19 @@ public:
 
 	SDL_Rect AnimationRect;
 
+	iPoint enemyPathfindingPosition;
+	iPoint pathFindingDistance;
+	iPoint tileDistanceBetweenEntities;
+
+	int tileDistance;
+
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
+
+	const p2DynArray<iPoint>* path;
+
+	iPoint playerPathfindingPosition;
 
 	GROUND_ENEMY_STATE CurrentState;
 

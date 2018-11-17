@@ -14,7 +14,7 @@ j2EntityManager::j2EntityManager() : j1Module()
 	update_ms_cycle = 0.200f;  //Change/Fix @D�dac must calculate value not hardcode
 
 	player = (j2Player*)CreateEntity(ENTITY_TYPE::PLAYER);
-  CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
+	//CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
 	CreateEntity(ENTITY_TYPE::GROUND_ENEMY);
 }
 
