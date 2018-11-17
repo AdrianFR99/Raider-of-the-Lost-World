@@ -26,12 +26,16 @@ struct FXPlayer {
 	uint doublejumpSound;
 	uint runningSound;
 	uint dieSound;
+	uint SlashSwordSound;
+	uint StrongSlashSound;
 
 	//Sound FX Paths
 	p2SString jumpSoundPath;
 	p2SString runningSoundPath;
 	p2SString doublejumpSoundPath;
 	p2SString dieSoundPath;
+	p2SString SlashSoundPath;
+	p2SString StrongSlashPath;
 };
 
 struct Player
@@ -197,6 +201,8 @@ public: //Variables
 	bool PlayFXJump=false;
 	bool playeFXDoublejump = false;
 	bool PlayFXDie = false;
+	bool PlayFxSwordSwing = false;
+	bool playFxSwordStrongSwing = false;
 
 	//Attack Booleans
 	bool ChargedAttackB = false;

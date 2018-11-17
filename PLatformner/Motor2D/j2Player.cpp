@@ -19,6 +19,51 @@
 j2Player::j2Player(): j2DynamicEntity()
 {
 	/*name.create("player");*/
+	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
+
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("idle");//idle
+	idle.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("run");//run
+	run.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jump");//jump
+	jump.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jumpDouble");//DoubleJump
+	jumpDouble.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("fall");//fall
+	fall.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("crouch");//crouch
+	crouch.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("push");//push
+	push.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Chargedattack");//Charged attack
+	ChargedAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//basic attack
+	BasicAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack2");//basic2 attack
+	BasicAttack2.LoadPushBack(AnimPushBack);
+
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Airattack");//AirAttack
+	AirAttack.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("slide");//slide
+	slide.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
+	die.LoadPushBack(AnimPushBack);
+
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
+	GodMode.LoadPushBack(AnimPushBack);
 
 }
 
@@ -153,7 +198,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Player landed
 
-	/*	player_Init.landed = config.child("landed").attribute("value").as_bool();*/
+		landed = config.child("landed").attribute("value").as_bool();
 
 		//Player Death
 		dead = config.child("dead").attribute("boolDead").as_bool();
@@ -172,7 +217,8 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_fx.runningSoundPath =config.child("FX").child("run").attribute("path").as_string();
 		player_fx.doublejumpSoundPath = config.child("FX").child("jumpDouble").attribute("path").as_string();
 		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
-
+		player_fx.SlashSoundPath = config.child("FX").child("Slash").attribute("path").as_string();
+		player_fx.StrongSlashPath= config.child("FX").child("StrongSlash").attribute("path").as_string();
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
@@ -185,54 +231,6 @@ bool j2Player::Awake(pugi::xml_node& config)
 		NullifyPlayerColliders(player);
 		LOG("Could not Load Player data on Awake!");
 	}
-
-
-	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
-
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("idle");//idle
-	idle.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("run");//run
-	run.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jump");//jump
-	jump.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("jumpDouble");//DoubleJump
-	jumpDouble.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("fall");//fall
-	fall.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("crouch");//crouch
-	crouch.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("push");//push
-	push.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Chargedattack");//Charged attack
-	ChargedAttack.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack");//basic attack
-	BasicAttack.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Basicattack2");//basic2 attack
-	BasicAttack2.LoadPushBack(AnimPushBack);
-
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Airattack");//AirAttack
-	AirAttack.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("slide");//slide
-	slide.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
-	die.LoadPushBack(AnimPushBack);
-
-	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
-	GodMode.LoadPushBack(AnimPushBack);
-
 
 
 
@@ -403,9 +401,7 @@ bool j2Player::Start()
 	
 	//Player collider Control
 	/*player.colliding = player_Init.colliding;*/
-	//Player landed
-	//landed = player_Init.landed;
-
+	
 	////player Dead
 	//dead = player_Init.dead;
 	player.deadDelay = player_Init.deadDelay;
@@ -418,7 +414,8 @@ bool j2Player::Start()
 	player_fx.runningSound = App->audio->LoadFx(player_fx.runningSoundPath.GetString());
 	player_fx.doublejumpSound = App->audio->LoadFx(player_fx.doublejumpSoundPath.GetString());
 	player_fx.dieSound = App->audio->LoadFx(player_fx.dieSoundPath.GetString());
-
+	player_fx.SlashSwordSound = App->audio->LoadFx(player_fx.SlashSoundPath.GetString());
+	player_fx.StrongSlashSound = App->audio->LoadFx(player_fx.StrongSlashPath.GetString());
 	
 	player.fakeCollisionRect = { EntityRect.x - 1, EntityRect.y - 1, EntityRect.w + 2, EntityRect.h + 2 };
 	
@@ -866,6 +863,7 @@ void j2Player::IdleStateTo(float dt) {
 	if (dead == false) {
 
 
+
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
 			CurrentState = Player_State::RUNNING;
 		}
@@ -882,16 +880,17 @@ void j2Player::IdleStateTo(float dt) {
 			CurrentState = Player_State::CROUCHING;
 			
 		}
+	
 
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN ) {
 			
-			
+			PlayFxSwordSwing = true;
 			BasicAttackB = true;
 			EntityAttacks(dt);
-			
-				
 
 		}
+	
+		
 
 	}
 
@@ -923,7 +922,7 @@ void j2Player::CrouchingStateTo(float dt) {
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 
-
+		PlayFxSwordSwing = true;
 		BasicAttackB = true;
 		EntityAttacks(dt);
 
@@ -958,6 +957,7 @@ void j2Player::RunningStateTo(float dt) {
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x == Maxspeed.x || Speed.x == -Maxspeed.x)) {
 
+		playFxSwordStrongSwing = true;
 		ChargedAttackB = true;
 		EntityAttacks(dt);
 
@@ -965,7 +965,7 @@ void j2Player::RunningStateTo(float dt) {
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && (Speed.x != Maxspeed.x || Speed.x != -Maxspeed.x)) {
 
-
+		PlayFxSwordSwing = true;
 		BasicAttackB = true;
 		EntityAttacks(dt);
 
@@ -992,6 +992,7 @@ void j2Player::AirStateTo(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && landed==false && MovingUp) {
 
 		if (arealAttackUsed == false) {
+			PlayFxSwordSwing = true;
 			AirAttackB = true;
 			EntityAttacks(dt);
 		}
@@ -1280,7 +1281,8 @@ void j2Player::EntityFX() {
 		}*/
 
 		else {
-			App->audio->PlayFx(player_fx.runningSound, 0);
+
+		//	App->audio->PlayFx(player_fx.runningSound, 0);
 			currentAnimation = &run;
 		}
 
@@ -1312,20 +1314,41 @@ void j2Player::EntityFX() {
 				
 				currentAnimation = &jump;
 			}
-
+			
 	
 	}
 
 	void j2Player::AttackFX() {
 
 		if (AirAttackB == true) {
+
+			if (PlayFxSwordSwing == true) {
+				App->audio->PlayFx(player_fx.SlashSwordSound, 0);
+				PlayFxSwordSwing = false;
+			}
 			currentAnimation = &AirAttack;
 		}
 		else if (ChargedAttackB == true) {
 
+			if (playFxSwordStrongSwing == true) {
+
+				App->audio->PlayFx(player_fx.StrongSlashSound, 0);
+
+				playFxSwordStrongSwing = false;
+			
+			}
 			currentAnimation = &ChargedAttack;
+		
 		}
 		else if (BasicAttackB == true) {
+			
+			if (PlayFxSwordSwing == true) {
+			
+				App->audio->PlayFx(player_fx.SlashSwordSound, 0);
+				
+				PlayFxSwordSwing = false;
+			}		
+
 			currentAnimation = &BasicAttack;
 		}
 	

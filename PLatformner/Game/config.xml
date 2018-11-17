@@ -135,6 +135,9 @@
       <jumpDouble path="audio/FX/DoubleJump.wav"/>
       <run path="audio/FX/Run5.wav"/>
       <die path="audio/FX/Hurt.wav"/>
+      <Slash path="audio/FX/Sword_Swing.wav"/>
+      <StrongSlash path="audio/FX/Strong_Swing.wav"/>
+      
     </FX>
 
   </player>
