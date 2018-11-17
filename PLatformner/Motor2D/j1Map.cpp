@@ -8,6 +8,7 @@
 #include "j2Collision.h"
 #include "j2Player.h"
 #include "Brofiler/Brofiler.h"
+#include "j2EntityManager.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -733,15 +734,15 @@ float j1Map::SetPlayerToInitial(MapData&DataAux) {
 
 				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->name == "StartingPoint");
 
-				App->player->Start();
-				App->player->player.playerPos.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
-				App->player->player.playerPos.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+				App->entities->entities.start->data->Start();
+				App->entities->entities.start->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+				App->entities->entities.start->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 
 				break;
 			}
 		}
 	}
-	return (App->player->player.playerPos.x);
+	return (App->entities->entities.start->data->position.x);
 }
 
 

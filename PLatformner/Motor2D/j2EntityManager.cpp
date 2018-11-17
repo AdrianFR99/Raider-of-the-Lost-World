@@ -1,5 +1,4 @@
 #include "j2EntityManager.h"
-
 #include "j2Player.h"
 #include "j2Enemy.h"
 #include "j1App.h"
@@ -9,6 +8,7 @@
 j2EntityManager::j2EntityManager() : j1Module()
 {
 	name.create("entities");
+	player = (j2Player*)CreateEntity(ENTITY_TYPE::PLAYER);
 }
 
 j2EntityManager::~j2EntityManager()
@@ -17,7 +17,17 @@ j2EntityManager::~j2EntityManager()
 
 bool j2EntityManager::Awake(pugi::xml_node & config)
 {
-	return true;
+
+	bool ret = true;
+	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
+	{
+		ret = item->data->Awake(config);
+		if (!ret)
+			break;
+	}
+	
+	
+	return ret;
 }
 
 bool j2EntityManager::Start()
@@ -136,6 +146,10 @@ void j2EntityManager::OnCollision(Collider * c1, Collider * c2)
 			}
 		}
 	}
+
+
+	player->OnCollision(c1,c2);
+
 }
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
@@ -143,7 +157,7 @@ j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(2), "code needs update");
 	j2Entity* ret = nullptr;
 	switch (type) {
-		case ENTITY_TYPE::ENEMY : ret = new j2Enemy(); break;
+		case ENTITY_TYPE::PLAYER : ret = new j2Player(); break;
 	}
 	if (ret != nullptr)
 		entities.add(ret);
@@ -162,3 +176,4 @@ void j2EntityManager::DestroyEntity(j2Entity* entity_to_destroy)
 		}
 	}
 }
+

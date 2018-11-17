@@ -205,12 +205,6 @@ void j2Collision::DebugDraw()
 {
 
 
-	//if (App->input->coliderView == false || App->input->debugMode == false) //@andres
-	//{
-	//	return;
-	//}
-
-
 	uint alpha = 80;
 	uint alphaHard = 130;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
@@ -283,6 +277,8 @@ bool j2Collision::CleanUp()
 
 Collider* j2Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
 {
+
+
 	Collider* ret = nullptr;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
@@ -304,16 +300,16 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	return !((rect.y + rect.h)< r.y || rect.y > r.y + r.h || (rect.x + rect.w ) < r.x  || rect.x > r.x + r.w );
 }
 
-bool Collider::PreCheckCollision(const Player& p) const
-{
-	if (App->player->Speed.y > (rect.y - (p.playerRect.y + p.playerRect.h)) && p.landed == false)
-	{
-		return true;
-	}
-	return false;
-}
+//bool Collider::PreCheckCollision(const Player& p) const
+//{
+//	if (App->player->Speed.y > (rect.y - (p.playerRect.y + p.playerRect.h)) && p.landed == false)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
 
-int Collider::ret_d_to_ground(const Player& p) const
-{
-	return (rect.y - (p.playerRect.y + p.playerRect.h));
-}
+//int Collider::ret_d_to_ground(const Player& p) const
+//{
+//	return (rect.y - (p.playerRect.y + p.playerRect.h));
+//}

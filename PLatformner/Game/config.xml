@@ -51,7 +51,8 @@
   <map>
     <folder>maps/</folder>
   </map>
-
+  
+<entities>
   <player>
     <!--Player Rect and pos-->
     <playerRect  x="64" y="576" width="20" height="30" />
@@ -137,4 +138,6 @@
     </FX>
 
   </player>
+ </entities>
+  
 </config>

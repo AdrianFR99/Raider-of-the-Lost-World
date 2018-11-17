@@ -4,9 +4,11 @@
 #include "p2SString.h"
 #include "p2List.h"
 #include "p2Point.h"
+#include "SDL_image/include/SDL_image.h"
 #include "PugiXml/src/pugixml.hpp"
 
 class j2EntityManager;
+class j2DynamicEntity;
 struct Collider;
 
 enum class ENTITY_TYPE
@@ -21,9 +23,11 @@ class j2Entity
 public:
 
 	//Constructor
-	j2Entity() : name("Unnamed"),manager(NULL) {}
+	j2Entity(ENTITY_TYPE type) : name("Unnamed"),manager(NULL),type(type)  {}
 	//Destructor
 	virtual ~j2Entity() {}
+
+	virtual bool Awake(pugi::xml_node& config) { return true; }
 	//Start
 	virtual bool Start() { return true; }
 	//PreUpdate		Called each loop iteration
@@ -45,12 +49,19 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 
 public:
+
 	iPoint position;
+	SDL_Rect EntityRect;
 	p2SString name;
 	bool active;
-	
+
+	SDL_Texture*EntityText=nullptr;
 	p2List<Collider*> colliders;
 
+	ENTITY_TYPE type;
+
+	
+	
 private:
 	j2EntityManager* manager;
 };

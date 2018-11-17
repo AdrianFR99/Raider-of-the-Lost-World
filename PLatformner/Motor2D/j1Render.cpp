@@ -6,6 +6,7 @@
 #include "j1Scene.h"
 #include "j1map.h"
 #include "j2player.h"
+#include "j2EntityManager.h"
 #include "Brofiler/Brofiler.h"
 
 #define VSYNC true
@@ -295,10 +296,12 @@ void j1Render::followPlayer(const Player &p,float dt)
 	//camera.x = p.playerRect.x * App->win->GetScale() - camera.w / 2;
 	//camera.y = p.playerRect.y * App->win->GetScale() - camera.h /2;
 
-	if ((p.playerPos.x - camera.x / scale) >= cameraOffset_right * scale && (App->player->Speed.x > 0 || App->player->Speed.x == App->player->Maxspeed.x ))
+	if ((App->entities->player->position.x - camera.x / scale) >= cameraOffset_right * scale &&
+		(App->entities->player->Speed.x > 0 ||
+			App->entities->player->Speed.x == App->entities->player->Maxspeed.x ))
 	{
 		//App->render->camera.x = p.playerRect.x - 100 * App->win->GetScale() + p.x_speed * App->win->GetScale();
-		camera.x +=((App->player->Speed.x) * scale)*dt;
+		camera.x +=((App->entities->player->Speed.x) * scale)*dt;
 	
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -318,11 +321,11 @@ void j1Render::followPlayer(const Player &p,float dt)
 		
 	}
 
-	if ((p.playerPos.x - camera.x / scale) <= cameraOffset_left / scale && (App->player->Speed.x < 0 || App->player->Speed.x == -App->player->Maxspeed.x))
+	if ((App->entities->player->position.x - camera.x / scale) <= cameraOffset_left / scale && (App->entities->player->Speed.x < 0 || App->entities->player->Speed.x == -App->entities->player->Maxspeed.x))
 	{
 		//App->render->camera.x = player.playerRect.x - App->render->camera.w / 2 - 200;
 		
-		App->render->camera.x +=((App->player->Speed.x) * scale)*dt;
+		App->render->camera.x +=((App->entities->player->Speed.x) * scale)*dt;
 
 		//parallax
 		if (App->scene->CurrentMap2 == false) {
@@ -342,15 +345,15 @@ void j1Render::followPlayer(const Player &p,float dt)
 	}
 
 
-		if (p.playerPos.y < (camera.y + camera.h /3) / scale && p.playerPos.y != camera.y + (camera.h / 2))
+		if (App->entities->player->position.y < (camera.y + camera.h /3) / scale && App->entities->player->position.y != camera.y + (camera.h / 2))
 		{
 		
-				if (App->player->Speed.y < 0 || App->player->Speed.y==-App->player->Maxspeed.y)
-					camera.y += ((App->player->Speed.y) * scale)*dt;
+				if (App->entities->player->Speed.y < 0 || App->entities->player->Speed.y==-App->entities->player->Maxspeed.y)
+					camera.y += ((App->entities->player->Speed.y) * scale)*dt;
 
-				else if (App->player->Speed.y == 0) {
+				else if (App->entities->player->Speed.y == 0) {
 
-					camera.y -= ((App->player->Maxspeed.y) * scale)*dt;
+					camera.y -= ((App->entities->player->Maxspeed.y) * scale)*dt;
 
 				}
 
@@ -358,16 +361,16 @@ void j1Render::followPlayer(const Player &p,float dt)
 			
 		}
 
-		if (p.playerPos.y > (camera.y + (camera.h /3)*2) / scale && p.playerPos.y != camera.y + (camera.h / 2))
+		if (App->entities->player->position.y > (camera.y + (camera.h /3)*2) / scale && App->entities->player->position.y != camera.y + (camera.h / 2))
 		{
 		
 			
-				if (App->player->Speed.y > 0 || App->player->Speed.y == +App->player->Maxspeed.y)
-					camera.y += ((App->player->Speed.y) * scale)*dt;
+				if (App->entities->player->Speed.y > 0 || App->entities->player->Speed.y == +App->entities->player->Maxspeed.y)
+					camera.y += ((App->entities->player->Speed.y) * scale)*dt;
 
-				else if (App->player->Speed.y == 0) {
+				else if (App->entities->player->Speed.y == 0) {
 
-					camera.y += ((App->player->Maxspeed.y) * scale)*dt;
+					camera.y += ((App->entities->player->Maxspeed.y) * scale)*dt;
 				}
 
 			
@@ -388,7 +391,7 @@ void j1Render::followPlayer(const Player &p,float dt)
 	//If first map
 	if (App->scene->CurrentMap2 == false)
 	{		
-		if (camera.y > map1_cameraLimit_y / scale && camera.y > 0 && p.playerRect.y > 0)
+		if (camera.y > map1_cameraLimit_y / scale && camera.y > 0 && App->entities->player->EntityRect.y > 0)
 		{
 			camera.y = map1_cameraLimit_y / scale;
 		}
