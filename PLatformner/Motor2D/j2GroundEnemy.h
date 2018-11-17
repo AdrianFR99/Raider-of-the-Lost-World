@@ -46,6 +46,7 @@ public:
 
 
 	void OnCollision(Collider* c1, Collider* c2);
+	void CheckPreCollision();
 
 	void EntityMovement(float dt);
 
@@ -67,6 +68,10 @@ public:
 	Animation death;
 
 	SDL_Rect AnimationRect;
+	SDL_Rect ColliderRect;
+
+	Collider* groundEnemyCollider;
+	iPoint colliderPosition;
 
 	iPoint enemyPathfindingPosition;
 	iPoint pathFindingDistance;

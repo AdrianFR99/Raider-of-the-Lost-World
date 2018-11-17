@@ -92,7 +92,7 @@ public:
 	//Blit ints
 	int PivotAdjustment;
 
-	
+	collisionControl boundaries;
 
 public:
 	//funcitons

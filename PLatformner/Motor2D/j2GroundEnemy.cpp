@@ -11,6 +11,7 @@
 #include "j2EntityManager.h"
 #include "j1Pathfinding.h"
 #include "j2Player.h"
+#include "j1Scene.h"
 
 #include "j1Input.h"
 
@@ -58,9 +59,18 @@ bool j2GroundEnemy::Start()
 	Maxspeed.x = 5;
 
 	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
+	ColliderRect = {position.x,position.y,16,26};
 
 	EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+
+	groundEnemyCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
+	colliders.add(groundEnemyCollider);
+
+	boundaries.wallBack = false;
+	boundaries.wallBack = false;
+	boundaries.wallBack = false;
+	boundaries.wallBack = false;
 
 	ToMoveDown = false;
 	ToMoveUp = false;
@@ -124,6 +134,9 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	else {
 		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
+
+	groundEnemyCollider->SetPos(position.x + 16, position.y+8);
+	colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
 	return true;
 }
 
@@ -150,6 +163,51 @@ bool j2GroundEnemy::Save(pugi::xml_node &)
 
 void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 {
+	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
+
+	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
+
+	if (overlay.w > 0 && MovingRight == true && overlay.h > 10)
+	{
+		position.x -= overlay.w;
+	}
+	else if (overlay.w > 0 && MovingLeft == true && overlay.h > 10)
+	{
+		position.x += overlay.w;
+	}
+}
+
+void j2GroundEnemy::CheckPreCollision()
+{
+		iPoint cell;
+		if(App->scene->CurrentMap2 == false)
+		colliderPosition = App->map->WorldToMap(colliderPosition.x, colliderPosition.y, App->map->data);
+		else
+		colliderPosition = App->map->WorldToMap(colliderPosition.x, colliderPosition.y, App->map->data2);
+
+		// north
+		cell.create(colliderPosition.x, colliderPosition.y + 1);
+		if (App->pathfinding->IsWalkable(cell))
+			
+
+
+		// south
+		cell.create(colliderPosition.x, colliderPosition.y - 1);
+		if (App->pathfinding->IsWalkable(cell))
+
+
+		// Right
+		cell.create(colliderPosition.x + 1 , colliderPosition.y );
+		if (App->pathfinding->IsWalkable(cell))
+			boundaries.wallFront = true;
+		else
+			boundaries.wallFront = false;
+		// west
+		cell.create(colliderPosition.x - 1, colliderPosition.y);
+		if (App->pathfinding->IsWalkable(cell))
+			boundaries.wallBack = true;
+		else
+			boundaries.wallBack = false;
 }
 
 void j2GroundEnemy::EntityMovement(float dt)
@@ -160,17 +218,22 @@ void j2GroundEnemy::EntityMovement(float dt)
 
 	if (path->Count() > 2 && tileDistance < 15)
 	{
-		if (position.x < destination.x)
+		if (position.x < destination.x && boundaries.wallFront == false )
 		{
 			ToMoveRight = true;
 			ToMoveLeft = false;
 		}
-		else if (position.x > destination.x)
+		else if (position.x > destination.x && boundaries.wallBack == false)
 		{
 			ToMoveRight = false;
 			ToMoveLeft = true;
 		}
-		else if (position.x == destination.x)
+		/*else if (position.x == destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = false;
+		}*/
+		else
 		{
 			ToMoveRight = false;
 			ToMoveLeft = false;
@@ -214,6 +277,10 @@ void j2GroundEnemy::EntityFX()
 {
 	//CHANGE/FIX
 
+	if (!(Speed.x == 0.0f && Speed.y == 0.0f))
+	{
+		CheckPreCollision();
+	}
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
 		MovingLeft = false;
