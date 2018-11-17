@@ -5,6 +5,12 @@
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "p2Log.h"
+#include "j1Map.h"
+#include <math.h>
+#include "j1App.h"
+#include "j2EntityManager.h"
+#include "j1Pathfinding.h"
+#include "j2Player.h"
 
 #include "j1Input.h"
 
@@ -44,13 +50,23 @@ j2GroundEnemy::~j2GroundEnemy()
 
 bool j2GroundEnemy::Start()
 {
-	position.x = 250;
-	position.y = 570;
+	position.x = 300;
+	position.y = 574;
+	Speed.x = 0;
+	Speed.y = 0;
+
+	Maxspeed.x = 5;
 
 	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
 
 	EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+
+	ToMoveDown = false;
+	ToMoveUp = false;
+	ToMoveRight = false;
+	ToMoveLeft = false;
+
 	return true;
 }
 
@@ -82,9 +98,22 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 	}
 
-	/*Speed.x = -60 * dt;
+	if (do_logic == true)
+	{
+		CheckRelativePosition();
+		if (tileDistance < 15)
+		{
+			App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+			path = App->pathfinding->GetLastPath();
+		}
+		EntityMovement(dt);
+	}
 
-	position.x += Speed.x ;*/
+	//Change Position Depending on Speed
+	position.x += Speed.x;
+	position.y += Speed.y;
+	
+
 	EntityFX();
 
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
@@ -95,8 +124,6 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	else {
 		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
-	return true;
-
 	return true;
 }
 
@@ -121,6 +148,68 @@ bool j2GroundEnemy::Save(pugi::xml_node &)
 	return true;
 }
 
+void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
+{
+}
+
+void j2GroundEnemy::EntityMovement(float dt)
+{
+	iPoint destination;
+	if (path->Count() > 2)
+		destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+
+	if (path->Count() > 2 && tileDistance < 15)
+	{
+		if (position.x < destination.x)
+		{
+			ToMoveRight = true;
+			ToMoveLeft = false;
+		}
+		else if (position.x > destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = true;
+		}
+		else if (position.x == destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = false;
+		}
+	}
+	else
+	{
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		ToMoveDown = false;
+		ToMoveUp = false;
+	}
+
+
+	if (ToMoveRight)
+	{
+		Speed.x = ceil(60 * dt);
+	}
+	else if (ToMoveLeft)
+	{
+		Speed.x = floor(-60 * dt);
+	}
+	else
+	{
+		Speed.x = 0;
+	}
+
+	if (Speed.x < -Maxspeed.x)
+	{
+		Speed.x = -Maxspeed.x;
+	}
+	else if (Speed.x < -Maxspeed.x)
+	{
+		Speed.x = -Maxspeed.x;
+	}
+}
+
+
+
 void j2GroundEnemy::EntityFX()
 {
 	//CHANGE/FIX
@@ -128,24 +217,29 @@ void j2GroundEnemy::EntityFX()
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
 		MovingLeft = false;
+		CurrentState = GROUND_ENEMY_STATE::WALKING;
 	}
 	else if (Speed.x < 0.0f) {
 		MovingLeft = true;
 		MovingRight = false;
+		CurrentState = GROUND_ENEMY_STATE::WALKING;
 	}
 	else if (Speed.x == 0.0f) {
 		MovingLeft = false;
 		MovingRight = false;
+		CurrentState = GROUND_ENEMY_STATE::IDLE;
 	}
 
 
-	else if (Speed.y < 0.0f) {
+	 if (Speed.y < 0.0f) {
 		MovingUp = true;
 		MovingDown = false;
+		CurrentState = GROUND_ENEMY_STATE::IDLE;
 	}
 	else if (Speed.y > 0.0f) {
 		MovingDown = true;
 		MovingUp = false;
+		CurrentState = GROUND_ENEMY_STATE::IDLE;
 	}
 	else if (Speed.y == 0.0f) {
 		MovingUp = false;
@@ -162,6 +256,12 @@ void j2GroundEnemy::EntityFX()
 	switch (CurrentState) {
 	case GROUND_ENEMY_STATE::PATROLLING:
 		PatrollingFX();
+		break;
+	case GROUND_ENEMY_STATE::IDLE:
+		PatrollingFX();
+		break;
+	case GROUND_ENEMY_STATE::WALKING:
+		WalkingFX();
 		break;
 	case GROUND_ENEMY_STATE::CHASING_PLAYER:
 		WalkingFX();
@@ -198,4 +298,13 @@ void j2GroundEnemy::HurtFX()
 void j2GroundEnemy::DyingFX()
 {
 	currentAnimation = &death;
+}
+
+void j2GroundEnemy::CheckRelativePosition()
+{
+	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data);
+	enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
+	tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
+
+	tileDistance = sqrt(tileDistanceBetweenEntities.x*tileDistanceBetweenEntities.x + tileDistanceBetweenEntities.y*tileDistanceBetweenEntities.y);
 }

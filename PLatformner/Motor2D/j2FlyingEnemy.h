@@ -54,7 +54,7 @@ public:
 	Animation idle;
 
 	SDL_Rect AnimationRect;
-	iPoint flyingEnemyPathfindingPosition;
+	iPoint enemyPathfindingPosition;
 	iPoint pathFindingDistance;
 	iPoint tileDistanceBetweenEntities;
 

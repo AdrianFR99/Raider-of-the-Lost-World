@@ -61,12 +61,12 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		CheckRelativePosition();
 		if (tileDistance < 15)
 		{
-			App->pathfinding->CreatePath(flyingEnemyPathfindingPosition, playerPathfindingPosition);
+			App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
 			path = App->pathfinding->GetLastPath();
 		}
 		if (tileDistance*App->map->data.tile_width < 400)
-		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(flyingEnemyPathfindingPosition.x, 
-									flyingEnemyPathfindingPosition.y,App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y,App->map->data));
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x, 
+									enemyPathfindingPosition.y,App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y,App->map->data));
 	}
 	EntityMovement(dt);
 
@@ -186,8 +186,6 @@ void j2FlyingEnemy::EntityMovement(float dt)
 		{
 			Speed.y = 0;
 		}
-	
-
 }
 
 void j2FlyingEnemy::EntityFX()
@@ -242,13 +240,11 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::CheckRelativePosition()
 	{
-		//Change Player Vars for entity vars (@Adri) 
 		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).x,App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).y };
-		flyingEnemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
-		tileDistanceBetweenEntities = { playerPathfindingPosition.x - flyingEnemyPathfindingPosition.x, playerPathfindingPosition.y - flyingEnemyPathfindingPosition.y };
+		enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
+		tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
 		tileDistance = sqrt(tileDistanceBetweenEntities.x*tileDistanceBetweenEntities.x + tileDistanceBetweenEntities.y*tileDistanceBetweenEntities.y);
-
 	}
 
 	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
