@@ -4,6 +4,7 @@
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "p2Log.h"
+#include "j2Collision.h"
 
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
@@ -35,6 +36,9 @@ bool j2FlyingEnemy::Start()
 
 	entityTex = App->tex->Load("textures/bat.png");
 	CurrentState = FLYING_ENEMY_STATE::PATROLLING;
+
+	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
+	colliders.add(enemy_collider);
 	return true;
 }
 
@@ -46,9 +50,9 @@ bool j2FlyingEnemy::PreUpdate()
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
 	
-	Speed.x = ceil(60 * dt);
+	/*Speed.x = ceil(60 * dt);
 	
-	position.x += Speed.x;
+	position.x += Speed.x;*/
 
 	EntityFX();
 	
@@ -60,6 +64,8 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 	else {
 		App->render->Blit(entityTex, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
+
+	enemy_collider->SetPos(position.x,position.y);
 	return true;
 }
 
@@ -133,3 +139,8 @@ void j2FlyingEnemy::EntityFX()
 {
 		currentAnimation = &idle;
 }
+
+	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
+	{
+		int i = 0;
+	}

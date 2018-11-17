@@ -38,6 +38,8 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
 
+	void OnCollision(Collider* c1, Collider* c2);
+
 	void EntityFX();
 	void PatrollingFX();
 
@@ -47,6 +49,7 @@ public:
 
 	SDL_Rect AnimationRect;
 
+	Collider* enemy_collider;
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
