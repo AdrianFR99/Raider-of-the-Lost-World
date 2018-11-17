@@ -13,6 +13,7 @@ struct Collider;
 enum class ENTITY_TYPE
 {
 	FLYING_ENEMY,
+	GROUND_ENEMY,
 	PLAYER,
 	UNKNOWN
 };
