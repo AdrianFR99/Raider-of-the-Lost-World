@@ -3,6 +3,7 @@
 
 #include "j2DynamicEntity.h"
 #include "j2Animation.h"
+#include "p2DynArray.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
@@ -43,16 +44,28 @@ public:
 	void EntityFX();
 	void PatrollingFX();
 
+	void CheckRelativePosition();
+
 public:
 	Animation* currentAnimation;
 	Animation idle;
 
 	SDL_Rect AnimationRect;
+	iPoint flyingEnemyPathfindingPosition;
+	iPoint pathFindingDistance;
+	iPoint tileDistanceBetweenEntities;
+
+	int tileDistance;
 
 	Collider* enemy_collider;
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
+
+	const p2DynArray<iPoint>* path;
+
+	iPoint playerPathfindingPosition;
+	
 
 	FLYING_ENEMY_STATE CurrentState;
 };

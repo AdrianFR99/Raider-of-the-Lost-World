@@ -82,9 +82,9 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 	}
 
-	Speed.x = -60 * dt;
+	/*Speed.x = -60 * dt;
 
-	position.x += Speed.x ;
+	position.x += Speed.x ;*/
 	EntityFX();
 
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);

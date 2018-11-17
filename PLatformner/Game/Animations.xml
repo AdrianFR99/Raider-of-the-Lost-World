@@ -155,7 +155,6 @@
             <PushBack x="795" y="140" w="47" h="35"/>
             <PushBack x="842" y="140" w="47" h="35"/>
             <PushBack x="889" y="140" w="47" h="35"/>
-            <PushBack x="936" y="140" w="47" h="35"/>
           </Walk>
 
           <Attack loop="false" speed="8.00">           

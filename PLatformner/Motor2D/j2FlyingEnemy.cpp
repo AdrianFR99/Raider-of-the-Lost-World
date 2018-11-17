@@ -5,6 +5,10 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "j2Collision.h"
+#include "j2Player.h"
+#include "j1Pathfinding.h"
+#include "j1Map.h"
+#include "p2Defs.h"
 
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
@@ -28,7 +32,7 @@ j2FlyingEnemy::~j2FlyingEnemy()
 }
 
 bool j2FlyingEnemy::Start()
-{
+{	//Change/Fix @Dídac
 	position.x = 300;
 	position.y = 560;
 	
@@ -53,6 +57,16 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 	/*Speed.x = ceil(60 * dt);
 	
 	position.x += Speed.x;*/
+
+	if (do_logic == true)
+	{
+		CheckRelativePosition();
+		if (tileDistance < 20)
+		{
+			App->pathfinding->CreatePath(flyingEnemyPathfindingPosition, playerPathfindingPosition);
+			path = App->pathfinding->GetLastPath();
+		}
+	}
 
 	EntityFX();
 	
@@ -140,7 +154,18 @@ void j2FlyingEnemy::EntityFX()
 		currentAnimation = &idle;
 }
 
+	void j2FlyingEnemy::CheckRelativePosition()
+	{
+		//Change Player Vars for entity vars (@Adri) 
+		playerPathfindingPosition = { App->map->WorldToMap(App->player->player.playerPos.x, App->player->player.playerPos.y, App->map->data).x,App->map->WorldToMap(App->player->player.playerPos.x, App->player->player.playerPos.y, App->map->data).y };
+		flyingEnemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
+		tileDistanceBetweenEntities = { playerPathfindingPosition.x - flyingEnemyPathfindingPosition.x, playerPathfindingPosition.y - flyingEnemyPathfindingPosition.y };
+
+		tileDistance = sqrt(tileDistanceBetweenEntities.x*tileDistanceBetweenEntities.x + tileDistanceBetweenEntities.y*tileDistanceBetweenEntities.y);
+
+	}
+
 	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
 	{
-		int i = 0;
+		
 	}
