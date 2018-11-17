@@ -56,8 +56,15 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 	void CalculateFramerate();
+	void DisplayFrameRateInfo();
 
 	pugi::xml_node GetLoadConfig();
+
+
+	bool	vSyncBool;
+
+	bool	debugInfo=false;
+
 
 private:
 
@@ -112,6 +119,10 @@ private:
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
+	float avg_fps;
+	float seconds_since_startup;
+	uint32 last_frame_ms;
+	uint32 frames_on_last_update;
 
 
 	j1PerfTimer			ptimer;
@@ -130,6 +141,8 @@ private:
 	
 
 	float				dt;
+
+	
 
 };
 

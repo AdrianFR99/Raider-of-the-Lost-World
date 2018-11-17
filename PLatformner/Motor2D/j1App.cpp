@@ -100,6 +100,7 @@ bool j1App::Awake()
 		organization.create(app_config.child("organization").child_value());
 
 		framerateCap = config.child("app").attribute("framerate_cap").as_uint();
+		vSyncBool = config.child("renderer").child("vsync").attribute("value").as_bool();
 	}
 
 	if(ret == true)
@@ -158,6 +159,17 @@ bool j1App::Update()
 	if(ret == true)
 		ret = PostUpdate();
 
+	if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) 
+		vSyncBool = !vSyncBool;
+
+	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+		debugInfo = !debugInfo;
+
+
+		DisplayFrameRateInfo();
+
+
+
 	FinishUpdate();
 	return ret;
 }
@@ -213,8 +225,10 @@ void j1App::FinishUpdate()
 	if(want_to_load == true)
 		LoadGameNow();
 
+	
+		CalculateFramerate();
+	
 
-	CalculateFramerate();
 }
 
 // Call modules before each loop iteration
@@ -449,26 +463,57 @@ void j1App::CalculateFramerate() {
 		last_sec_frame_count = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.ReadSec();
-	float seconds_since_startup = startup_time.ReadSec();
-	uint32 last_frame_ms = frame_time.Read();
-	uint32 frames_on_last_update = prev_last_sec_frame_count;
-
-	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
-		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
-	App->win->SetTitle(title);
-
-	//capped framerate
-	deltaTime = 1000 / framerateCap;
-
-	int delay = deltaTime - last_frame_ms;
-
-	DelayTimer.Start();
-	if(delay>0)
-	SDL_Delay((uint32)delay);
+	 avg_fps = float(frame_count) / startup_time.ReadSec();
+	seconds_since_startup = startup_time.ReadSec();
+	last_frame_ms = frame_time.Read();
+	frames_on_last_update = prev_last_sec_frame_count;
 
 
-	LOG("we waited %u and got back %f", delay, DelayTimer.ReadMs());
+
+	if (vSyncBool == false) {
+
+		//capped framerate
+		deltaTime = 1000 / framerateCap;
+
+		int delay = deltaTime - last_frame_ms;
+
+		DelayTimer.Start();
+		if (delay > 0)
+			SDL_Delay((uint32)delay);
+
+
+		LOG("we waited %u and got back %f", delay, DelayTimer.ReadMs());
+	}
+}
+void j1App::DisplayFrameRateInfo() {
+
+	if (debugInfo == true) {
+
+		static char title[256];
+		
+		if (vSyncBool==true){
+		
+
+			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  vSync=On",
+			avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+		}
+		
+		else {
+			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  vSync=Off",
+				avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+
+		}
+		
+		App->win->SetTitle(title);
+
+	}
+	else {
+	
+		static char title[50];
+		sprintf_s(title, 50, "Raider of the lost world");
+		App->win->SetTitle(title);
+
+	}
+
 
 }

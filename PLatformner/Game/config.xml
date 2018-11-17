@@ -1,14 +1,14 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="60">
+  <app framerate_cap="30">
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
   
-    <vsync value="false"/>
+    <vsync value="true"/>
     <cameraInit x="0" y="0"/>
     <cameraDisplacement value="3" />
     <cameraOffset left_x="300" right_x="150"/>
