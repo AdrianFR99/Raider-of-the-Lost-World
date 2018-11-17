@@ -69,7 +69,7 @@ private:
 
 	iPoint playerPathfindingPosition;
 	
-
+	
 	FLYING_ENEMY_STATE CurrentState;
 };
 

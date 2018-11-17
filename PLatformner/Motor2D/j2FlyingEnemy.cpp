@@ -44,6 +44,7 @@ bool j2FlyingEnemy::Start()
 
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
 	colliders.add(enemy_collider);
+
 	return true;
 }
 
@@ -114,7 +115,8 @@ void j2FlyingEnemy::EntityMovement(float dt)
 {
 	iPoint destination;
 	if (path->Count() > 2)
-		destination = App->map->MapToWorld(path->At(1)->x, path->At(1)->y, App->map->data);
+		destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+
 	if ( path->Count() > 2 && tileDistance < 15 )
 	{
 		if (position.x < destination.x)
@@ -127,17 +129,28 @@ void j2FlyingEnemy::EntityMovement(float dt)
 			ToMoveRight = false;
 			ToMoveLeft = true;
 		}
+		else if (position.x == destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = false;
+		}
 
 		if (position.y < destination.y)
 		{
 			ToMoveDown = true;
 			ToMoveUp = false;
 		}
-		else if (position.y > destination.y)
+		else if (position.y  > destination.y)
 		{
 			ToMoveDown = false;
 			ToMoveUp = true;
 		}
+		else if (position.y == destination.y)
+		{
+			ToMoveDown = false;
+			ToMoveUp = false;
+		}
+		
 	}
 	else
 	{
