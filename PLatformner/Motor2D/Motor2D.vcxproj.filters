@@ -56,6 +56,9 @@
     <ClCompile Include="j2GroundEnemy.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j2DynamicEntity.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

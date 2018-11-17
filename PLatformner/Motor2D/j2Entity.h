@@ -23,7 +23,7 @@ class j2Entity
 public:
 
 	//Constructor
-	j2Entity() : name("Unnamed"),manager(NULL) {}
+	j2Entity(ENTITY_TYPE type) : name("Unnamed"), manager(NULL), type(type) {}
 	//Destructor
 	virtual ~j2Entity() {}
 	//Start
@@ -54,6 +54,8 @@ public:
 	SDL_Texture* entityTex = nullptr;
 	
 	p2List<Collider*> colliders;
+
+	ENTITY_TYPE type;
 
 private:
 	j2EntityManager* manager;

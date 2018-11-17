@@ -30,7 +30,7 @@ bool j2FlyingEnemy::Start()
 {
 	position.x = 300;
 	position.y = 560;
-
+	
 	AnimationRect = {0,0,16,16};
 
 	entityTex = App->tex->Load("textures/bat.png");
@@ -46,11 +46,20 @@ bool j2FlyingEnemy::PreUpdate()
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
 	
+	Speed.x = ceil(60 * dt);
+	
+	position.x += Speed.x;
+
 	EntityFX();
 	
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
-	App->render->Blit(entityTex,position.x,position.y,&AnimationRect);
-
+	
+	if (lookingRight) {
+		App->render->Blit(entityTex, position.x, position.y , &AnimationRect, SDL_FLIP_NONE);
+	}
+	else {
+		App->render->Blit(entityTex, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+	}
 	return true;
 }
 
@@ -76,11 +85,37 @@ bool j2FlyingEnemy::Save(pugi::xml_node &)
 }
 
 void j2FlyingEnemy::EntityFX()
-{
-	if (ToMoveRight == true && ToMoveLeft == false) {
+{ //CHANGE/FIX
+
+		if (Speed.x > 0.0f) {
+			MovingRight = true;
+			MovingLeft = false;
+		}
+		else if (Speed.x < 0.0f) {
+			MovingLeft = true;
+			MovingRight = false;
+		}
+		else if (Speed.x == 0.0f) {
+			MovingLeft = false;
+			MovingRight = false;
+		}
+		else if (Speed.y < 0.0f) {
+			MovingUp = true;
+			MovingDown = false;
+		}
+		else if (Speed.y > 0.0f) {
+			MovingDown = true;
+			MovingUp = false;
+		}
+		else if (Speed.y == 0.0f) {
+			MovingUp = false;
+			MovingDown = false;
+		}
+
+	if (MovingRight == true && MovingLeft == false) {
 		lookingRight = true;
 	}
-	else if (ToMoveLeft == true && ToMoveRight == false) {
+	else if (MovingLeft == true && MovingRight == false) {
 		lookingRight = false;
 	}
 

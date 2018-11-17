@@ -10,7 +10,7 @@ struct Collider;
 class j2DynamicEntity:public j2Entity
 {
 public:
-	j2DynamicEntity() : j2Entity() {}
+	j2DynamicEntity() : j2Entity(type) {}
 
 	virtual ~j2DynamicEntity() {}
 
@@ -32,6 +32,10 @@ public:
 	virtual bool Save(pugi::xml_node&) const override { return true; }
 	//OnCollision Callback
 	virtual void OnCollision(Collider* c1, Collider* c2)override {}
+
+	//void j2DynamicEntity::CheckEntityMovement();
+
+	//void j2DynamicEntity::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy);
 
 public:
 //vars
@@ -74,6 +78,11 @@ public:
 	bool ToMoveUp = false;
 	bool ToMoveDown = false;
 
+	bool MovingRight = false;
+	bool MovingLeft = false;
+	bool MovingUp = false;
+	bool MovingDown = false;
+
 	bool lookingRight;
 	
 	//Blit ints
@@ -83,13 +92,15 @@ public:
 public:
 	//funcitons
 	
-	virtual void CheckEntityMovement(){}
+	void CheckEntityMovement(){}
 	virtual void SwithcingStates(float dt){}
 	virtual void EntityFX(){}
 	virtual void EntityMovement(float dt){}
 	virtual void EntityAttacks(float dt){}
 
-	virtual void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+	 void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+
+
 
 
 };
