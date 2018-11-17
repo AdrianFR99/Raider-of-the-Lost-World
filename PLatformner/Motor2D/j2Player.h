@@ -126,7 +126,7 @@ public:
 	//Main functions
 	void PlayerMovementInputs();
 	//void CheckPlayerMovement();//DynamicEntity
-	void CheckEntityMovement()override;
+	//void CheckEntityMovement()override;
 
 	void SwithcingStates(float dt) override;//DynamicEntity
 
@@ -164,7 +164,7 @@ public:
 		void CheckCollidersAttacks();
 
 	bool CreatePlayerColliders(Player &p);
-	void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy)override;
+
 
 	void PlayerDebugF();
 

@@ -239,8 +239,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 // Load Game State
 bool j2Player::Load(pugi::xml_node& data)
 {
-	position.x = data.child("playerPos").attribute("x").as_int();
-	position.y = data.child("playerPos").attribute("y").as_int();
+
+
+	position.x = data.child("player").attribute("x").as_int();
+	position.y = data.child("player").attribute("y").as_int();
 
 	Speed.x= data.child("Speed").attribute("x").as_int();
 	Speed.y = data.child("Speed").attribute("y").as_int();
@@ -289,8 +291,9 @@ bool j2Player::Load(pugi::xml_node& data)
 // Save Game State
 bool j2Player::Save(pugi::xml_node& data) const
 {
-	pugi::xml_node playerSave = data.append_child("playerPos");
+	pugi::xml_node playerSave = data.append_child("player");
 	
+
 	playerSave.append_attribute("x") = position.x;
 	playerSave.append_attribute("y") = position.y;
 
@@ -801,39 +804,39 @@ void  j2Player::PlayerMovementInputs() {
 
 
 
-void j2Player::CheckEntityMovement(){
-
-	if (Speed.x > 0.0f) {
-		MovingRight = true;
-		MovingLeft = false;
-	}
-	else if (Speed.x < 0.0f) {
-		MovingLeft = true;
-		MovingRight = false;
-	}
-	else if (Speed.x == 0.0f) {
-		MovingLeft = false;
-		MovingRight = false;
-	}
-
-	if (landed == true)
-	{
-		Speed.y = 0.0f;
-	}
-	else if (Speed.y < 0.0f) {
-		MovingUp = true;
-		MovingDown = false;
-	}
-	else if (Speed.y > 0.0f) {
-		MovingDown = true;
-		MovingUp = false;
-	}
-	else if (Speed.y == 0.0f) {
-		MovingUp = false;
-		MovingDown = false;
-	}
-
-}
+//void j2Player::CheckEntityMovement(){
+//
+//	if (Speed.x > 0.0f) {
+//		MovingRight = true;
+//		MovingLeft = false;
+//	}
+//	else if (Speed.x < 0.0f) {
+//		MovingLeft = true;
+//		MovingRight = false;
+//	}
+//	else if (Speed.x == 0.0f) {
+//		MovingLeft = false;
+//		MovingRight = false;
+//	}
+//
+//	if (landed == true)
+//	{
+//		Speed.y = 0.0f;
+//	}
+//	else if (Speed.y < 0.0f) {
+//		MovingUp = true;
+//		MovingDown = false;
+//	}
+//	else if (Speed.y > 0.0f) {
+//		MovingDown = true;
+//		MovingUp = false;
+//	}
+//	else if (Speed.y == 0.0f) {
+//		MovingUp = false;
+//		MovingDown = false;
+//	}
+//
+//}
 
 void j2Player::SwithcingStates(float dt) {
 
@@ -1579,13 +1582,4 @@ void j2Player::CheckCollidersAttacks() {
 		}
 	}
 }
-void j2Player::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy) {
-	
-		if (lookingTo)
-			col->SetPos(CharacterPos.x + Displacementx, CharacterPos.y + Displacementy);
-		else
-			col->SetPos(CharacterPos.x, CharacterPos.y + Displacementy);
-	
-	
-	
-	}
+

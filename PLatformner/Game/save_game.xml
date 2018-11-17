@@ -9,9 +9,33 @@
 		<switchScene value="false" />
 	</scene>
 	<collisions />
-	<entities />
+	<entities>
+		<player x="1049" y="345" />
+		<Speed x="120.738312" y="0" deadCounter="0" />
+		<ToMoveRight value="false" />
+		<ToMoveLeft value="false" />
+		<ToMoveUp value="false" />
+		<ToMoveDown value="false" />
+		<MovingRight value="true" />
+		<MovingLeft value="false" />
+		<MovingUp value="false" />
+		<MovingDown value="true" />
+		<lookingRight value="true" />
+		<FirstJump value="false" />
+		<ChargedAttackB value="false" />
+		<BasicAttackB value="false" />
+		<AirAttackB value="false" />
+		<arealAttackUsed arealAttackUsed="false" />
+		<GodModeB GodModeB="false" />
+		<wallFront wallFront="false" />
+		<wallDown wallDown="false" />
+		<wallTop wallTop="false" />
+		<wallBack wallBack="false" />
+		<landed value="true" />
+		<dead value="false" />
+	</entities>
 	<pathfinding />
 	<renderer>
-		<camera x="1990" y="333" />
+		<camera x="1502" y="429" />
 	</renderer>
 </game_state>
