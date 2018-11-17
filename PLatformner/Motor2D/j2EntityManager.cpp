@@ -126,13 +126,13 @@ bool j2EntityManager::Load(pugi::xml_node &save_game_manager)
 	return ret;
 }
 
-bool j2EntityManager::Save(pugi::xml_node &save_game_manager)
+bool j2EntityManager::Save(pugi::xml_node &save_game_manager) const
 {
 	bool ret = true;
 
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->Load(save_game_manager);
+		ret = item->data->Save(save_game_manager);
 		if (!ret)
 			break;
 	}

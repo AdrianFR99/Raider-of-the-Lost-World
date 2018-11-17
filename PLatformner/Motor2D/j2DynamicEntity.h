@@ -30,9 +30,9 @@ public:
 
 
 	//Load
-	virtual bool Load(pugi::xml_node&) override { return true; }
+	virtual bool Load(pugi::xml_node&) { return true; }
 	//Save
-	virtual bool Save(pugi::xml_node&) const override { return true; }
+	virtual bool Save(pugi::xml_node&) const  { return true; }
 	//OnCollision Callback
 	virtual void OnCollision(Collider* c1, Collider* c2)override {}
 
@@ -98,13 +98,13 @@ public:
 	//funcitons
 	
 
-	virtual void CheckEntityMovement(){}
+	void CheckEntityMovement();
 	virtual void SwithcingStates(float dt){} //readablefunction
 	virtual void EntityFX(){}
 	virtual void EntityMovement(float dt){}
 	virtual void EntityAttacks(float dt){}
 
-	virtual void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+	void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy);
 
 
 
