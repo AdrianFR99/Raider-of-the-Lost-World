@@ -9,6 +9,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "p2Defs.h"
+#include "j1Audio.h"
 
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
@@ -53,20 +54,20 @@ bool j2FlyingEnemy::PreUpdate()
 
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
-	
-	/*Speed.x = ceil(60 * dt);
-	
-	position.x += Speed.x;*/
 
 	if (do_logic == true)
 	{
 		CheckRelativePosition();
-		if (tileDistance < 20)
+		if (tileDistance < 15)
 		{
 			App->pathfinding->CreatePath(flyingEnemyPathfindingPosition, playerPathfindingPosition);
 			path = App->pathfinding->GetLastPath();
 		}
+		if (tileDistance*App->map->data.tile_width < 400)
+		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(flyingEnemyPathfindingPosition.x, 
+									flyingEnemyPathfindingPosition.y,App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y,App->map->data));
 	}
+	EntityMovement(dt);
 
 	EntityFX();
 	
@@ -79,7 +80,12 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		App->render->Blit(entityTex, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
+	position.x += Speed.x;
+	position.y += Speed.y;
+
 	enemy_collider->SetPos(position.x,position.y);
+
+	
 	return true;
 }
 
@@ -102,6 +108,73 @@ bool j2FlyingEnemy::Load(pugi::xml_node &)
 bool j2FlyingEnemy::Save(pugi::xml_node &)
 {
 	return true;
+}
+
+void j2FlyingEnemy::EntityMovement(float dt)
+{
+	iPoint destination;
+	if (path->Count() > 2)
+		destination = App->map->MapToWorld(path->At(1)->x, path->At(1)->y, App->map->data);
+	if ( path->Count() > 2 && tileDistance < 15 )
+	{
+		if (position.x < destination.x)
+		{
+			ToMoveRight = true;
+			ToMoveLeft = false;
+		}
+		else if (position.x > destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = true;
+		}
+
+		if (position.y < destination.y)
+		{
+			ToMoveDown = true;
+			ToMoveUp = false;
+		}
+		else if (position.y > destination.y)
+		{
+			ToMoveDown = false;
+			ToMoveUp = true;
+		}
+	}
+	else
+	{
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		ToMoveDown = false;
+		ToMoveUp = false;
+	}
+
+
+		if (ToMoveRight)
+		{
+			Speed.x = ceil(60 * dt);
+		}
+		else if (ToMoveLeft)
+		{
+			Speed.x = floor(-60 * dt);
+		}
+		else
+		{
+			Speed.x = 0;
+		}
+
+		if (ToMoveUp)
+		{
+			Speed.y = floor(-60 * dt);
+		}
+		else if (ToMoveDown)
+		{
+			Speed.y = ceil(60 * dt);
+		}
+		else
+		{
+			Speed.y = 0;
+		}
+	
+
 }
 
 void j2FlyingEnemy::EntityFX()
@@ -167,5 +240,8 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
 	{
-		
+		if (c2->type == COLLIDER_PLAYERATTACK )
+		{
+			
+		}
 	}

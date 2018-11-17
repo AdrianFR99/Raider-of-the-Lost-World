@@ -11,7 +11,7 @@ j2EntityManager::j2EntityManager() : j1Module()
 {
 	name.create("entities");
 
-	update_ms_cycle = 0.250f;  //Change/Fix @Dídac must calculate value not hardcode
+	update_ms_cycle = 0.200f;  //Change/Fix @Dídac must calculate value not hardcode
 }
 
 j2EntityManager::~j2EntityManager()

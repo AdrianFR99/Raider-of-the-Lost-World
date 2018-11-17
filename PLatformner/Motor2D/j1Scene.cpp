@@ -105,9 +105,9 @@ bool j1Scene::Start()
 	else
 		App->map->CreateColliders(App->map->data2);
 
-	//Play the first song
-	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+	////Play the first song
+	//p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
+	//App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
 
 	//Load pathfining debug image 
 	p2SString pathfinding_tex_path("%s%s",folder.GetString(), pathfinding_image_path.GetString());

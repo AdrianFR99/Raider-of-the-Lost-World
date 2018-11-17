@@ -41,6 +41,9 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 
+
+	void EntityMovement(float dt);
+
 	void EntityFX();
 	void PatrollingFX();
 
