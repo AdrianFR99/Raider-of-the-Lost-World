@@ -12,6 +12,6 @@
 	<entities />
 	<pathfinding />
 	<renderer>
-		<camera x="0" y="624" />
+		<camera x="1990" y="333" />
 	</renderer>
 </game_state>

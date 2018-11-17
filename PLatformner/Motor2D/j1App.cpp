@@ -160,7 +160,7 @@ bool j1App::Update()
 		ret = PostUpdate();
 
 	if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) 
-		vSyncBool = !vSyncBool;
+		Capto30 = !Capto30;
 
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debugInfo = !debugInfo;
@@ -470,7 +470,7 @@ void j1App::CalculateFramerate() {
 
 
 
-	if (vSyncBool == false) {
+	if (Capto30 == true) {
 
 		//capped framerate
 		deltaTime = 1000 / framerateCap;
@@ -490,19 +490,11 @@ void j1App::DisplayFrameRateInfo() {
 	if (debugInfo == true) {
 
 		static char title[256];
-		
-		if (vSyncBool==true){
-		
 
-			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  vSync=On",
-			avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
-		}
-		
-		else {
+
 			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  vSync=Off",
-				avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+			avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 
-		}
 		
 		App->win->SetTitle(title);
 

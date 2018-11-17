@@ -62,6 +62,7 @@ public:
 
 
 	bool	vSyncBool;
+	bool	Capto30;
 
 	bool	debugInfo=false;
 
