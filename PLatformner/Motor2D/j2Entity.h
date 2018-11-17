@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "SDL_image/include/SDL_image.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "SDL_image/include/SDL_image.h"
 
 class j2EntityManager;
 class j2DynamicEntity;
@@ -13,7 +14,8 @@ struct Collider;
 
 enum class ENTITY_TYPE
 {
-	ENEMY,
+	FLYING_ENEMY,
+	GROUND_ENEMY,
 	PLAYER,
 	UNKNOWN
 };
@@ -23,7 +25,9 @@ class j2Entity
 public:
 
 	//Constructor
+
 	j2Entity(ENTITY_TYPE type) : name("Unnamed"),manager(NULL),type(type)  {}
+
 	//Destructor
 	virtual ~j2Entity() {}
 
@@ -55,13 +59,13 @@ public:
 	p2SString name;
 	bool active;
 
+
 	SDL_Texture*EntityText=nullptr;
+
 	p2List<Collider*> colliders;
 
 	ENTITY_TYPE type;
 
-	
-	
 private:
 	j2EntityManager* manager;
 };

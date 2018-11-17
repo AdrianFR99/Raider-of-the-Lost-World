@@ -90,7 +90,7 @@ bool j1App::Awake()
 	bool ret = false;
 		
 	config = LoadConfig(config_file);
-
+	
 	if(config.empty() == false)
 	{
 		// self-config
@@ -258,9 +258,6 @@ bool j1App::DoUpdate()
 		}
 
 		ret = item->data->Update(dt);
-
-		
-
 	}
 
 	return ret;

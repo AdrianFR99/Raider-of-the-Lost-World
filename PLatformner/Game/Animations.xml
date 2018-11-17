@@ -155,7 +155,6 @@
             <PushBack x="795" y="140" w="47" h="35"/>
             <PushBack x="842" y="140" w="47" h="35"/>
             <PushBack x="889" y="140" w="47" h="35"/>
-            <PushBack x="936" y="140" w="47" h="35"/>
           </Walk>
 
           <Attack loop="false" speed="8.00">           
@@ -215,11 +214,11 @@
 
       
         <Bat>
-          <Idle>
+           <idle loop="true" speed="8.00">
              <PushBack x="0" y="0" w="16" h="16"/>
              <PushBack x="16" y="0" w="16" h="16"/>
             <PushBack x="32" y="0" w="16" h="16"/>  
-           </Idle>
+           </idle>
          </Bat>
       
       

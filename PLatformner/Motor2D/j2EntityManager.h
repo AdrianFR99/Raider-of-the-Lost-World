@@ -44,6 +44,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 
 
+
 public:
 	j2Entity* CreateEntity(ENTITY_TYPE type);
 	void DestroyEntity(j2Entity* entity_to_destroy);

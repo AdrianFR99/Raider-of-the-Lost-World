@@ -9,12 +9,11 @@ struct Collider;
 
 class j2DynamicEntity : public j2Entity
 {
-
 public:
-
-	j2DynamicEntity(): j2Entity(type)  {}
+	j2DynamicEntity() : j2Entity(type) {}
 
 	virtual ~j2DynamicEntity(){}
+
 
 
 	virtual bool Awake(pugi::xml_node& config) { return true; }
@@ -36,6 +35,10 @@ public:
 	virtual bool Save(pugi::xml_node&) const override { return true; }
 	//OnCollision Callback
 	virtual void OnCollision(Collider* c1, Collider* c2)override {}
+
+	//void j2DynamicEntity::CheckEntityMovement();
+
+	//void j2DynamicEntity::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy);
 
 public:
 //vars
@@ -94,13 +97,16 @@ public:
 public:
 	//funcitons
 	
+
 	virtual void CheckEntityMovement(){}
 	virtual void SwithcingStates(float dt){} //readablefunction
 	virtual void EntityFX(){}
 	virtual void EntityMovement(float dt){}
 	virtual void EntityAttacks(float dt){}
 
-	virtual void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+	 void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+
+
 
 
 };

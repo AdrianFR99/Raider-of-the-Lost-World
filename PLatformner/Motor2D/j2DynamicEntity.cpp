@@ -1,3 +1,4 @@
+
 //#include "j2DynamicEntity.h"
 //#include "j2Collision.h"
 //
@@ -8,6 +9,7 @@
 //
 //}
 //
+
 //void j2DynamicEntity::CheckEntityMovement() {
 //
 //	if (Speed.x > 0.0f) {

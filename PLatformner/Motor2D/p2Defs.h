@@ -2,7 +2,7 @@
 #define __P2DEFS_H__
 
 #include <stdio.h>
-
+#include <math.h>
 //  NULL just in case ----------------------
 
 #ifdef NULL
@@ -35,6 +35,7 @@
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
+#define DISTANCE_TO ( a, b ) (sqrt((a)*(a) + (b)*(b)))
 
 typedef unsigned int uint;
 typedef unsigned char uchar;
