@@ -100,6 +100,7 @@ bool j1App::Awake()
 		organization.create(app_config.child("organization").child_value());
 
 		framerateCap = config.child("app").attribute("framerate_cap").as_uint();
+		Capto30= config.child("app").attribute("Capto30").as_bool();
 		vSyncBool = config.child("renderer").child("vsync").attribute("value").as_bool();
 	}
 

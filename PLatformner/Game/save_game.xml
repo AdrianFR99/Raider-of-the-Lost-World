@@ -10,8 +10,8 @@
 	</scene>
 	<collisions />
 	<entities>
-		<player x="1049" y="345" />
-		<Speed x="120.738312" y="0" deadCounter="0" />
+		<player x="311" y="569" />
+		<Speed x="83.9736023" y="0" deadCounter="0" />
 		<ToMoveRight value="false" />
 		<ToMoveLeft value="false" />
 		<ToMoveUp value="false" />
@@ -19,7 +19,7 @@
 		<MovingRight value="true" />
 		<MovingLeft value="false" />
 		<MovingUp value="false" />
-		<MovingDown value="true" />
+		<MovingDown value="false" />
 		<lookingRight value="true" />
 		<FirstJump value="false" />
 		<ChargedAttackB value="false" />
@@ -36,6 +36,6 @@
 	</entities>
 	<pathfinding />
 	<renderer>
-		<camera x="1502" y="429" />
+		<camera x="24" y="629" />
 	</renderer>
 </game_state>
