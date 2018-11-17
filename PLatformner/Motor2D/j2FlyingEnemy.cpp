@@ -39,7 +39,7 @@ bool j2FlyingEnemy::Start()
 	
 	AnimationRect = {0,0,16,16};
 
-	entityTex = App->tex->Load("textures/bat.png");
+	EntityText = App->tex->Load("textures/bat.png");
 	CurrentState = FLYING_ENEMY_STATE::PATROLLING;
 
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
@@ -75,10 +75,10 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 	
 	if (lookingRight) {
-		App->render->Blit(entityTex, position.x, position.y , &AnimationRect, SDL_FLIP_NONE);
+		App->render->Blit(EntityText, position.x, position.y , &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(entityTex, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 
 	position.x += Speed.x;
@@ -243,7 +243,7 @@ void j2FlyingEnemy::EntityFX()
 	void j2FlyingEnemy::CheckRelativePosition()
 	{
 		//Change Player Vars for entity vars (@Adri) 
-		playerPathfindingPosition = { App->map->WorldToMap(App->player->player.playerPos.x, App->player->player.playerPos.y, App->map->data).x,App->map->WorldToMap(App->player->player.playerPos.x, App->player->player.playerPos.y, App->map->data).y };
+		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).x,App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).y };
 		flyingEnemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
 		tileDistanceBetweenEntities = { playerPathfindingPosition.x - flyingEnemyPathfindingPosition.x, playerPathfindingPosition.y - flyingEnemyPathfindingPosition.y };
 

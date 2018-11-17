@@ -104,7 +104,7 @@ public:
 	virtual void EntityMovement(float dt){}
 	virtual void EntityAttacks(float dt){}
 
-	 void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
+	virtual void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy){}
 
 
 

@@ -49,7 +49,7 @@ bool j2GroundEnemy::Start()
 
 	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
 
-	entityTex = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
+	EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 	return true;
 }
@@ -90,10 +90,10 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 	if (lookingRight) {
-		App->render->Blit(entityTex, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
+		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
-		App->render->Blit(entityTex, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 	}
 	return true;
 
