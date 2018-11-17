@@ -472,6 +472,7 @@ bool j2Player::Update(float dt, bool do_logic)
 	BROFILER_CATEGORY("Player_Update", Profiler::Color::Aquamarine);
 	if (dead == true)
 	{
+		landed = true;
 		PlayFXDie = true;
 
 		if (player.deadCounter < player.deadDelay)
