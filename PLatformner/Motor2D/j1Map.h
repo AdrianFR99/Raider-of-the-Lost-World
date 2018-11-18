@@ -189,6 +189,7 @@ public:
 	float SetLimitPoint(MapData&DataAux);
 
 	void SpawnEnemies(MapData&DataAux);
+	void CleanUpMapEnemies();
 
 
 	TileSet* GetTilesetFromTileId(int id,MapData& DataAux) const;
@@ -216,6 +217,8 @@ public:
 	MapData data;
 	MapData data2;
 	p2List<MapData> MapDataList;
+
+	p2List<int> EntitiesPositioInList;
 
 private:
 

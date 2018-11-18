@@ -113,6 +113,10 @@ bool j2FlyingEnemy::PostUpdate()
 
 bool j2FlyingEnemy::CleanUp()
 {
+
+	int i=colliders.find(enemy_collider);
+	colliders.At(i)->data->to_delete = true;
+
 	App->entities->DestroyEntity(this);
 	return false;
 }

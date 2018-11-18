@@ -198,6 +198,13 @@ bool j2GroundEnemy::PostUpdate()
 
 bool j2GroundEnemy::CleanUp()
 {
+
+	int i = colliders.find(groundEnemyCollider);
+	colliders.At(i)->data->to_delete = true;
+	i = colliders.find(groundEnemyFakeCollider);
+	colliders.At(i)->data->to_delete = true;
+
+
 	App->entities->DestroyEntity(this);
 	return false;
 }
