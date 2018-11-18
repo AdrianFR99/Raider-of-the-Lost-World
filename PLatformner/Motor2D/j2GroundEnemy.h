@@ -69,8 +69,10 @@ public:
 
 	SDL_Rect AnimationRect;
 	SDL_Rect ColliderRect;
+	SDL_Rect FakeColliderRect;
 
 	Collider* groundEnemyCollider;
+	Collider* groundEnemyFakeCollider;
 	iPoint colliderPosition;
 
 	iPoint enemyPathfindingPosition;

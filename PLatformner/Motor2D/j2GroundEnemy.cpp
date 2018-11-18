@@ -60,12 +60,14 @@ bool j2GroundEnemy::Start()
 
 	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
 	ColliderRect = {position.x,position.y,16,26};
-
+	FakeColliderRect = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
 	EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 
 	groundEnemyCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
+	groundEnemyFakeCollider = App->collision->AddCollider(FakeColliderRect, COLLIDER_ENEMY_CHECK, App->entities);
 	colliders.add(groundEnemyCollider);
+	colliders.add(groundEnemyFakeCollider);
 
 	boundaries.wallBack = false;
 	boundaries.wallBack = false;
@@ -136,7 +138,11 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	}
 
 	groundEnemyCollider->SetPos(position.x + 16, position.y+8);
+	groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x -1, groundEnemyCollider->rect.y -1);
 	colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
+
+	boundaries.wallFront = false;
+	boundaries.wallBack = false;
 	return true;
 }
 
@@ -167,13 +173,25 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
 
-	if (overlay.w > 0 && MovingRight == true && overlay.h > 10)
+	if (c1->type == COLLIDER_ENEMY)
 	{
-		position.x -= overlay.w;
+		if (overlay.w > 0 && MovingRight == true && overlay.h > 10)
+		{
+			position.x -= overlay.w;
+		}
+		else if (overlay.w > 0 && MovingLeft == true && overlay.h > 10)
+		{
+			position.x += overlay.w;
+		}
 	}
-	else if (overlay.w > 0 && MovingLeft == true && overlay.h > 10)
+
+	if (c1->type == COLLIDER_ENEMY_CHECK)
 	{
-		position.x += overlay.w;
+		if (overlay.w > 0 && overlay.h > 5 && overlay.x +overlay.w > c2->rect.x)
+			boundaries.wallFront = true;
+		if (overlay.w > 0 && overlay.h > 5 && overlay.x + overlay.w == c2->rect.x + c2->rect.w)
+			boundaries.wallBack = true;
+
 	}
 }
 
@@ -277,10 +295,10 @@ void j2GroundEnemy::EntityFX()
 {
 	//CHANGE/FIX
 
-	if (!(Speed.x == 0.0f && Speed.y == 0.0f))
-	{
-		CheckPreCollision();
-	}
+	//if (!(Speed.x == 0.0f && Speed.y == 0.0f))
+	//{
+	//	//CheckPreCollision();
+	//}
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
 		MovingLeft = false;

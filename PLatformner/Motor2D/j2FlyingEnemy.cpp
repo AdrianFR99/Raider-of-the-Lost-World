@@ -249,7 +249,7 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
 	{
-		if (c2->type == COLLIDER_PLAYERATTACK )
+		if (c2->type == COLLIDER_PLAYER_ATTACK )
 		{
 			
 		}

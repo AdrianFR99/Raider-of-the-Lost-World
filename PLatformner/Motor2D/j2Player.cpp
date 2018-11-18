@@ -1538,20 +1538,20 @@ void j2Player::CollidersAttacks() {
 
 		if (ChargedAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
+			player.PlayerAttackCollider = App->collision->AddCollider(player.ChargedAttackCollider, COLLIDER_PLAYER_ATTACK, App->entities);
 		}
 
 
 		else if (AirAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.AirAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
+			player.PlayerAttackCollider = App->collision->AddCollider(player.AirAttackCollider, COLLIDER_PLAYER_ATTACK, App->entities);
 
 		}
 
 		else if (BasicAttackB == true) {
 
-			player.PlayerAttackCollider = App->collision->AddCollider(player.BasicAttackCollider, COLLIDER_PLAYERATTACK, App->entities);
-
+			player.PlayerAttackCollider = App->collision->AddCollider(player.BasicAttackCollider, COLLIDER_PLAYER_ATTACK, App->entities);
+			
 		}
 	}
 }
