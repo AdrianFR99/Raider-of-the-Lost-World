@@ -108,7 +108,7 @@ bool j1Scene::Start()
 
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-	App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+	App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
 
 	//Load pathfining debug image 
 	p2SString pathfinding_tex_path("%s%s",folder.GetString(), pathfinding_image_path.GetString());
@@ -130,7 +130,7 @@ bool j1Scene::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
 	p = App->map->WorldToMap(p.x, p.y,App->map->data);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	/*if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (origin_selected == true)
 		{
@@ -142,7 +142,7 @@ bool j1Scene::PreUpdate()
 			origin = p;
 			origin_selected = true;
 		}
-	}
+	}*/
 
 	//CHANGE/FIX D�dac
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -193,6 +193,10 @@ bool j1Scene::Update(float dt)
 			switchTheMaps();
   }
 
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		PathfindingDebug = !PathfindingDebug;
+	}
 
 	if (CurrentMap2 == false) {	  	      //Draw Map 1
 		App->map->Draw(App->map->data);
@@ -237,20 +241,23 @@ bool j1Scene::Update(float dt)
 
 	
 	// Debug pathfinding ------------------------------
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
-	p = App->map->WorldToMap(p.x, p.y, App->map->data);
-	p = App->map->MapToWorld(p.x, p.y, App->map->data);
-
-	App->render->Blit(pathfinding_debug_tex, p.x, p.y);
-
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
+	if (PathfindingDebug)
 	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data);
-		App->render->Blit(pathfinding_debug_tex, pos.x, pos.y);
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
+		p = App->map->WorldToMap(p.x, p.y, App->map->data);
+		p = App->map->MapToWorld(p.x, p.y, App->map->data);
+
+		App->render->Blit(pathfinding_debug_tex, p.x, p.y);
+
+		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data);
+			App->render->Blit(pathfinding_debug_tex, pos.x, pos.y);
+		}
 	}
 	
 	return true;
@@ -291,7 +298,7 @@ void j1Scene::switchTheMaps()
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->next->data->GetString());
-		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+		App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
 		
 		//Load Navigation for the 2nd Map
 		int w, h;
@@ -310,7 +317,7 @@ void j1Scene::switchTheMaps()
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
-		App->audio->PlayMusic(lvl_song.GetString(), 2.0f);
+		App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
 
 		//Load Navigation for the 1st Map
 		int w, h;

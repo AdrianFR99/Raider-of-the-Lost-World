@@ -67,11 +67,11 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		//MaxAttenuation assignment
 		max_attenuation_distance = config.child("FX").child("max_attenuation_distance").attribute("value").as_int();
 		assert((max_attenuation_distance > 1 && max_attenuation_distance < 255),"max_attenuation_distance value is out of bounds! Distance attenuation won't work! Remember values from 1 to 255 only");
+		p2SString loadBatSound = config.child("FX").child("bat_fx").attribute("value").as_string();
+		p2SString bat_fx("%s%s", App->audio->Chunks_folder.GetString(), loadBatSound.GetString());
+		bat_sound = LoadFx(bat_fx.GetString());
 	}
-	//Change/FIX
-
-	bat_sound = LoadFx("audio/FX/bat_flying.wav");
-
+	
 	return ret;
 }
 

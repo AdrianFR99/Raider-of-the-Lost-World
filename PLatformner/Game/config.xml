@@ -45,6 +45,7 @@
     <FX>
       <folderFX>audio/FX/</folderFX>
       <max_attenuation_distance value="230"/>
+      <bat_fx value="bat_flying.wav"/>
     </FX>
     
    </audio>

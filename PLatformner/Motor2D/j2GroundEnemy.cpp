@@ -290,7 +290,7 @@ void j2GroundEnemy::EntityMovement(float dt)
 		else if (path->Count() > 0)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 
-		if (path->Count() > 2 && tileDistance < 15)
+		if (path->Count() > 0 && tileDistance < 15)
 		{
 			if (position.x < destination.x && boundaries.wallFront == false)
 			{
@@ -320,14 +320,6 @@ void j2GroundEnemy::EntityMovement(float dt)
 			ToMoveDown = false;
 			ToMoveUp = false;
 		}
-	}
-
-	if (valid_path == false)
-	{
-		ToMoveRight = false;
-		ToMoveLeft = false;
-		ToMoveDown = false;
-		ToMoveUp = false;
 	}
 
 	if (ToMoveRight)
@@ -476,7 +468,7 @@ void j2GroundEnemy::DyingFX()
 void j2GroundEnemy::CheckRelativePosition()
 {
 	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x + 16, App->entities->player->position.y + 32, App->map->data);
-	enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
+	enemyPathfindingPosition = { App->map->WorldToMap(position.x +32,position.y+32, App->map->data) };
 	tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
 	tileDistance = sqrt(tileDistanceBetweenEntities.x*tileDistanceBetweenEntities.x + tileDistanceBetweenEntities.y*tileDistanceBetweenEntities.y);

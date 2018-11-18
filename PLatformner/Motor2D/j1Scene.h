@@ -45,6 +45,8 @@ public:
 	bool SpawnEnemiesMap1 = true;
 	bool SpawnEnemiesMap2 = false;
 
+	bool PathfindingDebug = false;
+
 private:
 
 	p2List<p2SString*> loadedMap;
