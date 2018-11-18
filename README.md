@@ -11,7 +11,7 @@ Undeads will only follow you if you are close enough to their vertical position 
 height as them. 
 Flying Bats will fly around chasing you when you enter their perception zone.
  
-# ---------------------------CONTROLS:--------------------------------
+ ---------------------------CONTROLS:--------------------------------
 (keyboard) Playing Normally
 MOVE RIGHT: D
 MOVE LEFT: A
@@ -30,7 +30,7 @@ MOVE LEFT: A
 MOVE UP: W
 MOVE DOWN: S
 
-# ----------------------DEBUG FUNCTIONALITIES-------------------------
+ ----------------------DEBUG FUNCTIONALITIES-------------------------
 
 KEY F1: Start from the very first level
  " F2: Start from the beginning of the current level
@@ -41,7 +41,7 @@ KEY F1: Start from the very first level
  " F10: God Mode (you can fly and nothing will kill you)
  " F11: Enable/Disable FPS Cap to 30 FPS
 
-# --------------------POTENTIAL INNOVATIONS---------------------------
+ --------------------POTENTIAL INNOVATIONS---------------------------
 -The enemy Bat emmits its sound with Panning and distance attenuation!
 	If you want to play around with how it sounds without running around the bat, 
 	you can right click with the mouse, and a sound will be emmited from
@@ -53,14 +53,14 @@ which will perform a low-slide attack, and another one while going upwards.
 -Only elements inside the camera are printed (except for the background parallax).
 -Enemies have a Range of perception.
 
-# ----------------------Github links-----------------------------------
+ ----------------------Github links-----------------------------------
 Adrián Font Romero: https://github.com/AdrianFR99
 Dídac Romero Camó: https://github.com/DidacRomero
 
 Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
 
 
-# -----------------------WHO DID WHAT?---------------------------------
+ -----------------------WHO DID WHAT?---------------------------------
 
 Assignment 2:
 
@@ -79,7 +79,7 @@ Assignment 2:
 -Music for both levels: DidacRomero
 -Environmental sounds (Panning and distance attenuation): DidacRomero
 
-# ----------------------Credits----------------------------------------
+ ----------------------Credits----------------------------------------
 DISCLAIMER: WE DO NOT OWN ANY OF THE ART HEREBY CREDITED, IT ONLY BELONGS TO THE ARTISTS THEMSELVES
 
 Player Sprites made by rvros: https://rvros.itch.io/animated-pixel-hero
@@ -97,11 +97,12 @@ You can copy, modify, distribute and perform the work, even for commercial purpo
 You are not require to credit this work if you are or had been a Patreon Supporter at https://www.patreon.com/ansimuz
 
 Thanks get more like these at: https://www.patreon.com/ansimuz
-------------------------------------------------------------------------
+
+-------------------------------------------------------------
 
 Thank you for checking our game!
 
-# Copyright (c) 2018 Adrián Font Romero & Dídac Romero Camó
+Copyright (c) 2018 Adrián Font Romero & Dídac Romero Camó
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
