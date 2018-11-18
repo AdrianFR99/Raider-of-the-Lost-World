@@ -66,6 +66,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 	{
 		if (do_logic == true)
 		{
+			CheckRelativePosition();
 			int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
 			if (ret != -1)
 			{
