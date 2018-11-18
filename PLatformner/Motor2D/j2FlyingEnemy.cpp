@@ -68,15 +68,15 @@ j2FlyingEnemy::~j2FlyingEnemy()
 }
 
 bool j2FlyingEnemy::Start()
-{	//Change/Fix @Dídac
+{	
+
 	active = false;
-	/*position.x = 300;
-	position.y = 560;*/
-	
+
 	CurrentState = FLYING_ENEMY_STATE::PATROLLING;
 
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
 	colliders.add(enemy_collider);
+
 
 	return true;
 }

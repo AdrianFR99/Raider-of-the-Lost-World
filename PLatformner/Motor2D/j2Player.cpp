@@ -474,6 +474,7 @@ bool j2Player::PreUpdate()
 		landed = false;
 
 	}
+	
 
 	return true;
 }

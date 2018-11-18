@@ -222,7 +222,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	}
 	
 	else
-		CurrentState = GROUND_ENEMY_STATE::DEATH;
+		CurrentState = GROUND_ENEMY_STATE::HURT;
 
 
 		EntityFX();
