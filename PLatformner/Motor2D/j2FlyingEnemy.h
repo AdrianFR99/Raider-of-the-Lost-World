@@ -59,12 +59,28 @@ public:
 	iPoint pathFindingDistance;
 	iPoint tileDistanceBetweenEntities;
 
-	int tileDistance;
+	
 
 	Collider* enemy_collider;
+
+	//Vars to load values from xml
+	p2SString texturePath;
+	int tileDistance;
+	int maxtileDistance;
+	int maxSoundDistance;
+
+	float speed_x;
+	float speed_y;
+
+	int playerPathPositionAdjuster_x;
+	int playerPathPositionAdjuster_y;
+
+	
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
+	pugi::xml_node enemyNode;
+	pugi::xml_document configEnemy;
 
 	bool valid_path;
 	const p2DynArray<iPoint>* path;

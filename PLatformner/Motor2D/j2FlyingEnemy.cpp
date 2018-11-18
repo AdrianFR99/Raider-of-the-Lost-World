@@ -15,6 +15,7 @@
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
 	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
+	pugi::xml_parse_result resultEnemies = configEnemy.load_file("enemies.xml");
 
 	if (result != NULL)
 	{
@@ -25,6 +26,36 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 	else
 	{
 		LOG("Could not Load Flying Enemy Animations");
+	}
+
+	if (resultEnemies != NULL)
+	{
+		enemyNode = configEnemy.child("enemies").child("bat");
+		active = enemyNode.child("active").attribute("value").as_bool();
+		valid_path = enemyNode.child("valid_path").attribute("value").as_bool();
+		//Rect
+		AnimationRect.x = enemyNode.child("AnimationRect").attribute("x").as_int();
+		AnimationRect.x = enemyNode.child("AnimationRect").attribute("y").as_int();
+		AnimationRect.w = enemyNode.child("AnimationRect").attribute("w").as_int();
+		AnimationRect.h = enemyNode.child("AnimationRect").attribute("h").as_int();
+		//Texture
+		texturePath.create(enemyNode.child("texture").attribute("path").as_string());
+		EntityText = App->tex->Load(texturePath.GetString());
+
+		//MaxDistances
+		maxtileDistance = enemyNode.child("maxTileDistance").attribute("value").as_int();
+		maxSoundDistance = enemyNode.child("maxSoundDistance").attribute("value").as_int();
+
+		//Speeds
+		speed_x = enemyNode.child("speed_x").attribute("value").as_float();
+		speed_y = enemyNode.child("speed_y").attribute("value").as_float();
+
+		playerPathPositionAdjuster_x = enemyNode.child("playerPathPositionAdjuster_x").attribute("value").as_int();
+		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
+	}
+	else
+	{
+		LOG("Could not Load enemies.xml");
 	}
 	currentAnimation = nullptr;
 }
@@ -38,10 +69,7 @@ bool j2FlyingEnemy::Start()
 	active = false;
 	/*position.x = 300;
 	position.y = 560;*/
-	valid_path = false;
-	AnimationRect = {0,0,16,16};
-
-	EntityText = App->tex->Load("textures/bat.png");
+	
 	CurrentState = FLYING_ENEMY_STATE::PATROLLING;
 
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
@@ -69,7 +97,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 			if (App->entities->player->player.playerGodModeHitbox == nullptr)
 			{
 				CheckRelativePosition();
-				if (tileDistance < 15)
+				if (tileDistance < maxtileDistance)
 				{
 					int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
 					if (ret != -1)
@@ -83,8 +111,8 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 					}
 				}
 			}
-			if (tileDistance*App->map->data.tile_width < 400)
-				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x,
+			if (tileDistance*App->map->data.tile_width < maxSoundDistance)
+				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, App->audio->bat_channel, App->map->MapToWorld(enemyPathfindingPosition.x,
 					enemyPathfindingPosition.y, App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data));
 		}
 		EntityMovement(dt);
@@ -138,7 +166,7 @@ void j2FlyingEnemy::EntityMovement(float dt)
 {
 	iPoint destination;
 
-	if (tileDistance < 15 && valid_path == true)
+	if (tileDistance < maxtileDistance && valid_path == true)
 	{
 		if (path->Count() > 2)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
@@ -148,7 +176,7 @@ void j2FlyingEnemy::EntityMovement(float dt)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 			//destination = App->map->MapToWorld(enemyPathfindingPosition.x, enemyPathfindingPosition.y, App->map->data);
 
-		if (path->Count() > 0 && tileDistance < 15)
+		if (path->Count() > 0 && tileDistance < maxtileDistance)
 		{
 			if (position.x < destination.x)
 			{
@@ -191,7 +219,7 @@ void j2FlyingEnemy::EntityMovement(float dt)
 			ToMoveUp = false;
 		}
 	}
-	if (valid_path == false)
+	if (valid_path == false || tileDistance > maxtileDistance)
 	{
 		ToMoveRight = false;
 		ToMoveLeft = false;
@@ -202,11 +230,11 @@ void j2FlyingEnemy::EntityMovement(float dt)
 
 		if (ToMoveRight)
 		{
-			Speed.x = ceil(60 * dt);
+			Speed.x = ceil(speed_x * dt);
 		}
 		else if (ToMoveLeft)
 		{
-			Speed.x = floor(-60 * dt);
+			Speed.x = floor(-speed_x * dt);
 		}
 		else
 		{
@@ -215,11 +243,11 @@ void j2FlyingEnemy::EntityMovement(float dt)
 
 		if (ToMoveUp)
 		{
-			Speed.y = floor(-60 * dt);
+			Speed.y = floor(-speed_y * dt);
 		}
 		else if (ToMoveDown)
 		{
-			Speed.y = ceil(60 * dt);
+			Speed.y = ceil(speed_y * dt);
 		}
 		else
 		{
@@ -287,7 +315,7 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::CheckRelativePosition()
 	{
-		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x + 16, App->entities->player->position.y +32, App->map->data) };
+		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x + playerPathPositionAdjuster_x, App->entities->player->position.y + playerPathPositionAdjuster_y, App->map->data) };
 		enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
 		tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
