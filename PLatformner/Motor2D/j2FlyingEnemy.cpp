@@ -52,6 +52,9 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 
 		playerPathPositionAdjuster_x = enemyNode.child("playerPathPositionAdjuster_x").attribute("value").as_int();
 		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
+	
+	
+	
 	}
 	else
 	{

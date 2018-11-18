@@ -44,6 +44,7 @@ public: //Vars
 	p2List<p2SString*> songs_list;
 
 	p2SString bat_fx_path;
+
 	int bat_channel;
 	int max_attenuation_distance;
 

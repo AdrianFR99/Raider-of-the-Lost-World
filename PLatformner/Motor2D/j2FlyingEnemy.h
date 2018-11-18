@@ -77,6 +77,7 @@ public:
 
 	
 private:
+
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
 	pugi::xml_node enemyNode;

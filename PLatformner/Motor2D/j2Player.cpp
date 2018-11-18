@@ -421,9 +421,15 @@ bool j2Player::Start()
 	player.fakeCollisionRect = { EntityRect.x - 1, EntityRect.y - 1, EntityRect.w + 2, EntityRect.h + 2 };
 	
 
-	CreatePlayerColliders(player);
 
+
+	
+
+	CreatePlayerColliders(player);
 	CurrentState = Player_State::IDLE;
+
+	
+	
 
 	if(EntityText==nullptr)
 	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures

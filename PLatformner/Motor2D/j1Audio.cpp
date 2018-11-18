@@ -70,7 +70,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		p2SString loadBatSound = config.child("FX").child("bat_fx").attribute("value").as_string();
 		p2SString bat_fx("%s%s", App->audio->Chunks_folder.GetString(), loadBatSound.GetString());
 		bat_sound = LoadFx(bat_fx.GetString());
-		bat_channel = config.child("FX").child("bat_channel").attribute("value").as_int();
+		bat_channel = config.child("FX").child("bat_cdhannel").attribute("value").as_int();
 	}
 	
 	return ret;

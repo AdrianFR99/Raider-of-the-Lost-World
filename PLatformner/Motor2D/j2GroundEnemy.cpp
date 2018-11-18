@@ -223,11 +223,12 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	int i = colliders.find(groundEnemyCollider);
-	colliders.At(i)->data->to_delete = true;
-	i = colliders.find(groundEnemyFakeCollider);
-	colliders.At(i)->data->to_delete = true;
-
+	if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
+		int i = colliders.find(groundEnemyCollider);
+		colliders.At(i)->data->to_delete = true;
+		i = colliders.find(groundEnemyFakeCollider);
+		colliders.At(i)->data->to_delete = true;
+	}
 
 	App->entities->DestroyEntity(this);
 	return false;
@@ -279,6 +280,11 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 	if (c2->type == COLLIDER_PLAYER_ATTACK)
 	{
+		int i = colliders.find(groundEnemyCollider);
+		colliders.At(i)->data->to_delete = true;
+		i = colliders.find(groundEnemyFakeCollider);
+		colliders.At(i)->data->to_delete = true;
+		
 		dead = true;
 	}
 
