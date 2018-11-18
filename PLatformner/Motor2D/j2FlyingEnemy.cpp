@@ -176,6 +176,13 @@ void j2FlyingEnemy::EntityMovement(float dt)
 			ToMoveUp = false;
 		}
 	}
+	if (valid_path == false)
+	{
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		ToMoveDown = false;
+		ToMoveUp = false;
+	}
 
 
 		if (ToMoveRight)

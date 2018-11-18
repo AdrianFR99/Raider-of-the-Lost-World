@@ -57671,10 +57671,10 @@
   <object id="3" name="FinishPoint" x="3840.33" y="528.42" width="32.4167" height="47"/>
  </objectgroup>
  <objectgroup name="EnemySpawns">
-  <object id="5" name="UndeadSpawn" x="2743.67" y="453.667" width="24.6667" height="36.6667"/>
+  <object id="5" name="UndeadSpawn" x="2645" y="395.375" width="24.6667" height="36.6667"/>
   <object id="6" name="UndeadSpawn" x="3685" y="525" width="31" height="46"/>
-  <object id="7" name="UndeadSpawn" x="1898" y="320" width="27" height="42"/>
-  <object id="9" name="UndeadSpawn" x="1128" y="333" width="30" height="46"/>
+  <object id="7" name="UndeadSpawn" x="1898.04" y="325.941" width="27" height="42"/>
+  <object id="9" name="UndeadSpawn" x="1280" y="289.884" width="30" height="46"/>
   <object id="10" name="BatSpawn" x="756" y="269" width="21" height="22"/>
   <object id="11" name="BatSpanw" x="1647" y="126" width="18" height="20"/>
   <object id="12" name="BatSpanw" x="2451" y="409" width="20" height="21"/>

@@ -100,7 +100,10 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
 		active = true;
 	else
+	{
 		active = false;
+		landed = true;
+	}
 
 	if (active)
 	{
