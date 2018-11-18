@@ -17,6 +17,7 @@ struct ObjectGroup {
 	{
 		p2SString name;
 		float x, y, width, height;
+		int id;
 		
 	};
 
@@ -187,6 +188,7 @@ public:
 
 	float SetLimitPoint(MapData&DataAux);
 
+	void SpawnEnemies(MapData&DataAux);
 
 
 	TileSet* GetTilesetFromTileId(int id,MapData& DataAux) const;
@@ -208,6 +210,7 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties& list);
 	bool LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjGroup);
 	
+
 public:
 
 	MapData data;

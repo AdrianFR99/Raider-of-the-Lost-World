@@ -170,17 +170,6 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	/*if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 2 * App->win->GetScale();
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 2 * App->win->GetScale();
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x -= 2 * App->win->GetScale();
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 2 * App->win->GetScale();*/
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		switchTheMaps();
@@ -211,16 +200,15 @@ bool j1Scene::Update(float dt)
 		int x, y;
 		App->input->GetMousePosition(x, y);
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
-		/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
-			App->map->data.width, App->map->data.height,
-			App->map->data.tile_width, App->map->data.tile_height,
-			App->map->data.tilesets.count(),
-			map_coordinates.x, map_coordinates.y,
-			App->render->camera.x, App->render->camera.y);
+		
+		if (SpawnEnemiesMap1 == true) {
 
-		App->win->SetTitle(title.GetString());*/
+			App->map->SpawnEnemies(App->map->data);
 
-		if (App->entities->entities.start->data->position.x >= App->map->SetLimitPoint(App->map->data)) {
+			SpawnEnemiesMap1 = false;
+		}
+
+		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data)) {
 			switchTheMaps();
 		}
 
@@ -232,17 +220,9 @@ bool j1Scene::Update(float dt)
 
 		int x, y;
 		App->input->GetMousePosition(x, y);
-		/*iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data2);*/
-		/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d Camera.x =%d Camera.y =%d",
-			App->map->data2.width, App->map->data2.height,
-			App->map->data2.tile_width, App->map->data2.tile_height,
-			App->map->data2.tilesets.count(),
-			map_coordinates.x, map_coordinates.y,
-			App->render->camera.x, App->render->camera.y);*/
+		
 
-			/*App->win->SetTitle(title.GetString());*/
-
-			if (App->entities->entities.start->data->position.x >= App->map->SetLimitPoint(App->map->data2)) {
+			if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
 				switchTheMaps();
 			}
 

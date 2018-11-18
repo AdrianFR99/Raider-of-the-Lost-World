@@ -9,6 +9,7 @@
 #include "j2Player.h"
 #include "Brofiler/Brofiler.h"
 #include "j2EntityManager.h"
+#include "j2Entity.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -293,7 +294,7 @@ bool j1Map::Load(const char* file_name,MapData& DataAux)
 	}
 	//Load ObjectGroup Info--------------------------------------------
 	pugi::xml_node Object_Game;
-	for (Object_Game = map_file.child("map").child("objectgroup"); Object_Game && ret; Object_Game = Object_Game.next_sibling("Objectgroup"))
+	for (Object_Game = map_file.child("map").child("objectgroup"); Object_Game && ret; Object_Game = Object_Game.next_sibling("objectgroup"))
 	{
 		ObjectGroup*ObjGroup = new ObjectGroup();
 
@@ -643,6 +644,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node, ObjectGroup*ObjAux) {
 	{
 		ObjectGroup::Object*Object = new ObjectGroup::Object();
 
+		Object->id = Obj.attribute("id").as_int();
 		Object->name = Obj.attribute("name").as_string();
 		Object->x = Obj.attribute("x").as_float();
 		Object->y = Obj.attribute("y").as_float();
@@ -724,6 +726,68 @@ bool j1Map::CreateColliders(MapData&DataAux) {
 	return true;
 }
 
+void j1Map::SpawnEnemies(MapData&DataAux) {
+
+	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
+		
+		
+		if (DataAux.ObjectGamesGroup.At(i)->data->nameGroup == "EnemySpawns") {
+
+
+			for (int x = 0; x < DataAux.ObjectGamesGroup.At(i)->data->Objectlist.count();x++) {
+
+				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name =="UndeadSpawn") {
+
+					j2Entity*Aux;
+					Aux = App->entities->CreateEntity(ENTITY_TYPE::GROUND_ENEMY);
+
+					int j = App->entities->entities.find(Aux);
+
+					if (j != -1) {
+
+						
+						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+
+						continue;
+
+					}
+				
+				}
+
+				else if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name =="BatSpawn") {
+
+
+					j2Entity*Aux;
+					Aux = App->entities->CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
+
+					int j = App->entities->entities.find(Aux);
+
+					if (j != -1) {
+
+						App->entities->entities.At(i)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(i)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+						LOG("Entity %i ,Bat Spawned", x);
+
+						continue;
+
+
+					}
+					
+
+
+				}
+
+			}
+
+
+		}
+
+	}
+
+}
+
 float j1Map::SetPlayerToInitial(MapData&DataAux) {
 
 	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
@@ -732,17 +796,18 @@ float j1Map::SetPlayerToInitial(MapData&DataAux) {
 
 			for (int x = 0; x < DataAux.ObjectGamesGroup.At(i)->data->Objectlist.count(); ++x) {
 
-				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(i)->data->name == "StartingPoint");
+				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "StartingPoint") {
 
-				App->entities->entities.start->data->Start();
-				App->entities->entities.start->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
-				App->entities->entities.start->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+					App->entities->player->Start();
+					App->entities->player->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+					App->entities->player->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 
-				break;
+					break;
+				}
 			}
 		}
 	}
-	return (App->entities->entities.start->data->position.x);
+	return (App->entities->player->position.x);
 }
 
 

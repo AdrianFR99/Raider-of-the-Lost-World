@@ -42,6 +42,7 @@ public:
 
 	bool CurrentMap2=false;  // Use as Indicator of Which maps is the current one false=Map1 and true=Map2
 	bool DeleteColliders = false;
+	bool SpawnEnemiesMap1 = true;
 
 private:
 
