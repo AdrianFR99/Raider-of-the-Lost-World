@@ -74,6 +74,9 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		playerPathPositionAdjuster_x = enemyNode.child("playerPathPositionAdjuster_x").attribute("value").as_int();
 		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
 
+		enemyPathPositionAdjuster_x = enemyNode.child("enemyPathPositionAdjuster_x").attribute("value").as_int();
+		enemyPathPositionAdjuster_y = enemyNode.child("enemyPathPositionAdjuster_y").attribute("value").as_int();
+
 
 		//Rect Values
 		AnimationRect.w = idle.frames->w;
@@ -81,6 +84,9 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 
 		colliderRect_w = enemyNode.child("colliderRect_w").attribute("value").as_int();
 		colliderRect_h = enemyNode.child("colliderRect_h").attribute("value").as_int();
+
+		colliderOffset_x = enemyNode.child("colliderOffset_x").attribute("value").as_int();
+		colliderOffset_y = enemyNode.child("colliderOffset_y").attribute("value").as_int();
 
 		//Texture
 		texturePath.create(enemyNode.child("texture").attribute("path").as_string());
@@ -227,7 +233,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 
 		EntityFX();
 		
-		groundEnemyCollider->SetPos(position.x + 16, position.y + 8);
+		groundEnemyCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
 		groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x - 1, groundEnemyCollider->rect.y - 1);
 		colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
 
@@ -554,8 +560,8 @@ void j2GroundEnemy::DyingFX()
 
 void j2GroundEnemy::CheckRelativePosition()
 {
-	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x + 16, App->entities->player->position.y + 32, App->map->data);
-	enemyPathfindingPosition = { App->map->WorldToMap(position.x +32,position.y+32, App->map->data) };
+	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x + playerPathPositionAdjuster_x, App->entities->player->position.y + playerPathPositionAdjuster_y, App->map->data);
+	enemyPathfindingPosition = { App->map->WorldToMap(position.x + enemyPathPositionAdjuster_x,position.y + enemyPathPositionAdjuster_y, App->map->data) };
 	tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
 	tileDistance = sqrt(tileDistanceBetweenEntities.x*tileDistanceBetweenEntities.x + tileDistanceBetweenEntities.y*tileDistanceBetweenEntities.y);

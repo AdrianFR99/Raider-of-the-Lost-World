@@ -95,6 +95,12 @@ public:
 	int playerPathPositionAdjuster_x;
 	int playerPathPositionAdjuster_y;
 
+	int enemyPathPositionAdjuster_x;
+	int enemyPathPositionAdjuster_y;
+	int colliderOffset_x;
+	int colliderOffset_y;
+
+
 	int colliderRect_w;
 	int colliderRect_h;
 
