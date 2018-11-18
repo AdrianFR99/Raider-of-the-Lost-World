@@ -768,7 +768,6 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						int testing = App->entities->entities.At(i)->data->position.x;
 						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 						continue;
 
