@@ -136,7 +136,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		if (do_logic == true)
 		{
 			CheckRelativePosition();
-			if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1)
+			if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber thi is in tiles
 			{
 				if (tileDistance < 15)
 				{

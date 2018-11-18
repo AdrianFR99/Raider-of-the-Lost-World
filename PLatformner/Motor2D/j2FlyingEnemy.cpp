@@ -132,8 +132,12 @@ void j2FlyingEnemy::EntityMovement(float dt)
 	{
 		if (path->Count() > 2)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+		else if (path->Count() > 1)
+			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
+		else if (path->Count() > 0)
+			destination = App->map->MapToWorld(enemyPathfindingPosition.x +10, enemyPathfindingPosition.y, App->map->data);
 
-		if (path->Count() > 2 && tileDistance < 15)
+		if (path->Count() > 0 && tileDistance < 15)
 		{
 			if (position.x < destination.x)
 			{
@@ -272,7 +276,7 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::CheckRelativePosition()
 	{
-		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).x,App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data).y };
+		playerPathfindingPosition = { App->map->WorldToMap(App->entities->player->position.x + 16, App->entities->player->position.y +32, App->map->data) };
 		enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
 		tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
