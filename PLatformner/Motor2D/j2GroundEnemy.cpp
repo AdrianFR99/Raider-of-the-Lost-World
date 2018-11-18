@@ -96,88 +96,94 @@ bool j2GroundEnemy::PreUpdate()
 
 bool j2GroundEnemy::Update(float dt, bool do_logic)
 {
-	if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
-		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
-		active = true;
-	else
-	{
-		active = false;
-		landed = true;
-		Speed.y = 0.0f;
-	}
 
-	if (active)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
-		{
-			CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
-		{
-			CurrentState = GROUND_ENEMY_STATE::ATTACKING;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT)
-		{
-			CurrentState = GROUND_ENEMY_STATE::HURT;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
-		{
-			CurrentState = GROUND_ENEMY_STATE::DEATH;
-		}
+	if (dead == false) {
+
+		if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
+			&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
+			active = true;
 		else
 		{
-			CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+			active = false;
+			landed = true;
+			Speed.y = 0.0f;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+
+		if (active)
 		{
-			position.y -= 40;
-		}
-		
-		CheckRelativePosition();
-		if (do_logic == true)
-		{
-			if (App->entities->player->player.playerGodModeHitbox == nullptr)
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
 			{
-				if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
+				CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
+			{
+				CurrentState = GROUND_ENEMY_STATE::ATTACKING;
+			}
+			else if (hurted ==true)
+			{
+				CurrentState = GROUND_ENEMY_STATE::HURT;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
+			{
+				CurrentState = GROUND_ENEMY_STATE::DEATH;
+			}
+			else
+			{
+				CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+			{
+				position.y -= 40;
+			}
+
+
+			if (hurted == true && currentAnimation->Finished())
+				hurted = false;
+
+			if (dead == false) {
+
+				CheckRelativePosition();
+				if (do_logic == true)
 				{
-					if (tileDistance < 15)
+					if (App->entities->player->player.playerGodModeHitbox == nullptr)
 					{
-						int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-						if (ret != -1)
+						if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
 						{
-							valid_path = true;
-							path = App->pathfinding->GetLastPath();
-						}
-						else
-						{
-							valid_path = false;
+							if (tileDistance < 15)
+							{
+								int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+								if (ret != -1)
+								{
+									valid_path = true;
+									path = App->pathfinding->GetLastPath();
+								}
+								else
+								{
+									valid_path = false;
+								}
+							}
 						}
 					}
+
 				}
+
+				EntityMovement(dt);
+
+
+				//Change Position Depending on Speed
+				position.x += Speed.x;
+				position.y += Speed.y;
 			}
-			
 		}
-
-		EntityMovement(dt);
-
-
-		//Change Position Depending on Speed
-		position.x += Speed.x;
-		
-
 		SwithcingStates(dt);
+	}
+	
+	else
+		CurrentState = GROUND_ENEMY_STATE::DEATH;
+
+
 		EntityFX();
-		position.y += Speed.y;
-
-		AnimationRect = currentAnimation->GetCurrentFrame(dt);
-
-		if (lookingRight) {
-			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
-		}
-		else {
-			App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
-		}
-
+		
 		groundEnemyCollider->SetPos(position.x + 16, position.y + 8);
 		groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x - 1, groundEnemyCollider->rect.y - 1);
 		colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
@@ -187,7 +193,25 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		boundaries.wallDown = false;
 
 		landed = false;
+	
+
+
+	
+	
+		if (dead==true && currentAnimation->Finished())
+			CleanUp();
+
+
+
+	AnimationRect = currentAnimation->GetCurrentFrame(dt);
+
+	if (lookingRight) {
+		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 	}
+	else {
+		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+	}
+
 	return true;
 }
 
@@ -252,6 +276,13 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		if (overlay.h == 1 && overlay.w > 5)
 			landed = true;
 	}
+
+	if (c2->type == COLLIDER_PLAYER_ATTACK)
+	{
+		dead = true;
+	}
+
+
 }
 
 void j2GroundEnemy::CheckPreCollision()

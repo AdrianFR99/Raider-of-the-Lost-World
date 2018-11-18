@@ -106,6 +106,15 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		enemy_collider->SetPos(position.x, position.y);
 
 	}
+
+
+
+	if (dead) {
+		CleanUp();
+	}
+
+
+
 	return true;
 }
 
@@ -298,6 +307,6 @@ void j2FlyingEnemy::EntityFX()
 	{
 		if (c2->type == COLLIDER_PLAYER_ATTACK )
 		{
-			
+			dead = true;
 		}
 	}

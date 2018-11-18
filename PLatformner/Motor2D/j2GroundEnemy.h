@@ -82,7 +82,10 @@ public:
 	iPoint tileDistanceBetweenEntities;
 
 	int tileDistance;
+	int life = 3;
 
+
+	bool hurted=false;
 
 private:
 	pugi::xml_node AnimPushBack;

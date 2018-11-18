@@ -423,6 +423,9 @@ bool j2Player::Start()
 
 	CreatePlayerColliders(player);
 
+	CurrentState = Player_State::IDLE;
+
+	if(EntityText==nullptr)
 	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures
 
 	return true;
@@ -747,6 +750,10 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 	
 
+	if (c1->type==COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
+	{
+		dead = true;
+	}
 
 } 
 
@@ -1032,35 +1039,36 @@ void j2Player::AirStateTo(float dt) {
 
 void j2Player::AttackStateTo(float dt) {
 
-
-	if (Guard.Read() >=1200 && BasicAttackB == true ) {
-
-		BasicAttack.Reset();
-		BasicAttackB = false;
-		CurrentState = Player_State::IDLE;
-
-	}
-
-	if (landed != true && (ChargedAttackB == true || BasicAttackB==true)) {
-
-		Speed.y += gravity;
-
-	}
-
-	if (Speed.x == 0 && ChargedAttackB == true) {
 	
-		ChargedAttackB = false;
-		CurrentState = Player_State::IDLE;
-		ChargedAttack.Reset();
 
-	}
-	else if (MovingDown == true && AirAttackB == true) {
+		if (Guard.Read() >= 1200 && BasicAttackB == true) {
 
-		AirAttackB = false;
-		CurrentState = Player_State::AIR;
-		AirAttack.Reset();
-	}
-	
+			BasicAttack.Reset();
+				BasicAttackB = false;
+				CurrentState = Player_State::IDLE;
+
+		}
+
+		if (landed != true && (ChargedAttackB == true || BasicAttackB == true)) {
+
+			Speed.y += gravity;
+
+		}
+
+		if (Speed.x == 0 && ChargedAttackB == true) {
+
+			ChargedAttackB = false;
+			CurrentState = Player_State::IDLE;
+			ChargedAttack.Reset();
+
+		}
+		else if (MovingDown == true && AirAttackB == true) {
+
+			AirAttackB = false;
+			CurrentState = Player_State::AIR;
+			AirAttack.Reset();
+		}
+
 
 }
 
