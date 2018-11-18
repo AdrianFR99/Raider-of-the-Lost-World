@@ -38,6 +38,12 @@
 
     <playerPathPositionAdjuster_x value="16"/>
     <playerPathPositionAdjuster_y value="32"/>
+
+    <enemyPathPositionAdjuster_x value="32"/>
+    <enemyPathPositionAdjuster_y value="32"/>
+    
+    <colliderOffset_x value="16"/>
+    <colliderOffset_y value="8"/>
     
     
   </undead>
