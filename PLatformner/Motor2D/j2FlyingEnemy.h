@@ -44,6 +44,7 @@ public:
 
 	void EntityMovement(float dt);
 
+	void SwithcingStates(float dt)override;
 	void EntityFX();
 	void PatrollingFX();
 

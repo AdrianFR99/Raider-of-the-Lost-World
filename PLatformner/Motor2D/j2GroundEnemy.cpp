@@ -12,6 +12,7 @@
 #include "j1Pathfinding.h"
 #include "j2Player.h"
 #include "j1Scene.h"
+#include "j1Window.h"
 
 #include "j1Input.h"
 
@@ -51,12 +52,14 @@ j2GroundEnemy::~j2GroundEnemy()
 
 bool j2GroundEnemy::Start()
 {
-	position.x = 300;
-	position.y = 574;
+	active = false;
+	/*position.x = 300;
+	position.y = 574;*/
 	Speed.x = 0;
 	Speed.y = 0;
 
 	Maxspeed.x = 5;
+	Maxspeed.y = 3;
 
 	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
 	ColliderRect = {position.x,position.y,16,26};
@@ -69,15 +72,19 @@ bool j2GroundEnemy::Start()
 	colliders.add(groundEnemyCollider);
 	colliders.add(groundEnemyFakeCollider);
 
+	boundaries.wallFront = false;
 	boundaries.wallBack = false;
-	boundaries.wallBack = false;
-	boundaries.wallBack = false;
-	boundaries.wallBack = false;
+	boundaries.wallDown = false;
+	boundaries.wallTop = false;
 
+	landed = true;
+	gravity = 30.0f;
 	ToMoveDown = false;
 	ToMoveUp = false;
 	ToMoveRight = false;
 	ToMoveLeft = false;
+
+	
 
 	return true;
 }
@@ -89,60 +96,87 @@ bool j2GroundEnemy::PreUpdate()
 
 bool j2GroundEnemy::Update(float dt, bool do_logic)
 {
-	if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
-	{
-		CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
-	{
-		CurrentState = GROUND_ENEMY_STATE::ATTACKING;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT)
-	{
-		CurrentState = GROUND_ENEMY_STATE::HURT;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
-	{
-		CurrentState = GROUND_ENEMY_STATE::DEATH;
-	}
+	if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
+		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
+		active = true;
 	else
-	{
-		CurrentState = GROUND_ENEMY_STATE::PATROLLING;
-	}
+		active = false;
 
-	if (do_logic == true)
+	if (active)
 	{
-		CheckRelativePosition();
-		if (tileDistance < 15)
+		if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
 		{
-			App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-			path = App->pathfinding->GetLastPath();
+			CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
+		{
+			CurrentState = GROUND_ENEMY_STATE::ATTACKING;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT)
+		{
+			CurrentState = GROUND_ENEMY_STATE::HURT;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
+		{
+			CurrentState = GROUND_ENEMY_STATE::DEATH;
+		}
+		else
+		{
+			CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		{
+			position.y -= 40;
+		}
+
+		if (do_logic == true)
+		{
+			CheckRelativePosition();
+			if (tileDistance < 15)
+			{
+				int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+				if (ret != -1)
+				{
+					valid_path = true;
+					path = App->pathfinding->GetLastPath();
+				}
+				else
+				{
+					valid_path = false;
+				}
+			}
+		}
+
 		EntityMovement(dt);
+
+
+		//Change Position Depending on Speed
+		position.x += Speed.x;
+		
+
+		SwithcingStates(dt);
+		EntityFX();
+		position.y += Speed.y;
+
+		AnimationRect = currentAnimation->GetCurrentFrame(dt);
+
+		if (lookingRight) {
+			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
+		}
+		else {
+			App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		}
+
+		groundEnemyCollider->SetPos(position.x + 16, position.y + 8);
+		groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x - 1, groundEnemyCollider->rect.y - 1);
+		colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
+
+		boundaries.wallFront = false;
+		boundaries.wallBack = false;
+		boundaries.wallDown = false;
+
+		landed = false;
 	}
-
-	//Change Position Depending on Speed
-	position.x += Speed.x;
-	position.y += Speed.y;
-	
-
-	EntityFX();
-
-	AnimationRect = currentAnimation->GetCurrentFrame(dt);
-
-	if (lookingRight) {
-		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
-	}
-	else {
-		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
-	}
-
-	groundEnemyCollider->SetPos(position.x + 16, position.y+8);
-	groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x -1, groundEnemyCollider->rect.y -1);
-	colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
-
-	boundaries.wallFront = false;
-	boundaries.wallBack = false;
 	return true;
 }
 
@@ -183,15 +217,22 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		{
 			position.x += overlay.w;
 		}
+
+		if (overlay.h > 5 && overlay.h <10 && overlay.w > 5 && MovingDown == true)
+		{
+			position.y -= overlay.h;
+			landed = true;
+		}
 	}
 
 	if (c1->type == COLLIDER_ENEMY_CHECK)
 	{
 		if (overlay.w > 0 && overlay.h > 5 && overlay.x +overlay.w > c2->rect.x)
 			boundaries.wallFront = true;
-		if (overlay.w > 0 && overlay.h > 5 && overlay.x + overlay.w == c2->rect.x + c2->rect.w)
+		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x < c2->rect.x + c2->rect.w)
 			boundaries.wallBack = true;
-
+		if (overlay.h == 1 && overlay.w > 5)
+			landed = true;
 	}
 }
 
@@ -231,38 +272,41 @@ void j2GroundEnemy::CheckPreCollision()
 void j2GroundEnemy::EntityMovement(float dt)
 {
 	iPoint destination;
-	if (path->Count() > 2)
-		destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
-
-	if (path->Count() > 2 && tileDistance < 15)
+	if (tileDistance < 15 && valid_path == true)
 	{
-		if (position.x < destination.x && boundaries.wallFront == false )
+		if (path->Count() > 2)
+			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+
+		if (path->Count() > 2 && tileDistance < 15)
 		{
-			ToMoveRight = true;
-			ToMoveLeft = false;
+			if (position.x < destination.x && boundaries.wallFront == false)
+			{
+				ToMoveRight = true;
+				ToMoveLeft = false;
+			}
+			else if (position.x > destination.x && boundaries.wallBack == false)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = true;
+			}
+			/*else if (position.x == destination.x)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = false;
+			}*/
+			else
+			{
+				ToMoveRight = false;
+				ToMoveLeft = false;
+			}
 		}
-		else if (position.x > destination.x && boundaries.wallBack == false)
-		{
-			ToMoveRight = false;
-			ToMoveLeft = true;
-		}
-		/*else if (position.x == destination.x)
-		{
-			ToMoveRight = false;
-			ToMoveLeft = false;
-		}*/
 		else
 		{
 			ToMoveRight = false;
 			ToMoveLeft = false;
+			ToMoveDown = false;
+			ToMoveUp = false;
 		}
-	}
-	else
-	{
-		ToMoveRight = false;
-		ToMoveLeft = false;
-		ToMoveDown = false;
-		ToMoveUp = false;
 	}
 
 
@@ -287,18 +331,27 @@ void j2GroundEnemy::EntityMovement(float dt)
 	{
 		Speed.x = -Maxspeed.x;
 	}
+
+	if (landed == false)
+	{
+		Speed.y += gravity * dt;
+		if (Speed.y < -Maxspeed.y)
+		{
+			Speed.y = -Maxspeed.y;
+		}
+		else if (Speed.y > Maxspeed.y)
+		{
+			Speed.y = Maxspeed.y;
+		}
+	}
+	else
+	{
+		Speed.y = 0;
+	}
 }
 
-
-
-void j2GroundEnemy::EntityFX()
+void j2GroundEnemy::SwithcingStates(float dt) 
 {
-	//CHANGE/FIX
-
-	//if (!(Speed.x == 0.0f && Speed.y == 0.0f))
-	//{
-	//	//CheckPreCollision();
-	//}
 	if (Speed.x > 0.0f) {
 		MovingRight = true;
 		MovingLeft = false;
@@ -316,21 +369,33 @@ void j2GroundEnemy::EntityFX()
 	}
 
 
-	 if (Speed.y < 0.0f) {
+	if (Speed.y < 0.0f) {
 		MovingUp = true;
 		MovingDown = false;
-		CurrentState = GROUND_ENEMY_STATE::IDLE;
+		CurrentState = GROUND_ENEMY_STATE::AIR;
 	}
 	else if (Speed.y > 0.0f) {
 		MovingDown = true;
 		MovingUp = false;
-		CurrentState = GROUND_ENEMY_STATE::IDLE;
+		CurrentState = GROUND_ENEMY_STATE::AIR;
 	}
 	else if (Speed.y == 0.0f) {
 		MovingUp = false;
 		MovingDown = false;
 	}
 
+	if (landed == false)
+	{
+		CurrentState = GROUND_ENEMY_STATE::AIR;
+	}
+
+}
+
+
+
+void j2GroundEnemy::EntityFX()
+{
+	//CHANGE/FIX
 	if (ToMoveRight == true && ToMoveLeft == false) {
 		lookingRight = true;
 	}
@@ -340,6 +405,9 @@ void j2GroundEnemy::EntityFX()
 
 	switch (CurrentState) {
 	case GROUND_ENEMY_STATE::PATROLLING:
+		PatrollingFX();
+		break;
+	case GROUND_ENEMY_STATE::AIR:
 		PatrollingFX();
 		break;
 	case GROUND_ENEMY_STATE::IDLE:

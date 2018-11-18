@@ -206,6 +206,7 @@ bool j1Scene::Update(float dt)
 			App->map->SpawnEnemies(App->map->data);
 
 			SpawnEnemiesMap1 = false;
+			SpawnEnemiesMap2 = true;
 		}
 
 		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data)) {
@@ -220,10 +221,16 @@ bool j1Scene::Update(float dt)
 
 		int x, y;
 		App->input->GetMousePosition(x, y);
-		
 
 			if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
 				switchTheMaps();
+			}
+			if (SpawnEnemiesMap2 == true) {
+
+				App->map->SpawnEnemies(App->map->data2);
+
+				SpawnEnemiesMap2 = false;
+				SpawnEnemiesMap1 = true;
 			}
 
 	}

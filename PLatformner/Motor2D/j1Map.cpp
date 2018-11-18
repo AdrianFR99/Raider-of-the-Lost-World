@@ -785,7 +785,7 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 		}
 
 	}
-
+	App->entities->Start();
 }
 
 float j1Map::SetPlayerToInitial(MapData&DataAux) {

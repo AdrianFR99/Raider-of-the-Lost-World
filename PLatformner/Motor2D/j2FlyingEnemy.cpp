@@ -34,6 +34,7 @@ j2FlyingEnemy::~j2FlyingEnemy()
 
 bool j2FlyingEnemy::Start()
 {	//Change/Fix @Dídac
+	active = false;
 	position.x = 300;
 	position.y = 560;
 	
@@ -55,38 +56,39 @@ bool j2FlyingEnemy::PreUpdate()
 
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
-
-	if (do_logic == true)
+	if (active)
 	{
-		CheckRelativePosition();
-		if (tileDistance < 15)
+		if (do_logic == true)
 		{
-			App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-			path = App->pathfinding->GetLastPath();
+			CheckRelativePosition();
+			if (tileDistance < 15)
+			{
+				App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+				path = App->pathfinding->GetLastPath();
+			}
+			if (tileDistance*App->map->data.tile_width < 400)
+				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x,
+					enemyPathfindingPosition.y, App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data));
 		}
-		if (tileDistance*App->map->data.tile_width < 400)
-		App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x, 
-									enemyPathfindingPosition.y,App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y,App->map->data));
+		EntityMovement(dt);
+		SwithcingStates(dt);
+		EntityFX();
+
+		AnimationRect = currentAnimation->GetCurrentFrame(dt);
+
+		if (lookingRight) {
+			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
+		}
+		else {
+			App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
+		}
+
+		position.x += Speed.x;
+		position.y += Speed.y;
+
+		enemy_collider->SetPos(position.x, position.y);
+
 	}
-	EntityMovement(dt);
-
-	EntityFX();
-	
-	AnimationRect = currentAnimation->GetCurrentFrame(dt);
-	
-	if (lookingRight) {
-		App->render->Blit(EntityText, position.x, position.y , &AnimationRect, SDL_FLIP_NONE);
-	}
-	else {
-		App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
-	}
-
-	position.x += Speed.x;
-	position.y += Speed.y;
-
-	enemy_collider->SetPos(position.x,position.y);
-
-	
 	return true;
 }
 
@@ -188,34 +190,42 @@ void j2FlyingEnemy::EntityMovement(float dt)
 		}
 }
 
+void j2FlyingEnemy::SwithcingStates(float dt)
+{
+	if (Speed.x > 0.0f) {
+		MovingRight = true;
+		MovingLeft = false;
+		CurrentState = FLYING_ENEMY_STATE::CHASING_PLAYER;
+	}
+	else if (Speed.x < 0.0f) {
+		MovingLeft = true;
+		MovingRight = false;
+		CurrentState = FLYING_ENEMY_STATE::CHASING_PLAYER;
+	}
+	else if (Speed.x == 0.0f) {
+		MovingLeft = false;
+		MovingRight = false;
+		CurrentState = FLYING_ENEMY_STATE::PATROLLING;
+	}
+	else if (Speed.y < 0.0f) {
+		MovingUp = true;
+		MovingDown = false;
+		CurrentState = FLYING_ENEMY_STATE::CHASING_PLAYER;
+	}
+	else if (Speed.y > 0.0f) {
+		MovingDown = true;
+		MovingUp = false;
+		CurrentState = FLYING_ENEMY_STATE::CHASING_PLAYER;
+	}
+	else if (Speed.y == 0.0f) {
+		MovingUp = false;
+		MovingDown = false;
+		CurrentState = FLYING_ENEMY_STATE::PATROLLING;
+	}
+}
+
 void j2FlyingEnemy::EntityFX()
 { //CHANGE/FIX
-
-		if (Speed.x > 0.0f) {
-			MovingRight = true;
-			MovingLeft = false;
-		}
-		else if (Speed.x < 0.0f) {
-			MovingLeft = true;
-			MovingRight = false;
-		}
-		else if (Speed.x == 0.0f) {
-			MovingLeft = false;
-			MovingRight = false;
-		}
-		else if (Speed.y < 0.0f) {
-			MovingUp = true;
-			MovingDown = false;
-		}
-		else if (Speed.y > 0.0f) {
-			MovingDown = true;
-			MovingUp = false;
-		}
-		else if (Speed.y == 0.0f) {
-			MovingUp = false;
-			MovingDown = false;
-		}
-
 	if (MovingRight == true && MovingLeft == false) {
 		lookingRight = true;
 	}

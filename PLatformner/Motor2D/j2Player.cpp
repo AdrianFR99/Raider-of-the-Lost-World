@@ -626,12 +626,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	BROFILER_CATEGORY("Player_OnCollision", Profiler::Color::Cyan);
 	//Testing new system of collisions
 	SDL_Rect overlay; // SDL_Rect of the intersection between the 2 colliders
-	SDL_Rect* col1;
-	SDL_Rect* col2;
-	col1 = &c1->rect;
-	col2 = &c2->rect;
 
-	SDL_IntersectRect(col1, col2, &overlay);
+	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
 	
 	if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
 	{
@@ -737,7 +733,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 
-	//At the end put the player pos onto the collider Pos THIS IS ONLY FOR TESTING CHANGE/FIX @Dídac
+	//At the end put the player pos onto the collider Pos 
 	position.x = player.playerHitbox->rect.x -colliding.colliderOffset.x;
 	position.y = player.playerHitbox->rect.y -colliding.colliderOffset.y;
 

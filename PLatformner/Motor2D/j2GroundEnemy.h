@@ -10,6 +10,7 @@
 enum class GROUND_ENEMY_STATE
 {
 	PATROLLING,
+	AIR,
 	IDLE,
 	WALKING,
 	CHASING_PLAYER,
@@ -51,6 +52,7 @@ public:
 	void EntityMovement(float dt);
 
 	void CheckRelativePosition();
+	void SwithcingStates(float dt) override;
 
 	void EntityFX();
 	void PatrollingFX();
@@ -81,10 +83,12 @@ public:
 
 	int tileDistance;
 
+
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
 
+	bool valid_path;
 	const p2DynArray<iPoint>* path;
 
 	iPoint playerPathfindingPosition;

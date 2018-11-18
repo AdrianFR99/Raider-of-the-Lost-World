@@ -72,6 +72,8 @@ public:
 	fPoint Speed;
 	fPoint Maxspeed;
 
+	float gravity;
+
 	//bools
 	bool landed;
 	bool dead;
