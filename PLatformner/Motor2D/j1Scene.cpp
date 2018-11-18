@@ -204,7 +204,6 @@ bool j1Scene::Update(float dt)
 		if (SpawnEnemiesMap1 == true) {
 
 			App->map->SpawnEnemies(App->map->data);
-
 			SpawnEnemiesMap1 = false;
 			SpawnEnemiesMap2 = true;
 		}

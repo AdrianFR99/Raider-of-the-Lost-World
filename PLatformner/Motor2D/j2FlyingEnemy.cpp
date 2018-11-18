@@ -10,6 +10,7 @@
 #include "j1Map.h"
 #include "p2Defs.h"
 #include "j1Audio.h"
+#include "j1Window.h"
 
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
@@ -35,9 +36,9 @@ j2FlyingEnemy::~j2FlyingEnemy()
 bool j2FlyingEnemy::Start()
 {	//Change/Fix @Dídac
 	active = false;
-	position.x = 300;
-	position.y = 560;
-	
+	/*position.x = 300;
+	position.y = 560;*/
+	valid_path = false;
 	AnimationRect = {0,0,16,16};
 
 	EntityText = App->tex->Load("textures/bat.png");
@@ -56,15 +57,24 @@ bool j2FlyingEnemy::PreUpdate()
 
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
+	if (position.x + AnimationRect.w >= (App->render->camera.x / App->win->GetScale())
+		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
+		active = true;
+	else
+		active = false;
 	if (active)
 	{
 		if (do_logic == true)
 		{
-			CheckRelativePosition();
-			if (tileDistance < 15)
+			int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+			if (ret != -1)
 			{
-				App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+				valid_path = true;
 				path = App->pathfinding->GetLastPath();
+			}
+			else
+			{
+				valid_path = false;
 			}
 			if (tileDistance*App->map->data.tile_width < 400)
 				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x,
@@ -116,50 +126,54 @@ bool j2FlyingEnemy::Save(pugi::xml_node &)
 void j2FlyingEnemy::EntityMovement(float dt)
 {
 	iPoint destination;
-	if (path->Count() > 2)
-		destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
 
-	if ( path->Count() > 2 && tileDistance < 15 )
+	if (tileDistance < 15 && valid_path == true)
 	{
-		if (position.x < destination.x)
+		if (path->Count() > 2)
+			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+
+		if (path->Count() > 2 && tileDistance < 15)
 		{
-			ToMoveRight = true;
-			ToMoveLeft = false;
+			if (position.x < destination.x)
+			{
+				ToMoveRight = true;
+				ToMoveLeft = false;
+			}
+			else if (position.x > destination.x)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = true;
+			}
+			else if (position.x == destination.x)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = false;
+			}
+
+			if (position.y < destination.y)
+			{
+				ToMoveDown = true;
+				ToMoveUp = false;
+			}
+			else if (position.y > destination.y)
+			{
+				ToMoveDown = false;
+				ToMoveUp = true;
+			}
+			else if (position.y == destination.y)
+			{
+				ToMoveDown = false;
+				ToMoveUp = false;
+			}
+
 		}
-		else if (position.x > destination.x)
+		else
 		{
 			ToMoveRight = false;
-			ToMoveLeft = true;
-		}
-		else if (position.x == destination.x)
-		{
-			ToMoveRight = false;
 			ToMoveLeft = false;
-		}
-
-		if (position.y < destination.y)
-		{
-			ToMoveDown = true;
-			ToMoveUp = false;
-		}
-		else if (position.y  > destination.y)
-		{
-			ToMoveDown = false;
-			ToMoveUp = true;
-		}
-		else if (position.y == destination.y)
-		{
 			ToMoveDown = false;
 			ToMoveUp = false;
 		}
-		
-	}
-	else
-	{
-		ToMoveRight = false;
-		ToMoveLeft = false;
-		ToMoveDown = false;
-		ToMoveUp = false;
 	}
 
 

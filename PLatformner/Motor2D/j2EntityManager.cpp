@@ -15,7 +15,7 @@ j2EntityManager::j2EntityManager() : j1Module()
 
 	player = (j2Player*)CreateEntity(ENTITY_TYPE::PLAYER);
 	//CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
-	CreateEntity(ENTITY_TYPE::GROUND_ENEMY);
+	//CreateEntity(ENTITY_TYPE::GROUND_ENEMY);
 }
 
 j2EntityManager::~j2EntityManager()

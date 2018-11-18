@@ -66,6 +66,7 @@ private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
 
+	bool valid_path;
 	const p2DynArray<iPoint>* path;
 
 	iPoint playerPathfindingPosition;

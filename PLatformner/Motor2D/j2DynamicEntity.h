@@ -14,37 +14,8 @@ public:
 
 	virtual ~j2DynamicEntity(){}
 
-
-
-	virtual bool Awake(pugi::xml_node& config) { return true; }
-	//Start
-	virtual	bool Start()override { return true; }
-	//PreUpdate		Called each loop iteration
-	virtual bool PreUpdate()override { return true; }
-	//Update		Called each loop iteration
-	virtual bool Update(float dt, bool do_logic)override { return true; }
-	//PostUpdate	Called each loop iteration
-	virtual bool PostUpdate()override { return true; }
-	//CleanUp
-	virtual bool CleanUp()override { return true; }
-
-
-	//Load
-	virtual bool Load(pugi::xml_node&) { return true; }
-	//Save
-	virtual bool Save(pugi::xml_node&) const  { return true; }
-	//OnCollision Callback
-	virtual void OnCollision(Collider* c1, Collider* c2)override {}
-
-	//void j2DynamicEntity::CheckEntityMovement();
-
-	//void j2DynamicEntity::SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy);
-
 public:
 //vars
-
-public:
-
 	struct collisionControl
 	{
 		bool wallFront;
@@ -107,10 +78,6 @@ public:
 	virtual void EntityAttacks(float dt){}
 
 	void SetColliderRespectPivot(bool lookingTo, Collider*col, iPoint CharacterPos, int Displacementx, int Displacementy);
-
-
-
-
 };
 
 
