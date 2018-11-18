@@ -1,0 +1,23 @@
+<!-- Config file for the game -->
+
+<enemies>
+  <bat>
+    <active value="false"/>
+    <valid_path value="false"/>
+    <AnimationRect x="0" y="0" w="16" h="16"/>
+    <texture path="textures/bat.png"/>
+    <maxTileDistance value="15"/>
+    <maxSoundDistance value ="400"/>
+    
+    <speed_x value="60"/>
+    <speed_y value="60"/>
+
+    <playerPathPositionAdjuster_x value="16"/>
+    <playerPathPositionAdjuster_y value="32"/>
+
+  </bat>
+    
+  <undead>
+    
+  </undead>
+</enemies>
