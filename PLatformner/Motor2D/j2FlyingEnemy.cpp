@@ -135,7 +135,7 @@ void j2FlyingEnemy::EntityMovement(float dt)
 		else if (path->Count() > 1)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 		else if (path->Count() > 0)
-			destination = App->map->MapToWorld(enemyPathfindingPosition.x +10, enemyPathfindingPosition.y, App->map->data);
+			destination = App->map->MapToWorld(enemyPathfindingPosition.x, enemyPathfindingPosition.y, App->map->data);
 
 		if (path->Count() > 0 && tileDistance < 15)
 		{

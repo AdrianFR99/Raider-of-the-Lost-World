@@ -215,7 +215,7 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
 
-	if (c1->type == COLLIDER_ENEMY)
+	if (c1->type == COLLIDER_ENEMY && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_CHECK)
 	{
 		if (overlay.w > 0 && MovingRight == true && overlay.h > 10)
 		{
