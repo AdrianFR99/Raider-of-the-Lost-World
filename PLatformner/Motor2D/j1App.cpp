@@ -160,7 +160,7 @@ bool j1App::Update()
 	if(ret == true)
 		ret = PostUpdate();
 
-	if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) 
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
 		Capto30 = !Capto30;
 
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)

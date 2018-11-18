@@ -728,6 +728,8 @@ bool j1Map::CreateColliders(MapData&DataAux) {
 
 void j1Map::SpawnEnemies(MapData&DataAux) {
 
+	
+
 	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
 		
 		
@@ -750,6 +752,8 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 
+						EntitiesPositioInList.add(j);
+
 						continue;
 
 					}
@@ -769,6 +773,9 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						
+						EntitiesPositioInList.add(j);
+
 						continue;
 
 
@@ -785,6 +792,20 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 	}
 	App->entities->Start();
+}
+
+
+void j1Map::CleanUpMapEnemies() {
+
+
+	for (int i = 0; i < EntitiesPositioInList.count();++i) {
+
+		if(App->entities->entities.At(EntitiesPositioInList.At(i)->data)!=nullptr)
+		App->entities->entities.At(EntitiesPositioInList.At(i)->data)->data->CleanUp();
+
+
+}
+
 }
 
 float j1Map::SetPlayerToInitial(MapData&DataAux) {

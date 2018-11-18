@@ -294,6 +294,7 @@ void j1Scene::switchTheMaps()
 		
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
+		App->map->CleanUpMapEnemies();
 		App->map->CreateColliders(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
@@ -313,6 +314,7 @@ void j1Scene::switchTheMaps()
 
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
+		App->map->CleanUpMapEnemies();
 		App->map->CreateColliders(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
