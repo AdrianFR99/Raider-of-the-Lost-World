@@ -103,6 +103,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	{
 		active = false;
 		landed = true;
+		Speed.y = 0.0f;
 	}
 
 	if (active)
@@ -135,19 +136,23 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		if (do_logic == true)
 		{
 			CheckRelativePosition();
-			if (tileDistance < 15)
+			if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1)
 			{
-				int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-				if (ret != -1)
+				if (tileDistance < 15)
 				{
-					valid_path = true;
-					path = App->pathfinding->GetLastPath();
-				}
-				else
-				{
-					valid_path = false;
+					int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+					if (ret != -1)
+					{
+						valid_path = true;
+						path = App->pathfinding->GetLastPath();
+					}
+					else
+					{
+						valid_path = false;
+					}
 				}
 			}
+			
 		}
 
 		EntityMovement(dt);
