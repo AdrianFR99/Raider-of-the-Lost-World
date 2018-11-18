@@ -85,19 +85,20 @@ bool j2FlyingEnemy::PreUpdate()
 
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
+	//If oustide camera, remain inactive
 	if (position.x + AnimationRect.w >= (App->render->camera.x / App->win->GetScale())
 		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
 		active = true;
 	else
 		active = false;
-	if (active)
+	if (active)	//If Active: Ok let's do Stuff!
 	{
 		if (do_logic == true)
 		{
 			if (App->entities->player->player.playerGodModeHitbox == nullptr)
 			{
 				CheckRelativePosition();
-				if (tileDistance < maxtileDistance)
+				if (tileDistance < maxtileDistance)	//Get a nice path
 				{
 					int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
 					if (ret != -1)
@@ -111,15 +112,22 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 					}
 				}
 			}
-			if (tileDistance*App->map->data.tile_width < maxSoundDistance)
+			//Play the innovation FX function allowing for distance attenuation and Panning
+			if (tileDistance*App->map->data.tile_width < maxSoundDistance) 
 				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, App->audio->bat_channel, App->map->MapToWorld(enemyPathfindingPosition.x,
 					enemyPathfindingPosition.y, App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data));
 		}
-		EntityMovement(dt);
-		SwithcingStates(dt);
-		EntityFX();
+		EntityMovement(dt);	//Execute the necessary movements
+		SwithcingStates(dt); //Switch the states
+		EntityFX();	//Get Your Animation!
 
 		AnimationRect = currentAnimation->GetCurrentFrame(dt);
+
+		//Assign positionChanges
+		position.x += Speed.x;
+		position.y += Speed.y;
+
+		enemy_collider->SetPos(position.x, position.y);
 
 		if (lookingRight) {
 			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
@@ -127,12 +135,6 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		else {
 			App->render->Blit(EntityText, position.x - PivotAdjustment, position.y, &AnimationRect, SDL_FLIP_HORIZONTAL);
 		}
-
-		position.x += Speed.x;
-		position.y += Speed.y;
-
-		enemy_collider->SetPos(position.x, position.y);
-
 	}
 	return true;
 }
@@ -170,11 +172,9 @@ void j2FlyingEnemy::EntityMovement(float dt)
 	{
 		if (path->Count() > 2)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
-		/*else if (path->Count() > 1)
-			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);*/
 		else if (path->Count() > 0)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
-			//destination = App->map->MapToWorld(enemyPathfindingPosition.x, enemyPathfindingPosition.y, App->map->data);
+
 
 		if (path->Count() > 0 && tileDistance < maxtileDistance)
 		{
@@ -219,6 +219,7 @@ void j2FlyingEnemy::EntityMovement(float dt)
 			ToMoveUp = false;
 		}
 	}
+	//If we Shouldn't be chasing the player don't move
 	if (valid_path == false || tileDistance > maxtileDistance)
 	{
 		ToMoveRight = false;
@@ -290,7 +291,7 @@ void j2FlyingEnemy::SwithcingStates(float dt)
 }
 
 void j2FlyingEnemy::EntityFX()
-{ //CHANGE/FIX
+{ 
 	if (MovingRight == true && MovingLeft == false) {
 		lookingRight = true;
 	}
