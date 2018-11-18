@@ -84,12 +84,28 @@ public:
 	int tileDistance;
 	int life = 3;
 
+	//Vars to load values from xml
+	p2SString texturePath;
+	int maxtileDistance;
+	int maxSoundDistance;
+
+	float speed_x;
+	float speed_y;
+
+	int playerPathPositionAdjuster_x;
+	int playerPathPositionAdjuster_y;
+
+	int colliderRect_w;
+	int colliderRect_h;
 
 	bool hurted=false;
 
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
+
+	pugi::xml_node enemyNode;
+	pugi::xml_document configEnemy;
 
 	bool valid_path;
 	const p2DynArray<iPoint>* path;

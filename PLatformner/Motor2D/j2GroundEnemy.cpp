@@ -19,7 +19,7 @@
 j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 {
 	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
-
+	pugi::xml_parse_result resultEnemies = configEnemy.load_file("enemies.xml");
 	if (result != NULL)
 	{
 		AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Enemies").child("Undead").child("idle");//idle
@@ -43,6 +43,54 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 	{
 		LOG("Could not Load Flying Enemy Animations");
 	}
+
+	if (resultEnemies != NULL)
+	{
+		enemyNode = configEnemy.child("enemies").child("undead");
+		active = enemyNode.child("active").attribute("value").as_bool();
+		valid_path = enemyNode.child("valid_path").attribute("value").as_bool();
+
+		//Rect
+		AnimationRect.x = enemyNode.child("AnimationRect").attribute("x").as_int();
+		AnimationRect.y = enemyNode.child("AnimationRect").attribute("y").as_int();
+
+		////Texture
+		//texturePath.create(enemyNode.child("texture").attribute("path").as_string());
+		//EntityText = App->tex->Load(texturePath.GetString());
+
+		////MaxDistances
+		maxtileDistance = enemyNode.child("maxTileDistance").attribute("value").as_int();
+		//maxSoundDistance = enemyNode.child("maxSoundDistance").attribute("value").as_int();
+
+		////Speeds
+		speed_x = enemyNode.child("speed_x").attribute("value").as_float();
+		speed_y = enemyNode.child("speed_y").attribute("value").as_float();
+
+		Maxspeed.x = enemyNode.child("maxSpeed_x").attribute("value").as_int();
+		Maxspeed.y = enemyNode.child("maxSpeed_y").attribute("value").as_int();
+
+		gravity = enemyNode.child("gravity").attribute("value").as_float();
+
+		playerPathPositionAdjuster_x = enemyNode.child("playerPathPositionAdjuster_x").attribute("value").as_int();
+		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
+
+
+		//Rect Values
+		AnimationRect.w = idle.frames->w;
+		AnimationRect.h = idle.frames->h;
+
+		colliderRect_w = enemyNode.child("colliderRect_w").attribute("value").as_int();
+		colliderRect_h = enemyNode.child("colliderRect_h").attribute("value").as_int();
+
+		//Texture
+		texturePath.create(enemyNode.child("texture").attribute("path").as_string());
+
+		EntityText = App->tex->Load(texturePath.GetString());
+	}
+	else
+	{
+		LOG("Could not Load enemies.xml");
+	}
 	currentAnimation = nullptr;
 }
 
@@ -58,13 +106,9 @@ bool j2GroundEnemy::Start()
 	Speed.x = 0;
 	Speed.y = 0;
 
-	Maxspeed.x = 5;
-	Maxspeed.y = 3;
-
-	AnimationRect = { 0,0,idle.frames->w,idle.frames->h };
-	ColliderRect = {position.x,position.y,16,26};
+	ColliderRect = { position.x,position.y,colliderRect_w,colliderRect_h };
 	FakeColliderRect = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
-	EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
+	//EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 
 	groundEnemyCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
@@ -78,7 +122,6 @@ bool j2GroundEnemy::Start()
 	boundaries.wallTop = false;
 
 	landed = true;
-	gravity = 30.0f;
 	ToMoveDown = false;
 	ToMoveUp = false;
 	ToMoveRight = false;
@@ -111,7 +154,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 
 		if (active)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
+			/*if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
 			{
 				CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
 			}
@@ -135,7 +178,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 			{
 				position.y -= 40;
 			}
-
+*/
 
 			if (hurted == true && currentAnimation->Finished())
 				hurted = false;
@@ -149,7 +192,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 					{
 						if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
 						{
-							if (tileDistance < 15)
+							if (tileDistance < maxtileDistance)
 							{
 								int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
 								if (ret != -1)
@@ -327,14 +370,14 @@ void j2GroundEnemy::CheckPreCollision()
 void j2GroundEnemy::EntityMovement(float dt)
 {
 	iPoint destination;
-	if (tileDistance < 15 && valid_path == true)
+	if (tileDistance < maxtileDistance && valid_path == true)
 	{
 		if (path->Count() > 2)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
 		else if (path->Count() > 0)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 
-		if (path->Count() > 0 && tileDistance < 15)
+		if (path->Count() > 0 && tileDistance < maxtileDistance)
 		{
 			if (position.x < destination.x && boundaries.wallFront == false)
 			{
@@ -368,11 +411,11 @@ void j2GroundEnemy::EntityMovement(float dt)
 
 	if (ToMoveRight)
 	{
-		Speed.x = ceil(60 * dt);
+		Speed.x = ceil(speed_x * dt);
 	}
 	else if (ToMoveLeft)
 	{
-		Speed.x = floor(-60 * dt);
+		Speed.x = floor(-speed_x * dt);
 	}
 	else
 	{

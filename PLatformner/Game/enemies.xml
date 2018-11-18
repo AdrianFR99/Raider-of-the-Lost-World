@@ -18,6 +18,27 @@
   </bat>
     
   <undead>
+    <active value="false"/>
+    <valid_path value="false"/>
+    <AnimationRect x="0" y="0"/>
+    <texture path="textures/ZombieEnemieSpriteSheet.png"/>
+
+    <maxTileDistance value="15"/>
+
+    <speed_x value="60"/>
+    <speed_y value="60"/>
+
+    <gravity value="30"/>
+
+    <maxSpeed_x value="5"/>
+    <maxSpeed_y value="3"/>
+
+    <colliderRect_w value="16"/>
+    <colliderRect_h value="26"/>
+
+    <playerPathPositionAdjuster_x value="16"/>
+    <playerPathPositionAdjuster_y value="32"/>
+    
     
   </undead>
 </enemies>
