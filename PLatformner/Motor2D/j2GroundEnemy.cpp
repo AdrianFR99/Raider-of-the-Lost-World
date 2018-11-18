@@ -233,7 +233,7 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		}
 	}
 
-	if (c1->type == COLLIDER_ENEMY_CHECK)
+	if (c1->type == COLLIDER_ENEMY_CHECK && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_CHECK)
 	{
 		if (overlay.w > 0 && overlay.h > 5 && overlay.x +overlay.w > c2->rect.x)
 			boundaries.wallFront = true;
@@ -284,6 +284,8 @@ void j2GroundEnemy::EntityMovement(float dt)
 	{
 		if (path->Count() > 2)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+		else if (path->Count() > 0)
+			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 
 		if (path->Count() > 2 && tileDistance < 15)
 		{
@@ -463,7 +465,7 @@ void j2GroundEnemy::DyingFX()
 
 void j2GroundEnemy::CheckRelativePosition()
 {
-	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x, App->entities->player->position.y, App->map->data);
+	playerPathfindingPosition = App->map->WorldToMap(App->entities->player->position.x + 16, App->entities->player->position.y + 32, App->map->data);
 	enemyPathfindingPosition = { App->map->WorldToMap(position.x,position.y, App->map->data) };
 	tileDistanceBetweenEntities = { playerPathfindingPosition.x - enemyPathfindingPosition.x, playerPathfindingPosition.y - enemyPathfindingPosition.y };
 
