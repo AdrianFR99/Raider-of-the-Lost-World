@@ -163,9 +163,6 @@ bool j1App::Update()
 	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
 		Capto30 = !Capto30;
 
-	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		debugInfo = !debugInfo;
-
 
 		DisplayFrameRateInfo();
 
@@ -488,25 +485,26 @@ void j1App::CalculateFramerate() {
 }
 void j1App::DisplayFrameRateInfo() {
 
-	if (debugInfo == true) {
-
+	
+	if (Capto30) {
 		static char title[256];
 
 
-			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  vSync=Off",
+			sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  CapedTo30:On vSync:Off",
 			avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 
-		
-		App->win->SetTitle(title);
+			App->win->SetTitle(title);
+		}
 
-	}
 	else {
-	
-		static char title[50];
-		sprintf_s(title, 50, "Raider of the lost world");
+
+		static char title[256];
+		sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu  CapedTo30:Off  vSync:Off",
+			avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+
 		App->win->SetTitle(title);
 
-	}
 
+	}
 
 }
