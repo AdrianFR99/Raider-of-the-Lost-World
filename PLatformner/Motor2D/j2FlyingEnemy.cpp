@@ -66,16 +66,19 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 	{
 		if (do_logic == true)
 		{
-			CheckRelativePosition();
-			int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-			if (ret != -1)
+			if (App->entities->player->player.playerGodModeHitbox == nullptr)
 			{
+				CheckRelativePosition();
+				int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+				if (ret != -1)
+				{
 				valid_path = true;
 				path = App->pathfinding->GetLastPath();
-			}
-			else
-			{
+				}
+				else
+				{
 				valid_path = false;
+				}
 			}
 			if (tileDistance*App->map->data.tile_width < 400)
 				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, 5, App->map->MapToWorld(enemyPathfindingPosition.x,

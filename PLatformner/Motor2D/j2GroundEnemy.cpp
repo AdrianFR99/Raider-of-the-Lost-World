@@ -132,23 +132,26 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 		{
 			position.y -= 40;
 		}
-
+		
+		CheckRelativePosition();
 		if (do_logic == true)
 		{
-			CheckRelativePosition();
-			if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber thi is in tiles
+			if (App->entities->player->player.playerGodModeHitbox == nullptr)
 			{
-				if (tileDistance < 15)
+				if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
 				{
-					int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-					if (ret != -1)
+					if (tileDistance < 15)
 					{
-						valid_path = true;
-						path = App->pathfinding->GetLastPath();
-					}
-					else
-					{
-						valid_path = false;
+						int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+						if (ret != -1)
+						{
+							valid_path = true;
+							path = App->pathfinding->GetLastPath();
+						}
+						else
+						{
+							valid_path = false;
+						}
 					}
 				}
 			}
@@ -319,6 +322,13 @@ void j2GroundEnemy::EntityMovement(float dt)
 		}
 	}
 
+	if (valid_path == false)
+	{
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		ToMoveDown = false;
+		ToMoveUp = false;
+	}
 
 	if (ToMoveRight)
 	{

@@ -734,8 +734,11 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 	}
 
 	//At the end put the player pos onto the collider Pos 
-	position.x = player.playerHitbox->rect.x -colliding.colliderOffset.x;
-	position.y = player.playerHitbox->rect.y -colliding.colliderOffset.y;
+	if (player.playerHitbox != nullptr)
+	{
+		position.x = player.playerHitbox->rect.x - colliding.colliderOffset.x;
+		position.y = player.playerHitbox->rect.y - colliding.colliderOffset.y;
+	}
 
 	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
 	
@@ -1363,12 +1366,15 @@ void j2Player::EntityFX() {
 
 				player.playerHitbox->to_delete = true;
 				player.fakeHitbox->to_delete = true;
+				player.playerHitbox = nullptr;
+				player.fakeHitbox = nullptr;
 				player.playerGodModeHitbox = App->collision->AddCollider(EntityRect, COLLIDER_GODMODE,App->entities);
 			}
 			else
 			{
 
 				player.playerGodModeHitbox->to_delete = true;
+				player.playerGodModeHitbox = nullptr;
 				player.playerHitbox = App->collision->AddCollider(EntityRect, COLLIDER_PLAYER, App->entities);
 				player.fakeHitbox = App->collision->AddCollider(player.fakeCollisionRect, COLLIDER_PLAYER_CHECK, App->entities);
 			}
