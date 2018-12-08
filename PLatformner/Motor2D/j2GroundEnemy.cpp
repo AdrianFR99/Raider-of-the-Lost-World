@@ -149,8 +149,16 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	if (dead == false) {
 
 		if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
-			&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
-			active = true;
+			&& position.x - ColliderRect.w < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale())
+			&& position.y + ColliderRect.h <= ((App->render->camera.y + App->render->camera.h) / App->win->GetScale())
+			&& position.y > (App->render->camera.y / App->win->GetScale()))
+		{
+			if (active == false)
+			{
+				landed = true;
+			}
+				active = true;
+		}
 		else
 		{
 			active = false;
@@ -310,9 +318,11 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 			position.x += overlay.w;
 		}
 
-		if (overlay.h > 5 && overlay.h <10 && overlay.w > 5 && MovingDown == true)
+		if (overlay.h > 5 /*&& overlay.h <10*/ && overlay.w > 5 && MovingDown == true)
 		{
-			position.y -= overlay.h;
+				position.y -= overlay.h;
+
+			colliders.start->data->SetPos(position.x,position.y);
 			landed = true;
 		}
 	}
