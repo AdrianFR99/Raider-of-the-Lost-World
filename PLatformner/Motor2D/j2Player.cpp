@@ -96,57 +96,57 @@ bool j2Player::Awake(pugi::xml_node& config)
 		EntityRect.y = position.y;
 		
 		//PlayerCrouchedRect(collider)
-		player_Init.playerRectCrouched.w = config.child("playerCrouchCollider").attribute("width").as_int();
-		player_Init.playerRectCrouched.h = config.child("playerCrouchCollider").attribute("height").as_int();
-		player_Init.playerRectCrouched.x = EntityRect.x;
-		player_Init.playerRectCrouched.y = position.y;
+		player.playerRectCrouched.w = config.child("playerCrouchCollider").attribute("width").as_int();
+		player.playerRectCrouched.h = config.child("playerCrouchCollider").attribute("height").as_int();
+		player.playerRectCrouched.x = EntityRect.x;
+		player.playerRectCrouched.y = position.y;
 		
 		//playerJumpRects(colliders)
-		player_Init.playerRectJump.w = config.child("playerJumpCollider").attribute("width").as_int();
-		player_Init.playerRectJump.h = config.child("playerJumpCollider").attribute("height").as_int();
-		player_Init.playerRectJump.x = EntityRect.x;
-		player_Init.playerRectJump.y = position.y;
+		player.playerRectJump.w = config.child("playerJumpCollider").attribute("width").as_int();
+		player.playerRectJump.h = config.child("playerJumpCollider").attribute("height").as_int();
+		player.playerRectJump.x = EntityRect.x;
+		player.playerRectJump.y = position.y;
 
-		player_Init.playerRectDJump.w = config.child("playerJumpDCollider").attribute("width").as_int();
-		player_Init.playerRectDJump.h = config.child("playerJumpDCollider").attribute("height").as_int();
-		player_Init.playerRectDJump.x = EntityRect.x;
-		player_Init.playerRectDJump.y = position.y;
+		player.playerRectDJump.w = config.child("playerJumpDCollider").attribute("width").as_int();
+		player.playerRectDJump.h = config.child("playerJumpDCollider").attribute("height").as_int();
+		player.playerRectDJump.x = EntityRect.x;
+		player.playerRectDJump.y = position.y;
 
 		//PlayerRunningRect(collider)
-		player_Init.PlayerRectRunning.w = config.child("PlayerRectRunning").attribute("width").as_int();
-		player_Init.PlayerRectRunning.h = config.child("PlayerRectRunning").attribute("height").as_int();
-		player_Init.PlayerRectRunning.x = EntityRect.x;
-		player_Init.PlayerRectRunning.y = position.y;
+		player.PlayerRectRunning.w = config.child("PlayerRectRunning").attribute("width").as_int();
+		player.PlayerRectRunning.h = config.child("PlayerRectRunning").attribute("height").as_int();
+		player.PlayerRectRunning.x = EntityRect.x;
+		player.PlayerRectRunning.y = position.y;
 
 		//playerStateOfActionRects(colliders)
-		player_Init.PlayerRectAttackCharged.w = config.child("PlayerRectAttackCharged").attribute("width").as_int();
-		player_Init.PlayerRectAttackCharged.h = config.child("PlayerRectAttackCharged").attribute("height").as_int();
-		player_Init.PlayerRectAttackCharged.x = EntityRect.x;
-		player_Init.PlayerRectAttackCharged.y = position.y;
+		player.PlayerRectAttackCharged.w = config.child("PlayerRectAttackCharged").attribute("width").as_int();
+		player.PlayerRectAttackCharged.h = config.child("PlayerRectAttackCharged").attribute("height").as_int();
+		player.PlayerRectAttackCharged.x = EntityRect.x;
+		player.PlayerRectAttackCharged.y = position.y;
 
-		player_Init.PlayerRectAttackAir.w = config.child("PlayerRectAttackAir").attribute("width").as_int();
-		player_Init.PlayerRectAttackAir.h = config.child("PlayerRectAttackAir").attribute("height").as_int();
-		player_Init.PlayerRectAttackAir.x =EntityRect.x;
-		player_Init.PlayerRectAttackAir.y = position.y;
+		player.PlayerRectAttackAir.w = config.child("PlayerRectAttackAir").attribute("width").as_int();
+		player.PlayerRectAttackAir.h = config.child("PlayerRectAttackAir").attribute("height").as_int();
+		player.PlayerRectAttackAir.x =EntityRect.x;
+		player.PlayerRectAttackAir.y = position.y;
 
 		colliding.colliderOffsetGodMode.x=config.child("colliderOffsetGodMode").attribute("valueX").as_int();
 		colliding.colliderOffsetGodMode.y = config.child("colliderOffsetGodMode").attribute("valueY").as_int();
 
 		 //playerAttackColliders
-		 player_Init.ChargedAttackCollider.x=  config.child("ChargedAttackCollider").attribute("Adjustmentx").as_int();
-		 player_Init.ChargedAttackCollider.y =  config.child("ChargedAttackCollider").attribute("Adjustmenty").as_int();
-		 player_Init.ChargedAttackCollider.w = config.child("ChargedAttackCollider").attribute("w").as_int();
-		 player_Init.ChargedAttackCollider.h = config.child("ChargedAttackCollider").attribute("h").as_int();
+		 player.ChargedAttackCollider.x=  config.child("ChargedAttackCollider").attribute("Adjustmentx").as_int();
+		 player.ChargedAttackCollider.y =  config.child("ChargedAttackCollider").attribute("Adjustmenty").as_int();
+		 player.ChargedAttackCollider.w = config.child("ChargedAttackCollider").attribute("w").as_int();
+		 player.ChargedAttackCollider.h = config.child("ChargedAttackCollider").attribute("h").as_int();
 
-		 player_Init.AirAttackCollider.x= config.child("AirAttackCollider").attribute("Adjustmentx").as_int();
-		 player_Init.AirAttackCollider.y = config.child("AirAttackCollider").attribute("Adjustmenty").as_int();
-		 player_Init.AirAttackCollider.w = config.child("AirAttackCollider").attribute("w").as_int();
-		 player_Init.AirAttackCollider.h = config.child("AirAttackCollider").attribute("h").as_int();
+		 player.AirAttackCollider.x= config.child("AirAttackCollider").attribute("Adjustmentx").as_int();
+		 player.AirAttackCollider.y = config.child("AirAttackCollider").attribute("Adjustmenty").as_int();
+		 player.AirAttackCollider.w = config.child("AirAttackCollider").attribute("w").as_int();
+		 player.AirAttackCollider.h = config.child("AirAttackCollider").attribute("h").as_int();
 
-		 player_Init.BasicAttackCollider.x = config.child("BasicAttackCollider").attribute("Adjustmentx").as_int();
-		 player_Init.BasicAttackCollider.y = config.child("BasicAttackCollider").attribute("Adjustmenty").as_int();
-		 player_Init.BasicAttackCollider.w = config.child("BasicAttackCollider").attribute("w").as_int();
-		 player_Init.BasicAttackCollider.h = config.child("BasicAttackCollider").attribute("h").as_int();
+		 player.BasicAttackCollider.x = config.child("BasicAttackCollider").attribute("Adjustmentx").as_int();
+		 player.BasicAttackCollider.y = config.child("BasicAttackCollider").attribute("Adjustmenty").as_int();
+		 player.BasicAttackCollider.w = config.child("BasicAttackCollider").attribute("w").as_int();
+		 player.BasicAttackCollider.h = config.child("BasicAttackCollider").attribute("h").as_int();
 		
 		//Player Speeds
 		JumpForce = config.child("Jumpforce").attribute("value").as_float();
@@ -159,7 +159,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		Impulse.y = config.child("Impulse").attribute("y").as_float();
 
 		//Player DoubleJump
-		player_Init.doubleJump = config.child("doubleJump").attribute("value").as_bool();
+		player.doubleJump = config.child("doubleJump").attribute("value").as_bool();
 		
 
 		//Player collider Control
@@ -203,10 +203,10 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Player Death
 		dead = config.child("dead").attribute("boolDead").as_bool();
-		player_Init.deadDelay = config.child("dead").attribute("deadDelay").as_int();
-		player_Init.deadCounter = config.child("dead").attribute("deadCounter").as_int();
-		player_Init.maximumDeadY_map1 = config.child("maximumDead_Y").attribute("map1").as_int();
-		player_Init.maximumDeadY_map2 = config.child("maximumDead_Y").attribute("map2").as_int();
+		player.deadDelay = config.child("dead").attribute("deadDelay").as_int();
+		player.deadCounter = config.child("dead").attribute("deadCounter").as_int();
+		player.maximumDeadY_map1 = config.child("maximumDead_Y").attribute("map1").as_int();
+		player.maximumDeadY_map2 = config.child("maximumDead_Y").attribute("map2").as_int();
 
 		//Player Godmode
 		GodModeB = config.child("godMode").attribute("value").as_bool();
@@ -381,34 +381,7 @@ bool j2Player::Start()
 {
 	LOG("Player Start");
 	
-	//Load all data from player_Init into the player we will be using
-	//Player Position
-	/*player.playerPos = player_Init.playerPos;*/
-	//Player SDL_Rects
-	//player.playerRect = player_Init.playerRect;
-	player.playerRectCrouched = player_Init.playerRectCrouched;
-	player.playerRectJump= player_Init.playerRectJump;
-	player.PlayerRectRunning = player_Init.PlayerRectRunning;
-	player.PlayerRectAttackCharged = player_Init.PlayerRectAttackCharged;
-	player.PlayerRectAttackAir = player_Init.PlayerRectAttackAir;
-	player.playerRectDJump = player_Init.playerRectDJump;
 
-	player.ChargedAttackCollider= player_Init.ChargedAttackCollider;
-	player.AirAttackCollider = player_Init.AirAttackCollider;
-	player.BasicAttackCollider = player_Init.BasicAttackCollider;
-	//Player Speeds
-
-	player.doubleJump = player_Init.doubleJump;
-	
-	//Player collider Control
-	/*player.colliding = player_Init.colliding;*/
-	
-	////player Dead
-	//dead = player_Init.dead;
-	player.deadDelay = player_Init.deadDelay;
-	player.deadCounter = player_Init.deadCounter;
-	player.maximumDeadY_map1 = player_Init.maximumDeadY_map1;
-	player.maximumDeadY_map2 = player_Init.maximumDeadY_map2;
 
 	//player SoundFX
 	player_fx.jumpSound = App->audio->LoadFx(player_fx.jumpSoundPath.GetString());
@@ -482,7 +455,7 @@ bool j2Player::Update(float dt, bool do_logic)
 	if (dead == true)
 	{
 		landed = true;
-		PlayFXDie = true;
+		
 
 		if (player.deadCounter < player.deadDelay)
 		{
@@ -492,21 +465,27 @@ bool j2Player::Update(float dt, bool do_logic)
 		else
 		{
 
-			//Destroy the player Colliders
-			player.playerHitbox->to_delete = true;
-			player.fakeHitbox->to_delete = true;
-			player.playerHitbox = nullptr;
-			player.fakeHitbox = nullptr;
 
-			//Player Goes To inital position of the current stage map
-			if (App->scene->CurrentMap2 == false)
-				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
+			if (DeathTime.Read() > 1000) {
+				
+				//Destroy the player Colliders
+				player.playerHitbox->to_delete = true;
+				player.fakeHitbox->to_delete = true;
+				player.playerHitbox = nullptr;
+				player.fakeHitbox = nullptr;
+				//Player Goes To inital position of the current stage map
+				
+				if (App->scene->CurrentMap2 == false)
+					App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 
-			else
-				App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
+				else
+					App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 
-			dead = false;
-			player.deadCounter = player_Init.deadCounter;
+
+				dead = false;
+			}
+
+		/*	player.deadCounter = player_Init.deadCounter;*/
 		}
 	}
 
@@ -614,7 +593,6 @@ bool j2Player::PostUpdate()
 	BROFILER_CATEGORY("Player_PostUpdate", Profiler::Color::CadetBlue);
 	// We reset the colliders collisions
 	
-
 	colliding.wallFront = false;
 	colliding.wallBack = false;
 	colliding.wallDown = false;
@@ -635,129 +613,134 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
 	
-	if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
-	{
-		if (c2->type == COLLIDER_WALL
-			|| c2->type == COLLIDER_ICE
-			|| c2->type == COLLIDER_PLATFORM
-			|| c2->type == COLLIDER_CLIMBWALL)
+	if (dead == false) {
+		if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
 		{
-			
-			//Conditions to know if the collider that we collided with is in Front of the player
-			if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-				&& c2->rect.x - player.playerHitbox->rect.x > 0
-				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
-				&& overlay.y < overlay.y + overlay.h
-				&& colliding.wallTop == false)
+			if (c2->type == COLLIDER_WALL
+				|| c2->type == COLLIDER_ICE
+				|| c2->type == COLLIDER_PLATFORM
+				|| c2->type == COLLIDER_CLIMBWALL)
 			{
-				colliding.wallFront = true;
-				//Before we do anything else, don't allow the collider to enter the tile
-				//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
-				player.playerHitbox->rect.x -= overlay.w;
+
+				//Conditions to know if the collider that we collided with is in Front of the player
+				if (player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+					&& c2->rect.x - player.playerHitbox->rect.x > 0
+					&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+					&& overlay.y < overlay.y + overlay.h
+					&& colliding.wallTop == false)
+				{
+					colliding.wallFront = true;
+					//Before we do anything else, don't allow the collider to enter the tile
+					//player.playerHitbox->rect.x -= player.colliding.x_CollisionAdjuster;
+					player.playerHitbox->rect.x -= overlay.w;
+				}
+				//Conditions to know if the collider that we collided with is Behind of the player
+				else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
+					&& player.playerHitbox->rect.x - c2->rect.x > 0
+					&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
+					&& colliding.wallTop == false)
+				{
+					colliding.wallBack = true;
+					//Before we do anything else, don't allow the collider to enter the tile
+					//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
+					player.playerHitbox->rect.x += overlay.w;
+					//player.playerPos.x += overlay.w;
+					//player.playerRect.y = c2->rect.y - player.playerRect.h;
+				}
+				//Conditions to know if the collider that we collided with is Under the player
+				else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
+					&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
+					&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+					&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+					/*&& Speed.y > 0*/)
+					//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
+				{
+					landed = true;
+					colliding.wallDown = true;
+
+					player.playerHitbox->rect.y -= overlay.h;
+					//player.playerHitbox->type-= 
+				}
+
+				//Conditions to know if the collider that we collided with is over the player
+				//Also, if the collider is a PLATFORM, let us go through it
+				else if (player.playerHitbox->rect.y > c2->rect.y
+					&& player.playerHitbox->rect.y < c2->rect.y + c2->rect.h
+					&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
+					&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
+					&& c2->type != COLLIDER_PLATFORM)
+				{
+
+					player.playerHitbox->rect.y += overlay.h;
+					Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
+
+					landed = false;
+					colliding.wallTop = true;
+				}
+
+
 			}
-			//Conditions to know if the collider that we collided with is Behind of the player
-			else if (player.playerHitbox->rect.x < c2->rect.x + c2->rect.w
-				&& player.playerHitbox->rect.x - c2->rect.x > 0
-				&& c2->rect.y + 8 < player.playerHitbox->rect.y + player.playerHitbox->rect.h
-				&& colliding.wallTop == false)
+			//If the collider is a killing obstacle DIE
+			if (c2->type == COLLIDER_TRAP)
 			{
+				DeathTime.Start();
+				dead = true;
+				PlayFXDie = true;
+			}
+		}
+		else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
+		{
+			if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x
+				&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
 				colliding.wallBack = true;
-				//Before we do anything else, don't allow the collider to enter the tile
-				//player.playerHitbox->rect.x += player.colliding.x_CollisionAdjuster;
-				player.playerHitbox->rect.x += overlay.w;
-				//player.playerPos.x += overlay.w;
-				//player.playerRect.y = c2->rect.y - player.playerRect.h;
-			}
-			//Conditions to know if the collider that we collided with is Under the player
-			else if (player.playerHitbox->rect.y + player.playerHitbox->rect.h > c2->rect.y
-				&& player.playerHitbox->rect.y + player.playerHitbox->rect.h < c2->rect.y + c2->rect.h
+			if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x
+				&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
+				colliding.wallFront = true;
+
+			if (overlay.y + overlay.h > c2->rect.y
+				&& overlay.y + overlay.h < c2->rect.y + c2->rect.h
 				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-				/*&& Speed.y > 0*/)
-				//player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x)
+				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
 			{
 				landed = true;
 				colliding.wallDown = true;
-
-				player.playerHitbox->rect.y -= overlay.h;
-				//player.playerHitbox->type-= 
 			}
 
-			//Conditions to know if the collider that we collided with is over the player
-			//Also, if the collider is a PLATFORM, let us go through it
-			else if (player.playerHitbox->rect.y > c2->rect.y
-				&& player.playerHitbox->rect.y < c2->rect.y + c2->rect.h
-				&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-				&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x
-				&& c2->type != COLLIDER_PLATFORM)
+			//if (overlay.y < overlay.y + overlay.h
+			//	/*&& player.fakeHitbox->rect.y + player.fakeHitbox->rect.h > overlay.y + overlay.h*/
+			//	&& player.playerHitbox->rect.x + player.playerHitbox->rect.w < c2->rect.x
+			//	&& c2->rect.x + c2->rect.w < player.playerHitbox->rect.x)
+			if (player.fakeHitbox->rect.y > c2->rect.y
+				&& player.fakeHitbox->rect.y < c2->rect.y + c2->rect.h
+				&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 5> c2->rect.x
+				&& c2->rect.x + c2->rect.w - 5 > player.fakeHitbox->rect.x)
 			{
-
-				player.playerHitbox->rect.y += overlay.h;
-				Speed.y = -Speed.y; // change the speed to inmediately falling (bouncing off the Top)
-
-				landed = false;
 				colliding.wallTop = true;
 			}
-
-			
 		}
-		//If the collider is a killing obstacle DIE
-		if (c2->type == COLLIDER_TRAP)
+
+		//At the end put the player pos onto the collider Pos 
+		if (player.playerHitbox != nullptr)
 		{
-			
+			position.x = player.playerHitbox->rect.x - colliding.colliderOffset.x;
+			position.y = player.playerHitbox->rect.y - colliding.colliderOffset.y;
+		}
+
+		//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
+
+		/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
+		player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
+
+
+
+		if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
+		{
+			DeathTime.Start();
 			dead = true;
+			PlayFXDie = true;
+
 		}
 	}
-	else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
-	{
-		if (overlay.x < c2->rect.x + c2->rect.w && overlay.x > c2->rect.x
-			&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
-			colliding.wallBack = true;
-		if (overlay.x + overlay.w > c2->rect.x  && overlay.x == c2->rect.x
-			&& c2->rect.y + colliding.y_CollisionController < player.playerHitbox->rect.y + player.playerHitbox->rect.h)
-			colliding.wallFront = true;
-		
-		if (overlay.y + overlay.h > c2->rect.y
-			&& overlay.y +overlay.h < c2->rect.y + c2->rect.h
-			&& player.playerHitbox->rect.x + player.playerHitbox->rect.w > c2->rect.x
-			&& c2->rect.x + c2->rect.w > player.playerHitbox->rect.x)
-		{
-			landed = true;
-			colliding.wallDown = true;
-		}
-
-		//if (overlay.y < overlay.y + overlay.h
-		//	/*&& player.fakeHitbox->rect.y + player.fakeHitbox->rect.h > overlay.y + overlay.h*/
-		//	&& player.playerHitbox->rect.x + player.playerHitbox->rect.w < c2->rect.x
-		//	&& c2->rect.x + c2->rect.w < player.playerHitbox->rect.x)
-		if (player.fakeHitbox->rect.y > c2->rect.y
-			&& player.fakeHitbox->rect.y < c2->rect.y + c2->rect.h
-			&& player.fakeHitbox->rect.x + player.fakeHitbox->rect.w - 5> c2->rect.x
-			&& c2->rect.x + c2->rect.w -5> player.fakeHitbox->rect.x)
-		{
-			colliding.wallTop = true;
-		}
-	}
-
-	//At the end put the player pos onto the collider Pos 
-	if (player.playerHitbox != nullptr)
-	{
-		position.x = player.playerHitbox->rect.x - colliding.colliderOffset.x;
-		position.y = player.playerHitbox->rect.y - colliding.colliderOffset.y;
-	}
-
-	//player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y -1;
-	
-	/*player.lateralFakeHitbox->rect.y = player.playerHitbox->rect.y;
-	player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
-
-	
-
-	if (c1->type==COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
-	{
-		dead = true;
-	}
-
 } 
 
 void  j2Player::PlayerMovementInputs() {
@@ -1161,6 +1144,10 @@ void j2Player::EntityMovement(float dt) {
 
 			}
 
+		
+			
+
+
 			if (CurrentState == Player_State::AIR && landed==false || CurrentState == Player_State::ATTACK && AirAttackB==true) {
 				//Falling
 				Speed.y += gravity*dt;
@@ -1260,11 +1247,11 @@ void j2Player::EntityFX() {
 	
 		if (PlayFXDie == true) {
 			App->audio->PlayFx(player_fx.dieSound, 0);
+			die.Reset();
+			currentAnimation = &die;
 			PlayFXDie = false;
 		}
 
-		die.Reset();
-		currentAnimation = &die;
 	}
 	
 }
@@ -1436,36 +1423,37 @@ bool j2Player::CreatePlayerColliders(Player &p)
 void j2Player::ColliderShapeStates() {
 
 	if (player.playerHitbox != nullptr) {
+		if (colliding.wallFront==false || colliding.wallBack==false) {
+			
+			switch (CurrentState) {
+			case Player_State::IDLE:
 
-		switch (CurrentState) {
-		case Player_State::IDLE:
+				IdleColliderShape();
 
-			IdleColliderShape();
+				break;
+			case Player_State::CROUCHING:
 
-			break;
-		case Player_State::CROUCHING:
+				CrouchColliderShape();
 
-			CrouchColliderShape();
+				break;
+			case Player_State::RUNNING:
+				RunnigColliderShape();
 
-			break;
-		case Player_State::RUNNING:
-			RunnigColliderShape();
+				break;
+			case Player_State::AIR:
 
-			break;
-		case Player_State::AIR:
+				JumpColliderShape();
 
-			JumpColliderShape();
+				break;
 
-			break;
-
-		case Player_State::ATTACK:
+			case Player_State::ATTACK:
 
 
-			ChargedAttackColliderShape();
+				ChargedAttackColliderShape();
 
-			break;
+				break;
+			}
 		}
-
 	}
 }
 

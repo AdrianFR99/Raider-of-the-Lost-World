@@ -174,7 +174,6 @@ public: //Variables
 	Player player;
 
 	//As a security Aux player
-	Player player_Init;
 	FXPlayer player_fx;
 	
 
@@ -195,7 +194,6 @@ public: //Variables
 	//Vars for Blitig
 	int PivotAdjustment;
 
-	
 	bool FirstJump = false;
 	//FX Sound Booleans
 	bool PlayFXJump=false;
@@ -235,6 +233,7 @@ public: //Variables
 
 
 	j1Timer Guard;
+	j1Timer DeathTime;
 	
 	collisionControl colliding;
 
