@@ -61,8 +61,8 @@ public:
 
 
 	SDL_Texture*EntityText=nullptr;
-
 	p2List<Collider*> colliders;
+	
 
 	ENTITY_TYPE type;
 

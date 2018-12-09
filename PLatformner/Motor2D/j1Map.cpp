@@ -798,13 +798,23 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 void j1Map::CleanUpMapEnemies() {
 
 
-	for (int i = 0; i < EntitiesPositioInList.count();++i) {
 
-		if(App->entities->entities.At(EntitiesPositioInList.At(i)->data)!=nullptr)
-		App->entities->entities.At(EntitiesPositioInList.At(i)->data)->data->CleanUp();
+	
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
+	{
+		
+	
+		if (item->data->type != ENTITY_TYPE::PLAYER) {
 
 
-}
+			item->data->CleanUp();
+
+		}
+
+
+	}
+
 
 }
 

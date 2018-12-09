@@ -61,6 +61,7 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 		LOG("Could not Load enemies.xml");
 	}
 	currentAnimation = nullptr;
+	type = ENTITY_TYPE::FLYING_ENEMY;
 }
 
 j2FlyingEnemy::~j2FlyingEnemy()
@@ -76,6 +77,9 @@ bool j2FlyingEnemy::Start()
 
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
 	colliders.add(enemy_collider);
+
+
+	
 
 
 	return true;
@@ -159,11 +163,20 @@ bool j2FlyingEnemy::PostUpdate()
 bool j2FlyingEnemy::CleanUp()
 {
 
-	int i=colliders.find(enemy_collider);
-	colliders.At(i)->data->to_delete = true;
+	/*int i=colliders.find(enemy_collider);
+	colliders.At(i)->data->to_delete = true;*/
+
+
+	for (int i = 0; i < colliders.count(); ++i) {
+
+		colliders.At(i)->data->to_delete = true;
+
+
+	}
 
 	App->entities->DestroyEntity(this);
-	return false;
+
+	return true;
 }
 
 bool j2FlyingEnemy::Load(pugi::xml_node &)

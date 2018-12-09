@@ -50,6 +50,7 @@ public:
 	void DestroyEntity(j2Entity* entity_to_destroy);
 
 	p2List<j2Entity*> entities;
+	
 	j2Player*player;
 	
 

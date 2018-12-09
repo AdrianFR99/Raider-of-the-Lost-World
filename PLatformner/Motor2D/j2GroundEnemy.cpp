@@ -98,6 +98,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		LOG("Could not Load enemies.xml");
 	}
 	currentAnimation = nullptr;
+	type = ENTITY_TYPE::GROUND_ENEMY;
 }
 
 j2GroundEnemy::~j2GroundEnemy()
@@ -134,7 +135,6 @@ bool j2GroundEnemy::Start()
 	ToMoveLeft = false;
 
 	
-
 	return true;
 }
 
@@ -280,12 +280,18 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
+	/*if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
 		int i = colliders.find(groundEnemyCollider);
 		colliders.At(i)->data->to_delete = true;
 		i = colliders.find(groundEnemyFakeCollider);
 		colliders.At(i)->data->to_delete = true;
-	}
+	}*/
+
+	for (int i = 0; i < colliders.count();++i) {
+
+		colliders.At(i)->data->to_delete = true;
+
+}
 
 	App->entities->DestroyEntity(this);
 	return true;
