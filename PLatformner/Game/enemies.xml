@@ -9,8 +9,8 @@
     <maxTileDistance value="15"/>
     <maxSoundDistance value ="400"/>
     
-    <speed_x value="60"/>
-    <speed_y value="60"/>
+    <speed_x value="50"/>
+    <speed_y value="50"/>
 
     <playerPathPositionAdjuster_x value="16"/>
     <playerPathPositionAdjuster_y value="32"/>
@@ -25,8 +25,8 @@
 
     <maxTileDistance value="15"/>
 
-    <speed_x value="60"/>
-    <speed_y value="60"/>
+    <speed_x value="40"/>
+    <speed_y value="40"/>
 
     <gravity value="30"/>
 

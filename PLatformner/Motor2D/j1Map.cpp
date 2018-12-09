@@ -798,9 +798,6 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 void j1Map::CleanUpMapEnemies() {
 
 
-
-	
-
 	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
 	{
 		
