@@ -68479,9 +68479,9 @@
  </objectgroup>
  <objectgroup name="EnemySpawns">
   <object id="10" name="UndeadSpawn" x="781" y="719" width="31" height="48"/>
-  <object id="11" name="UndeadSpawn1" x="1688" y="766" width="31" height="48"/>
-  <object id="15" name="UndeadSpawn3" x="2352.67" y="706" width="26.6667" height="45.3333"/>
+  <object id="11" name="UndeadSpawn" x="1688" y="766" width="31" height="48"/>
+  <object id="15" name="UndeadSpawn" x="2352.67" y="706" width="26.6667" height="45.3333"/>
   <object id="16" name="BatSpawn" x="2596" y="635.333" width="18.6667" height="20"/>
-  <object id="17" name="BatSpawn3" x="4603.33" y="510.667" width="16.6667" height="16.6667"/>
+  <object id="17" name="BatSpawn" x="4603.33" y="510.667" width="16.6667" height="16.6667"/>
  </objectgroup>
 </map>

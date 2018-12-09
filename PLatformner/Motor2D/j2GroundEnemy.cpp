@@ -288,7 +288,7 @@ bool j2GroundEnemy::CleanUp()
 	}
 
 	App->entities->DestroyEntity(this);
-	return false;
+	return true;
 }
 
 bool j2GroundEnemy::Load(pugi::xml_node &)

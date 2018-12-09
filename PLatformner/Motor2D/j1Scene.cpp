@@ -204,7 +204,7 @@ bool j1Scene::Update(float dt)
 		int x, y;
 		App->input->GetMousePosition(x, y);
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
-		
+
 		if (SpawnEnemiesMap1 == true) {
 
 			App->map->SpawnEnemies(App->map->data);
@@ -216,6 +216,22 @@ bool j1Scene::Update(float dt)
 			switchTheMaps();
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+		{
+
+			App->map->CleanUpMapEnemies();
+			
+
+		}
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+
+		
+			App->map->SpawnEnemies(App->map->data);
+
+		}
+
+	
 	}
 
 
@@ -235,6 +251,8 @@ bool j1Scene::Update(float dt)
 				SpawnEnemiesMap2 = false;
 				SpawnEnemiesMap1 = true;
 			}
+
+			
 
 	}
 

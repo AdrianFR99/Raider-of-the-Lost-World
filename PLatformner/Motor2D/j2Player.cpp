@@ -424,13 +424,9 @@ bool j2Player::Start()
 
 
 	
-
+	type = ENTITY_TYPE::PLAYER;
 	CreatePlayerColliders(player);
 	CurrentState = Player_State::IDLE;
-
-	
-	
-
 	if(EntityText==nullptr)
 	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures
 
