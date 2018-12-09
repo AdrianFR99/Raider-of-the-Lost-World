@@ -218,6 +218,7 @@ public: //Variables
 	Animation jump;
 	Animation jumpDouble;
 	Animation die;
+	Animation dieMidAir;
 	Animation slide;
 	Animation fall;
 	Animation crouch;

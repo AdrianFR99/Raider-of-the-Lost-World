@@ -104,6 +104,14 @@
         <PushBack x="220" y="936"  w="55" h="39"/>
       </die>
 
+       
+        <dieMidAir loop="false" speed="8.00">
+          <PushBack x="0" y="936" w="55" h="39"/>
+
+        </dieMidAir>
+
+
+
         <GodMode loop="true" speed="8.00">
           <PushBack x="0" y="624" w="55" h="39"/>
           <PushBack x="55" y="624"  w="55" h="39"/>

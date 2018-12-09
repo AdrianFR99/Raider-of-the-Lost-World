@@ -62,6 +62,9 @@ j2Player::j2Player(): j2DynamicEntity()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("die");//die
 	die.LoadPushBack(AnimPushBack);
 
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("dieMidAir");//die
+	dieMidAir.LoadPushBack(AnimPushBack);
+
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
 	GodMode.LoadPushBack(AnimPushBack);
 
@@ -613,7 +616,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 	SDL_IntersectRect(&c1->rect, &c2->rect, &overlay);
 	
-	if (dead == false) {
+	
 		if (c1->type == COLLIDER_PLAYER)  //This collider manages hits by enemies and corrects player position on collision if necessary
 		{
 			if (c2->type == COLLIDER_WALL
@@ -681,11 +684,13 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 			}
 			//If the collider is a killing obstacle DIE
-			if (c2->type == COLLIDER_TRAP)
-			{
-				DeathTime.Start();
-				dead = true;
-				PlayFXDie = true;
+			if (dead == false) {
+				if (c2->type == COLLIDER_TRAP)
+				{
+					DeathTime.Start();
+					dead = true;
+					PlayFXDie = true;
+				}
 			}
 		}
 		else if (c1->type == COLLIDER_PLAYER_CHECK)	//This collider is a +1 pixel margin of the player collision, so we can have data on what's on the top,right,left and under the player
@@ -732,15 +737,15 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
 
+		if (dead == false) {
+			if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
+			{
+				DeathTime.Start();
+				dead = true;
+				PlayFXDie = true;
 
-		if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
-		{
-			DeathTime.Start();
-			dead = true;
-			PlayFXDie = true;
-
+			}
 		}
-	}
 } 
 
 void  j2Player::PlayerMovementInputs() {
@@ -1247,10 +1252,23 @@ void j2Player::EntityFX() {
 	
 		if (PlayFXDie == true) {
 			App->audio->PlayFx(player_fx.dieSound, 0);
-			die.Reset();
-			currentAnimation = &die;
 			PlayFXDie = false;
+
+			if (CurrentState!=Player_State::AIR) {
+				die.Reset();
+				currentAnimation = &die;
+			}
+			else {
+
+				dieMidAir.Reset();
+				currentAnimation = &dieMidAir;
+
+			}
+
 		}
+
+	
+
 
 	}
 	
