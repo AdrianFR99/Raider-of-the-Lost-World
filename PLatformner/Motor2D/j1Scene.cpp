@@ -198,6 +198,24 @@ bool j1Scene::Update(float dt)
 		PathfindingDebug = !PathfindingDebug;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+
+		App->map->CleanUpMapEnemies();
+
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+
+		if (CurrentMap2 == false)
+		App->map->SpawnEnemies(App->map->data);
+		else
+			App->map->SpawnEnemies(App->map->data2);
+	}
+
+
+
 	if (CurrentMap2 == false) {	  	      //Draw Map 1
 		App->map->Draw(App->map->data);
 
@@ -216,22 +234,17 @@ bool j1Scene::Update(float dt)
 			switchTheMaps();
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-		{
 
-			App->map->CleanUpMapEnemies();
-			
+		if (App->entities->player->dead == true) {
+			if (App->entities->player->DeathTime.Read() > 1000) {
 
-		}
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-		{
-
-		
-			App->map->SpawnEnemies(App->map->data);
-
+				App->map->CleanUpMapEnemies();
+				App->map->SpawnEnemies(App->map->data);
+			}
 		}
 
-	
+
+
 	}
 
 
@@ -241,19 +254,26 @@ bool j1Scene::Update(float dt)
 		int x, y;
 		App->input->GetMousePosition(x, y);
 
-			if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
-				switchTheMaps();
-			}
-			if (SpawnEnemiesMap2 == true) {
+		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
+			switchTheMaps();
+		}
+		if (SpawnEnemiesMap2 == true) {
 
+			App->map->SpawnEnemies(App->map->data2);
+
+			SpawnEnemiesMap2 = false;
+			SpawnEnemiesMap1 = true;
+		}
+
+		if (App->entities->player->dead == true) {
+
+			if (App->entities->player->DeathTime.Read() > 1000) {
+
+				App->map->CleanUpMapEnemies();
 				App->map->SpawnEnemies(App->map->data2);
-
-				SpawnEnemiesMap2 = false;
-				SpawnEnemiesMap1 = true;
 			}
 
-			
-
+		}
 	}
 
 
