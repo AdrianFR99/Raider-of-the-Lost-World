@@ -329,9 +329,9 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 	if (c1->type == COLLIDER_ENEMY_CHECK && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_CHECK)
 	{
-		if (overlay.w > 0 && overlay.h > 5 && overlay.x +overlay.w > c2->rect.x)
+		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x < c2->rect.x &&overlay.x +overlay.w > c2->rect.x)
 			boundaries.wallFront = true;
-		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x < c2->rect.x + c2->rect.w)
+		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x > c2->rect.x && c1->rect.x < c2->rect.x + c2->rect.w)
 			boundaries.wallBack = true;
 		if (overlay.h == 1 && overlay.w > 5)
 			landed = true;
@@ -392,37 +392,41 @@ void j2GroundEnemy::EntityMovement(float dt)
 			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
 		else if (path->Count() > 0)
 			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
-
-		if (path->Count() > 0 && tileDistance < maxtileDistance)
+	}
+	else if (valid_path == false)
+	{
+		destination = App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data);
+	}
+	//If the path cannot be done because we are colliding with something
+	if ( tileDistance < maxtileDistance && App->entities->player->player.playerGodModeHitbox == nullptr)
+	{
+		if (position.x < destination.x && boundaries.wallFront == false)
 		{
-			if (position.x < destination.x && boundaries.wallFront == false)
-			{
-				ToMoveRight = true;
-				ToMoveLeft = false;
-			}
-			else if (position.x > destination.x && boundaries.wallBack == false)
-			{
-				ToMoveRight = false;
-				ToMoveLeft = true;
-			}
-			/*else if (position.x == destination.x)
-			{
-				ToMoveRight = false;
-				ToMoveLeft = false;
-			}*/
-			else
-			{
-				ToMoveRight = false;
-				ToMoveLeft = false;
-			}
+			ToMoveRight = true;
+			ToMoveLeft = false;
 		}
+		else if (position.x > destination.x && boundaries.wallBack == false)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = true;
+		}
+		/*else if (position.x == destination.x)
+		{
+			ToMoveRight = false;
+			ToMoveLeft = false;
+		}*/
 		else
 		{
 			ToMoveRight = false;
 			ToMoveLeft = false;
-			ToMoveDown = false;
-			ToMoveUp = false;
 		}
+	}
+	else
+	{
+		ToMoveRight = false;
+		ToMoveLeft = false;
+		ToMoveDown = false;
+		ToMoveUp = false;
 	}
 
 	if (ToMoveRight)
