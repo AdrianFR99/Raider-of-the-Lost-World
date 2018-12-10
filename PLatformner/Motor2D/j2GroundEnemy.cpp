@@ -13,6 +13,7 @@
 #include "j2Player.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "j1FadeToBlack.h"
 
 #include "j1Input.h"
 
@@ -349,6 +350,8 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		colliders.At(i)->data->to_delete = true;
 		i = colliders.find(groundEnemyFakeCollider);
 		colliders.At(i)->data->to_delete = true;
+		
+		App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);
 		
 		dead = true;
 	}

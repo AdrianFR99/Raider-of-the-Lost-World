@@ -173,7 +173,7 @@ bool j1Scene::Update(float dt)
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
-		App->fade->JustFadeToBlack(0.5f);
+		App->fade->FadeCustom(0,0,0,255.0f,0.5f);
 		switchTheMaps();
 
 	}

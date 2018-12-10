@@ -11,6 +11,7 @@
 #include "p2Defs.h"
 #include "j1Audio.h"
 #include "j1Window.h"
+#include "j1FadeToBlack.h"
 
 j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 {
@@ -353,5 +354,6 @@ void j2FlyingEnemy::EntityFX()
 		if (c2->type == COLLIDER_PLAYER_ATTACK )
 		{
 			dead = true;
+			App->fade->FadeCustom(255,255,255,30.0f,0.01f);
 		}
 	}

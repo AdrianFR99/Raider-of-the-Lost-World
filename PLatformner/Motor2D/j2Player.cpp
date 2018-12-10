@@ -10,6 +10,7 @@
 #include "j1Map.h"
 #include "j1audio.h"
 #include "j2EntityManager.h"
+#include "j1FadeToBlack.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -758,6 +759,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				HurtTime.Start();
 				hurt = true;
 				HitsToRecive--;
+				App->fade->FadeCustom(255,0,0,30.0f,0.1f);
 			
 				if (c2->rect.x > c1->rect.x)
 					Speed.x = -Currentacceleration;

@@ -9,6 +9,8 @@
 j1FadeToBlack::j1FadeToBlack() : j1Module()
 {
 	manage_active = false;
+	r = g = b = 0;
+	a = 255.0f;
 }
 
 j1FadeToBlack::~j1FadeToBlack()
@@ -70,8 +72,8 @@ bool j1FadeToBlack::PostUpdate()
 
 	}
 
-	// Finally render the black square with alpha on the screen
-	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
+	// Finally render the color square with alpha on the screen
+	SDL_SetRenderDrawColor(App->render->renderer, r, g, b, (Uint8)(normalized * a));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
 	return true;
@@ -91,7 +93,10 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 		fade_out = module_off;
 		fade_in = module_on;
 
+		//Added this for module activation/deactivation and color and alpha management
 		manage_active = true;
+		r = g = b = 0;
+		a = 255.f;
 
 		ret = true;
 	}
@@ -99,8 +104,8 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 	return ret;
 }
 
-// Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::JustFadeToBlack(float time)
+// Fade to the desired color & max alpha occupying all screen.
+bool j1FadeToBlack::FadeCustom(int r, int g, int b, float a,float time)
 {
 	bool ret = false;
 
@@ -110,7 +115,13 @@ bool j1FadeToBlack::JustFadeToBlack(float time)
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 
+		//Added this for module activation/deactivation and color and alpha management
 		manage_active = false;
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+
 		ret = true;
 	}
 
