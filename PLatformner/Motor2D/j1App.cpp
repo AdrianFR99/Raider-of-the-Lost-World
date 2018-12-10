@@ -15,6 +15,7 @@
 #include "j2Collision.h"
 #include "j1Pathfinding.h"
 #include "j2EntityManager.h"
+#include "j1FadeToBlack.h"
 #include "j1App.h"
 
 #include "Brofiler/Brofiler.h"
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new j2Collision();
 	pathfinding = new j1PathFinding();
 	entities = new j2EntityManager();
+	fade = new j1FadeToBlack();
 
 	
 	// Ordered for awake / Start / Update
@@ -51,8 +53,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entities);
 	//Pathfinding module
 	AddModule(pathfinding);
+	AddModule(fade);
+
 	// render last to swap buffer
 	AddModule(render);
+
+
 
 	PERF_PEEK(ptimer);
 }

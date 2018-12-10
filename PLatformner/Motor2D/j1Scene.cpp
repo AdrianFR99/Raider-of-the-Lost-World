@@ -12,6 +12,7 @@
 #include "j1Pathfinding.h"
 #include "j1Scene.h"
 #include "j2EntityManager.h"
+#include "j1FadeToBlack.h"
 #include "Brofiler/Brofiler.h"
 
 
@@ -172,6 +173,7 @@ bool j1Scene::Update(float dt)
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+		App->fade->JustFadeToBlack(0.5f);
 		switchTheMaps();
 
 	}

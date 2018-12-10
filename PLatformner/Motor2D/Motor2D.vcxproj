@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j2DynamicEntity.cpp" />
     <ClCompile Include="j2FlyingEnemy.cpp" />
     <ClCompile Include="j1Main.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j2DynamicEntity.h" />
     <ClInclude Include="j2FlyingEnemy.h" />
     <ClInclude Include="j2Entity.h" />
