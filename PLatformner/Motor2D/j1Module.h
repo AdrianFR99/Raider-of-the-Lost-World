@@ -25,6 +25,23 @@ public:
 		active = true;
 	}
 
+	void Enable()
+	{
+		if (active == false)
+		{
+			active = true;
+			Start();
+		}
+	}
+
+	void Disable()
+	{
+		if (active == true)
+		{
+			active = false;
+		}
+	}
+
 	// Called before render is available
 	virtual bool Awake(pugi::xml_node&)
 	{
