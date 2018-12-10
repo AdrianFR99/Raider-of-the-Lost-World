@@ -6,22 +6,22 @@
 	<audio />
 	<map />
 	<scene>
-		<switchScene value="true" />
+		<switchScene value="false" />
 	</scene>
 	<collisions />
 	<entities>
-		<player x="1049" y="633" />
-		<Speed x="150" y="150" deadCounter="0" />
+		<player x="412" y="553" />
+		<Speed x="-16.2974892" y="0" deadCounter="0" />
 		<ToMoveRight value="false" />
 		<ToMoveLeft value="false" />
 		<ToMoveUp value="false" />
 		<ToMoveDown value="false" />
-		<MovingRight value="true" />
-		<MovingLeft value="false" />
+		<MovingRight value="false" />
+		<MovingLeft value="true" />
 		<MovingUp value="false" />
 		<MovingDown value="true" />
-		<lookingRight value="true" />
-		<FirstJump value="false" />
+		<lookingRight value="false" />
+		<FirstJump value="true" />
 		<ChargedAttackB value="false" />
 		<BasicAttackB value="false" />
 		<AirAttackB value="false" />
@@ -31,11 +31,12 @@
 		<wallDown wallDown="false" />
 		<wallTop wallTop="false" />
 		<wallBack wallBack="false" />
-		<landed value="false" />
+		<landed value="true" />
 		<dead value="false" />
+		<HitsToReceive value="3" />
 	</entities>
 	<pathfinding />
 	<renderer>
-		<camera x="1508" y="944" />
+		<camera x="384" y="640" />
 	</renderer>
 </game_state>

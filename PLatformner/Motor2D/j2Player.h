@@ -194,6 +194,8 @@ public: //Variables
 	
 	//Vars for Blitig
 	int PivotAdjustment;
+	int HitsToRecive;
+	int FixedHits;
 
 	bool FirstJump = false;
 	//FX Sound Booleans
@@ -209,6 +211,7 @@ public: //Variables
 	//bool BasicAttackB2 = false;
 	bool AirAttackB = false;
 	bool arealAttackUsed = false;
+	bool hurt = false;
 	//bool combo = false;
 	//God Mode
 	bool GodModeB;
@@ -229,6 +232,7 @@ public: //Variables
 	Animation BasicAttack;
 	Animation BasicAttack2;
 	Animation AirAttack;
+	Animation Hurted;
 
 
 	Player_State CurrentState;
@@ -236,7 +240,7 @@ public: //Variables
 
 	j1Timer Guard;
 	j1Timer DeathTime;
-	
+	j1Timer HurtTime;
 	collisionControl colliding;
 
 private:

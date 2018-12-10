@@ -68,6 +68,9 @@ j2Player::j2Player(): j2DynamicEntity()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("GodMode");//GodMode
 	GodMode.LoadPushBack(AnimPushBack);
 
+	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Hurted");
+	Hurted.LoadPushBack(AnimPushBack);
+
 }
 
 //DESTRUCTOR
@@ -226,7 +229,9 @@ bool j2Player::Awake(pugi::xml_node& config)
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
-
+		//HitsToRecive
+		HitsToRecive = config.child("hitToRecive").attribute("value").as_int();
+			
 	}
 	else 
 	{
@@ -276,6 +281,8 @@ bool j2Player::Load(pugi::xml_node& data)
 	colliding.wallBack = data.child("wallBack").attribute("value").as_bool();
 
 	dead = data.child("dead").attribute("value").as_bool();
+	HitsToRecive= data.child("HitsToReceive").attribute("value").as_int();
+
 
 	landed = data.child("landed").attribute("value").as_bool();
 
@@ -374,7 +381,9 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave = data.append_child("dead");
 	playerSave.append_attribute("value") = dead;
 
-	
+	playerSave = data.append_child("HitsToReceive");
+	playerSave.append_attribute("value") = HitsToRecive;
+
 
 	return true;
 }
@@ -397,14 +406,14 @@ bool j2Player::Start()
 	player.fakeCollisionRect = { EntityRect.x - 1, EntityRect.y - 1, EntityRect.w + 2, EntityRect.h + 2 };
 	
 
-
-
 	
 	type = ENTITY_TYPE::PLAYER;
 	CreatePlayerColliders(player);
 	CurrentState = Player_State::IDLE;
 	if(EntityText==nullptr)
 	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures
+
+	FixedHits = HitsToRecive;
 
 	return true;
 }
@@ -597,7 +606,11 @@ bool j2Player::PostUpdate()
 {
 	BROFILER_CATEGORY("Player_PostUpdate", Profiler::Color::CadetBlue);
 	// We reset the colliders collisions
-	
+	if (hurt == true) {
+		ToMoveRight = false;
+		ToMoveLeft = false;
+	}
+
 	colliding.wallFront = false;
 	colliding.wallBack = false;
 	colliding.wallDown = false;
@@ -739,12 +752,33 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 		player.lateralFakeHitbox->rect.x = player.playerHitbox->rect.x -1;*/
 
 
-		if (dead == false) {
+		if (dead == false && hurt==false) {
 			if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
 			{
-				DeathTime.Start();
-				dead = true;
-				PlayFXDie = true;
+				HurtTime.Start();
+				hurt = true;
+				HitsToRecive--;
+			
+				if (c2->rect.x > c1->rect.x)
+					Speed.x = -Currentacceleration;
+				else if(c2->rect.x < c1->rect.x)
+					Speed.x = Currentacceleration;
+
+				else if (MovingRight == false && MovingLeft == false) {
+					if(lookingRight==true)
+						Speed.x = -Currentacceleration;
+					else
+						Speed.x = Currentacceleration;
+
+
+				}
+
+				if (HitsToRecive <= 0) {
+					DeathTime.Start();
+					dead = true;
+					PlayFXDie = true;
+					HitsToRecive = FixedHits;
+				}
 
 			}
 		}
@@ -781,7 +815,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveUp = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT )
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && hurt == false)
 	{
 		ToMoveUp = true;
 	}
@@ -791,7 +825,7 @@ void  j2Player::PlayerMovementInputs() {
 		ToMoveDown = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && hurt == false)
 	{
 		ToMoveDown = true;
 	}
@@ -838,31 +872,40 @@ void  j2Player::PlayerMovementInputs() {
 //}
 
 void j2Player::SwithcingStates(float dt) {
+	if (dead == false) {
+		
+		if (hurt == true && HurtTime.Read() > 500) {
 
-	switch (CurrentState) {
+			hurt = false;
 
-	case Player_State::IDLE:
-		IdleStateTo(dt);
-		break;
-	case Player_State::CROUCHING:
-		CrouchingStateTo(dt);
-		break;
-	case  Player_State::RUNNING:
-		RunningStateTo(dt);
-		break;
-	case  Player_State::AIR:
-		AirStateTo(dt);
-		break;
-	case Player_State::ATTACK:
-		AttackStateTo(dt);
+		}
+		
+		
+			switch (CurrentState) {
+
+			case Player_State::IDLE:
+				IdleStateTo(dt);
+				break;
+			case Player_State::CROUCHING:
+				CrouchingStateTo(dt);
+				break;
+			case  Player_State::RUNNING:
+				RunningStateTo(dt);
+				break;
+			case  Player_State::AIR:
+				AirStateTo(dt);
+				break;
+			case Player_State::ATTACK:
+				AttackStateTo(dt);
+
+			}
+		
 	}
-
 }
 
 void j2Player::IdleStateTo(float dt) {
 
-	if (dead == false) {
-
+	
 
 
 		if (ToMoveRight == true && ToMoveLeft == false || ToMoveLeft == true && ToMoveRight == false) {
@@ -893,7 +936,7 @@ void j2Player::IdleStateTo(float dt) {
 	
 		
 
-	}
+	
 
 }
 void j2Player::CrouchingStateTo(float dt) {
@@ -1213,14 +1256,17 @@ void j2Player::EntityMovement(float dt) {
 
 void j2Player::EntityFX() {
 
-	if (ToMoveRight == true && ToMoveLeft == false) {
-		lookingRight = true;
-	}
-	else if (ToMoveLeft == true && ToMoveRight == false) {
-		lookingRight = false;
-	}
-	
 	if (dead == false) {
+			if(hurt==false){
+
+		if (ToMoveRight == true && ToMoveLeft == false) {
+			lookingRight = true;
+		}
+		else if (ToMoveLeft == true && ToMoveRight == false) {
+			lookingRight = false;
+		}
+
+
 
 		if (GodModeB == false) {
 
@@ -1232,7 +1278,7 @@ void j2Player::EntityFX() {
 				CrouchingFX();
 				break;
 			case Player_State::RUNNING:
-				 RunningFX();
+				RunningFX();
 				break;
 			case Player_State::AIR:
 				AirFX();
@@ -1247,17 +1293,26 @@ void j2Player::EntityFX() {
 
 			currentAnimation = &GodMode;
 		}
-	}
-	else {
-	
+	} 
+			else{
+
+				Hurted.Reset();
+				currentAnimation = &Hurted;
+
+			}
+
+}
+
+	else{
 		if (PlayFXDie == true) {
+			
 			App->audio->PlayFx(player_fx.dieSound, 0);
 			PlayFXDie = false;
 
-			if (CurrentState!=Player_State::AIR) {
+			if (CurrentState != Player_State::AIR) {
 				die.Reset();
 				currentAnimation = &die;
-			}
+				}
 			else {
 
 				dieMidAir.Reset();
@@ -1265,12 +1320,11 @@ void j2Player::EntityFX() {
 
 			}
 
-		}
+			 }
+	}
+		
 
 	
-
-
-	}
 	
 }
 

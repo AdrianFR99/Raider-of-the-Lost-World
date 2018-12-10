@@ -110,7 +110,9 @@
       <!--Player Initial State-->
       <IntilaPState State="IDLE"/>
 
-      <!--Player Death-->
+    <hitToRecive value="3"/>
+    
+    <!--Player Death-->
       <dead boolDead="false" deadDelay="20" deadCounter="0" />
 
       <maximumDead_Y map1="800" map2="1200"/>
