@@ -168,6 +168,7 @@ public:
 
 	void PlayerDebugF();
 
+	void AttackReset();
 
 public: //Variables
 

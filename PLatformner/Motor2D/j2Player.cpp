@@ -472,10 +472,12 @@ bool j2Player::Update(float dt, bool do_logic)
 			if (DeathTime.Read() > 1000) {
 				
 				//Destroy the player Colliders
+
 				player.playerHitbox->to_delete = true;
 				player.fakeHitbox->to_delete = true;
 				player.playerHitbox = nullptr;
 				player.fakeHitbox = nullptr;
+				AttackReset();
 				//Player Goes To inital position of the current stage map
 				
 				if (App->scene->CurrentMap2 == false)
@@ -1034,10 +1036,8 @@ void j2Player::AttackStateTo(float dt) {
 
 		if (Guard.Read() >= 1200 && BasicAttackB == true) {
 
-			BasicAttack.Reset();
-				BasicAttackB = false;
-				CurrentState = Player_State::IDLE;
-
+			
+				AttackReset();
 		}
 
 		if (landed != true && (ChargedAttackB == true || BasicAttackB == true)) {
@@ -1580,19 +1580,19 @@ void j2Player::CheckCollidersAttacks() {
 	
 	if (player.PlayerAttackCollider != nullptr) {
 	
-		if (ChargedAttackB == false && player.DeleteColliderChargeA==true) {
+		if (ChargedAttackB == false && player.DeleteColliderChargeA==true || dead==true) {
 			player.PlayerAttackCollider->to_delete = true;
 			player.PlayerAttackCollider = nullptr;
 			player.DeleteColliderChargeA = false;
 		}
-		else if (AirAttackB==false && player.DeleteColliderAirA==true) {
+		else if (AirAttackB==false && player.DeleteColliderAirA==true || dead == true) {
 		
 			player.PlayerAttackCollider->to_delete = true;
 			player.PlayerAttackCollider = nullptr;
 			player.DeleteColliderAirA = false;
 
 		}
-		else if (BasicAttackB==false && player.DeleteColliderBasicA == true) {
+		else if (BasicAttackB==false && player.DeleteColliderBasicA == true || dead == true) {
 
 			player.PlayerAttackCollider->to_delete = true;
 			player.PlayerAttackCollider = nullptr;
@@ -1601,4 +1601,11 @@ void j2Player::CheckCollidersAttacks() {
 		}
 	}
 }
+void j2Player::AttackReset() {
 
+	BasicAttack.Reset();
+	BasicAttackB = false;
+	CurrentState = Player_State::IDLE;
+
+
+}
