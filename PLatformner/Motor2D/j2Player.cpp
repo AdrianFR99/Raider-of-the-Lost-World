@@ -775,7 +775,7 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 				}
 
-				if (HitsToRecive <= 0) {
+				if (HitsToRecive == 0) {
 					DeathTime.Start();
 					dead = true;
 					PlayFXDie = true;
