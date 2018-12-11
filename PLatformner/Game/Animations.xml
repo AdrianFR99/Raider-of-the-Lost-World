@@ -207,24 +207,24 @@
             <PushBack x="329" y="70" w="47" h="35"/>
             <PushBack x="376" y="70" w="47" h="35"/>
             <PushBack x="423" y="70" w="47" h="35"/>
-            <PushBack x="466" y="70" w="47" h="35"/>
-            <PushBack x="513" y="70" w="47" h="35"/>
+            <PushBack x="470" y="70" w="47" h="35"/>
+            <PushBack x="517" y="70" w="47" h="35"/>
           </Hurt>
           
           <Death  loop="false" speed="8.00">
-            <PushBack x="0" y="47" w="47" h="35"/>
-            <PushBack x="47" y="47" w="47" h="35"/>
-            <PushBack x="94" y="47" w="47" h="35"/>
-            <PushBack x="141" y="47" w="47" h="35"/>
-            <PushBack x="188" y="47" w="47" h="35"/>
-            <PushBack x="235" y="47" w="47" h="35"/>
-            <PushBack x="282" y="47" w="47" h="35"/>
-            <PushBack x="329" y="47" w="47" h="35"/>
-            <PushBack x="376" y="47" w="47" h="35"/>
-            <PushBack x="423" y="47" w="47" h="35"/>
-            <PushBack x="466" y="47" w="47" h="35"/>
-            <PushBack x="513" y="47" w="47" h="35"/>
-            <PushBack x="560" y="47" w="47" h="35"/>   
+            <PushBack x="0" y="35" w="47" h="35"/>
+            <PushBack x="47" y="35" w="47" h="35"/>
+            <PushBack x="94" y="35" w="47" h="35"/>
+            <PushBack x="141" y="35" w="47" h="35"/>
+            <PushBack x="188" y="35" w="47" h="35"/>
+            <PushBack x="235" y="35" w="47" h="35"/>
+            <PushBack x="282" y="35" w="47" h="35"/>
+            <PushBack x="329" y="35" w="47" h="35"/>
+            <PushBack x="376" y="35" w="47" h="35"/>
+            <PushBack x="423" y="35" w="47" h="35"/>
+            <PushBack x="466" y="35" w="47" h="35"/>
+            <PushBack x="513" y="35" w="47" h="35"/>
+            <PushBack x="560" y="35" w="47" h="35"/>   
           </Death>
         </Undead>
 
