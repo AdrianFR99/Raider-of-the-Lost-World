@@ -33,7 +33,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		attack.LoadPushBack(AnimPushBack);
 
 		AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Enemies").child("Undead").child("Hurt");//hurt
-		hurt.LoadPushBack(AnimPushBack);
+		hurtAnim.LoadPushBack(AnimPushBack);
 
 		AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Enemies").child("Undead").child("Death");//death
 		death.LoadPushBack(AnimPushBack);
@@ -195,8 +195,8 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 			}
 */
 
-			if (hurted == true && currentAnimation->Finished())
-				hurted = false;
+			if (hurt == true && currentAnimation->Finished())
+				hurt = false;
 
 			if (dead == false) {
 
@@ -343,20 +343,36 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		if (overlay.h == 1 && overlay.w > 5)
 			landed = true;
 	}
+	
+	if (hurt == false) {
 
-	if (c2->type == COLLIDER_PLAYER_ATTACK)
-	{
-		int i = colliders.find(groundEnemyCollider);
-		colliders.At(i)->data->to_delete = true;
-		i = colliders.find(groundEnemyFakeCollider);
-		colliders.At(i)->data->to_delete = true;
+		if (c2->type == COLLIDER_PLAYER_ATTACK)
+		{
+
+			hurt = true;
+			life--;
+
+
+
+				if (life == 0) {
+
+					dead = true;
+
+					int i = colliders.find(groundEnemyCollider);
+					colliders.At(i)->data->to_delete = true;
+					i = colliders.find(groundEnemyFakeCollider);
+					colliders.At(i)->data->to_delete = true;
+
+					life = 3;
+
+				}
+
+				App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);
+
+
+			}
 		
-		App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);
-		
-		dead = true;
 	}
-
-
 }
 
 void j2GroundEnemy::CheckPreCollision()
@@ -574,7 +590,7 @@ void j2GroundEnemy::AttackingFX()
 }
 void j2GroundEnemy::HurtFX()
 {
-	currentAnimation = &hurt;
+	currentAnimation = &hurtAnim;
 }
 void j2GroundEnemy::DyingFX()
 {

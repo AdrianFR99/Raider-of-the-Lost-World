@@ -66,7 +66,7 @@ public:
 	Animation idle;
 	Animation walk;
 	Animation attack;
-	Animation hurt;
+	Animation hurtAnim;
 	Animation death;
 
 	SDL_Rect AnimationRect;
@@ -104,7 +104,7 @@ public:
 	int colliderRect_w;
 	int colliderRect_h;
 
-	bool hurted=false;
+	bool hurt=false;
 
 private:
 	pugi::xml_node AnimPushBack;
