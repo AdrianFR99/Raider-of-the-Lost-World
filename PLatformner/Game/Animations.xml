@@ -196,7 +196,7 @@
             <PushBack x="936" y="0" w="47" h="35"/>
           </Attack>
 
-          <Hurt loop="true" speed="8.00">
+          <Hurt loop="false" speed="8.00">
             <PushBack x="0" y="70" w="47" h="35"/>
             <PushBack x="47" y="70" w="47" h="35"/>
             <PushBack x="94" y="70" w="47" h="35"/>

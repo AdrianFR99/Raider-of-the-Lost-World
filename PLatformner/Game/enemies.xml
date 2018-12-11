@@ -28,6 +28,10 @@
     <speed_x value="40"/>
     <speed_y value="40"/>
 
+    <life value=" 3"/>
+    <KnockBack value="10"/>
+
+
     <gravity value="30"/>
 
     <maxSpeed_x value="5"/>

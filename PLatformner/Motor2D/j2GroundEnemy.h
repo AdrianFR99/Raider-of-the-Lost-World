@@ -4,8 +4,10 @@
 #include "j2DynamicEntity.h"
 #include "j2Animation.h"
 #include "p2DynArray.h"
-
+#include "j1Timer.h"
 #include "PugiXml/src/pugixml.hpp"
+
+
 
 enum class GROUND_ENEMY_STATE
 {
@@ -81,8 +83,12 @@ public:
 	iPoint pathFindingDistance;
 	iPoint tileDistanceBetweenEntities;
 
+	j1Timer HurtTime;
+
 	int tileDistance;
-	int life = 3;
+
+	int life;
+	int KnockBack;
 
 	//Vars to load values from xml
 	p2SString texturePath;

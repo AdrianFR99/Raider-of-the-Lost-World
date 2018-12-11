@@ -14,8 +14,8 @@
 #include "j1Scene.h"
 #include "j1Window.h"
 #include "j1FadeToBlack.h"
-
 #include "j1Input.h"
+
 
 j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 {
@@ -63,9 +63,13 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		maxtileDistance = enemyNode.child("maxTileDistance").attribute("value").as_int();
 		//maxSoundDistance = enemyNode.child("maxSoundDistance").attribute("value").as_int();
 
+
+		life = enemyNode.child("life").attribute("value").as_int();
 		////Speeds
 		speed_x = enemyNode.child("speed_x").attribute("value").as_float();
 		speed_y = enemyNode.child("speed_y").attribute("value").as_float();
+
+		KnockBack = enemyNode.child("KnockBack").attribute("value").as_int();
 
 		Maxspeed.x = enemyNode.child("maxSpeed_x").attribute("value").as_int();
 		Maxspeed.y = enemyNode.child("maxSpeed_y").attribute("value").as_int();
@@ -91,7 +95,6 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 
 		//Texture
 		texturePath.create(enemyNode.child("texture").attribute("path").as_string());
-
 		EntityText = App->tex->Load(texturePath.GetString());
 	}
 	else
@@ -146,99 +149,108 @@ bool j2GroundEnemy::PreUpdate()
 
 bool j2GroundEnemy::Update(float dt, bool do_logic)
 {
-
 	if (dead == false) {
+		if (hurt == false) {
 
-		if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
-			&& position.x - ColliderRect.w < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale())
-			&& position.y + ColliderRect.h <= ((App->render->camera.y + App->render->camera.h) / App->win->GetScale())
-			&& position.y > (App->render->camera.y / App->win->GetScale()))
-		{
-			if (active == false)
+			if (position.x + ColliderRect.w >= (App->render->camera.x / App->win->GetScale())
+				&& position.x - ColliderRect.w < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale())
+				&& position.y + ColliderRect.h <= ((App->render->camera.y + App->render->camera.h) / App->win->GetScale())
+				&& position.y >(App->render->camera.y / App->win->GetScale()))
 			{
-				landed = true;
-			}
+				if (active == false)
+				{
+					landed = true;
+				}
 				active = true;
-		}
-		else
-		{
-			active = false;
-			landed = true;
-			Speed.y = 0.0f;
-		}
-
-		if (active)
-		{
-			/*if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
-			{
-				CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
-			{
-				CurrentState = GROUND_ENEMY_STATE::ATTACKING;
-			}
-			else if (hurted ==true)
-			{
-				CurrentState = GROUND_ENEMY_STATE::HURT;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
-			{
-				CurrentState = GROUND_ENEMY_STATE::DEATH;
 			}
 			else
 			{
-				CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+				active = false;
+				landed = true;
+				Speed.y = 0.0f;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+
+			if (active)
 			{
-				position.y -= 40;
-			}
-*/
-
-			if (hurt == true && currentAnimation->Finished())
-				hurt = false;
-
-			if (dead == false) {
-
-				CheckRelativePosition();
-				if (do_logic == true)
+				/*if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
 				{
-					if (App->entities->player->player.playerGodModeHitbox == nullptr)
+					CurrentState = GROUND_ENEMY_STATE::CHASING_PLAYER;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
+				{
+					CurrentState = GROUND_ENEMY_STATE::ATTACKING;
+				}
+				else if (hurted ==true)
+				{
+					CurrentState = GROUND_ENEMY_STATE::HURT;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
+				{
+					CurrentState = GROUND_ENEMY_STATE::DEATH;
+				}
+				else
+				{
+					CurrentState = GROUND_ENEMY_STATE::PATROLLING;
+				}
+				if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+				{
+					position.y -= 40;
+				}
+	*/
+
+				
+
+				if (dead == false) {
+
+					CheckRelativePosition();
+					if (do_logic == true)
 					{
-						if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
+						if (App->entities->player->player.playerGodModeHitbox == nullptr)
 						{
-							if (tileDistance < maxtileDistance)
+							if (playerPathfindingPosition.y > enemyPathfindingPosition.y - 1) //Remmber this is in Map tiles
 							{
-								int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
-								if (ret != -1)
+								if (tileDistance < maxtileDistance)
 								{
-									valid_path = true;
-									path = App->pathfinding->GetLastPath();
-								}
-								else
-								{
-									valid_path = false;
+									int ret = App->pathfinding->CreatePath(enemyPathfindingPosition, playerPathfindingPosition);
+									if (ret != -1)
+									{
+										valid_path = true;
+										path = App->pathfinding->GetLastPath();
+									}
+									else
+									{
+										valid_path = false;
+									}
 								}
 							}
 						}
+
 					}
 
+					EntityMovement(dt);
+
+
+					//Change Position Depending on Speed
+					position.x += Speed.x;
+					position.y += Speed.y;
 				}
-
-				EntityMovement(dt);
-
-
-				//Change Position Depending on Speed
-				position.x += Speed.x;
-				position.y += Speed.y;
 			}
-		}
-		SwithcingStates(dt);
-	}
-	
-	else
-		CurrentState = GROUND_ENEMY_STATE::HURT;
 
+			SwithcingStates(dt);
+		}
+
+		else {
+			
+			CurrentState = GROUND_ENEMY_STATE::HURT;
+			if (hurt == true && HurtTime.Read() > 1000)
+				hurt = false;
+		}
+	}
+	else {
+
+		CurrentState = GROUND_ENEMY_STATE::DEATH;
+
+	}
 
 		EntityFX();
 		
@@ -349,9 +361,23 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 		if (c2->type == COLLIDER_PLAYER_ATTACK)
 		{
 
+			HurtTime.Start();
+			hurtAnim.Reset();
 			hurt = true;
 			life--;
 
+
+			if (c2->rect.x > c1->rect.x)
+				position.x -= KnockBack;
+			else if (c2->rect.x < c1->rect.x)
+				position.x += KnockBack;
+
+			else if (MovingRight == false && MovingLeft == false) {
+				if (lookingRight == true)
+					position.x -= KnockBack;
+				else
+					position.x += KnockBack;
+				}
 
 
 				if (life == 0) {
@@ -410,87 +436,91 @@ void j2GroundEnemy::CheckPreCollision()
 
 void j2GroundEnemy::EntityMovement(float dt)
 {
-	iPoint destination;
-	if (tileDistance < maxtileDistance && valid_path == true)
-	{
-		if (path->Count() > 2)
-			destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
-		else if (path->Count() > 0)
-			destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
-	}
-	else if (valid_path == false)
-	{
-		destination = App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data);
-	}
-	//If the path cannot be done because we are colliding with something
-	if ( tileDistance < maxtileDistance && App->entities->player->player.playerGodModeHitbox == nullptr)
-	{
-		if (position.x < destination.x && boundaries.wallFront == false)
+	if (dead == false) {
+
+		iPoint destination;
+		if (tileDistance < maxtileDistance && valid_path == true)
 		{
-			ToMoveRight = true;
-			ToMoveLeft = false;
+			if (path->Count() > 2)
+				destination = App->map->MapToWorld(path->At(2)->x, path->At(2)->y, App->map->data);
+			else if (path->Count() > 0)
+				destination = App->map->MapToWorld(path->At(0)->x, path->At(0)->y, App->map->data);
 		}
-		else if (position.x > destination.x && boundaries.wallBack == false)
+		else if (valid_path == false)
 		{
-			ToMoveRight = false;
-			ToMoveLeft = true;
+			destination = App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data);
 		}
-		/*else if (position.x == destination.x)
+		//If the path cannot be done because we are colliding with something
+		if (tileDistance < maxtileDistance && App->entities->player->player.playerGodModeHitbox == nullptr)
 		{
-			ToMoveRight = false;
-			ToMoveLeft = false;
-		}*/
+			if (position.x < destination.x && boundaries.wallFront == false)
+			{
+				ToMoveRight = true;
+				ToMoveLeft = false;
+			}
+			else if (position.x > destination.x && boundaries.wallBack == false)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = true;
+			}
+			/*else if (position.x == destination.x)
+			{
+				ToMoveRight = false;
+				ToMoveLeft = false;
+			}*/
+			else
+			{
+				ToMoveRight = false;
+				ToMoveLeft = false;
+			}
+		}
 		else
 		{
 			ToMoveRight = false;
 			ToMoveLeft = false;
+			ToMoveDown = false;
+			ToMoveUp = false;
 		}
-	}
-	else
-	{
-		ToMoveRight = false;
-		ToMoveLeft = false;
-		ToMoveDown = false;
-		ToMoveUp = false;
-	}
 
-	if (ToMoveRight)
-	{
-		Speed.x = ceil(speed_x * dt);
-	}
-	else if (ToMoveLeft)
-	{
-		Speed.x = floor(-speed_x * dt);
-	}
-	else
-	{
-		Speed.x = 0;
-	}
-
-	if (Speed.x < -Maxspeed.x)
-	{
-		Speed.x = -Maxspeed.x;
-	}
-	else if (Speed.x < -Maxspeed.x)
-	{
-		Speed.x = -Maxspeed.x;
-	}
-
-	if (landed == false)
-	{
-		Speed.y += gravity * dt;
-		if (Speed.y < -Maxspeed.y)
+		if (ToMoveRight)
 		{
-			Speed.y = -Maxspeed.y;
+			Speed.x = ceil(speed_x * dt);
 		}
-		else if (Speed.y > Maxspeed.y)
+		else if (ToMoveLeft)
 		{
-			Speed.y = Maxspeed.y;
+			Speed.x = floor(-speed_x * dt);
 		}
-	}
-	else
-	{
-		Speed.y = 0;
+		else
+		{
+			Speed.x = 0;
+		}
+
+		if (Speed.x < -Maxspeed.x)
+		{
+			Speed.x = -Maxspeed.x;
+		}
+		else if (Speed.x < -Maxspeed.x)
+		{
+			Speed.x = -Maxspeed.x;
+		}
+
+		if (landed == false)
+		{
+			Speed.y += gravity * dt;
+			if (Speed.y < -Maxspeed.y)
+			{
+				Speed.y = -Maxspeed.y;
+			}
+			else if (Speed.y > Maxspeed.y)
+			{
+				Speed.y = Maxspeed.y;
+			}
+		}
+		else
+		{
+			Speed.y = 0;
+		}
+
 	}
 }
 
@@ -577,15 +607,20 @@ void j2GroundEnemy::EntityFX()
 
 void j2GroundEnemy::PatrollingFX()
 {
+
 	currentAnimation = &idle;
 }
 
 void j2GroundEnemy::WalkingFX()
 {
+
+
 	currentAnimation = &walk;
 }
 void j2GroundEnemy::AttackingFX()
 {
+
+	attack.Reset();
 	currentAnimation = &attack;
 }
 void j2GroundEnemy::HurtFX()
@@ -594,6 +629,7 @@ void j2GroundEnemy::HurtFX()
 }
 void j2GroundEnemy::DyingFX()
 {
+
 	currentAnimation = &death;
 }
 
