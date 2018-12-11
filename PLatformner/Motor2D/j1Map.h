@@ -190,7 +190,9 @@ public:
 
 	void SpawnEnemies(MapData&DataAux);
 	void CleanUpMapEnemies();
-
+	
+	void SpawnItems(MapData&DataAux);
+	void CleanUpItems();
 
 	TileSet* GetTilesetFromTileId(int id,MapData& DataAux) const;
 	// Coordinate translation methods

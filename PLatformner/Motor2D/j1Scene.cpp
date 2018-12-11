@@ -101,12 +101,17 @@ bool j1Scene::Start()
 
 	//Selecting which Colliders create 
 
-	if (CurrentMap2 == false)
+	if (CurrentMap2 == false) {
 		App->map->CreateColliders(App->map->data);
-
-	else
+		App->map->SpawnEnemies(App->map->data);
+		App->map->SpawnItems(App->map->data);
+	}
+	else {
 		App->map->CreateColliders(App->map->data2);
+		App->map->SpawnEnemies(App->map->data2);
+		App->map->SpawnItems(App->map->data2);
 
+	}
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
 	App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
@@ -225,12 +230,12 @@ bool j1Scene::Update(float dt)
 		App->input->GetMousePosition(x, y);
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
 
-		if (SpawnEnemiesMap1 == true) {
+	/*	if (SpawnEnemiesMap1 == true) {
 
 			App->map->SpawnEnemies(App->map->data);
 			SpawnEnemiesMap1 = false;
 			SpawnEnemiesMap2 = true;
-		}
+		}*/
 
 		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data)) {
 			switchTheMaps();
@@ -259,13 +264,13 @@ bool j1Scene::Update(float dt)
 		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
 			switchTheMaps();
 		}
-		if (SpawnEnemiesMap2 == true) {
+		/*if (SpawnEnemiesMap2 == true) {
 
 			App->map->SpawnEnemies(App->map->data2);
 
 			SpawnEnemiesMap2 = false;
 			SpawnEnemiesMap1 = true;
-		}
+		}*/
 
 		if (App->entities->player->dead == true) {
 
@@ -335,7 +340,10 @@ void j1Scene::switchTheMaps()
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
 		App->map->CleanUpMapEnemies();
+		App->map->CleanUpItems();
 		App->map->CreateColliders(App->map->data2);
+		App->map->SpawnEnemies(App->map->data2);
+		App->map->SpawnItems(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->next->data->GetString());
@@ -355,7 +363,10 @@ void j1Scene::switchTheMaps()
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
 		App->map->CleanUpMapEnemies();
+		App->map->CleanUpItems();
 		App->map->CreateColliders(App->map->data);
+		App->map->SpawnEnemies(App->map->data);
+		App->map->SpawnItems(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());

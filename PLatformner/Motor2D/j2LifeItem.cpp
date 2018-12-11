@@ -9,15 +9,7 @@
 j2LifeItem::j2LifeItem():j2StaticEntity()
 {
 	name = "RedGem";
-	type = ENTITY_TYPE::LIFE_ITEM;
-	EntityText = App->tex->Load("textures/GemRed.png");
-
-	ColliderRect = { 0,0,16,16 };
-	Offsets.colliderOffset = { 8,8 };
-	EntityRect={0,0,32,32};
 	
-	position.x = 300;
-	position.y = 500;
 }
 
 
@@ -28,6 +20,13 @@ j2LifeItem::~j2LifeItem()
 }
 bool j2LifeItem::Start() {
 	
+	type = ENTITY_TYPE::LIFE_ITEM;
+	EntityText = App->tex->Load("textures/GemRed.png");
+
+	ColliderRect = { 0,0,16,16 };
+	Offsets.colliderOffset = { 8,8 };
+	EntityRect = { 0,0,32,32 };
+
 	LifeItemCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
 	colliders.add(LifeItemCollider);
 	LifeItemCollider->SetPos(position.x + Offsets.colliderOffset.x , position.y + Offsets.colliderOffset.y);

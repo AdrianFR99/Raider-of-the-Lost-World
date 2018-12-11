@@ -798,6 +798,76 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 }
 
+void j1Map::SpawnItems(MapData&DataAux){
+
+	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
+
+
+		if (DataAux.ObjectGamesGroup.At(i)->data->nameGroup == "ArtefactsLayer") {
+
+
+			for (int x = 0; x < DataAux.ObjectGamesGroup.At(i)->data->Objectlist.count(); x++) {
+
+				if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "LifeEssence") {
+
+					j2Entity*Aux;
+					Aux = App->entities->CreateEntity(ENTITY_TYPE::LIFE_ITEM);
+
+					int j = App->entities->entities.find(Aux);
+
+					if (j != -1) {
+
+
+						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+
+						EntitiesPositioInList.add(j);
+
+						App->entities->entities.At(j)->data->Start();
+
+						continue;
+
+					}
+
+				}
+
+			/*	else if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "BatSpawn") {
+
+
+					j2Entity*Aux;
+					Aux = App->entities->CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
+
+					int j = App->entities->entities.find(Aux);
+
+					if (j != -1) {
+
+						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+
+						EntitiesPositioInList.add(j);
+
+						App->entities->entities.At(j)->data->Start();
+
+						continue;
+
+
+					}
+
+
+
+				}*/
+
+			}
+
+
+		}
+
+	}
+
+}
+
 
 void j1Map::CleanUpMapEnemies() {
 
@@ -818,6 +888,26 @@ void j1Map::CleanUpMapEnemies() {
 
 
 }
+void j1Map::CleanUpItems() {
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
+	{
+
+
+		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+
+
+			item->data->CleanUp();
+
+		}
+
+
+	}
+
+
+
+}
+
 
 float j1Map::SetPlayerToInitial(MapData&DataAux) {
 
