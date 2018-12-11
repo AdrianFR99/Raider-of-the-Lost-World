@@ -62,6 +62,12 @@
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Desenvolupament  ========\Modules\FadeToBlack</Filter>
     </ClCompile>
+    <ClCompile Include="j2StaticEntity.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j2LifeItem.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -148,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Desenvolupament  ========\Modules\FadeToBlack</Filter>
+    </ClInclude>
+    <ClInclude Include="j2StaticEntity.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j2LifeItem.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

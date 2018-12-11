@@ -17,7 +17,28 @@ enum class ENTITY_TYPE
 	FLYING_ENEMY,
 	GROUND_ENEMY,
 	PLAYER,
+	LIFE_ITEM,
 	UNKNOWN
+};
+
+struct collisionControl
+{
+	bool wallFront;
+	bool wallBack;
+	bool wallTop;
+	bool wallDown;
+
+	//Collision Adjusters
+	int x_CollisionAdjuster;
+	int y_CollisionController;
+
+	iPoint colliderOffset;
+	iPoint colliderOffsetGodMode;
+
+	int colliderOffsetGroundBasic;
+	int colliderOffsetGroundSlash;
+	int collisionOffsetY;
+
 };
 
 class j2Entity
@@ -61,7 +82,9 @@ public:
 
 
 	SDL_Texture*EntityText=nullptr;
+	//Enemies
 	p2List<Collider*> colliders;
+	//staticElems
 	
 
 	ENTITY_TYPE type;

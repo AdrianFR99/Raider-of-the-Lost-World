@@ -754,6 +754,8 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 						EntitiesPositioInList.add(j);
 
+						App->entities->entities.At(j)->data->Start();
+
 						continue;
 
 					}
@@ -776,6 +778,8 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 						
 						EntitiesPositioInList.add(j);
 
+						App->entities->entities.At(j)->data->Start();
+
 						continue;
 
 
@@ -791,7 +795,7 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 		}
 
 	}
-	App->entities->Start();
+
 }
 
 
@@ -802,7 +806,7 @@ void j1Map::CleanUpMapEnemies() {
 	{
 		
 	
-		if (item->data->type != ENTITY_TYPE::PLAYER) {
+		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM) {
 
 
 			item->data->CleanUp();

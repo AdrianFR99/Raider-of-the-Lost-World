@@ -293,18 +293,14 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	/*if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
-		int i = colliders.find(groundEnemyCollider);
-		colliders.At(i)->data->to_delete = true;
-		i = colliders.find(groundEnemyFakeCollider);
-		colliders.At(i)->data->to_delete = true;
-	}*/
+	if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
+		
+		for (int i = 0; i < colliders.count(); ++i) {
 
-	for (int i = 0; i < colliders.count();++i) {
+			colliders.At(i)->data->to_delete = true;
 
-		colliders.At(i)->data->to_delete = true;
-
-}
+		}
+	}
 
 	App->entities->DestroyEntity(this);
 	return true;
@@ -339,57 +335,58 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 		if (overlay.h > 5 /*&& overlay.h <10*/ && overlay.w > 5 && MovingDown == true)
 		{
-				position.y -= overlay.h;
+			position.y -= overlay.h;
 
-			colliders.start->data->SetPos(position.x,position.y);
+			colliders.start->data->SetPos(position.x, position.y);
 			landed = true;
 		}
 	}
 
 	if (c1->type == COLLIDER_ENEMY_CHECK && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_CHECK)
 	{
-		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x < c2->rect.x &&overlay.x +overlay.w > c2->rect.x)
+		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x < c2->rect.x &&overlay.x + overlay.w > c2->rect.x)
 			boundaries.wallFront = true;
 		if (overlay.w > 0 && overlay.h > 5 && c1->rect.x > c2->rect.x && c1->rect.x < c2->rect.x + c2->rect.w)
 			boundaries.wallBack = true;
 		if (overlay.h == 1 && overlay.w > 5)
 			landed = true;
 	}
-	
-	if (hurt == false) {
 
-		if (c2->type == COLLIDER_PLAYER_ATTACK)
-		{
+	if (dead == false) {
+		if (hurt == false) {
 
-			HurtTime.Start();
-			hurtAnim.Reset();
-			hurt = true;
-			life--;
+			if (c2->type == COLLIDER_PLAYER_ATTACK)
+			{
+
+				HurtTime.Start();
+				hurtAnim.Reset();
+				hurt = true;
+				life--;
 
 
-			if (c2->rect.x > c1->rect.x)
-				position.x -= KnockBack;
-			else if (c2->rect.x < c1->rect.x)
-				position.x += KnockBack;
-
-			else if (MovingRight == false && MovingLeft == false) {
-				if (lookingRight == true)
+				if (c2->rect.x > c1->rect.x)
 					position.x -= KnockBack;
-				else
+				else if (c2->rect.x < c1->rect.x)
 					position.x += KnockBack;
+
+				else if (MovingRight == false && MovingLeft == false) {
+					if (lookingRight == true)
+						position.x -= KnockBack;
+					else
+						position.x += KnockBack;
 				}
 
 
 				if (life == 0) {
 
 					dead = true;
+					for (int i = 0; i < colliders.count(); ++i) {
 
-					int i = colliders.find(groundEnemyCollider);
-					colliders.At(i)->data->to_delete = true;
-					i = colliders.find(groundEnemyFakeCollider);
-					colliders.At(i)->data->to_delete = true;
+						colliders.At(i)->data->to_delete = true;
+						
 
-					life = 3;
+					}
+
 
 				}
 
@@ -397,7 +394,8 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 
 			}
-		
+
+		}
 	}
 }
 

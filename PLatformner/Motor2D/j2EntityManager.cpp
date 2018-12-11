@@ -2,6 +2,7 @@
 #include "j2Player.h"
 #include "j2FlyingEnemy.h"
 #include "j2GroundEnemy.h"
+#include "j2LifeItem.h"
 #include "j1App.h"
 #include "Brofiler/Brofiler.h"
 
@@ -14,6 +15,7 @@ j2EntityManager::j2EntityManager() : j1Module()
 	update_ms_cycle = 0.200f;  //Change/Fix @D�dac must calculate value not hardcode
 
 	player = (j2Player*)CreateEntity(ENTITY_TYPE::PLAYER);
+	
 	//CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
 	//CreateEntity(ENTITY_TYPE::GROUND_ENEMY);
 }
@@ -24,6 +26,7 @@ j2EntityManager::~j2EntityManager()
 
 bool j2EntityManager::Awake(pugi::xml_node & config)
 {
+
 
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
@@ -40,6 +43,9 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 
 bool j2EntityManager::Start()
 {
+
+	CreateEntity(ENTITY_TYPE::LIFE_ITEM);
+
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
@@ -160,13 +166,14 @@ void j2EntityManager::OnCollision(Collider * c1, Collider * c2)
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 {
-	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(3), "code needs update");
+	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(4), "code needs update");
 	j2Entity* ret = nullptr;
 	switch (type) {
 
 		case ENTITY_TYPE::FLYING_ENEMY : ret = new j2FlyingEnemy(); break;
 		case ENTITY_TYPE::GROUND_ENEMY: ret = new j2GroundEnemy(); break;
 		case ENTITY_TYPE::PLAYER : ret = new j2Player(); break;
+		case ENTITY_TYPE::LIFE_ITEM: ret = new j2LifeItem(); break;
 
 	}
 	if (ret != nullptr)

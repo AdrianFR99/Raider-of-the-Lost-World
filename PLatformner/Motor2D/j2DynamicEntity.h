@@ -15,29 +15,7 @@ public:
 	virtual ~j2DynamicEntity(){}
 
 public:
-//vars
-	struct collisionControl
-	{
-		bool wallFront;
-		bool wallBack;
-		bool wallTop;
-		bool wallDown;
 
-		//Collision Adjusters
-		int x_CollisionAdjuster;
-		int y_CollisionController;
-
-		iPoint colliderOffset;
-		iPoint colliderOffsetGodMode;
-
-		int colliderOffsetGroundBasic;
-		int colliderOffsetGroundSlash;
-		int collisionOffsetY;
-
-	};
-
-//playerCollisionsRects
-	//Rects
 	
 	//fpoints
 	fPoint Speed;

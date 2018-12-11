@@ -27,6 +27,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY_CHECK] = true;
+	matrix[COLLIDER_WALL][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_TRAP][COLLIDER_WALL] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_TRAP] = false;
@@ -40,6 +41,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_TRAP][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_TRAP][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_TRAP][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_TRAP][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_ICE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_ICE][COLLIDER_TRAP] = false;
@@ -53,7 +55,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_ICE][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_ICE][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_ICE][COLLIDER_ENEMY_CHECK] = true;
-
+	matrix[COLLIDER_ICE][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_WATER][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WATER][COLLIDER_TRAP] = false;
@@ -67,6 +69,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_WATER][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_WATER][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_WATER][COLLIDER_ENEMY_CHECK] = true;
+	matrix[COLLIDER_WATER][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_PLATFORM][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_TRAP] = false;
@@ -80,6 +83,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY_CHECK] = true;
+	matrix[COLLIDER_PLATFORM][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_TRAP] = false;
@@ -93,6 +97,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_CLIMBWALL][COLLIDER_ENEMY_CHECK] = true;
+	matrix[COLLIDER_CLIMBWALL][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_TRAP] = true;
@@ -106,6 +111,8 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_ITEM] = true;
+
 
 	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_TRAP] = false;
@@ -119,6 +126,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_ENEMY] = false;
 	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_PLAYER_CHECK][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_TRAP] = false;
@@ -132,6 +140,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_GODMODE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_TRAP] = false;
@@ -145,7 +154,7 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_GODMODE][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_ENEMY] = false;
 	matrix[COLLIDER_GODMODE][COLLIDER_ENEMY_CHECK] = false;
-
+	matrix[COLLIDER_GODMODE][COLLIDER_ITEM] = false;
 
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_TRAP] = true;
@@ -159,6 +168,8 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_ATTACK] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_ITEM] = false;
+
 
 	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_TRAP] = false;
@@ -172,6 +183,21 @@ j2Collision::j2Collision()
 	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_ENEMY] = false;
 	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_ENEMY_CHECK] = false;
+	matrix[COLLIDER_ENEMY_CHECK][COLLIDER_ITEM] = false;
+
+	matrix[COLLIDER_ITEM][COLLIDER_WALL] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_TRAP] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_ICE] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_WATER] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_CLIMBWALL] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ITEM][COLLIDER_PLAYER_CHECK] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_GODMODE] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_PLAYER_ATTACK] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ITEM][COLLIDER_ENEMY_CHECK] = false;
+	
 
 }
 
@@ -315,6 +341,9 @@ void j2Collision::DebugDraw()
 			break;
 		case COLLIDER_ENEMY_CHECK: //Orange
 			App->render->DrawQuad(colliders[i]->rect, 255, 117, 20, alpha);
+			break;
+		case COLLIDER_ITEM:
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 200, alpha);
 			break;
 
 		}

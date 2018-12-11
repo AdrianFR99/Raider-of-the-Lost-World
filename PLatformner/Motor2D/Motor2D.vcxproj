@@ -91,7 +91,9 @@
     <ClCompile Include="j2Collision.cpp" />
     <ClCompile Include="j2EntityManager.cpp" />
     <ClCompile Include="j2GroundEnemy.cpp" />
+    <ClCompile Include="j2LifeItem.cpp" />
     <ClCompile Include="j2Player.cpp" />
+    <ClCompile Include="j2StaticEntity.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
@@ -111,8 +113,10 @@
     <ClInclude Include="j2Animation.h" />
     <ClInclude Include="j2EntityManager.h" />
     <ClInclude Include="j2GroundEnemy.h" />
+    <ClInclude Include="j2LifeItem.h" />
     <ClInclude Include="j2Player.h" />
     <ClInclude Include="j2Collision.h" />
+    <ClInclude Include="j2StaticEntity.h" />
     <ClInclude Include="p2DynArray.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
