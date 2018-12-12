@@ -18,6 +18,8 @@ j2Coin::j2Coin()
 
 	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Coin").attribute("path").as_string();
 
+
+
 	type = ENTITY_TYPE::COIN;
 }
 
@@ -30,8 +32,8 @@ bool j2Coin::Start() {
 	
 	EntityText = App->tex->Load("textures/Coin.png");
 
-	ColliderRect = { 0,0,16,16 };
-	Offsets.colliderOffset = { 8,8 };
+	ColliderRect = { 0,0,12,12 };
+	Offsets.colliderOffset = { 2,7 };
 	
 	CoinSound = App->audio->LoadFx(PathSound.GetString());
 

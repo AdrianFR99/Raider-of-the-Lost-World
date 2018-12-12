@@ -28,9 +28,9 @@ bool j2LifeItem::Start() {
 	
 	EntityText = App->tex->Load("textures/GemRed.png");
 
-	ColliderRect = { 0,0,16,16 };
-	Offsets.colliderOffset = { 8,8 };
-	EntityRect = { 0,0,32,32 };
+	ColliderRect = { 0,0,9,9 };
+	Offsets.colliderOffset = { 0,0 };
+	EntityRect = { 0,0,9,9 };
 
 	LifeSound = App->audio->LoadFx(PathSound.GetString());
 
