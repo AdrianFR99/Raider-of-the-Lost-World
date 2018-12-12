@@ -3,6 +3,7 @@
 #include "j2FlyingEnemy.h"
 #include "j2GroundEnemy.h"
 #include "j2LifeItem.h"
+#include "j2Coin.h"
 #include "j1App.h"
 #include "Brofiler/Brofiler.h"
 
@@ -166,7 +167,7 @@ void j2EntityManager::OnCollision(Collider * c1, Collider * c2)
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 {
-	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(4), "code needs update");
+	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(5), "code needs update");
 	j2Entity* ret = nullptr;
 	switch (type) {
 
@@ -174,7 +175,7 @@ j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 		case ENTITY_TYPE::GROUND_ENEMY: ret = new j2GroundEnemy(); break;
 		case ENTITY_TYPE::PLAYER : ret = new j2Player(); break;
 		case ENTITY_TYPE::LIFE_ITEM: ret = new j2LifeItem(); break;
-
+		case ENTITY_TYPE::COIN: ret = new j2Coin(); break;
 	}
 	if (ret != nullptr)
 		entities.add(ret);

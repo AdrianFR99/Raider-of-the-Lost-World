@@ -197,6 +197,9 @@ public: //Variables
 	int HitsToRecive;
 	int FixedHits;
 
+	//Coins
+	int Coins;
+
 	bool FirstJump = false;
 	//FX Sound Booleans
 	bool PlayFXJump=false;

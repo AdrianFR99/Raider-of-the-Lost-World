@@ -14,6 +14,11 @@ public:
 	virtual ~j2StaticEntity();
 
 
+public:
+	Collider* EntityCollider;
+	SDL_Rect  ColliderRect;
+	collisionControl Offsets;
+
 };
 
 

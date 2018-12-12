@@ -68,6 +68,9 @@
     <ClCompile Include="j2LifeItem.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j2Coin.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -159,6 +162,9 @@
       <Filter>Desenvolupament  ========\Modules\Entities</Filter>
     </ClInclude>
     <ClInclude Include="j2LifeItem.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j2Coin.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClInclude>
   </ItemGroup>

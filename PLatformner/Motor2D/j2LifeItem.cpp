@@ -27,9 +27,9 @@ bool j2LifeItem::Start() {
 	Offsets.colliderOffset = { 8,8 };
 	EntityRect = { 0,0,32,32 };
 
-	LifeItemCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
-	colliders.add(LifeItemCollider);
-	LifeItemCollider->SetPos(position.x + Offsets.colliderOffset.x , position.y + Offsets.colliderOffset.y);
+	EntityCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
+	colliders.add(EntityCollider);
+	EntityCollider->SetPos(position.x + Offsets.colliderOffset.x , position.y + Offsets.colliderOffset.y);
 
 	return true;
 }
@@ -89,10 +89,6 @@ void j2LifeItem::OnCollision(Collider* c1, Collider* c2) {
 	}
 
 
-
-
-}
-void j2LifeItem::CheckPreCollision() {
 
 
 }

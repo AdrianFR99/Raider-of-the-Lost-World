@@ -10,17 +10,17 @@
 	</scene>
 	<collisions />
 	<entities>
-		<player x="412" y="553" />
-		<Speed x="-16.2974892" y="0" deadCounter="0" />
+		<player x="297" y="569" />
+		<Speed x="0" y="0" deadCounter="20" />
 		<ToMoveRight value="false" />
 		<ToMoveLeft value="false" />
 		<ToMoveUp value="false" />
 		<ToMoveDown value="false" />
 		<MovingRight value="false" />
-		<MovingLeft value="true" />
-		<MovingUp value="false" />
-		<MovingDown value="true" />
-		<lookingRight value="false" />
+		<MovingLeft value="false" />
+		<MovingUp value="true" />
+		<MovingDown value="false" />
+		<lookingRight value="true" />
 		<FirstJump value="true" />
 		<ChargedAttackB value="false" />
 		<BasicAttackB value="false" />
@@ -33,10 +33,12 @@
 		<wallBack wallBack="false" />
 		<landed value="true" />
 		<dead value="false" />
-		<HitsToReceive value="3" />
+		<HitsToReceive value="6" />
+		<Coins value="1" />
 	</entities>
 	<pathfinding />
+	<:anonymous />
 	<renderer>
-		<camera x="384" y="640" />
+		<camera x="33" y="631" />
 	</renderer>
 </game_state>

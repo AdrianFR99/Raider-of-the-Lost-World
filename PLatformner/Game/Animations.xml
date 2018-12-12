@@ -239,7 +239,25 @@
       
       
       </Enemies>
-    
+
+      <Items>
+
+        <Coin loop="true" speed="8.00">
+          <PushBack x="0" y="0" w="32" h="38"/>
+          <PushBack x="32" y="0" w="32" h="38"/>
+          <PushBack x="64" y="0" w="32" h="38"/>
+          <PushBack x="96" y="0" w="32" h="38"/>
+          <PushBack x="132" y="0" w="32" h="38"/>
+          <PushBack x="168" y="0" w="32" h="38"/>
+          <PushBack x="200" y="0" w="32" h="38"/>
+          <PushBack x="232" y="0" w="32" h="38"/>
+            
+        </Coin>
+        
+        
+      </Items>
+      
+      
   </AnimationsPushBacks>
    
 </Anim>

@@ -230,13 +230,6 @@ bool j1Scene::Update(float dt)
 		App->input->GetMousePosition(x, y);
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
 
-	/*	if (SpawnEnemiesMap1 == true) {
-
-			App->map->SpawnEnemies(App->map->data);
-			SpawnEnemiesMap1 = false;
-			SpawnEnemiesMap2 = true;
-		}*/
-
 		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data)) {
 			switchTheMaps();
 		}
@@ -264,14 +257,7 @@ bool j1Scene::Update(float dt)
 		if (App->entities->player->position.x >= App->map->SetLimitPoint(App->map->data2)) {
 			switchTheMaps();
 		}
-		/*if (SpawnEnemiesMap2 == true) {
-
-			App->map->SpawnEnemies(App->map->data2);
-
-			SpawnEnemiesMap2 = false;
-			SpawnEnemiesMap1 = true;
-		}*/
-
+		
 		if (App->entities->player->dead == true) {
 
 			if (App->entities->player->DeathTime.Read() > 1000) {

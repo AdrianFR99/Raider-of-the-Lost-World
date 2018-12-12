@@ -283,7 +283,7 @@ bool j2Player::Load(pugi::xml_node& data)
 
 	dead = data.child("dead").attribute("value").as_bool();
 	HitsToRecive= data.child("HitsToReceive").attribute("value").as_int();
-
+	Coins= data.child("Coins").attribute("value").as_int();
 
 	landed = data.child("landed").attribute("value").as_bool();
 
@@ -384,6 +384,9 @@ bool j2Player::Save(pugi::xml_node& data) const
 
 	playerSave = data.append_child("HitsToReceive");
 	playerSave.append_attribute("value") = HitsToRecive;
+
+	playerSave = data.append_child("Coins");
+	playerSave.append_attribute("value") = Coins;
 
 
 	return true;

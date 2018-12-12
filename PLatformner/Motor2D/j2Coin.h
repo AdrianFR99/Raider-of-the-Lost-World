@@ -1,19 +1,16 @@
-#ifndef __J2LIFE_ITEM_H__
-#define __J2LIFE_ITEM_H__
+#ifndef __J2COIN_H__
+#define __J2COIN_H__
 
 #include "j2StaticEntity.h"
 #include "j2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
 
-
-class j2LifeItem : public j2StaticEntity
+class j2Coin :public j2StaticEntity
 {
 public:
-
-	j2LifeItem();
-	~j2LifeItem();
-
-	//Start
+	j2Coin();
+	~j2Coin();
+	
 	bool Start();
 	//PreUpdate		Called each loop iteration
 	bool PreUpdate();
@@ -32,9 +29,13 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	
-
 public:
 	
+	Animation CoinAnim;
+	Animation*CurrentAnimation;
+private:
+	pugi::xml_node AnimPushBack;
+	pugi::xml_document configAnim;
 
 
 };

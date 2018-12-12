@@ -18,6 +18,7 @@ enum class ENTITY_TYPE
 	GROUND_ENEMY,
 	PLAYER,
 	LIFE_ITEM,
+	COIN,
 	UNKNOWN
 };
 

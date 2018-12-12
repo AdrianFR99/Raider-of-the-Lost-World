@@ -820,7 +820,7 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						LOG("Entity id %i ,Life Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 
 						EntitiesPositioInList.add(j);
 
@@ -832,11 +832,11 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 				}
 
-			/*	else if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "BatSpawn") {
+				else if (DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->name == "coin") {
 
 
 					j2Entity*Aux;
-					Aux = App->entities->CreateEntity(ENTITY_TYPE::FLYING_ENEMY);
+					Aux = App->entities->CreateEntity(ENTITY_TYPE::COIN);
 
 					int j = App->entities->entities.find(Aux);
 
@@ -844,7 +844,7 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						LOG("Entity id %i ,Coin Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 
 						EntitiesPositioInList.add(j);
 
@@ -857,7 +857,7 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 
 
-				}*/
+				}
 
 			}
 
@@ -876,7 +876,7 @@ void j1Map::CleanUpMapEnemies() {
 	{
 		
 	
-		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM) {
+		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
 
 
 			item->data->CleanUp();
