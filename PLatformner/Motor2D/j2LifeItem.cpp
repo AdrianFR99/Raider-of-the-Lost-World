@@ -4,12 +4,16 @@
 #include "j1Render.h"
 #include "j2Collision.h"
 #include "j2EntityManager.h"
+#include "j1Audio.h"
 #include "j2Player.h"
 
 j2LifeItem::j2LifeItem():j2StaticEntity()
 {
 	name = "RedGem";
+	pugi::xml_parse_result result2 = config.load_file("config.xml");
 	
+	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Life").attribute("path").as_string();
+
 	type = ENTITY_TYPE::LIFE_ITEM;
 }
 
@@ -27,6 +31,8 @@ bool j2LifeItem::Start() {
 	ColliderRect = { 0,0,16,16 };
 	Offsets.colliderOffset = { 8,8 };
 	EntityRect = { 0,0,32,32 };
+
+	LifeSound = App->audio->LoadFx(PathSound.GetString());
 
 	EntityCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
 	colliders.add(EntityCollider);
@@ -82,6 +88,9 @@ void j2LifeItem::OnCollision(Collider* c1, Collider* c2) {
 
 	if (c2->type == COLLIDER_PLAYER) {
 
+
+
+		App->audio->PlayFx(LifeSound, 0);
 		App->entities->player->HitsToRecive++;
 
 		CleanUp();

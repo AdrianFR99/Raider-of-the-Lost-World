@@ -47,6 +47,8 @@
       <max_attenuation_distance value="230"/>
       <bat_fx value="bat_flying.wav"/>
       <bat_channel value="5"/>
+      
+   
     </FX>
     
    </audio>
@@ -147,5 +149,14 @@
     </FX>
 
   </player>
+
+  <Items>
+    <FX>
+    <Coin path="audio/FX/coin.wav"/>
+    <Life path="audio/FX/life_up.wav"/>
+    </FX>
+
+  </Items>
+  
  </entities>
 </config>

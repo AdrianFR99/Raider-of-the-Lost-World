@@ -32,8 +32,11 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	
+	uint LifeSound;
+	p2SString PathSound;
 
-public:
+private:
+	pugi::xml_document config;
 	
 
 

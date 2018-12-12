@@ -33,10 +33,12 @@ public:
 	
 	Animation CoinAnim;
 	Animation*CurrentAnimation;
+	uint CoinSound;
+	p2SString PathSound;
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
-
+	pugi::xml_document config;
 
 };
 

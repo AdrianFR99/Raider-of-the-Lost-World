@@ -4,16 +4,19 @@
 #include "j1Render.h"
 #include "j2Collision.h"
 #include "j2EntityManager.h"
+#include "j1Audio.h"
 #include "j2Player.h"
 
 
 j2Coin::j2Coin()
 {
 	pugi::xml_parse_result result = configAnim.load_file("Animations.xml");
-
+	pugi::xml_parse_result result2 = config.load_file("config.xml");
+	
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Items").child("Coin");//idle
 	CoinAnim.LoadPushBack(AnimPushBack);
 
+	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Coin").attribute("path").as_string();
 
 	type = ENTITY_TYPE::COIN;
 }
@@ -30,6 +33,7 @@ bool j2Coin::Start() {
 	ColliderRect = { 0,0,16,16 };
 	Offsets.colliderOffset = { 8,8 };
 	
+	CoinSound = App->audio->LoadFx(PathSound.GetString());
 
 	EntityCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
 	colliders.add(EntityCollider);
@@ -90,6 +94,7 @@ void j2Coin::OnCollision(Collider* c1, Collider* c2) {
 
 	if (c2->type == COLLIDER_PLAYER) {
 
+		App->audio->PlayFx(CoinSound, 0);
 		App->entities->player->Coins++;
 
 
