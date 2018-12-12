@@ -60,7 +60,7 @@ bool j2Coin::PostUpdate() {
 
 	
 
-	App->render->Blit(EntityText, position.x, position.y, &EntityRect, SDL_FLIP_NONE);
+	App->render->Blit(EntityText, position.x-3, position.y, &EntityRect, SDL_FLIP_NONE);
 
 	return true;
 }
