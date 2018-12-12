@@ -72,6 +72,8 @@ j2Player::j2Player(): j2DynamicEntity()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Hurted");
 	Hurted.LoadPushBack(AnimPushBack);
 
+	type = ENTITY_TYPE::PLAYER;
+
 }
 
 //DESTRUCTOR
@@ -411,7 +413,7 @@ bool j2Player::Start()
 	
 
 	
-	type = ENTITY_TYPE::PLAYER;
+
 	CreatePlayerColliders(player);
 	CurrentState = Player_State::IDLE;
 	if(EntityText==nullptr)

@@ -10,6 +10,7 @@ j2LifeItem::j2LifeItem():j2StaticEntity()
 {
 	name = "RedGem";
 	
+	type = ENTITY_TYPE::LIFE_ITEM;
 }
 
 
@@ -20,7 +21,7 @@ j2LifeItem::~j2LifeItem()
 }
 bool j2LifeItem::Start() {
 	
-	type = ENTITY_TYPE::LIFE_ITEM;
+	
 	EntityText = App->tex->Load("textures/GemRed.png");
 
 	ColliderRect = { 0,0,16,16 };

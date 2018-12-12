@@ -50,11 +50,16 @@ bool j2EntityManager::Start()
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->Start();
-		if (!ret)
-			break;
+		
+		if (item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+
+			ret = item->data->Start();
+			if (!ret)
+				break;
+		}
+		return ret;
+
 	}
-	return ret;
 }
 
 bool j2EntityManager::PreUpdate()

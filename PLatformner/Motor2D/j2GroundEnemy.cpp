@@ -114,8 +114,7 @@ bool j2GroundEnemy::Start()
 	active = false;
 	/*position.x = 300;
 	position.y = 574;*/
-	Speed.x = 0;
-	Speed.y = 0;
+
 
 	ColliderRect = { position.x,position.y,colliderRect_w,colliderRect_h };
 	FakeColliderRect = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};

@@ -81,6 +81,8 @@ bool j1Scene::Start()
 
 	LOG("Loading Maps");
 
+
+
 	for (int i = 0; i < loadedMap.count(); i++) {
 		if (i == 1) {
 			App->map->Load(loadedMap[i]->GetString(), App->map->data2);
@@ -243,7 +245,7 @@ bool j1Scene::Update(float dt)
 			}
 		}
 
-
+		
 
 	}
 

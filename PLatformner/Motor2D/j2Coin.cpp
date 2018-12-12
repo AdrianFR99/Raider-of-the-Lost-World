@@ -14,6 +14,8 @@ j2Coin::j2Coin()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Items").child("Coin");//idle
 	CoinAnim.LoadPushBack(AnimPushBack);
 
+
+	type = ENTITY_TYPE::COIN;
 }
 
 
@@ -22,7 +24,7 @@ j2Coin::~j2Coin()
 }
 bool j2Coin::Start() {
 
-	type = ENTITY_TYPE::COIN;
+	
 	EntityText = App->tex->Load("textures/Coin.png");
 
 	ColliderRect = { 0,0,16,16 };
