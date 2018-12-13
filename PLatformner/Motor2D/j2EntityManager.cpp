@@ -45,13 +45,12 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 bool j2EntityManager::Start()
 {
 
-	CreateEntity(ENTITY_TYPE::LIFE_ITEM);
 
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
 		
-		if (item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+		if (item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY ) {
 
 			ret = item->data->Start();
 			if (!ret)
@@ -118,9 +117,13 @@ bool j2EntityManager::CleanUp()
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->CleanUp();
-		if (!ret)
-			break;
+	
+
+			ret = item->data->CleanUp();
+		
+			if (!ret)
+				break;
+		
 	}
 	return ret;
 }

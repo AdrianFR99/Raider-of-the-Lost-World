@@ -8,6 +8,7 @@
 
 j1FadeToBlack::j1FadeToBlack() : j1Module()
 {
+	name.create("FadeToBlack");
 	manage_active = false;
 	r = g = b = 0;
 	a = 255.0f;

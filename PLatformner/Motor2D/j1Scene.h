@@ -2,6 +2,8 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "j1Timer.h"
+
 
 struct SDL_Texture;
 
@@ -47,6 +49,23 @@ public:
 	bool SpawnEnemiesMap2 = false;
 
 	bool PathfindingDebug = false;
+
+	bool loaded = false;
+	//Timers
+
+	float Stage1Time;
+	float Stage1LastTime;
+	
+
+	float Stage2Time;
+	float Stage2LastTime;
+
+
+	bool StageOneTimerStart;
+	bool StageTwoTimerStart;
+
+	j1Timer StageOneTimer;
+	j1Timer StageTwoTimer;
 
 private:
 

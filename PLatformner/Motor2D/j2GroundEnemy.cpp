@@ -300,7 +300,8 @@ bool j2GroundEnemy::CleanUp()
 
 		}
 	}
-
+	
+	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 	return true;
 }
@@ -385,8 +386,9 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 						
 
 					}
-
-
+					
+					App->entities->player->Score += 50;
+					
 				}
 
 				App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);

@@ -68,7 +68,7 @@ bool j2LifeItem::CleanUp() {
 
 	}
 
-
+	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 
 	return true;

@@ -14,6 +14,7 @@ public:
 	void Start();
 	uint32 Read() const;
 	float ReadSec() const;
+	float ReadSecSince(float plus) const;
 
 private:
 	uint32	started_at;

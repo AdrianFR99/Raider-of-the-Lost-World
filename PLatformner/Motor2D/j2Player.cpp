@@ -286,7 +286,7 @@ bool j2Player::Load(pugi::xml_node& data)
 	dead = data.child("dead").attribute("value").as_bool();
 	HitsToRecive= data.child("HitsToReceive").attribute("value").as_int();
 	Coins= data.child("Coins").attribute("value").as_int();
-
+	Score = data.child("Score").attribute("value").as_int();
 	landed = data.child("landed").attribute("value").as_bool();
 
 	//counters
@@ -389,6 +389,9 @@ bool j2Player::Save(pugi::xml_node& data) const
 
 	playerSave = data.append_child("Coins");
 	playerSave.append_attribute("value") = Coins;
+
+	playerSave = data.append_child("Score");
+	playerSave.append_attribute("value") = Score;
 
 
 	return true;
@@ -789,6 +792,9 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 
 			}
 		}
+
+
+
 } 
 
 void  j2Player::PlayerMovementInputs() {

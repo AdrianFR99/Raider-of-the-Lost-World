@@ -31,3 +31,10 @@ float j1Timer::ReadSec() const
 
 	return float(SDL_GetTicks() - started_at) / 1000.0f;
 }
+
+float j1Timer::ReadSecSince(float plus) const
+{
+	plus=plus*1000.0f;
+
+	return float((SDL_GetTicks() + plus))/ 1000.0f;
+}

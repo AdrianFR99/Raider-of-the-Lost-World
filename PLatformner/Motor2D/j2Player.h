@@ -194,11 +194,8 @@ public: //Variables
 	
 	//Vars for Blitig
 	int PivotAdjustment;
-	int HitsToRecive;
-	int FixedHits;
-
-	//Coins
-	int Coins;
+	
+	
 
 	bool FirstJump = false;
 	//FX Sound Booleans
@@ -218,6 +215,20 @@ public: //Variables
 	//bool combo = false;
 	//God Mode
 	bool GodModeB;
+
+
+
+
+
+
+
+
+
+	//Player life,coins,score...
+	int FixedHits;
+	int Coins;
+	int HitsToRecive;
+	int Score;
 
 	Animation* currentAnimation=nullptr;
 	Animation idle;

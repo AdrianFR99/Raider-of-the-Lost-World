@@ -822,8 +822,6 @@ void j1Map::SpawnItems(MapData&DataAux){
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 						LOG("Entity id %i ,Life Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 
-						EntitiesPositioInList.add(j);
-
 						App->entities->entities.At(j)->data->Start();
 
 						continue;
@@ -846,7 +844,6 @@ void j1Map::SpawnItems(MapData&DataAux){
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 						LOG("Entity id %i ,Coin Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
 
-						EntitiesPositioInList.add(j);
 
 						App->entities->entities.At(j)->data->Start();
 
@@ -889,14 +886,13 @@ void j1Map::CleanUpMapEnemies() {
 
 }
 void j1Map::CleanUpItems() {
-
-	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
+for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
 	{
 
 
 		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
 
-
+		
 			item->data->CleanUp();
 
 		}

@@ -56,10 +56,19 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	loaded = true;
 	if (data.child("switchScene").attribute("value").as_bool() != CurrentMap2)
 	{
 		switchTheMaps();
 	}
+
+
+	Stage1Time = data.child("Stage1Time").attribute("Time").as_float();
+	Stage2Time = data.child("Stage2Time").attribute("Time").as_float();
+	
+	Stage1LastTime= data.child("Stage1Time").attribute("Time").as_float();
+	Stage2LastTime= data.child("Stage2Time").attribute("Time").as_float();
+	
 	return true;
 }
 
@@ -70,7 +79,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	switchScene.append_attribute("value") = CurrentMap2;
 
+	switchScene = data.append_child("Stage1Time");
+	switchScene.append_attribute("Time") = Stage1Time;
 
+	switchScene = data.append_child("Stage2Time");
+	switchScene.append_attribute("Time") = Stage2Time;
 
 	return true;
 }
@@ -107,12 +120,13 @@ bool j1Scene::Start()
 		App->map->CreateColliders(App->map->data);
 		App->map->SpawnEnemies(App->map->data);
 		App->map->SpawnItems(App->map->data);
+		StageOneTimerStart = true;
 	}
 	else {
 		App->map->CreateColliders(App->map->data2);
 		App->map->SpawnEnemies(App->map->data2);
 		App->map->SpawnItems(App->map->data2);
-
+		StageTwoTimerStart = false;
 	}
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
@@ -244,8 +258,19 @@ bool j1Scene::Update(float dt)
 				App->map->SpawnEnemies(App->map->data);
 			}
 		}
-
 		
+		if (StageOneTimerStart==true && App->entities->player->Speed.x !=0) {
+
+			StageOneTimer.Start();
+			StageOneTimerStart = false;
+
+		}
+		
+		if (loaded == false)
+			Stage1Time = StageOneTimer.ReadSec();
+		else
+			Stage1Time = StageOneTimer.ReadSecSince(Stage1LastTime);
+
 
 	}
 
@@ -269,6 +294,19 @@ bool j1Scene::Update(float dt)
 			}
 
 		}
+
+		if (StageTwoTimerStart == true && App->entities->player->Speed.x != 0) {
+
+			StageOneTimer.Start();
+			StageTwoTimerStart = false;
+
+		}
+
+		if (loaded == false)
+		Stage2Time = StageOneTimer.ReadSec();
+		else
+			Stage2Time = StageTwoTimer.ReadSecSince(Stage2LastTime);
+
 	}
 
 
@@ -334,6 +372,7 @@ void j1Scene::switchTheMaps()
 		App->map->SpawnItems(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
+		StageTwoTimerStart = true;
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->next->data->GetString());
 		App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
 		
@@ -357,6 +396,8 @@ void j1Scene::switchTheMaps()
 		App->map->SpawnItems(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
+		StageOneTimerStart = true;
+
 		p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
 		App->audio->PlayMusic(lvl_song.GetString(), 0.5f);
 

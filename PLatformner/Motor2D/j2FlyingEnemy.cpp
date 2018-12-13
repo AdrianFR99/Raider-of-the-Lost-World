@@ -174,7 +174,7 @@ bool j2FlyingEnemy::CleanUp()
 
 
 	}
-
+	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 
 	return true;
@@ -355,5 +355,8 @@ void j2FlyingEnemy::EntityFX()
 		{
 			dead = true;
 			App->fade->FadeCustom(255,255,255,30.0f,0.01f);
+			App->entities->player->Score += 30;
+
+
 		}
 	}

@@ -17,7 +17,9 @@ j2Coin::j2Coin()
 	CoinAnim.LoadPushBack(AnimPushBack);
 
 	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Coin").attribute("path").as_string();
-
+	
+	
+	EntityText = App->tex->Load("textures/Coin.png");
 
 
 	type = ENTITY_TYPE::COIN;
@@ -30,7 +32,7 @@ j2Coin::~j2Coin()
 bool j2Coin::Start() {
 
 	
-	EntityText = App->tex->Load("textures/Coin.png");
+	
 
 	ColliderRect = { 0,0,12,12 };
 	Offsets.colliderOffset = { 2,7 };
@@ -71,13 +73,15 @@ bool j2Coin::CleanUp() {
 
 
 	for (int i = 0; i < colliders.count(); ++i) {
-
-		colliders.At(i)->data->to_delete = true;
-
+		
+			colliders.At(i)->data->to_delete = true;
+			colliders.At(i)->data = nullptr;
 	}
 
-
+	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
+
+	
 
 	return true;
 }
@@ -98,7 +102,7 @@ void j2Coin::OnCollision(Collider* c1, Collider* c2) {
 
 		App->audio->PlayFx(CoinSound, 0);
 		App->entities->player->Coins++;
-
+		App->entities->player->Score += 10;
 
 		CleanUp();
 
