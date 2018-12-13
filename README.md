@@ -16,7 +16,7 @@ Thank you for checking our game!
 
 ### Gameplay
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/x8utuH5qI2E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IfKwG4F5XU8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 ### CONTROLS:
