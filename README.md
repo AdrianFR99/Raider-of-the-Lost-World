@@ -15,7 +15,9 @@ Flying Bats will fly around chasing you when you enter their perception zone.
 Thank you for checking our game!
 
 ### Gameplay
-<iframe width="645" height="520" src="https://youtu.be/x8utuH5qI2E" frameborder="0" allowfullscreen> </iframe> 
+
+<iframe width="720"> height "480" src= "https://youtu.be/x8utuH5qI2E" frameborder="1" allowfullscreen> </iframe>
+
 ---
 ### CONTROLS:
 
