@@ -145,6 +145,7 @@
       <die path="audio/FX/Hurt.wav"/>
       <Slash path="audio/FX/Sword_Swing.wav"/>
       <StrongSlash path="audio/FX/Strong_Swing.wav"/>
+      <HittedSound path="audio/FX/Hitted.wav"/>
       
     </FX>
 

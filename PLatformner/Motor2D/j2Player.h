@@ -28,6 +28,7 @@ struct FXPlayer {
 	uint dieSound;
 	uint SlashSwordSound;
 	uint StrongSlashSound;
+	uint HittedSound;
 
 	//Sound FX Paths
 	p2SString jumpSoundPath;
@@ -36,6 +37,7 @@ struct FXPlayer {
 	p2SString dieSoundPath;
 	p2SString SlashSoundPath;
 	p2SString StrongSlashPath;
+	p2SString HittedPath;
 };
 
 struct Player

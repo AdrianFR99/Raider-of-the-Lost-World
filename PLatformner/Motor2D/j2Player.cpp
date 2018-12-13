@@ -229,6 +229,7 @@ bool j2Player::Awake(pugi::xml_node& config)
 		player_fx.dieSoundPath = config.child("FX").child("die").attribute("path").as_string();
 		player_fx.SlashSoundPath = config.child("FX").child("Slash").attribute("path").as_string();
 		player_fx.StrongSlashPath= config.child("FX").child("StrongSlash").attribute("path").as_string();
+		player_fx.HittedPath = config.child("FX").child("HittedSound").attribute("path").as_string();
 
 		//Blit Values && frameDataAnimis
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
@@ -411,7 +412,8 @@ bool j2Player::Start()
 	player_fx.dieSound = App->audio->LoadFx(player_fx.dieSoundPath.GetString());
 	player_fx.SlashSwordSound = App->audio->LoadFx(player_fx.SlashSoundPath.GetString());
 	player_fx.StrongSlashSound = App->audio->LoadFx(player_fx.StrongSlashPath.GetString());
-	
+	player_fx.HittedSound= App->audio->LoadFx(player_fx.HittedPath.GetString());
+
 	player.fakeCollisionRect = { EntityRect.x - 1, EntityRect.y - 1, EntityRect.w + 2, EntityRect.h + 2 };
 	
 
@@ -768,7 +770,8 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 				hurt = true;
 				HitsToRecive--;
 				App->fade->FadeCustom(255,0,0,30.0f,0.1f);
-			
+				App->audio->PlayFx(player_fx.HittedSound,0);
+
 				if (c2->rect.x > c1->rect.x)
 					Speed.x = -Currentacceleration;
 				else if(c2->rect.x < c1->rect.x)

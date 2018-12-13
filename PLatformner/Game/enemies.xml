@@ -14,6 +14,15 @@
 
     <playerPathPositionAdjuster_x value="16"/>
     <playerPathPositionAdjuster_y value="32"/>
+    
+  <FX>
+      <HittedPath path="audio/FX/batDead.wav"/>
+      
+      
+      
+      
+    </FX>
+  
 
   </bat>
     
@@ -28,7 +37,7 @@
     <speed_x value="40"/>
     <speed_y value="40"/>
 
-    <life value=" 3"/>
+    <life value=" 2"/>
     <KnockBack value="10"/>
 
 
@@ -48,6 +57,14 @@
     
     <colliderOffset_x value="16"/>
     <colliderOffset_y value="8"/>
+
+    <FX>
+      <HittedPath path="audio/FX/EnemyHitted.wav"/>
+      
+      
+      
+      
+    </FX>
     
     
   </undead>

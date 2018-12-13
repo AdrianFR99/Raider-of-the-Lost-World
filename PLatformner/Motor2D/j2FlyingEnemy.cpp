@@ -54,7 +54,7 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 		playerPathPositionAdjuster_x = enemyNode.child("playerPathPositionAdjuster_x").attribute("value").as_int();
 		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
 	
-	
+		HittedPath = configEnemy.child("enemies").child("bat").child("FX").child("HittedPath").attribute("path").as_string();
 	
 	}
 	else
@@ -79,7 +79,7 @@ bool j2FlyingEnemy::Start()
 	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
 	colliders.add(enemy_collider);
 
-
+	HittedSound = App->audio->LoadFx(HittedPath.GetString());
 	
 
 
@@ -354,6 +354,7 @@ void j2FlyingEnemy::EntityFX()
 		if (c2->type == COLLIDER_PLAYER_ATTACK )
 		{
 			dead = true;
+			App->audio->PlayFx(HittedSound,0);
 			App->fade->FadeCustom(255,255,255,30.0f,0.01f);
 			App->entities->player->Score += 30;
 

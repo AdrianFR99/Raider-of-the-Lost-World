@@ -75,6 +75,9 @@ public:
 	int playerPathPositionAdjuster_x;
 	int playerPathPositionAdjuster_y;
 
+	uint HittedSound;
+	p2SString HittedPath;
+
 	
 private:
 

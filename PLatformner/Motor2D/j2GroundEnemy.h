@@ -112,12 +112,21 @@ public:
 
 	bool hurt=false;
 
+
+	//sounds
+	uint HittedSound;
+	p2SString HittedPath;
+
+
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;
 
 	pugi::xml_node enemyNode;
 	pugi::xml_document configEnemy;
+
+
+
 
 	bool valid_path;
 	const p2DynArray<iPoint>* path;

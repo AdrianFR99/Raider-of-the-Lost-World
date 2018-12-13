@@ -15,6 +15,7 @@
 #include "j1Window.h"
 #include "j1FadeToBlack.h"
 #include "j1Input.h"
+#include "j1Audio.h"
 
 
 j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
@@ -94,8 +95,11 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		colliderOffset_y = enemyNode.child("colliderOffset_y").attribute("value").as_int();
 
 		//Texture
+
+		HittedPath = configEnemy.child("enemies").child("undead").child("FX").child("HittedPath").attribute("path").as_string();
 		texturePath.create(enemyNode.child("texture").attribute("path").as_string());
 		EntityText = App->tex->Load(texturePath.GetString());
+	
 	}
 	else
 	{
@@ -136,6 +140,9 @@ bool j2GroundEnemy::Start()
 	ToMoveUp = false;
 	ToMoveRight = false;
 	ToMoveLeft = false;
+
+
+	HittedSound = App->audio->LoadFx(HittedPath.GetString());
 
 	
 	return true;
@@ -358,6 +365,7 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 			if (c2->type == COLLIDER_PLAYER_ATTACK)
 			{
 
+				
 				HurtTime.Start();
 				hurtAnim.Reset();
 				hurt = true;
@@ -378,7 +386,7 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 
 				if (life == 0) {
-
+					App->audio->PlayFx(HittedSound, 0);
 					dead = true;
 					for (int i = 0; i < colliders.count(); ++i) {
 
