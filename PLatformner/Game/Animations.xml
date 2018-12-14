@@ -235,6 +235,12 @@
              <PushBack x="16" y="0" w="16" h="16"/>
             <PushBack x="32" y="0" w="16" h="16"/>  
            </idle>
+
+          <dead loop="false" speed="8.00">
+            <PushBack x="48" y="0" w="16" h="16"/>
+            <PushBack x="64" y="0" w="16" h="16"/>
+          </dead>
+          
          </Bat>
       
       

@@ -23,6 +23,8 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 		AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Enemies").child("Bat").child("idle");//idle
 		idle.LoadPushBack(AnimPushBack);
 
+		AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Enemies").child("Bat").child("dead");//dead
+		deadAnim.LoadPushBack(AnimPushBack);
 	}
 	else
 	{
@@ -93,6 +95,7 @@ bool j2FlyingEnemy::PreUpdate()
 
 bool j2FlyingEnemy::Update(float dt,bool do_logic)
 {
+	
 	//If oustide camera, remain inactive
 	if (position.x + AnimationRect.w >= (App->render->camera.x / App->win->GetScale())
 		&& position.x < ((App->render->camera.x + App->render->camera.w) / App->win->GetScale()))
@@ -125,15 +128,21 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 				App->audio->PlayEnvironmentalFx(App->audio->bat_sound, App->audio->bat_channel, App->map->MapToWorld(enemyPathfindingPosition.x,
 					enemyPathfindingPosition.y, App->map->data), App->map->MapToWorld(playerPathfindingPosition.x, playerPathfindingPosition.y, App->map->data));
 		}
-		EntityMovement(dt);	//Execute the necessary movements
-		SwithcingStates(dt); //Switch the states
-		EntityFX();	//Get Your Animation!
+		
+		if (dead==false) {
+
+			EntityMovement(dt);	//Execute the necessary movements
+			SwithcingStates(dt); //Switch the states
+			EntityFX();	//Get Your Animation!
+
+			position.x += Speed.x;
+			position.y += Speed.y;
+		}
 
 		AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 		//Assign positionChanges
-		position.x += Speed.x;
-		position.y += Speed.y;
+	
 
 		enemy_collider->SetPos(position.x, position.y);
 
@@ -147,7 +156,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 
 
 
-	if (dead) {
+	if (dead && currentAnimation->Finished()) {
 		CleanUp();
 	}
 
@@ -318,21 +327,26 @@ void j2FlyingEnemy::SwithcingStates(float dt)
 
 void j2FlyingEnemy::EntityFX()
 { 
-	if (MovingRight == true && MovingLeft == false) {
-		lookingRight = true;
-	}
-	else if (MovingLeft == true && MovingRight == false) {
-		lookingRight = false;
-	}
+	
+	
+		if (MovingRight == true && MovingLeft == false) {
+			lookingRight = true;
+		}
+		else if (MovingLeft == true && MovingRight == false) {
+			lookingRight = false;
+		}
 
-	switch (CurrentState) {
-	case FLYING_ENEMY_STATE::PATROLLING:
-		PatrollingFX();
-		break;
-	case FLYING_ENEMY_STATE::CHASING_PLAYER:
-		PatrollingFX();
-		break;
-	}
+		switch (CurrentState) {
+		case FLYING_ENEMY_STATE::PATROLLING:
+			PatrollingFX();
+			break;
+		case FLYING_ENEMY_STATE::CHASING_PLAYER:
+			PatrollingFX();
+			break;
+		}
+
+
+	
 }
 
 	void j2FlyingEnemy::PatrollingFX()
@@ -351,13 +365,19 @@ void j2FlyingEnemy::EntityFX()
 
 	void j2FlyingEnemy::OnCollision(Collider* c1, Collider* c2)
 	{
-		if (c2->type == COLLIDER_PLAYER_ATTACK )
-		{
-			dead = true;
-			App->audio->PlayFx(HittedSound,0);
-			App->fade->FadeCustom(255,255,255,30.0f,0.01f);
-			App->entities->player->Score += 30;
+		if (dead == false){
+			if (c2->type == COLLIDER_PLAYER_ATTACK)
+			{
 
 
-		}
+				currentAnimation = &deadAnim;
+				dead = true;
+
+				App->audio->PlayFx(HittedSound, 0);
+				App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);
+				App->entities->player->Score += 30;
+
+
+			}
+	}
 	}

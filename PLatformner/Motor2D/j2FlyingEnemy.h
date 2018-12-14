@@ -53,6 +53,7 @@ public:
 public:
 	Animation* currentAnimation;
 	Animation idle;
+	Animation deadAnim;
 
 	SDL_Rect AnimationRect;
 	iPoint enemyPathfindingPosition;
