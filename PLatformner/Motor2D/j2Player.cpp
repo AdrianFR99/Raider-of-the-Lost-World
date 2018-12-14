@@ -521,9 +521,14 @@ bool j2Player::Update(float dt, bool do_logic)
 	
 	
 		//Check inputs
+	if (App->PauseGame == false) {
+
 		PlayerMovementInputs();
 		//DebugFuncionalities
 		PlayerDebugF();
+
+
+	}
 		//CheckMovement
 		CheckEntityMovement();
 		//switchStates
@@ -533,10 +538,11 @@ bool j2Player::Update(float dt, bool do_logic)
 		//Delete AttackCOlliders if its needed
 		CheckCollidersAttacks();
 		//players Effects
-		 EntityFX();
+		EntityFX();
 		//movePlayer
-		 EntityMovement(dt);
-		
+		EntityMovement(dt);
+
+	
 	
 	//If the player falls and surpasses a determined Y position it dies
 	if (App->scene->CurrentMap2 == false)

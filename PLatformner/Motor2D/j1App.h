@@ -107,6 +107,9 @@ public:
 	j2EntityManager*	entities;
 	j1FadeToBlack*		fade;
 
+
+	bool				PauseGame;
+
 private:
 
 	p2List<j1Module*>	modules;
