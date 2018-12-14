@@ -307,6 +307,8 @@ bool j2GroundEnemy::CleanUp()
 			colliders.At(i)->data->to_delete = true;
 			colliders.At(i)->data = nullptr;
 		}
+		EntityCollider = nullptr;
+		EntityColliderAUX != nullptr;
 	}
 	
 	App->tex->UnLoad(EntityText);
@@ -393,9 +395,9 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 						colliders.At(i)->data->to_delete = true;
 						
-
 					}
-					
+				
+
 					App->entities->player->Score += 50;
 					
 				}

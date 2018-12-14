@@ -186,7 +186,8 @@ bool j2FlyingEnemy::CleanUp()
 			colliders.At(i)->data = nullptr;
 
 		}
-}
+		EntityCollider = nullptr;
+	}
 
 
 	App->tex->UnLoad(EntityText);

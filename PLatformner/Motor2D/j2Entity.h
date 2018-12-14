@@ -95,6 +95,9 @@ public:
 	ENTITY_TYPE type;
 	collisionControl Offsets;
 
+
+	int id;
+
 private:
 	j2EntityManager* manager;
 };

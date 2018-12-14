@@ -56,13 +56,6 @@ bool j2Coin::PreUpdate() {
 bool j2Coin::Update(float dt, bool do_logic) {
 
 
-	if (touched == true)
-	{
-		touched = false;
-		EntitiesEnable = false;
-
-	}
-
 
 	AnimationRect = CurrentAnimation->GetCurrentFrame(dt);
 
@@ -87,7 +80,9 @@ bool j2Coin::CleanUp() {
 			colliders.At(i)->data->to_delete = true;
 			colliders.At(i)->data = nullptr;
 		}
+		EntityCollider = nullptr;
 	}
+
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 
@@ -97,23 +92,44 @@ bool j2Coin::CleanUp() {
 }
 
 bool j2Coin::Load(pugi::xml_node& data) {
+	
+	
+	for (pugi::xml_node EntityItem = data.child("EntityCoin"); EntityItem; EntityItem = EntityItem.next_sibling("EntityCoin")) {
+	
+		if (EntityItem.attribute("id").as_int()==id) {
 
-	//EntitiesEnable = data.child("EntityCoin").attribute("Enabled").as_bool();
-	//position.x = data.child("EntityCoin").attribute("PositionX").as_int();
-	//position.y = data.child("EntityCoin").attribute("PositionY").as_int();
 
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+		
+			if (EntityItem.attribute("touched").as_bool() == false && touched==true) {
 
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ITEM, App->entities);
+				colliders.add(EntityCollider);
+				EntityCollider->SetPos(position.x + Offsets.colliderOffset.x, position.y + Offsets.colliderOffset.y);
+		
+			}
+			
+			touched= EntityItem.attribute("touched").as_bool();
+			
+			
+
+			break;
+		}
+	}
 
 	return true;
 }
 bool j2Coin::Save(pugi::xml_node& data) const {
 
-	//pugi::xml_node Coin = data.append_child("EntityCoin");
+	pugi::xml_node Coin = data.append_child("EntityCoin");
 
-	//Coin.append_attribute("Enabled") = EntitiesEnable;
-	//Coin.append_attribute("PositionX") = position.x;
-	//Coin.append_attribute("PositionY") = position.y;
-
+	Coin.append_attribute("id") = id;
+	Coin.append_attribute("Enabled") = EntitiesEnable;
+	Coin.append_attribute("PositionX") = position.x;
+	Coin.append_attribute("PositionY") = position.y;
+	Coin.append_attribute("touched") = touched;
 
 	return true;
 }
@@ -133,10 +149,12 @@ void j2Coin::OnCollision(Collider* c1, Collider* c2) {
 		for (int i = 0; i < colliders.count(); ++i) {
 
 			colliders.At(i)->data->to_delete = true;
-
+			
 		}
-
+		EntityCollider = nullptr;
 	
+		EntitiesEnable = false;
+
 		
 
 	}

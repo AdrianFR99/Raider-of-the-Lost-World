@@ -750,7 +750,7 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 						
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->id = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;
 
 						EntitiesPositioInList.add(j);
 
@@ -774,7 +774,7 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->id=DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;
 						
 						EntitiesPositioInList.add(j);
 
@@ -820,8 +820,8 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Life Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
-
+						App->entities->entities.At(j)->data->id = x;
+						
 						App->entities->entities.At(j)->data->Start();
 
 						continue;
@@ -842,8 +842,7 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Coin Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
-
+						App->entities->entities.At(j)->data->id = x;
 
 						App->entities->entities.At(j)->data->Start();
 

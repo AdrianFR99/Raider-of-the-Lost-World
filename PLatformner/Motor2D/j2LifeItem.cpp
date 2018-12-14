@@ -48,11 +48,8 @@ bool j2LifeItem::PreUpdate() {
 
 bool j2LifeItem::Update(float dt, bool do_logic) {
 
-	if (touched) {
-		touched = false;
-		EntitiesEnable = false;
 
-	}
+	
 
 	return true;
 }
@@ -71,6 +68,7 @@ bool j2LifeItem::CleanUp() {
 			colliders.At(i)->data->to_delete = true;
 			colliders.At(i)->data = nullptr;
 		}
+		EntityCollider = nullptr;
 	}
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
@@ -78,9 +76,33 @@ bool j2LifeItem::CleanUp() {
 	return true;
 }
 
-bool j2LifeItem::Load(pugi::xml_node&) {
+bool j2LifeItem::Load(pugi::xml_node& data) {
 
 
+	for (pugi::xml_node EntityItem = data.child("Entitylife"); EntityItem; EntityItem = EntityItem.next_sibling("Entitylife")) {
+
+		if (EntityItem.attribute("id").as_int() == id) {
+
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+			
+			if (EntityItem.attribute("touched").as_bool() == false && touched == true) {
+
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ITEM, App->entities);
+				colliders.add(EntityCollider);
+				EntityCollider->SetPos(position.x + Offsets.colliderOffset.x, position.y + Offsets.colliderOffset.y);
+			
+			}
+
+			
+			touched = EntityItem.attribute("touched").as_bool();
+
+			
+
+			break;
+		}
+	}
 
 
 
@@ -88,11 +110,17 @@ bool j2LifeItem::Load(pugi::xml_node&) {
 
 	return true;
 }
-bool j2LifeItem::Save(pugi::xml_node&) const {
+bool j2LifeItem::Save(pugi::xml_node& data) const {
 
 
 
+	pugi::xml_node life = data.append_child("Entitylife");
 
+	life.append_attribute("id") = id;
+	life.append_attribute("Enabled") = EntitiesEnable;
+	life.append_attribute("PositionX") = position.x;
+	life.append_attribute("PositionY") = position.y;
+	life.append_attribute("touched") = touched;
 
 
 
@@ -115,7 +143,9 @@ void j2LifeItem::OnCollision(Collider* c1, Collider* c2) {
 			colliders.At(i)->data->to_delete = true;
 
 		}
+		EntityCollider = nullptr;
 
+		EntitiesEnable = false;
 		
 
 
