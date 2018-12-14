@@ -7,7 +7,7 @@
 	<map />
 	<scene>
 		<switchScene value="false" />
-		<Stage1Time Time="14.6120005" />
+		<Stage1Time Time="2.66599989" />
 		<Stage2Time Time="0" />
 	</scene>
 	<collisions />

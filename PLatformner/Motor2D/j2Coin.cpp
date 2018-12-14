@@ -86,11 +86,19 @@ bool j2Coin::CleanUp() {
 	return true;
 }
 
-bool j2Coin::Load(pugi::xml_node&) {
+bool j2Coin::Load(pugi::xml_node& data) {
+
+	
+
+
 
 	return true;
 }
-bool j2Coin::Save(pugi::xml_node&) {
+bool j2Coin::Save(pugi::xml_node& data) {
+
+
+	
+
 
 	return true;
 }
