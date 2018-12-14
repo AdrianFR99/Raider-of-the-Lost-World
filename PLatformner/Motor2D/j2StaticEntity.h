@@ -16,9 +16,10 @@ public:
 
 public:
 	Collider* EntityCollider;
-	SDL_Rect  ColliderRect;
-	collisionControl Offsets;
 
+	SDL_Rect AnimationRect;
+
+	bool touched;
 };
 
 

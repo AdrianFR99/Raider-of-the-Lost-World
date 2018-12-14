@@ -13,7 +13,7 @@ j2LifeItem::j2LifeItem():j2StaticEntity()
 	pugi::xml_parse_result result2 = config.load_file("config.xml");
 	
 	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Life").attribute("path").as_string();
-
+	EntitiesEnable = true;
 	type = ENTITY_TYPE::LIFE_ITEM;
 }
 
@@ -28,13 +28,13 @@ bool j2LifeItem::Start() {
 	
 	EntityText = App->tex->Load("textures/GemRed.png");
 
-	ColliderRect = { 0,0,9,9 };
-	Offsets.colliderOffset = { 0,0 };
 	EntityRect = { 0,0,9,9 };
+	Offsets.colliderOffset = { 0,0 };
+	AnimationRect = { 0,0,9,9 };
 
 	LifeSound = App->audio->LoadFx(PathSound.GetString());
 
-	EntityCollider = App->collision->AddCollider(ColliderRect, COLLIDER_ITEM, App->entities);
+	EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ITEM, App->entities);
 	colliders.add(EntityCollider);
 	EntityCollider->SetPos(position.x + Offsets.colliderOffset.x , position.y + Offsets.colliderOffset.y);
 
@@ -48,26 +48,30 @@ bool j2LifeItem::PreUpdate() {
 
 bool j2LifeItem::Update(float dt, bool do_logic) {
 
-	
+	if (touched) {
+		touched = false;
+		EntitiesEnable = false;
+
+	}
 
 	return true;
 }
 bool j2LifeItem::PostUpdate() {
 
-	App->render->Blit(EntityText, position.x, position.y, &EntityRect, SDL_FLIP_NONE);
+	App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 
 	return true;
 }
 
 bool j2LifeItem::CleanUp() {
 
-	
-	for (int i = 0; i < colliders.count(); ++i) {
+	if (EntityCollider != nullptr) {
+		for (int i = 0; i < colliders.count(); ++i) {
 
-		colliders.At(i)->data->to_delete = true;
-
+			colliders.At(i)->data->to_delete = true;
+			colliders.At(i)->data = nullptr;
+		}
 	}
-
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 
@@ -76,9 +80,21 @@ bool j2LifeItem::CleanUp() {
 
 bool j2LifeItem::Load(pugi::xml_node&) {
 
+
+
+
+
+
+
 	return true;
 }
-bool j2LifeItem::Save(pugi::xml_node&) {
+bool j2LifeItem::Save(pugi::xml_node&) const {
+
+
+
+
+
+
 
 	return true;
 }
@@ -89,11 +105,18 @@ void j2LifeItem::OnCollision(Collider* c1, Collider* c2) {
 	if (c2->type == COLLIDER_PLAYER) {
 
 
-
+		touched = true;
 		App->audio->PlayFx(LifeSound, 0);
 		App->entities->player->HitsToRecive++;
 
-		CleanUp();
+
+		for (int i = 0; i < colliders.count(); ++i) {
+
+			colliders.At(i)->data->to_delete = true;
+
+		}
+
+		
 
 
 	}

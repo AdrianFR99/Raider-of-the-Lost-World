@@ -224,17 +224,19 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 	{
 
-		App->map->CleanUpMapEnemies();
+		App->map->DisableItems();
 
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 
-		if (CurrentMap2 == false)
-		App->map->SpawnEnemies(App->map->data);
-		else
-			App->map->SpawnEnemies(App->map->data2);
+		App->map->EnableItems();
+
+		//if (CurrentMap2 == false)
+		//App->map->SpawnEnemies(App->map->data);
+		//else
+		//	App->map->SpawnEnemies(App->map->data2);
 	}
 
 
@@ -254,7 +256,7 @@ bool j1Scene::Update(float dt)
 		if (App->entities->player->dead == true) {
 			if (App->entities->player->DeathTime.Read() > 1000) {
 
-				App->map->CleanUpMapEnemies();
+				App->map->DisableEnemies();
 				App->map->SpawnEnemies(App->map->data);
 			}
 		}
@@ -289,7 +291,7 @@ bool j1Scene::Update(float dt)
 
 			if (App->entities->player->DeathTime.Read() > 1000) {
 
-				App->map->CleanUpMapEnemies();
+				App->map->DisableEnemies();
 				App->map->SpawnEnemies(App->map->data2);
 			}
 
@@ -365,8 +367,8 @@ void j1Scene::switchTheMaps()
 		
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
-		App->map->CleanUpMapEnemies();
-		App->map->CleanUpItems();
+		App->map->DisableEnemies();
+		App->map->DisableItems();
 		App->map->CreateColliders(App->map->data2);
 		App->map->SpawnEnemies(App->map->data2);
 		App->map->SpawnItems(App->map->data2);
@@ -389,8 +391,8 @@ void j1Scene::switchTheMaps()
 
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
-		App->map->CleanUpMapEnemies();
-		App->map->CleanUpItems();
+		App->map->DisableEnemies();
+		App->map->DisableItems();
 		App->map->CreateColliders(App->map->data);
 		App->map->SpawnEnemies(App->map->data);
 		App->map->SpawnItems(App->map->data);

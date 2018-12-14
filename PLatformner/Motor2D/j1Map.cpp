@@ -866,17 +866,48 @@ void j1Map::SpawnItems(MapData&DataAux){
 }
 
 
-void j1Map::CleanUpMapEnemies() {
+
+
+void j1Map::EnableEnemies() {
+	//Enemies can't be dead in order to execute this code, if they are only the collider will be created
 
 
 	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
 	{
-		
-	
+
+
 		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
 
+			if (item->data->EntitiesEnable == false) {
+				item->data->EntitiesEnable = true;
 
-			item->data->CleanUp();
+
+			}
+
+			if (item->data->type == ENTITY_TYPE::FLYING_ENEMY) {
+
+				for (int i = 0; i < 1; ++i) {
+
+					item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ENEMY, App->entities);
+					item->data->colliders.add(item->data->EntityCollider);
+
+				}
+			}
+			else if (item->data->type == ENTITY_TYPE::GROUND_ENEMY) {
+
+
+				for (int i = 0; i < 1; ++i) {
+
+					item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ENEMY, App->entities);
+					item->data->colliders.add(item->data->EntityCollider);
+					item->data->EntityColliderAUX = App->collision->AddCollider(item->data->EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
+					item->data->colliders.add(item->data->EntityColliderAUX);
+
+
+				}
+
+
+			}
 
 		}
 
@@ -885,7 +916,60 @@ void j1Map::CleanUpMapEnemies() {
 
 
 }
-void j1Map::CleanUpItems() {
+
+void j1Map::EnableItems() {
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next) {
+
+		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+
+			if (item->data->EntitiesEnable == false) {
+				item->data->EntitiesEnable = true;
+
+			}
+				item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ITEM, App->entities);
+				item->data->EntityCollider->SetPos(item->data->position.x + item->data->Offsets.colliderOffset.x, item->data->position.y + item->data->Offsets.colliderOffset.y);
+				item->data->colliders.add(item->data->EntityCollider);
+
+		}
+
+
+	}
+}
+
+void j1Map::DisableEnemies() {
+
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
+	{
+
+		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
+
+
+			if (item->data->EntitiesEnable == true)
+				item->data->EntitiesEnable = false;
+
+
+
+			for (int i = 0; i < item->data->colliders.count(); ++i) {
+
+				if (item->data->colliders.At(i) != nullptr)
+					item->data->colliders.At(i)->data->to_delete = true;
+
+
+			}
+
+		}
+
+
+	}
+
+
+}
+
+
+void j1Map::DisableItems() {
+
 for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
 	{
 
@@ -893,7 +977,16 @@ for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = 
 		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
 
 		
-			item->data->CleanUp();
+			if (item->data->EntitiesEnable == true)
+				item->data->EntitiesEnable = false;
+
+			for (int i = 0; i < item->data->colliders.count(); ++i) {
+
+				if (item->data->colliders.At(i) != nullptr)
+					item->data->colliders.At(i)->data->to_delete = true;
+
+
+			}
 
 		}
 

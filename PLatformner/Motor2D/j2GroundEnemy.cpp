@@ -105,6 +105,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 	{
 		LOG("Could not Load enemies.xml");
 	}
+	EntitiesEnable = true;
 	currentAnimation = nullptr;
 	type = ENTITY_TYPE::GROUND_ENEMY;
 }
@@ -121,14 +122,14 @@ bool j2GroundEnemy::Start()
 
 
 	ColliderRect = { position.x,position.y,colliderRect_w,colliderRect_h };
-	FakeColliderRect = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
+	EntityRectAUX = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
 	//EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 
-	groundEnemyCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
-	groundEnemyFakeCollider = App->collision->AddCollider(FakeColliderRect, COLLIDER_ENEMY_CHECK, App->entities);
-	colliders.add(groundEnemyCollider);
-	colliders.add(groundEnemyFakeCollider);
+	EntityCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
+	EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
+	colliders.add(EntityCollider);
+	colliders.add(EntityColliderAUX);
 
 	boundaries.wallFront = false;
 	boundaries.wallBack = false;
@@ -260,9 +261,9 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 
 		EntityFX();
 		
-		groundEnemyCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
-		groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x - 1, groundEnemyCollider->rect.y - 1);
-		colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
+		EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
+		EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+		colliderPosition = { EntityCollider->rect.x, EntityCollider->rect.y };
 
 		boundaries.wallFront = false;
 		boundaries.wallBack = false;
@@ -275,7 +276,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	
 	
 		if (dead==true && currentAnimation->Finished())
-			CleanUp();
+			EntitiesEnable = false;
 
 
 
@@ -299,12 +300,12 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
+	if (EntityCollider != nullptr && EntityColliderAUX != nullptr) {
 		
 		for (int i = 0; i < colliders.count(); ++i) {
 
 			colliders.At(i)->data->to_delete = true;
-
+			colliders.At(i)->data = nullptr;
 		}
 	}
 	
@@ -318,7 +319,7 @@ bool j2GroundEnemy::Load(pugi::xml_node &)
 	return true;
 }
 
-bool j2GroundEnemy::Save(pugi::xml_node &)
+bool j2GroundEnemy::Save(pugi::xml_node &) const
 {
 	return true;
 }
