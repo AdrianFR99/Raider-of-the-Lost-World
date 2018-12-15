@@ -316,15 +316,61 @@ bool j2GroundEnemy::CleanUp()
 	return true;
 }
 
-bool j2GroundEnemy::Load(pugi::xml_node &)
+bool j2GroundEnemy::Load(pugi::xml_node & data)
 {
+
+	for (pugi::xml_node EntityItem = data.child("UndeadEntity"); EntityItem; EntityItem = EntityItem.next_sibling("UndeadEntity")) {
+
+		if (EntityItem.attribute("id").as_int() == id) {
+
+
+
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+			life = EntityItem.attribute("life").as_int();
+
+
+			if (EntityItem.attribute("dead").as_bool() == false && dead == true) {
+
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ENEMY, App->entities);
+				EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY, App->entities);
+				colliders.add(EntityCollider);
+				colliders.add(EntityColliderAUX);
+				EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
+				EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+			}
+
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+
+			hurt = EntityItem.attribute("hurt").as_bool();
+			dead = EntityItem.attribute("dead").as_bool();
+
+
+			break;
+		}
+	}
+
+
 	return true;
 }
 
-bool j2GroundEnemy::Save(pugi::xml_node &) const
+bool j2GroundEnemy::Save(pugi::xml_node & data) const
 {
+	pugi::xml_node EnemyInfo = data.append_child("UndeadEntity");
+
+	EnemyInfo.append_attribute("id") = id;
+	EnemyInfo.append_attribute("PositionX") = position.x;
+	EnemyInfo.append_attribute("PositionY") = position.y;
+	EnemyInfo.append_attribute("life") = life;
+	EnemyInfo.append_attribute("hurt") = hurt;
+	EnemyInfo.append_attribute("dead") = dead;
+	EnemyInfo.append_attribute("Enabled") = EntitiesEnable;
+
+
+
 	return true;
 }
+
 
 void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 {
