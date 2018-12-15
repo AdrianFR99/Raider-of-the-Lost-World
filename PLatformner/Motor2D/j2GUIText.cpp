@@ -22,6 +22,8 @@ j2GUIText::~j2GUIText()
 
 
 bool j2GUIText::Awake() {
+	position.x /= scale;
+	position.y /= scale;
 	if (Parent != nullptr) {
 		GlobalPosition.x = Parent->GlobalPosition.x + position.x;
 		GlobalPosition.y = Parent->GlobalPosition.y + position.y;
@@ -37,8 +39,8 @@ bool j2GUIText::Awake() {
 		Parent->children.add(this);
 	}
 
-	InterRect.w = rect.w;
-	InterRect.h = rect.h;
+	InterRect.w = rect.w * scale;
+	InterRect.h = rect.h * scale;
 
 	ColorText.r = 255;
 	ColorText.g = 255;

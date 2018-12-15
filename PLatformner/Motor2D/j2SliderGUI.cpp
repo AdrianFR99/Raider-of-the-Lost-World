@@ -7,8 +7,8 @@ j2SliderGUI::j2SliderGUI(const char* name, ElementType Element, ElementAction ac
 	: ElementGUI(name, Element, action, position, rect, isStatic, draggable, interactable, invisible, tex)
 {
 	SDL_Rect defRect = { 0,0,0,0 };
-	ElementGUI* SliderImage = App->gui->CreateElement(name, ElementType::SPRITE, ElementAction::NONE, {0,0}, tex, true, rect, defRect, defRect, ButtonType::NOT_BUTTON, nullptr, this, false);
-	App->gui->CreateElement(name, ElementType::BUTTON, action, { 0,0}, tex, true, buttonRect, buttonRect, defRect, ButtonType::SLIDER, nullptr, this, true);
+	ElementGUI* SliderImage = App->gui->CreateElement(name, ElementType::SPRITE, ElementAction::NONE, {0,20}, tex, true, rect, defRect, defRect, ButtonType::NOT_BUTTON, nullptr, this, false);
+	App->gui->CreateElement(name, ElementType::BUTTON, action, { 100, 0 }, tex, true, buttonRect, buttonRect, defRect, ButtonType::SLIDER, nullptr, this, true);
 
 	was_hovered = false;
 	was_clicked = false;

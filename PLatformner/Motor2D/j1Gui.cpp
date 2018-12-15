@@ -48,41 +48,12 @@ bool j1Gui::Start()
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };
 
-	iPoint testPoint = { 100,50 };
-	SDL_Rect testRect = { 2, 396, 167, 185 };
-	const char* PanelText = "Window";
-	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, game_atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, true);
-
+	CreateMainMenuScreen();
 	
-	iPoint textTestPoint = { 190,20 };
-	SDL_Rect textTestRect = { 0,0, 50, 20 };
-	const char*Text = "Window";
-	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
-
-
-	SDL_Rect unHoveredRect = { 2,112,226,64 };
-	/*iPoint ButtonTestPoint = { 100,100 };
-
-	CreateElement("Fade_Button", ElementType::BUTTON, ElementAction::FADE, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
-
-	ElementGUI*ElemGUI2 = nullptr;
-	iPoint ButtonTestPoint_2 = { 100, 200 };
-	ElementGUI* RRButton = CreateElement("Rick Roll", ElementType::BUTTON, ElementAction::RICK_ROLL, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
-
-	ButtonTestPoint_2 = { 100, 300 };
-	ElementGUI* RRButton2 = CreateElement("Rick Roll", ElementType::BUTTON, ElementAction::RICK_ROLL, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
-
-	ButtonTestPoint_2 = { 100, 400 };
-	ElementGUI* RRButton3 = CreateElement("Rick Roll", ElementType::BUTTON, ElementAction::RICK_ROLL, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
-
-	iPoint RRtextTestPoint = { 50,20 };
-	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
-	const char* RRText = "Rick_Roll_LABEL";
-	CreateElement(RRText, ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, RRText, RRButton, false);
-*/
 	iPoint SlidertestPos = { 500, 1200 };
-	SDL_Rect SlidertestRect = { 0, 12, 308, 12 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unHoveredRect, hoveringRect, ButtonType::NOT_BUTTON, "None", nullptr, false, false);
+	SDL_Rect unhoveredSlide = {1278, 296, 6, 18};
+	SDL_Rect SlidertestRect = { 1251, 274, 131, 8 };
+	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, game_atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", nullptr, false, false);
 
 
 	bool ret = true;
@@ -231,4 +202,50 @@ ElementGUI*j1Gui::CreateElement(const char* name, ElementType element, ElementAc
 
 
 	return ElemGUI;
+}
+
+void j1Gui::CreateMainMenuScreen()
+{
+	SDL_Rect defaultRect = { 0,0,0,0 };
+	SDL_Rect hoveringRect = { 646,170,226,64 };
+	SDL_Rect clickedRect = { 416,170,226,64 };
+	//Window
+	iPoint testPoint = { 100,50 };
+	SDL_Rect testRect = { 2, 396, 167, 185 };
+	const char* PanelText = "Window";
+	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, game_atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, true);
+
+	iPoint textTestPoint = { 200,20 };
+	SDL_Rect textTestRect = { 0,0, 50, 20 };
+	const char*Text = "Window";
+	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
+
+
+		//BUTTONS
+		//Play
+		//Continue
+		//Settings
+		//Credits
+		//Exit
+	
+
+	SDL_Rect unHoveredRect = { 950,441,123,37 };
+	iPoint ButtonTestPoint = { 100,200 };
+
+	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::FADE, ButtonTestPoint, game_atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	iPoint RRtextTestPoint = { 50,20 };
+	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
+	const char* PlayText = "Play";
+	CreateElement("Play_Text", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
+
+	ElementGUI*ElemGUI2 = nullptr;
+	iPoint ButtonTestPoint_2 = { 100, 400 };
+	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::NONE, ButtonTestPoint_2, game_atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+
+	const char* ContinueText = "Continue";
+	CreateElement("Continue_Text", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
+
+
 }
