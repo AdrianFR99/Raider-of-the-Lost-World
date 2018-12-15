@@ -29,6 +29,11 @@ bool j2SliderGUI::Start()
 	length = rect.w * scale - children.end->data->InterRect.w;
 	slider_unitVal = float(1000 / length);
 	slider_unitVal *= 0.001;
+
+	InterRect.x = position.x;
+	InterRect.y = position.y;
+	InterRect.w = rect.w * scale;
+	InterRect.h = 2.5*rect.h * scale;
 	return true;
 }
 
