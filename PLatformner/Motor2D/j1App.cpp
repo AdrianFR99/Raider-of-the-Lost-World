@@ -15,6 +15,8 @@
 #include "j2Collision.h"
 #include "j1Pathfinding.h"
 #include "j2EntityManager.h"
+#include "j1Fonts.h"
+#include "j1Gui.h"
 #include "j1FadeToBlack.h"
 #include "j1App.h"
 
@@ -38,6 +40,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new j2Collision();
 	pathfinding = new j1PathFinding();
 	entities = new j2EntityManager();
+	font = new j1Fonts();
+	gui = new j1Gui();
 	fade = new j1FadeToBlack();
 
 	
@@ -53,6 +57,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entities);
 	//Pathfinding module
 	AddModule(pathfinding);
+	//UI Modules
+	AddModule(font);
+	AddModule(gui);
 	AddModule(fade);
 
 	// render last to swap buffer
@@ -178,6 +185,19 @@ bool j1App::Update()
 
 	FinishUpdate();
 	return ret;
+}
+
+//This is the UI function that will Give the UI info to the modules overloading callbackUIElement
+void j1App::UiElementCallback(ElementGUI *element)
+{
+	p2List_item<j1Module*>* item_module;
+	item_module = modules.start;
+
+	while (item_module != NULL)
+	{
+		item_module->data->callbackUiElement(element);
+		item_module = item_module->next;
+	}
 }
 
 // ---------------------------------------------

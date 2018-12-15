@@ -19,6 +19,8 @@ class j2Player;
 class j2Collision;
 class j1PathFinding;
 class j2EntityManager;
+class j1Fonts;
+class j1Gui;
 class j1FadeToBlack;
 
 class j1App
@@ -67,6 +69,8 @@ public:
 
 	bool	debugInfo=false;
 
+	//UI Callback function
+	void UiElementCallback(ElementGUI *element);
 
 private:
 
@@ -105,6 +109,8 @@ public:
 	j2Collision*		collision;
 	j1PathFinding*		pathfinding;
 	j2EntityManager*	entities;
+	j1Fonts*			font;
+	j1Gui*				gui;
 	j1FadeToBlack*		fade;
 
 

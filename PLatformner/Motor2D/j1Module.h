@@ -12,6 +12,7 @@
 class j1App;
 
 struct Collider; //Remember this is to avoid problems as j1Module.h is created before the struct collider
+class ElementGUI;
 
 class j1Module
 {
@@ -88,13 +89,15 @@ public:
 	{
 		return true;
 	}
-	//Testing
 	
 
 
 	// Callbacks ---
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 	virtual void OnPreCollision(int d) {}
+	
+	//UI Callback
+	virtual void callbackUiElement(ElementGUI *element) {}
 
 public:
 

@@ -13,6 +13,7 @@
 #include "j1Scene.h"
 #include "j2EntityManager.h"
 #include "j1FadeToBlack.h"
+#include "j1Gui.h"
 #include "Brofiler/Brofiler.h"
 
 
@@ -235,6 +236,11 @@ bool j1Scene::Update(float dt)
 		App->map->SpawnEnemies(App->map->data);
 		else
 			App->map->SpawnEnemies(App->map->data2);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+		int i = 0;
+		App->gui->debug = !App->gui->debug;
 	}
 
 

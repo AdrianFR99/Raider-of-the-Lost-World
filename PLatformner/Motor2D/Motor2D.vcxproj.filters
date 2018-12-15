@@ -71,6 +71,27 @@
     <ClCompile Include="j2Coin.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementGUI.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="j2ButtonClass.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j2GuiSprites.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j2GUIText.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j2SliderGUI.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -167,6 +188,27 @@
     <ClInclude Include="j2Coin.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementGUI.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="j2ButtonClass.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j2GuiSprites.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j2GUIText.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j2SliderGUI.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -198,6 +240,15 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\FadeToBlack">
       <UniqueIdentifier>{a9a6be11-17f6-4102-8aa2-947b0185bd69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\UI">
+      <UniqueIdentifier>{236aedc9-2115-4cf7-a70e-058f5f4f00f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\UI\UI Elements">
+      <UniqueIdentifier>{c4eb1b41-4bed-42c9-b423-38bb5829ef0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Fonts">
+      <UniqueIdentifier>{d73ac1b2-ef43-4f56-a911-594abe83306e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
