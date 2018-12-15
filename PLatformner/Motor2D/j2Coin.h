@@ -24,7 +24,7 @@ public:
 
 	//Save & Load Functions
 	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 
 
 	void OnCollision(Collider* c1, Collider* c2);
@@ -35,6 +35,10 @@ public:
 	Animation*CurrentAnimation;
 	uint CoinSound;
 	p2SString PathSound;
+
+
+
+	
 private:
 	pugi::xml_node AnimPushBack;
 	pugi::xml_document configAnim;

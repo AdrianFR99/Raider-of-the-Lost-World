@@ -66,6 +66,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 
 
 		life = enemyNode.child("life").attribute("value").as_int();
+		lifeFixed = enemyNode.child("life").attribute("value").as_int();
 		////Speeds
 		speed_x = enemyNode.child("speed_x").attribute("value").as_float();
 		speed_y = enemyNode.child("speed_y").attribute("value").as_float();
@@ -94,6 +95,9 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 		colliderOffset_x = enemyNode.child("colliderOffset_x").attribute("value").as_int();
 		colliderOffset_y = enemyNode.child("colliderOffset_y").attribute("value").as_int();
 
+		Offsets.colliderOffset.x = colliderOffset_x;
+		Offsets.colliderOffset.y = colliderOffset_y;
+
 		//Texture
 
 		HittedPath = configEnemy.child("enemies").child("undead").child("FX").child("HittedPath").attribute("path").as_string();
@@ -105,6 +109,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 	{
 		LOG("Could not Load enemies.xml");
 	}
+	EntitiesEnable = true;
 	currentAnimation = nullptr;
 	type = ENTITY_TYPE::GROUND_ENEMY;
 }
@@ -121,14 +126,14 @@ bool j2GroundEnemy::Start()
 
 
 	ColliderRect = { position.x,position.y,colliderRect_w,colliderRect_h };
-	FakeColliderRect = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
+	EntityRectAUX = { ColliderRect.x - 1,ColliderRect.y - 1,ColliderRect.w + 2, ColliderRect.h + 2};
 	//EntityText = App->tex->Load("textures/ZombieEnemieSpriteSheet.png");
 	CurrentState = GROUND_ENEMY_STATE::PATROLLING;
 
-	groundEnemyCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
-	groundEnemyFakeCollider = App->collision->AddCollider(FakeColliderRect, COLLIDER_ENEMY_CHECK, App->entities);
-	colliders.add(groundEnemyCollider);
-	colliders.add(groundEnemyFakeCollider);
+	EntityCollider = App->collision->AddCollider(ColliderRect,COLLIDER_ENEMY,App->entities);
+	EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
+	colliders.add(EntityCollider);
+	colliders.add(EntityColliderAUX);
 
 	boundaries.wallFront = false;
 	boundaries.wallBack = false;
@@ -260,9 +265,9 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 
 		EntityFX();
 		
-		groundEnemyCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
-		groundEnemyFakeCollider->SetPos(groundEnemyCollider->rect.x - 1, groundEnemyCollider->rect.y - 1);
-		colliderPosition = { groundEnemyCollider->rect.x, groundEnemyCollider->rect.y };
+		EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
+		EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+		colliderPosition = { EntityCollider->rect.x, EntityCollider->rect.y };
 
 		boundaries.wallFront = false;
 		boundaries.wallBack = false;
@@ -275,7 +280,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 	
 	
 		if (dead==true && currentAnimation->Finished())
-			CleanUp();
+			EntitiesEnable = false;
 
 
 
@@ -299,29 +304,82 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	if (groundEnemyCollider != nullptr && groundEnemyFakeCollider != nullptr) {
-		
+	
 		for (int i = 0; i < colliders.count(); ++i) {
 
+		if(colliders.At(i)->data != nullptr){
 			colliders.At(i)->data->to_delete = true;
-
+			colliders.At(i)->data = nullptr;
+			}
 		}
-	}
+		EntityCollider = nullptr;
+		EntityColliderAUX = nullptr;
+	
 	
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 	return true;
 }
 
-bool j2GroundEnemy::Load(pugi::xml_node &)
+bool j2GroundEnemy::Load(pugi::xml_node & data)
 {
+
+	for (pugi::xml_node EntityItem = data.child("UndeadEntity"); EntityItem; EntityItem = EntityItem.next_sibling("UndeadEntity")) {
+
+		if (EntityItem.attribute("id").as_int() == id) {
+
+
+
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+			life = EntityItem.attribute("life").as_int();
+
+
+			if (EntityItem.attribute("dead").as_bool() == false && dead == true) {
+
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ENEMY, App->entities);
+				EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
+				colliders.add(EntityCollider);
+				colliders.add(EntityColliderAUX);
+				if (
+					EntityCollider != nullptr && EntityColliderAUX != nullptr) {
+			
+					EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
+					EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+				}
+			}
+
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+
+			hurt = EntityItem.attribute("hurt").as_bool();
+			dead = EntityItem.attribute("dead").as_bool();
+
+
+			break;
+		}
+	}
+
+
 	return true;
 }
 
-bool j2GroundEnemy::Save(pugi::xml_node &)
+bool j2GroundEnemy::Save(pugi::xml_node & data) const
 {
+	pugi::xml_node EnemyInfo = data.append_child("UndeadEntity");
+
+	EnemyInfo.append_attribute("id") = id;
+	EnemyInfo.append_attribute("PositionX") = position.x;
+	EnemyInfo.append_attribute("PositionY") = position.y;
+	EnemyInfo.append_attribute("life") = life;
+	EnemyInfo.append_attribute("hurt") = hurt;
+	EnemyInfo.append_attribute("dead") = dead;
+	EnemyInfo.append_attribute("Enabled") = EntitiesEnable;
+
+
+
 	return true;
 }
+
 
 void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 {
@@ -387,14 +445,17 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 				if (life == 0) {
 					App->audio->PlayFx(HittedSound, 0);
-					dead = true;
+					life = lifeFixed;
+					
+						dead = true;
 					for (int i = 0; i < colliders.count(); ++i) {
 
+						if(colliders.At(i)->data!=nullptr)
 						colliders.At(i)->data->to_delete = true;
 						
-
 					}
-					
+				
+
 					App->entities->player->Score += 50;
 					
 				}

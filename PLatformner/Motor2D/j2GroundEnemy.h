@@ -45,7 +45,7 @@ public:
 
 	//Save & Load Functions
 	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 
 
 	void OnCollision(Collider* c1, Collider* c2);
@@ -73,10 +73,10 @@ public:
 
 	SDL_Rect AnimationRect;
 	SDL_Rect ColliderRect;
-	SDL_Rect FakeColliderRect;
+	
 
-	Collider* groundEnemyCollider;
-	Collider* groundEnemyFakeCollider;
+
+	
 	iPoint colliderPosition;
 
 	iPoint enemyPathfindingPosition;
@@ -88,6 +88,7 @@ public:
 	int tileDistance;
 
 	int life;
+	int lifeFixed;
 	int KnockBack;
 
 	//Vars to load values from xml
@@ -116,7 +117,7 @@ public:
 	//sounds
 	uint HittedSound;
 	p2SString HittedPath;
-
+	
 
 private:
 	pugi::xml_node AnimPushBack;

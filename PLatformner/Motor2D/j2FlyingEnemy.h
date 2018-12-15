@@ -37,7 +37,7 @@ public:
 
 	//Save & Load Functions
 	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 
 	void OnCollision(Collider* c1, Collider* c2);
 

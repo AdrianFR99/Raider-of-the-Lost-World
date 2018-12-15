@@ -67,9 +67,12 @@ bool j2EntityManager::PreUpdate()
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->PreUpdate();
-		if (!ret)
-			break;
+		if (item->data->EntitiesEnable == true) {
+		
+			ret = item->data->PreUpdate();
+			if (!ret)
+				break;
+		}
 	}
 	return ret;
 }
@@ -86,9 +89,14 @@ bool j2EntityManager::Update(float dt)
 	
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->Update(dt,do_logic);
-		if (!ret)
-			break;
+
+		if (item->data->EntitiesEnable == true) {
+		
+			ret = item->data->Update(dt, do_logic);
+			if (!ret)
+				break;
+		
+		}
 	}
 
 	if (do_logic == true) {
@@ -105,9 +113,14 @@ bool j2EntityManager::PostUpdate()
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		ret = item->data->PostUpdate();
-		if (!ret)
-			break;
+
+		if (item->data->EntitiesEnable == true) {
+		
+			ret = item->data->PostUpdate();
+			if (!ret)
+				break;
+		
+		}
 	}
 	return ret;
 }
@@ -118,7 +131,6 @@ bool j2EntityManager::CleanUp()
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
 	
-
 			ret = item->data->CleanUp();
 		
 			if (!ret)
@@ -158,13 +170,19 @@ void j2EntityManager::OnCollision(Collider * c1, Collider * c2)
 {
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)
 	{
-		//Some Entities manage/have more than 1 collider
-		for (p2List_item<Collider*>* entity_collider = item->data->colliders.start; entity_collider; entity_collider = entity_collider->next)
-		{
-			if (c1 == entity_collider->data)
+		if (item->data->EntitiesEnable == true) {
+			//Some Entities manage/have more than 1 collider
+			for (p2List_item<Collider*>* entity_collider = item->data->colliders.start; entity_collider; entity_collider = entity_collider->next)
 			{
-				item->data->OnCollision(c1, c2);
+				if (c1 == entity_collider->data)
+				{
+
+
+					item->data->OnCollision(c1, c2);
+
+				}
 			}
+
 		}
 	}
 

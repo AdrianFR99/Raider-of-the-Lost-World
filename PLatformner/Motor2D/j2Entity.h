@@ -75,12 +75,16 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 
 public:
-
+	iPoint positionOrigin;
 	iPoint position;
 	SDL_Rect EntityRect;
+	SDL_Rect EntityRectAUX;
 	p2SString name;
+	Collider*EntityCollider;
+	//fake collider
+	Collider*EntityColliderAUX;
 	bool active;
-
+	bool EntitiesEnable;
 
 	SDL_Texture*EntityText=nullptr;
 	//Enemies
@@ -89,6 +93,11 @@ public:
 	
 
 	ENTITY_TYPE type;
+	collisionControl Offsets;
+
+
+	int id;
+	int EnemysFromMap;
 
 private:
 	j2EntityManager* manager;

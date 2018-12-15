@@ -57,12 +57,15 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 		playerPathPositionAdjuster_y = enemyNode.child("playerPathPositionAdjuster_y").attribute("value").as_int();
 	
 		HittedPath = configEnemy.child("enemies").child("bat").child("FX").child("HittedPath").attribute("path").as_string();
-	
+		EntityRect = AnimationRect;
+
 	}
 	else
 	{
 		LOG("Could not Load enemies.xml");
 	}
+
+	EntitiesEnable = true;
 	currentAnimation = nullptr;
 	type = ENTITY_TYPE::FLYING_ENEMY;
 }
@@ -78,8 +81,8 @@ bool j2FlyingEnemy::Start()
 
 	CurrentState = FLYING_ENEMY_STATE::PATROLLING;
 
-	enemy_collider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
-	colliders.add(enemy_collider);
+	EntityCollider = App->collision->AddCollider(AnimationRect,COLLIDER_ENEMY, App->entities);
+	colliders.add(EntityCollider);
 
 	HittedSound = App->audio->LoadFx(HittedPath.GetString());
 	
@@ -144,7 +147,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		//Assign positionChanges
 	
 
-		enemy_collider->SetPos(position.x, position.y);
+		EntityCollider->SetPos(position.x, position.y);
 
 		if (lookingRight) {
 			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
@@ -157,7 +160,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 
 
 	if (dead && currentAnimation->Finished()) {
-		CleanUp();
+		EntitiesEnable = false;
 	}
 
 
@@ -176,26 +179,72 @@ bool j2FlyingEnemy::CleanUp()
 	/*int i=colliders.find(enemy_collider);
 	colliders.At(i)->data->to_delete = true;*/
 
+	
+		for (int i = 0; i < colliders.count(); ++i) {
+			if (colliders.At(i)->data != nullptr) {
+			
+				colliders.At(i)->data->to_delete = true;
+				colliders.At(i)->data = nullptr;
+			}
+		}
+		EntityCollider = nullptr;
+	
 
-	for (int i = 0; i < colliders.count(); ++i) {
 
-		colliders.At(i)->data->to_delete = true;
-
-
-	}
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
 
 	return true;
 }
 
-bool j2FlyingEnemy::Load(pugi::xml_node &)
+bool j2FlyingEnemy::Load(pugi::xml_node & data)
 {
+
+	for (pugi::xml_node EntityItem = data.child("BatEntity"); EntityItem; EntityItem = EntityItem.next_sibling("BatEntity")) {
+
+		if (EntityItem.attribute("id").as_int() == id) {
+
+
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+
+			if (EntityItem.attribute("dead").as_bool() == false && dead == true) {
+
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ENEMY, App->entities);
+				colliders.add(EntityCollider);
+
+			}
+
+			dead = EntityItem.attribute("dead").as_bool();
+
+
+			break;
+		}
+	}
+
+
+
+
+
+
+
 	return true;
 }
 
-bool j2FlyingEnemy::Save(pugi::xml_node &)
+bool j2FlyingEnemy::Save(pugi::xml_node & data) const
 {
+	pugi::xml_node EnemyInfo = data.append_child("BatEntity");
+	
+	EnemyInfo.append_attribute("id") = id;
+	EnemyInfo.append_attribute("PositionX") = position.x;
+	EnemyInfo.append_attribute("PositionY") = position.y;
+	EnemyInfo.append_attribute("dead") = dead;
+	EnemyInfo.append_attribute("Enabled") = EntitiesEnable;
+
+
+
+
 	return true;
 }
 
@@ -377,6 +426,15 @@ void j2FlyingEnemy::EntityFX()
 				App->fade->FadeCustom(255, 255, 255, 30.0f, 0.01f);
 				App->entities->player->Score += 30;
 
+				for (int i = 0; i < colliders.count(); ++i) {
+
+					if(colliders.At(i)->data!=nullptr)
+					colliders.At(i)->data->to_delete = true;
+
+
+				}
+				
+			
 
 			}
 	}

@@ -726,7 +726,7 @@ bool j1Map::CreateColliders(MapData&DataAux) {
 	return true;
 }
 
-void j1Map::SpawnEnemies(MapData&DataAux) {
+void j1Map::SpawnEnemies(MapData&DataAux, bool Enable) {
 
 	
 
@@ -750,7 +750,26 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 						
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Undead Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->positionOrigin.x= DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->positionOrigin.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+
+						App->entities->entities.At(j)->data->id = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;
+
+						if (App->entities->entities.At(j)->data->id > 49) {
+							App->entities->entities.At(j)->data->EnemysFromMap = 2;
+						}
+						else {
+
+							App->entities->entities.At(j)->data->EnemysFromMap = 1;
+
+						}
+						
+						if (Enable == false) {
+							App->entities->entities.At(j)->data->EntitiesEnable = false;
+
+
+						}
+
 
 						EntitiesPositioInList.add(j);
 
@@ -774,11 +793,30 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Bat Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->positionOrigin.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->positionOrigin.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+
+						App->entities->entities.At(j)->data->id=DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;
 						
+						if (App->entities->entities.At(j)->data->id > 49) {
+							App->entities->entities.At(j)->data->EnemysFromMap = 2;
+						}
+						else {
+
+							App->entities->entities.At(j)->data->EnemysFromMap = 1;
+
+						}
+						
+						if (Enable == false) {
+							App->entities->entities.At(j)->data->EntitiesEnable = false;
+
+						}
+
 						EntitiesPositioInList.add(j);
 
 						App->entities->entities.At(j)->data->Start();
+
+					
 
 						continue;
 
@@ -798,7 +836,7 @@ void j1Map::SpawnEnemies(MapData&DataAux) {
 
 }
 
-void j1Map::SpawnItems(MapData&DataAux){
+void j1Map::SpawnItems(MapData&DataAux,bool Enable){
 
 	for (int i = 0; i < DataAux.ObjectGamesGroup.count(); ++i) {
 
@@ -820,9 +858,28 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Life Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->positionOrigin.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->positionOrigin.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
+
+						App->entities->entities.At(j)->data->id = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;;
+						
+						
+						if (App->entities->entities.At(j)->data->id > 49) {
+							App->entities->entities.At(j)->data->EnemysFromMap = 2;
+						}
+						else {
+
+							App->entities->entities.At(j)->data->EnemysFromMap = 1;
+
+						}
+						
+						if (Enable == false) {
+							App->entities->entities.At(j)->data->EntitiesEnable = false;
+
+						}
 
 						App->entities->entities.At(j)->data->Start();
+
 
 						continue;
 
@@ -842,10 +899,29 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 						App->entities->entities.At(j)->data->position.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
 						App->entities->entities.At(j)->data->position.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
-						LOG("Entity id %i ,Coin Spawned", DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id);
+						App->entities->entities.At(j)->data->positionOrigin.x = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->x;
+						App->entities->entities.At(j)->data->positionOrigin.y = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->y;
 
+						App->entities->entities.At(j)->data->id = DataAux.ObjectGamesGroup.At(i)->data->Objectlist.At(x)->data->id;
 
+						if (App->entities->entities.At(j)->data->id > 49) {
+							App->entities->entities.At(j)->data->EnemysFromMap = 2;
+						}
+						else {
+
+							App->entities->entities.At(j)->data->EnemysFromMap =1;
+
+						}
+						
+						if (Enable == false) {
+							App->entities->entities.At(j)->data->EntitiesEnable = false;
+
+						}
+						
 						App->entities->entities.At(j)->data->Start();
+
+						
+
 
 						continue;
 
@@ -855,6 +931,11 @@ void j1Map::SpawnItems(MapData&DataAux){
 
 
 				}
+
+				
+
+
+
 
 			}
 
@@ -866,41 +947,141 @@ void j1Map::SpawnItems(MapData&DataAux){
 }
 
 
-void j1Map::CleanUpMapEnemies() {
+
+
+void j1Map::EnableEnemies(int mapFrom) {
+	//Enemies can't be dead in order to execute this code, if they are only the collider will be created
 
 
 	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
 	{
-		
-	
-		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
+		if (item->data->EnemysFromMap == mapFrom ) {
+
+			if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
+
+				if (item->data->EntitiesEnable == false) {
+					
+					item->data->EntitiesEnable = true;
 
 
-			item->data->CleanUp();
+				}
+
+				if (item->data->type == ENTITY_TYPE::FLYING_ENEMY) {
+					
+					
+					item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ENEMY, App->entities);
+						item->data->colliders.add(item->data->EntityCollider);
+
+					
+				}
+				else if (item->data->type == ENTITY_TYPE::GROUND_ENEMY) {
+
+
+				
+
+						item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ENEMY, App->entities);
+						item->data->colliders.add(item->data->EntityCollider);
+						item->data->EntityColliderAUX = App->collision->AddCollider(item->data->EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
+						item->data->colliders.add(item->data->EntityColliderAUX);
+
+						
+						
+
+
+				}
+
+			}
 
 		}
-
-
 	}
 
 
 }
-void j1Map::CleanUpItems() {
-for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
-	{
 
+void j1Map::EnableItems(int mapFrom) {
 
-		if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next) {
 
-		
-			item->data->CleanUp();
+		if (item->data->EnemysFromMap == mapFrom) {
+
+			if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+
+				if (item->data->EntitiesEnable == false) {
+					item->data->EntitiesEnable = true;
+
+				}
+				item->data->EntityCollider = App->collision->AddCollider(item->data->EntityRect, COLLIDER_ITEM, App->entities);
+				item->data->EntityCollider->SetPos(item->data->position.x + item->data->Offsets.colliderOffset.x, item->data->position.y + item->data->Offsets.colliderOffset.y);
+				item->data->colliders.add(item->data->EntityCollider);
+
+			}
 
 		}
+	}
+}
+
+void j1Map::DisableEnemies(int mapFrom) {
 
 
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next)
+	{
+		if (item->data->EnemysFromMap == mapFrom) {
+
+			if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::LIFE_ITEM && item->data->type != ENTITY_TYPE::COIN) {
+
+
+				if (item->data->EntitiesEnable == true)
+					item->data->EntitiesEnable = false;
+
+
+
+				for (int i = 0; i < item->data->colliders.count(); ++i) {
+
+					if (item->data->colliders.At(i)->data != nullptr) {
+
+						item->data->colliders.At(i)->data->to_delete = true;
+						item->data->colliders.At(i)->data = nullptr;
+					}
+
+
+				}
+
+			}
+
+		}
 	}
 
 
+}
+
+
+void j1Map::DisableItems(int mapFrom) {
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next) {
+
+
+		if (item->data->EnemysFromMap == mapFrom) {
+			
+			if (item->data->type != ENTITY_TYPE::PLAYER && item->data->type != ENTITY_TYPE::GROUND_ENEMY && item->data->type != ENTITY_TYPE::FLYING_ENEMY) {
+
+
+				if (item->data->EntitiesEnable == true)
+					item->data->EntitiesEnable = false;
+
+				for (int i = 0; i < item->data->colliders.count(); ++i) {
+
+					if (item->data->colliders.At(i) != nullptr)
+						item->data->colliders.At(i)->data->to_delete = true;
+
+
+				}
+
+			}
+
+
+		}
+
+	}
 
 }
 
@@ -1005,6 +1186,85 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapDat
 }
 
 
+void j1Map::RelocateEntities(int FromMap) {
+
+	
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next) {
+
+		if (item->data->type != ENTITY_TYPE::PLAYER) {
 
 
+			item->data->position = item->data->positionOrigin;
+		
+			if (item->data->EnemysFromMap==FromMap && item->data->EntitiesEnable==true) {
+
+				if (item->data->type == ENTITY_TYPE::GROUND_ENEMY) {
+
+
+					if (item->data->EntityCollider != nullptr && item->data->EntityColliderAUX != nullptr) {
+					
+						item->data->EntityCollider->SetPos(item->data->position.x + item->data->Offsets.colliderOffset.x, item->data->position.y + item->data->Offsets.colliderOffset.y);
+						item->data->EntityColliderAUX->SetPos(item->data->EntityCollider->rect.x - 1, item->data->EntityCollider->rect.y - 1);
+					}
+				}
+				else if (item->data->type == ENTITY_TYPE::FLYING_ENEMY) {
+
+					if (item->data->EntityCollider != nullptr)
+				item->data->EntityCollider->SetPos(item->data->position.x, item->data->position.y);
+
+
+
+				}
+				else if (item->data->type == ENTITY_TYPE::COIN) {
+
+					if (item->data->EntityCollider != nullptr)
+				item->data->EntityCollider->SetPos(item->data->position.x + item->data->Offsets.colliderOffset.x, item->data->position.y + item->data->Offsets.colliderOffset.y);
+
+
+				}
+				else if (item->data->type == ENTITY_TYPE::LIFE_ITEM) {
+
+
+					if (item->data->EntityCollider != nullptr)
+					item->data->EntityCollider->SetPos(item->data->position.x + item->data->Offsets.colliderOffset.x, item->data->position.y + item->data->Offsets.colliderOffset.y);
+
+
+				}
+
+			}
+		}
+
+
+	}
+
+}
+void j1Map::CleanUpEntities() {
+
+	for (p2List_item<j2Entity*>* item = App->entities->entities.start; item; item = item->next) {
+
+		if(item->data->type!=ENTITY_TYPE::PLAYER)
+		item->data->CleanUp();
+
+	}
+
+}
+
+void j1Map::ResetEntities(bool CurrentMap2) {
+
+
+	CleanUpEntities();
+
+	if (CurrentMap2==false) {
+		SpawnEnemies(data,true);
+		SpawnItems(data,true);
+	}
+	else {
+		SpawnEnemies(data2, true);
+		SpawnItems(data2, true);
+	}
+
+
+
+
+}
 

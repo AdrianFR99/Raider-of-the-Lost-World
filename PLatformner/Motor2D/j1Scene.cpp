@@ -119,14 +119,22 @@ bool j1Scene::Start()
 
 	if (CurrentMap2 == false) {
 		App->map->CreateColliders(App->map->data);
-		App->map->SpawnEnemies(App->map->data);
-		App->map->SpawnItems(App->map->data);
+		
+		App->map->SpawnEnemies(App->map->data,true);
+		App->map->SpawnItems(App->map->data,true);
+		App->map->SpawnEnemies(App->map->data2, false);
+		App->map->SpawnItems(App->map->data2, false);
+
 		StageOneTimerStart = true;
 	}
 	else {
 		App->map->CreateColliders(App->map->data2);
-		App->map->SpawnEnemies(App->map->data2);
-		App->map->SpawnItems(App->map->data2);
+
+		App->map->SpawnEnemies(App->map->data, false);
+		App->map->SpawnItems(App->map->data,false);
+		App->map->SpawnEnemies(App->map->data2,true);
+		App->map->SpawnItems(App->map->data2,true);
+
 		StageTwoTimerStart = false;
 	}
 	//Play the first song
@@ -153,19 +161,7 @@ bool j1Scene::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y, App->map->data);
 	p = App->map->WorldToMap(p.x, p.y,App->map->data);
 
-	/*if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (origin_selected == true)
-		{
-			App->pathfinding->CreatePath(origin, p);
-			origin_selected = false;
-		}
-		else
-		{
-			origin = p;
-			origin_selected = true;
-		}
-	}*/
+	
 
 	//CHANGE/FIX D�dac
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -224,18 +220,24 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 	{
-
-		App->map->CleanUpMapEnemies();
-
-
+		if (CurrentMap2 == false) {
+			App->map->EnableEnemies(1);
+		
+		}
+		else {
+			App->map->EnableEnemies(2);
+		}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-
-		if (CurrentMap2 == false)
-		App->map->SpawnEnemies(App->map->data);
-		else
-			App->map->SpawnEnemies(App->map->data2);
+		if (CurrentMap2 == false) {
+			App->map->DisableEnemies(1);
+		}
+		else {
+			App->map->DisableEnemies(2);
+		}
+	
+	
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
@@ -260,8 +262,7 @@ bool j1Scene::Update(float dt)
 		if (App->entities->player->dead == true) {
 			if (App->entities->player->DeathTime.Read() > 1000) {
 
-				App->map->CleanUpMapEnemies();
-				App->map->SpawnEnemies(App->map->data);
+				App->map->ResetEntities(CurrentMap2);
 			}
 		}
 		
@@ -295,8 +296,8 @@ bool j1Scene::Update(float dt)
 
 			if (App->entities->player->DeathTime.Read() > 1000) {
 
-				App->map->CleanUpMapEnemies();
-				App->map->SpawnEnemies(App->map->data2);
+				App->map->ResetEntities(CurrentMap2);
+
 			}
 
 		}
@@ -371,11 +372,12 @@ void j1Scene::switchTheMaps()
 		
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
-		App->map->CleanUpMapEnemies();
-		App->map->CleanUpItems();
+		App->map->DisableEnemies(1);
+		App->map->DisableItems(1);
+		App->map->EnableEnemies(2);
+		App->map->EnableItems(2);
+		App->map->RelocateEntities(2);
 		App->map->CreateColliders(App->map->data2);
-		App->map->SpawnEnemies(App->map->data2);
-		App->map->SpawnItems(App->map->data2);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
 		CurrentMap2 = true;
 		StageTwoTimerStart = true;
@@ -395,11 +397,12 @@ void j1Scene::switchTheMaps()
 
 		App->collision->CleanUp();
 		App->entities->player->NullifyPlayerColliders(App->entities->player->player);
-		App->map->CleanUpMapEnemies();
-		App->map->CleanUpItems();
+		App->map->DisableEnemies(2);
+		App->map->DisableItems(2);
+		App->map->EnableEnemies(1);
+		App->map->EnableItems(1);
+		App->map->RelocateEntities(1);
 		App->map->CreateColliders(App->map->data);
-		App->map->SpawnEnemies(App->map->data);
-		App->map->SpawnItems(App->map->data);
 		App->render->camera.x = App->map->SetPlayerToInitial(App->map->data);
 		CurrentMap2 = false;
 		StageOneTimerStart = true;

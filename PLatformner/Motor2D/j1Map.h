@@ -188,11 +188,19 @@ public:
 
 	float SetLimitPoint(MapData&DataAux);
 
-	void SpawnEnemies(MapData&DataAux);
-	void CleanUpMapEnemies();
+
+	void RelocateEntities(int FromMap);
+
+	void SpawnEnemies(MapData&DataAux,bool Enable);
+	void SpawnItems(MapData&DataAux, bool Enable);
 	
-	void SpawnItems(MapData&DataAux);
-	void CleanUpItems();
+	void EnableEnemies(int mapFrom);
+	void DisableEnemies(int mapFrom);
+	void EnableItems(int mapFrom);
+	void DisableItems(int mapFrom);
+
+	void CleanUpEntities();
+	void ResetEntities(bool CurrentMap2);
 
 	TileSet* GetTilesetFromTileId(int id,MapData& DataAux) const;
 	// Coordinate translation methods

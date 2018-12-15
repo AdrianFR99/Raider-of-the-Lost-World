@@ -72,6 +72,7 @@ j2Player::j2Player(): j2DynamicEntity()
 	AnimPushBack = configAnim.child("Anim").child("AnimationsPushBacks").child("Player").child("Hurted");
 	Hurted.LoadPushBack(AnimPushBack);
 
+	EntitiesEnable = true;
 	type = ENTITY_TYPE::PLAYER;
 
 }
