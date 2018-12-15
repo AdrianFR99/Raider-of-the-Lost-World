@@ -66,6 +66,7 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 
 
 		life = enemyNode.child("life").attribute("value").as_int();
+		lifeFixed = enemyNode.child("life").attribute("value").as_int();
 		////Speeds
 		speed_x = enemyNode.child("speed_x").attribute("value").as_float();
 		speed_y = enemyNode.child("speed_y").attribute("value").as_float();
@@ -93,6 +94,9 @@ j2GroundEnemy::j2GroundEnemy() : j2DynamicEntity()
 
 		colliderOffset_x = enemyNode.child("colliderOffset_x").attribute("value").as_int();
 		colliderOffset_y = enemyNode.child("colliderOffset_y").attribute("value").as_int();
+
+		Offsets.colliderOffset.x = colliderOffset_x;
+		Offsets.colliderOffset.y = colliderOffset_y;
 
 		//Texture
 
@@ -300,16 +304,17 @@ bool j2GroundEnemy::PostUpdate()
 bool j2GroundEnemy::CleanUp()
 {
 
-	if (EntityCollider != nullptr && EntityColliderAUX != nullptr) {
-		
+	
 		for (int i = 0; i < colliders.count(); ++i) {
 
+		if(colliders.At(i)->data != nullptr){
 			colliders.At(i)->data->to_delete = true;
 			colliders.At(i)->data = nullptr;
+			}
 		}
 		EntityCollider = nullptr;
-		EntityColliderAUX != nullptr;
-	}
+		EntityColliderAUX = nullptr;
+	
 	
 	App->tex->UnLoad(EntityText);
 	App->entities->DestroyEntity(this);
@@ -333,11 +338,15 @@ bool j2GroundEnemy::Load(pugi::xml_node & data)
 			if (EntityItem.attribute("dead").as_bool() == false && dead == true) {
 
 				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ENEMY, App->entities);
-				EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY, App->entities);
+				EntityColliderAUX = App->collision->AddCollider(EntityRectAUX, COLLIDER_ENEMY_CHECK, App->entities);
 				colliders.add(EntityCollider);
 				colliders.add(EntityColliderAUX);
-				EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
-				EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+				if (
+					EntityCollider != nullptr && EntityColliderAUX != nullptr) {
+			
+					EntityCollider->SetPos(position.x + colliderOffset_x, position.y + colliderOffset_y);
+					EntityColliderAUX->SetPos(EntityCollider->rect.x - 1, EntityCollider->rect.y - 1);
+				}
 			}
 
 			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
@@ -436,9 +445,12 @@ void j2GroundEnemy::OnCollision(Collider * c1, Collider * c2)
 
 				if (life == 0) {
 					App->audio->PlayFx(HittedSound, 0);
-					dead = true;
+					life = lifeFixed;
+					
+						dead = true;
 					for (int i = 0; i < colliders.count(); ++i) {
 
+						if(colliders.At(i)->data!=nullptr)
 						colliders.At(i)->data->to_delete = true;
 						
 					}

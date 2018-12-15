@@ -88,6 +88,7 @@ public:
 	int tileDistance;
 
 	int life;
+	int lifeFixed;
 	int KnockBack;
 
 	//Vars to load values from xml
@@ -116,7 +117,7 @@ public:
 	//sounds
 	uint HittedSound;
 	p2SString HittedPath;
-
+	
 
 private:
 	pugi::xml_node AnimPushBack;

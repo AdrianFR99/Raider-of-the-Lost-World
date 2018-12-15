@@ -75,7 +75,7 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 
 public:
-
+	iPoint positionOrigin;
 	iPoint position;
 	SDL_Rect EntityRect;
 	SDL_Rect EntityRectAUX;
@@ -97,6 +97,7 @@ public:
 
 
 	int id;
+	int EnemysFromMap;
 
 private:
 	j2EntityManager* manager;

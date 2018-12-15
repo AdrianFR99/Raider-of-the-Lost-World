@@ -179,15 +179,16 @@ bool j2FlyingEnemy::CleanUp()
 	/*int i=colliders.find(enemy_collider);
 	colliders.At(i)->data->to_delete = true;*/
 
-	if (EntityCollider != nullptr){
+	
 		for (int i = 0; i < colliders.count(); ++i) {
-
-			colliders.At(i)->data->to_delete = true;
-			colliders.At(i)->data = nullptr;
-
+			if (colliders.At(i)->data != nullptr) {
+			
+				colliders.At(i)->data->to_delete = true;
+				colliders.At(i)->data = nullptr;
+			}
 		}
 		EntityCollider = nullptr;
-	}
+	
 
 
 	App->tex->UnLoad(EntityText);
