@@ -11,6 +11,7 @@
 #include "j2GuiSprites.h"
 #include "j2GUIText.h"
 #include "j2ButtonClass.h"
+#include "Brofiler/Brofiler.h"
 #include "j2SliderGUI.h"
 
 
@@ -80,11 +81,12 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
+	BROFILER_CATEGORY("UI_PreUpdate", Profiler::Color::LightCoral);
 	return true;
 }
 
 bool j1Gui::Update(float dt) {
-
+	BROFILER_CATEGORY("UI_Update", Profiler::Color::Coral);
 	bool ret = true;
 	//Check interactivity with the elements
 	for (p2List_item<ElementGUI*>* item = ElementList.end; item; item = item->prev)
@@ -113,6 +115,7 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	BROFILER_CATEGORY("UI_PostUpdate", Profiler::Color::Salmon);
 	bool ret = true;
 
 	for (p2List_item<ElementGUI*>* item = ElementList.start; item; item = item->next)
