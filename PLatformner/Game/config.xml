@@ -160,4 +160,10 @@
   </Items>
   
  </entities>
+  
+  <fonts>
+    <default_font   file="fonts/open_sans/OpenSans-Regular.ttf"  size="12" />
+    <sanskrit_font  file="fonts/sanskrit/Almost Sanskrit Taj.ttf"  size="20" />
+   
+  </fonts>
 </config>

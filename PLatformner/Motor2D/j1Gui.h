@@ -41,9 +41,13 @@ enum class ButtonType {
 enum class ElementAction
 {
 	NONE = -1,
-	FADE,
-	RICK_ROLL,
+	PLAY,
+	CONTINUE,
+	SETTINGS,
+	CREDITS,
+	EXIT,
 	MUSIC_VOL,
+	SFX_VOL,
 
 };
 
@@ -84,6 +88,7 @@ public:
 
 	//Functions to create the different screens
 	void CreateMainMenuScreen();
+	void CreateSettingsScreen();
 
 
 

@@ -47,7 +47,7 @@ bool j2GUIText::Awake() {
 	ColorText.b = 255;
 	ColorText.a = 0;
 
-	Textfont = App->font->default;
+	Textfont = App->font->sanskrit;
 
 	tex = App->font->Print(Text, ColorText, Textfont);
 	return true;
