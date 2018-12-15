@@ -60,9 +60,9 @@ bool j1Gui::Start()
 	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
 
 
-	
-	iPoint ButtonTestPoint = { 100,100 };
 	SDL_Rect unHoveredRect = { 2,112,226,64 };
+	/*iPoint ButtonTestPoint = { 100,100 };
+
 	CreateElement("Fade_Button", ElementType::BUTTON, ElementAction::FADE, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	ElementGUI*ElemGUI2 = nullptr;
@@ -79,8 +79,8 @@ bool j1Gui::Start()
 	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
 	const char* RRText = "Rick_Roll_LABEL";
 	CreateElement(RRText, ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, RRText, RRButton, false);
-
-	iPoint SlidertestPos = { 200, 500 };
+*/
+	iPoint SlidertestPos = { 500, 1200 };
 	SDL_Rect SlidertestRect = { 0, 12, 308, 12 };
 	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unHoveredRect, hoveringRect, ButtonType::NOT_BUTTON, "None", nullptr, false, false);
 

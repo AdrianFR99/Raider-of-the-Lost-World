@@ -20,8 +20,10 @@ j2ButtonClass::~j2ButtonClass()
 
 bool j2ButtonClass::Awake() {
 
-	GlobalPosition.x = position.x;
-	GlobalPosition.y = position.y;
+	position.x /= scale;
+	position.y /= scale;
+
+	
 
 	if (Parent != nullptr) {
 		GlobalPosition.x = Parent->GlobalPosition.x + position.x;
@@ -29,16 +31,18 @@ bool j2ButtonClass::Awake() {
 
 		InterRect.x = GlobalPosition.x;
 		InterRect.y = GlobalPosition.y;
-		InterRect.w = rect.w;
-		InterRect.h = rect.h;
+		InterRect.w = rect.w *scale;
+		InterRect.h = rect.h *scale;
 
 	}
 	else
 	{
+		GlobalPosition.x = position.x;
+		GlobalPosition.y = position.y;
 		InterRect.x = GlobalPosition.x;
 		InterRect.y = GlobalPosition.y;
-		InterRect.w = rect.w;
-		InterRect.h = rect.h;
+		InterRect.w = rect.w * scale;
+		InterRect.h = rect.h * scale;
 	}
 
 	if (draggable)
@@ -117,7 +121,7 @@ bool j2ButtonClass::InteractionUpdate()
 		was_clicked = clicked;
 	}
 
-	if (!(MousePos.x < InterRect.x || MousePos.x >InterRect.x + InterRect.w || MousePos.y < InterRect.y || MousePos.y >InterRect.y + InterRect.h))
+	if (!(MousePos.x < InterRect.x /scale || MousePos.x > (InterRect.x + InterRect.w) /scale || MousePos.y < InterRect.y /scale|| MousePos.y >(InterRect.y + InterRect.h)/scale))
 	{
 		hovering = true;
 	}
@@ -176,10 +180,10 @@ void j2ButtonClass::UpdatePos()
 		if (dragging == true)
 		{
 			if (draggable_x)
-				position.x = MousePos.x - (LastMousePos.x - (InterRect.x - Parent->InterRect.x));
+				position.x = MousePos.x *scale - (LastMousePos.x *scale - (InterRect.x -Parent->InterRect.x));
 
 			if (draggable_y)
-				position.y = MousePos.y - (LastMousePos.y - (InterRect.y - Parent->InterRect.y));
+				position.y = MousePos.y * scale- (LastMousePos.y *scale - (InterRect.y - Parent->InterRect.y /scale));
 		}
 		GlobalPosition.x = Parent->GlobalPosition.x + position.x;
 		GlobalPosition.y = Parent->GlobalPosition.y + position.y;
@@ -189,10 +193,10 @@ void j2ButtonClass::UpdatePos()
 		if (dragging == true)
 		{
 			if (draggable_x == true)
-				position.x = MousePos.x - (LastMousePos.x - InterRect.x);
+				position.x = MousePos.x *scale - (LastMousePos.x *scale - InterRect.x);
 
 			if (draggable_y == true)
-				position.y = MousePos.y - (LastMousePos.y - InterRect.y);
+				position.y = MousePos.y *scale - (LastMousePos.y *scale - InterRect.y);
 		}
 
 		GlobalPosition.x = position.x;
@@ -202,8 +206,8 @@ void j2ButtonClass::UpdatePos()
 
 	if (bType == ButtonType::SLIDER && Parent != nullptr)
 	{
-		if (GlobalPosition.x + InterRect.w > Parent->GlobalPosition.x + Parent->rect.w)
-			GlobalPosition.x = Parent->GlobalPosition.x + Parent->rect.w - InterRect.w;
+		if (GlobalPosition.x + InterRect.w > Parent->GlobalPosition.x + Parent->rect.w *scale)
+			GlobalPosition.x = Parent->GlobalPosition.x + Parent->rect.w * scale - InterRect.w;
 
 		if (GlobalPosition.x < Parent->GlobalPosition.x)
 			GlobalPosition.x = Parent->GlobalPosition.x;
