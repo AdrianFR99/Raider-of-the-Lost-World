@@ -198,11 +198,52 @@ bool j2FlyingEnemy::CleanUp()
 
 bool j2FlyingEnemy::Load(pugi::xml_node & data)
 {
+
+	for (pugi::xml_node EntityItem = data.child("BatEntity"); EntityItem; EntityItem = EntityItem.next_sibling("BatEntity")) {
+
+		if (EntityItem.attribute("id").as_int() == id) {
+
+
+			EntitiesEnable = EntityItem.attribute("Enabled").as_bool();
+			position.x = EntityItem.attribute("PositionX").as_int();
+			position.y = EntityItem.attribute("PositionY").as_int();
+
+			if (EntityItem.attribute("dead").as_bool() == false && dead == true) {
+
+				EntityCollider = App->collision->AddCollider(EntityRect, COLLIDER_ENEMY, App->entities);
+				colliders.add(EntityCollider);
+
+			}
+
+			dead = EntityItem.attribute("dead").as_bool();
+
+
+			break;
+		}
+	}
+
+
+
+
+
+
+
 	return true;
 }
 
 bool j2FlyingEnemy::Save(pugi::xml_node & data) const
 {
+	pugi::xml_node EnemyInfo = data.append_child("BatEntity");
+	
+	EnemyInfo.append_attribute("id") = id;
+	EnemyInfo.append_attribute("PositionX") = position.x;
+	EnemyInfo.append_attribute("PositionY") = position.y;
+	EnemyInfo.append_attribute("dead") = dead;
+	EnemyInfo.append_attribute("Enabled") = EntitiesEnable;
+
+
+
+
 	return true;
 }
 
