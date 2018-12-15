@@ -6,6 +6,7 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Window.h"
+#include "j1Audio.h"
 #include "j1Gui.h"
 #include "ElementGUI.h"
 #include "j2GuiSprites.h"
@@ -31,7 +32,12 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 
-	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	if (conf != NULL)
+	{
+		atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+		hover_sound_name = conf.child("sfx").attribute("file_hover_start").as_string("");  
+		clicked_sound_name = conf.child("sfx").attribute("file_button_clicked").as_string("");
+	}
 
 	debug = false;
 	return ret;
@@ -42,16 +48,18 @@ bool j1Gui::Start()
 {
 	scale = App->win->GetScale();
 
-	atlas = App->tex->Load("gui/atlas.png");
-	game_atlas = App->tex->Load("gui/atlas_GUI.png");
+	atlas = App->tex->Load(atlas_file_name.GetString());
+
+	hover_start = App->audio->LoadFx(hover_sound_name.GetString());
+	button_clicked = App->audio->LoadFx(clicked_sound_name.GetString());
 	
-	SDL_Rect defaultRect = { 0,0,0,0 };
+	/*SDL_Rect defaultRect = { 0,0,0,0 };
 	SDL_Rect hoveringRect = { 646,170,226,64 };
-	SDL_Rect clickedRect = { 416,170,226,64 };
+	SDL_Rect clickedRect = { 416,170,226,64 };*/
 
-	//CreateMainMenuScreen();
+	CreateMainMenuScreen();
 
-	CreateSettingsScreen();
+	//CreateSettingsScreen();
 	
 
 	bool ret = true;
@@ -212,8 +220,8 @@ void j1Gui::CreateMainMenuScreen()
 	//Window
 	iPoint testPoint = { 100,50 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
-	const char* PanelText = "Window";
-	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, game_atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, true);
+	const char* PanelText = "Main_Menu";
+	Panel = CreateElement("Main_Menu", ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, true);
 
 	iPoint textTestPoint = { 200,20 };
 	SDL_Rect textTestRect = { 0,0, 50, 20 };
@@ -232,7 +240,7 @@ void j1Gui::CreateMainMenuScreen()
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
 	iPoint ButtonTestPoint = { 100,200 };
 
-	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, game_atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	iPoint RRtextTestPoint = { 50,20 };
 	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
@@ -241,7 +249,7 @@ void j1Gui::CreateMainMenuScreen()
 
 	ElementGUI*ElemGUI2 = nullptr;
 	iPoint ButtonTestPoint_2 = { 100, 400 };
-	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, game_atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
 	const char* ContinueText = "Continue";
@@ -258,8 +266,8 @@ void j1Gui::CreateSettingsScreen()
 	//Settings Screen
 	iPoint testPoint = { 200,20 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
-	const char* PanelText = "SettingsWindow";
-	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, game_atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
+	const char* PanelText = "Settings_Window";
+	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
 
 	//Settings Screen Text
 	iPoint textTestPoint = { 170,50 };
@@ -271,13 +279,30 @@ void j1Gui::CreateSettingsScreen()
 	iPoint SlidertestPos = { 100,300 };
 	SDL_Rect unhoveredSlide = { 1278, 296, 6, 18 };
 	SDL_Rect SlidertestRect = { 1251, 274, 131, 8 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, game_atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music Slider Text
 
 	//SFX Slider
 	iPoint SlidertestPos_2 = { 100, 500 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos_2, game_atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music	Slider Text
+}
+
+
+void j1Gui::callbackUiElement(ElementGUI *element)
+{
+	if (element->type == ElementType::BUTTON)
+	{
+		if (element->was_clicked && element->clicked == false)
+		{
+			App->audio->PlayFx(App->gui->button_clicked);
+		}
+		
+		if (element->hovering && element->was_hovered == false)
+		{
+			App->audio->PlayFx(App->gui->hover_start);
+		}
+	}
 }

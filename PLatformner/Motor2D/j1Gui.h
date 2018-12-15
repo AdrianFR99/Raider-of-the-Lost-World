@@ -90,8 +90,8 @@ public:
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
 
-
-
+	//UI Callbacks
+	void callbackUiElement(ElementGUI *element);
 
 public:
 	p2List<ElementGUI*> ElementList;
@@ -99,11 +99,17 @@ public:
 	bool debug;
 
 	uint scale;
+
+	//Button sounds
+	uint hover_start;
+	uint button_clicked;
 private:
 
 	SDL_Texture* atlas;
-	SDL_Texture* game_atlas;
 	p2SString atlas_file_name;
+
+	p2SString hover_sound_name;
+	p2SString clicked_sound_name;
 
 
 	ElementGUI*Panel;

@@ -166,4 +166,11 @@
     <sanskrit_font  file="fonts/sanskrit/Almost Sanskrit Taj.ttf"  size="20" />
    
   </fonts>
+  
+  <gui>
+    <atlas file="gui/atlas_GUI.png"/>
+    <sfx file_hover_start="audio/fx/button_hover_start.wav"  file_button_clicked="audio/fx/button_clicked.wav" />
+    
+    
+  </gui>
 </config>

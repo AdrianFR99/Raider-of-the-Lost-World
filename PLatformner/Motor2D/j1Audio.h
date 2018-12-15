@@ -36,6 +36,8 @@ public:
 	//ApplyDistanceAttenuation
 	void PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& sound_emmiter, const iPoint& sound_listener, int repeat = 0);
 
+	//UI Callback override
+	//void callbackUiElement(ElementGUI *element);
 public: //Vars
 
 	p2SString music_folder;
@@ -51,6 +53,7 @@ public: //Vars
 
 	//Change/Fix Panning and Distance Testing.
 	uint bat_sound;
+
 private:
 
 	_Mix_Music*			music = NULL;

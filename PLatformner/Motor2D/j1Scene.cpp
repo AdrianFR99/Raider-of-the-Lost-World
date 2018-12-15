@@ -14,6 +14,7 @@
 #include "j2EntityManager.h"
 #include "j1FadeToBlack.h"
 #include "j1Gui.h"
+#include "ElementGUI.h"
 #include "Brofiler/Brofiler.h"
 
 
@@ -87,6 +88,44 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	switchScene.append_attribute("Time") = Stage2Time;
 
 	return true;
+}
+
+void j1Scene::callbackUiElement(ElementGUI * element)
+{
+		if (element->type == ElementType::BUTTON)
+		{
+			switch (element->action)
+			{
+			case	ElementAction::PLAY:
+				if (element->was_clicked && element->clicked == false)
+				{
+				
+				}
+				break;
+
+			case	ElementAction::CONTINUE:
+				if (element->was_clicked && element->clicked == false)
+				{
+				
+				}
+				break;
+
+			case	ElementAction::SETTINGS:
+				if (element->was_clicked && element->clicked == false)
+				{
+
+				}
+				break;
+			}
+
+
+
+			if (element->hovering && element->was_hovered == false)
+			{
+				//App->audio->PlayFx(fx_hover_start);
+			}
+		}
+
 }
 
 // Called before the first frame
@@ -419,5 +458,7 @@ void j1Scene::switchTheMaps()
 		RELEASE_ARRAY(data);
 	}
 }
+
+
 
 

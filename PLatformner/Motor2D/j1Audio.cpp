@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
+#include "ElementGUI.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -237,3 +238,5 @@ void j1Audio::PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& so
 	Mix_SetDistance(channel, hypotenuse);			//Attenuation depending on distance
 	Mix_SetPanning(channel, left, 255 - left);		//Panning (Right or Left speakers/headphones volumes)
 }
+
+
