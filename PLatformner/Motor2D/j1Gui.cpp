@@ -59,8 +59,9 @@ bool j1Gui::Start()
 
 	CreateMainMenuScreen();
 
-	//CreateSettingsScreen();
+	CreateSettingsScreen();
 	
+	Hide("Settings_Window");
 
 	bool ret = true;
 	for (p2List_item<ElementGUI*>* item = ElementList.start; item; item = item->next)
@@ -264,7 +265,7 @@ void j1Gui::CreateSettingsScreen()
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };
 	//Settings Screen
-	iPoint testPoint = { 200,20 };
+	iPoint testPoint = { 800,20 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
 	const char* PanelText = "Settings_Window";
 	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
@@ -304,5 +305,62 @@ void j1Gui::callbackUiElement(ElementGUI *element)
 		{
 			App->audio->PlayFx(App->gui->hover_start);
 		}
+	}
+}
+
+void j1Gui::Hide(const char* Window)
+{
+	for (p2List_item<ElementGUI*>* item = ElementList.start; item != nullptr; item = item->next)
+	{
+		if (item->data->name == Window)
+		{
+			RecursiveHide(item->data);
+		}
+	}
+}
+
+void j1Gui::RecursiveHide(ElementGUI* itemToHide)
+{
+	if (itemToHide->children.count() > 0)
+	{
+		for (p2List_item<ElementGUI*>* item = itemToHide->children.start; item != nullptr; item = item->next)
+		{
+			RecursiveHide(item->data);
+		}
+		itemToHide->invisible = true;
+	}
+
+	if (itemToHide->children.count() < 1)
+	{
+		itemToHide->invisible = true;
+	}
+}
+
+
+void j1Gui::Display(const char* Window)
+{
+	for (p2List_item<ElementGUI*>* item = ElementList.start; item != nullptr; item = item->next)
+	{
+		if (item->data->name == Window)
+		{
+			RecursiveDisplay(item->data);
+		}
+	}
+}
+
+void j1Gui::RecursiveDisplay(ElementGUI* itemToDisplay)
+{
+	if (itemToDisplay->children.count() > 0)
+	{
+		for (p2List_item<ElementGUI*>* item = itemToDisplay->children.start; item != nullptr; item = item->next)
+		{
+			RecursiveDisplay(item->data);
+		}
+		itemToDisplay->invisible = false;
+	}
+
+	if (itemToDisplay->children.count() < 1)
+	{
+		itemToDisplay->invisible = false;
 	}
 }
