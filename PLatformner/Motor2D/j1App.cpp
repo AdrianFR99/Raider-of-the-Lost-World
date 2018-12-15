@@ -140,6 +140,7 @@ bool j1App::Start()
 
 	PERF_START(ptimer);
 
+	PauseGame = false;
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -177,7 +178,14 @@ bool j1App::Update()
 		Capto30 = !Capto30;
 
 	if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		PauseGame = !PauseGame;
+		if (PauseGame == false) {
+			PauseGame = true;
+		}
+		else
+		{
+			PauseGame = false;
+		}
+	
 
 		DisplayFrameRateInfo();
 

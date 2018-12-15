@@ -286,7 +286,7 @@ bool j2GroundEnemy::Update(float dt, bool do_logic)
 
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
-	if (lookingRight) {
+	if (lookingRight==true) {
 		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
@@ -550,11 +550,11 @@ void j2GroundEnemy::EntityMovement(float dt)
 			ToMoveUp = false;
 		}
 
-		if (ToMoveRight)
+		if (ToMoveRight==true)
 		{
 			Speed.x = ceil(speed_x * dt);
 		}
-		else if (ToMoveLeft)
+		else if (ToMoveLeft==true)
 		{
 			Speed.x = floor(-speed_x * dt);
 		}

@@ -607,7 +607,7 @@ bool j2Player::Update(float dt, bool do_logic)
 	AnimationRect = currentAnimation->GetCurrentFrame(dt);
 	
 
-	if (lookingRight) {
+	if (lookingRight==true) {
 		App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 	}
 	else {
@@ -1190,7 +1190,7 @@ void j2Player::EntityMovement(float dt) {
 				
 				if (ChargedAttackB == true || BasicAttackB == true) {
 
-					if (MovingRight) {
+					if (MovingRight==true) {
 						
 						lookingRight = true;
 						MovingLeft = false;
@@ -1199,7 +1199,7 @@ void j2Player::EntityMovement(float dt) {
 						if (Speed.x < 0.0f)
 							Speed.x = 0.0f;
 					}
-					else if (MovingLeft) {
+					else if (MovingLeft==true) {
 
 						lookingRight = false;
 						MovingRight = false;
@@ -1327,6 +1327,7 @@ void j2Player::EntityFX() {
 }
 
 	else{
+
 		if (PlayFXDie == true) {
 			
 			App->audio->PlayFx(player_fx.dieSound, 0);
@@ -1338,12 +1339,12 @@ void j2Player::EntityFX() {
 				}
 			else {
 
-				dieMidAir.Reset();
+				//dieMidAir.Reset();
 				currentAnimation = &dieMidAir;
 
 			}
 
-			 }
+		 }
 	}
 		
 

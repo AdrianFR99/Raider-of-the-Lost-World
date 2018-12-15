@@ -149,7 +149,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 
 		EntityCollider->SetPos(position.x, position.y);
 
-		if (lookingRight) {
+		if (lookingRight==true) {
 			App->render->Blit(EntityText, position.x, position.y, &AnimationRect, SDL_FLIP_NONE);
 		}
 		else {
@@ -159,7 +159,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 
 
 
-	if (dead && currentAnimation->Finished()) {
+	if (dead==true && currentAnimation->Finished()) {
 		EntitiesEnable = false;
 	}
 
