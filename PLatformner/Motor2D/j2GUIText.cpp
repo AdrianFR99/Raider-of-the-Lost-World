@@ -39,8 +39,16 @@ bool j2GUIText::Awake() {
 		Parent->children.add(this);
 	}
 
-	InterRect.w = rect.w *scale;
-	InterRect.h = rect.h *scale;
+	if (name == "License")
+	{
+		InterRect.w = rect.w *scale;
+		InterRect.h = rect.h *scale;
+	}
+	else
+	{
+		InterRect.w = rect.w;
+		InterRect.h = rect.h;
+	}
 
 	ColorText.r = 255;
 	ColorText.g = 255;

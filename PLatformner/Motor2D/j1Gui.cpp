@@ -391,7 +391,12 @@ void j1Gui::CreateCreditsScreen()
 	//Settings back button
 	iPoint ButtonBackPos = { 600, 1000 };
 	SDL_Rect idleButtonRect = { 1204,283,25,25 };
-	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::CREDITS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Credits_Back", ElementType::BUTTON, ElementAction::CREDITS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	iPoint AuthorsTesxtPos = { 120, 130 };
+	SDL_Rect AuthorsRect = { 0,0,350, 20 };
+	const char* authors = "Made by Adrian Font Romero and Didac Romero Camo.";
+	CreateElement("License", ElementType::TEXT, ElementAction::NONE, AuthorsTesxtPos, nullptr, false, AuthorsRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, authors, Panel, false);
 
 
 
