@@ -77,7 +77,7 @@ private:
 
 	p2SString folder;
 	p2SString pathfinding_image_path;
-	SDL_Texture* pathfinding_debug_tex;
+	SDL_Texture* pathfinding_debug_tex=nullptr;
 	
 };
 

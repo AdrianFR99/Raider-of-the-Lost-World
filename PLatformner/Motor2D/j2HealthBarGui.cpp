@@ -127,8 +127,9 @@ bool j2HealthBarGui::PostUpdate() {
 bool j2HealthBarGui::CleanUp() {
 
 
-
+	if(tex!=nullptr)
 	App->tex->UnLoad(tex);
+
 	
 	return true;
 }

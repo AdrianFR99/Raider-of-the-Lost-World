@@ -30,7 +30,7 @@ public:
 	//PostUpdate	
 	bool PostUpdate();
 
-	bool CleanUp();
+	bool CleanUp() override;
 
 public:
 
@@ -38,7 +38,7 @@ public:
 
 public:
 
-	char size[20];
+	char size[3];
 	const char*Text;
 
 	SDL_Texture*textTexture;

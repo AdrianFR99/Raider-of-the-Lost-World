@@ -71,7 +71,7 @@ bool j1Gui::Start()
 
 	CreateCreditsScreen();
 
-	App->gui->CreatePlayerGui();
+	CreatePlayerGui();
 
 	Hide("Settings_Window");
 	Hide("Credits_Window");

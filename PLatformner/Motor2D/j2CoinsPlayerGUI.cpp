@@ -65,10 +65,13 @@ bool j2CoinsPlayerGUI::PreUpdate() {
 //Update		
 bool j2CoinsPlayerGUI::Update() {
 
-	sprintf_s(size,4, "%d", App->entities->player->Coins);
-	Text = size;
-	textTexture = App->font->Print(Text, ColorText, Textfont);
-
+	if (App->entities->active == true) {
+	
+		sprintf_s(size, 4, "%d", App->entities->player->Coins);
+		Text = size;
+		textTexture = App->font->Print(Text, ColorText, Textfont);
+	
+	}
 	return true;
 }
 //PostUpdate	
@@ -82,8 +85,9 @@ bool j2CoinsPlayerGUI::PostUpdate() {
 bool j2CoinsPlayerGUI::CleanUp() {
 
 
-
+	if (tex != nullptr)
 	App->tex->UnLoad(tex);
+	if(textTexture != nullptr)
 	App->tex->UnLoad(textTexture);
 
 

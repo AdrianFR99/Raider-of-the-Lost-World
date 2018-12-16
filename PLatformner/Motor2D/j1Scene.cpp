@@ -34,7 +34,7 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	
-	
+	active = false;
 	LOG("Loading Scene");
 	bool ret = true;
 	
@@ -411,6 +411,12 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
+	if (pathfinding_debug_tex != nullptr) {
+	
+		App->tex->UnLoad(pathfinding_debug_tex);
+		pathfinding_debug_tex = nullptr;
+
+	}
 	return true;
 }
 

@@ -33,7 +33,7 @@ j2MainMenu::~j2MainMenu()
 
 bool j2MainMenu::Awake(pugi::xml_node& config) {
 
-	active = false;
+	
 
 	folder.create(config.child("folder").child_value());
 	
@@ -131,6 +131,7 @@ bool j2MainMenu::CleanUp() {
 	if (MainMenuTex !=nullptr)
 	{
 		App->tex->UnLoad(MainMenuTex);
+		MainMenuTex = nullptr;
 	}
 
 	return true;
