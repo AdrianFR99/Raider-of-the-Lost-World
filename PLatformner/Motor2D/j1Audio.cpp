@@ -240,3 +240,23 @@ void j1Audio::PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& so
 }
 
 
+
+void j1Audio::callbackUiElement(ElementGUI *element)
+{
+	if (element->type == ElementType::BUTTON )
+	{
+		if (element->action == ElementAction::MUSIC_VOL && element->Parent!=nullptr)
+		{
+			Mix_VolumeMusic(128* element->Parent->slider_value);
+		}
+		if (element->action == ElementAction::SFX_VOL && element->Parent != nullptr)
+		{
+			for (p2List_item<Mix_Chunk*>* item = fx.start; item != nullptr; item = item->next)
+			{
+				Mix_VolumeChunk(item->data,int(255 * element->Parent->slider_value));
+			}
+		}
+	}
+}
+
+

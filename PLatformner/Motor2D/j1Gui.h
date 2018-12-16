@@ -14,6 +14,7 @@
 // ---------------------------------------------------
 
 class ElementGUI;
+class j2SliderGUI;
 struct SDL_Texture;
 struct SDL_Rect;
 
@@ -78,6 +79,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Functions to Hide and Display hidden
 	void Hide(const char* Window);
 	void RecursiveHide(ElementGUI* itemToHide);
 
@@ -107,6 +109,8 @@ public:
 	//Button sounds
 	uint hover_start;
 	uint button_clicked;
+
+	ElementGUI* volume_slider = nullptr;
 private:
 
 	SDL_Texture* atlas;

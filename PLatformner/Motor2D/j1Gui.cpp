@@ -226,36 +226,39 @@ void j1Gui::CreateMainMenuScreen()
 
 	iPoint textTestPoint = { 200,20 };
 	SDL_Rect textTestRect = { 0,0, 50, 20 };
-	const char*Text = "Window";
+	const char*Text = "Main_Menu_Label";
 	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
 
 
 		//BUTTONS
-		//Play
-		//Continue
-		//Settings
-		//Credits
-		//Exit
-	
-
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
 	iPoint ButtonTestPoint = { 100,200 };
-
+	//Play
 	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	iPoint RRtextTestPoint = { 50,20 };
 	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
 	const char* PlayText = "Play";
-	CreateElement("Play_Text", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
+	CreateElement("Play_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
 
-	ElementGUI*ElemGUI2 = nullptr;
+	//Continue
 	iPoint ButtonTestPoint_2 = { 100, 400 };
 	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
 	const char* ContinueText = "Continue";
-	CreateElement("Continue_Text", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
+	CreateElement("Continue_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
 
+	//Settings
+	iPoint ButtonTestPoint_3 = { 100, 600 };
+	ElementGUI* SettingsButton = CreateElement("Settings", ElementType::BUTTON, ElementAction::SETTINGS, ButtonTestPoint_3, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	const char* SettingsText = "Settings";
+	CreateElement("Settings_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, SettingsText, SettingsButton, false);
+
+	//Credits
+
+		//Exit
 
 }
 
@@ -280,13 +283,13 @@ void j1Gui::CreateSettingsScreen()
 	iPoint SlidertestPos = { 100,300 };
 	SDL_Rect unhoveredSlide = { 1278, 296, 6, 18 };
 	SDL_Rect SlidertestRect = { 1251, 274, 131, 8 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	volume_slider = CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music Slider Text
 
 	//SFX Slider
 	iPoint SlidertestPos_2 = { 100, 500 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	CreateElement("Slider", ElementType::SLIDER, ElementAction::SFX_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music	Slider Text
 }
