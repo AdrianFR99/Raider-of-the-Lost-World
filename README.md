@@ -10,9 +10,10 @@ Thank you for checking our game!
 
 ### Download
 You can download the latest version of the game here:
-[Download_the_game here](https://github.com/AdrianFR99/Raider-of-the-Lost-World/releases/download/v0.5/Raiders_of_the_Lost_World.zip)
+[Download the game here](https://github.com/AdrianFR99/Raider-of-the-Lost-World/releases/download/v0.5/Raiders_of_the_Lost_World.zip)
 
 Unzip the folder from the zip and execute the .exe.
+You can also chck the previous releases of th egame under our Release section from the repository.
 
 ### Gameplay
 
@@ -145,7 +146,7 @@ Assignment 3:
 * logo of the game: AdrianFR99
 * Music and sound effects of the UI: DidacRomero
 
-We developed the UI in this repository and then we used the code in the project: https://github.com/DidacRomero/Development-Homework
+We developed the UI in this repository and then we used the code in the project: [Development Homework Repository](https://github.com/DidacRomero/Development-Homework)
 All commits from 27th of november to 16th december are related to UI.
 
 ---
