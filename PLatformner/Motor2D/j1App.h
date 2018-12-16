@@ -22,6 +22,7 @@ class j2EntityManager;
 class j1Fonts;
 class j1Gui;
 class j1FadeToBlack;
+class j2MainMenu;
 
 class j1App
 {
@@ -112,6 +113,7 @@ public:
 	j1Fonts*			font;
 	j1Gui*				gui;
 	j1FadeToBlack*		fade;
+	j2MainMenu*			menu;
 
 
 	bool				PauseGame;

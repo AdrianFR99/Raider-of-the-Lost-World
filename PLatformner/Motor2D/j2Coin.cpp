@@ -18,7 +18,7 @@ j2Coin::j2Coin()
 
 	PathSound = config.child("config").child("entities").child("Items").child("FX").child("Coin").attribute("path").as_string();
 	
-	
+	//FIX HARDCODED
 	EntityText = App->tex->Load("textures/Coin.png");
 
 	EntitiesEnable = true;

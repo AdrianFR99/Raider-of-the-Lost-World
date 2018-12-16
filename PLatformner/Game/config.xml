@@ -28,7 +28,14 @@
   <file_system>
     <path>data.zip</path>
   </file_system>
-
+  
+  <menu>
+    <folder>textures/</folder>
+    <MainMenuTex path="MainMenu.png"/>
+    <MainMenuRect x="0" y="314" w="560" h="486"/>
+   
+  </menu>
+  
   <scene>
     <folder>maps/</folder>
     <Map file="map1_tiledV0_17.tmx"/>

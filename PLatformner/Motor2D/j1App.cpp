@@ -18,6 +18,7 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1FadeToBlack.h"
+#include "j2MainMenu.h"
 #include "j1App.h"
 
 #include "Brofiler/Brofiler.h"
@@ -35,6 +36,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render = new j1Render();
 	tex = new j1Textures();
 	audio = new j1Audio();
+	menu = new j2MainMenu();
 	scene = new j1Scene();
 	map = new j1Map();
 	collision = new j2Collision();
@@ -43,6 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font = new j1Fonts();
 	gui = new j1Gui();
 	fade = new j1FadeToBlack();
+	
 
 	
 	// Ordered for awake / Start / Update
@@ -52,6 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(menu);
 	AddModule(scene);
 	AddModule(collision);
 	AddModule(entities);
