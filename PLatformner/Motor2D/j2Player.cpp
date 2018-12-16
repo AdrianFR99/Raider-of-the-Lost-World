@@ -236,7 +236,11 @@ bool j2Player::Awake(pugi::xml_node& config)
 		PivotAdjustment = config.child("PivotAdjustment").attribute("value").as_uint();
 		//HitsToRecive
 		HitsToRecive = config.child("hitToRecive").attribute("value").as_int();
-			
+		Shield= config.child("shield").attribute("value").as_int();
+
+
+		FixedHits = HitsToRecive;
+		HitsShield = Shield;
 	}
 	else 
 	{
@@ -287,6 +291,7 @@ bool j2Player::Load(pugi::xml_node& data)
 
 	dead = data.child("dead").attribute("value").as_bool();
 	HitsToRecive= data.child("HitsToReceive").attribute("value").as_int();
+	Shield= data.child("Shield").attribute("value").as_int();
 	Coins= data.child("Coins").attribute("value").as_int();
 	Score = data.child("Score").attribute("value").as_int();
 	landed = data.child("landed").attribute("value").as_bool();
@@ -389,6 +394,10 @@ bool j2Player::Save(pugi::xml_node& data) const
 	playerSave = data.append_child("HitsToReceive");
 	playerSave.append_attribute("value") = HitsToRecive;
 
+	playerSave = data.append_child("Shield");
+	playerSave.append_attribute("value") = Shield;
+
+
 	playerSave = data.append_child("Coins");
 	playerSave.append_attribute("value") = Coins;
 
@@ -425,8 +434,7 @@ bool j2Player::Start()
 	if(EntityText==nullptr)
 	EntityText = App->tex->Load("textures/adventure.png");//loading Player textures
 
-	FixedHits = HitsToRecive;
-
+	Shield = 0;
 	return true;
 }
 
@@ -598,7 +606,23 @@ bool j2Player::Update(float dt, bool do_logic)
 	//App->collision->Update(dt);
 	//App->collision->Update(dt);
 
+	if (HitsToRecive >FixedHits) {
 
+		HitsToRecive = FixedHits;
+		Shield++;
+
+	}
+	
+	if (Shield > HitsShield) {
+
+		Shield = HitsShield;
+
+	}
+	else if (Shield < 0) {
+
+		Shield = 0;
+
+	}
 
 	//Camera Following player
 	App->render->followPlayer(player,dt);
@@ -718,11 +742,45 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			}
 			//If the collider is a killing obstacle DIE
 			if (dead == false) {
-				if (c2->type == COLLIDER_TRAP)
-				{
-					DeathTime.Start();
-					dead = true;
-					PlayFXDie = true;
+				if (hurt == false) {
+					if (c2->type == COLLIDER_TRAP)
+					{
+						if (Shield == 0) {
+							DeathTime.Start();
+							dead = true;
+							PlayFXDie = true;
+						}
+						else {
+							HurtTime.Start();
+							hurt = true;
+							
+							Shield--;
+
+							App->fade->FadeCustom(255, 0, 0, 30.0f, 0.1f);
+							App->audio->PlayFx(player_fx.HittedSound, 0);
+
+							if (c2->rect.x > c1->rect.x)
+								Speed.x = -Currentacceleration;
+							else if (c2->rect.x < c1->rect.x)
+								Speed.x = Currentacceleration;
+
+							if (MovingDown==true)
+								Speed.y = -100;
+							else if (MovingUp == true)
+								Speed.y = 50;
+
+
+							else if (MovingRight == false && MovingLeft == false) {
+								if (lookingRight == true)
+									Speed.x = -Currentacceleration;
+								else
+									Speed.x = Currentacceleration;
+
+
+
+							}
+						}
+					}
 				}
 			}
 		}
@@ -775,8 +833,14 @@ void j2Player::OnCollision(Collider* c1, Collider* c2)
 			{
 				HurtTime.Start();
 				hurt = true;
-				HitsToRecive--;
-				App->fade->FadeCustom(255,0,0,30.0f,0.1f);
+				
+				if (Shield == 0) {
+					HitsToRecive--;
+				}
+				else {
+					Shield--;
+				}
+					App->fade->FadeCustom(255,0,0,30.0f,0.1f);
 				App->audio->PlayFx(player_fx.HittedSound,0);
 
 				if (c2->rect.x > c1->rect.x)

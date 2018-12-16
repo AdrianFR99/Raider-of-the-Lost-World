@@ -25,6 +25,7 @@ enum class ElementType
 	TEXT,
 	SPRITE,
 	SLIDER,
+	HEALTH_BAR,
 	NOT_ELEMENT
 
 };
@@ -112,6 +113,9 @@ public:
 	uint button_clicked;
 
 	ElementGUI* volume_slider = nullptr;
+	ElementGUI*Panel;
+	ElementGUI*HealthFrame;
+	
 private:
 
 	SDL_Texture* atlas;
@@ -121,7 +125,7 @@ private:
 	p2SString clicked_sound_name;
 
 
-	ElementGUI*Panel;
+	
 };
 
 #endif // __j1GUI_H__

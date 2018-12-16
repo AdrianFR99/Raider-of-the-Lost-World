@@ -230,6 +230,8 @@ public: //Variables
 	int FixedHits;
 	int Coins;
 	int HitsToRecive;
+	int HitsShield;
+	int Shield;
 	int Score;
 
 	Animation* currentAnimation=nullptr;

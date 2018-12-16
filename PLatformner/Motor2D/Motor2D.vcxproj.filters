@@ -93,6 +93,9 @@
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClCompile>
     <ClCompile Include="j2MainMenu.cpp" />
+    <ClCompile Include="j2HealthBarGui.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -211,6 +214,9 @@
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="j2MainMenu.h" />
+    <ClInclude Include="j2HealthBarGui.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

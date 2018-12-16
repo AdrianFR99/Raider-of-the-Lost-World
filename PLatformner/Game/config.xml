@@ -120,6 +120,7 @@
       <IntilaPState State="IDLE"/>
 
     <hitToRecive value="3"/>
+    <shield value="2"/>
     
     <!--Player Death-->
       <dead boolDead="false" deadDelay="20" deadCounter="0" />

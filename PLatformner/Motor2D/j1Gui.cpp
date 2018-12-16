@@ -12,6 +12,7 @@
 #include "j2GuiSprites.h"
 #include "j2GUIText.h"
 #include "j2ButtonClass.h"
+#include "j2HealthBarGui.h"
 #include "Brofiler/Brofiler.h"
 #include "j2SliderGUI.h"
 
@@ -204,6 +205,10 @@ ElementGUI*j1Gui::CreateElement(const char* name, ElementType element, ElementAc
 	case ElementType::SLIDER:
 		ElemGUI = new j2SliderGUI(name, element, action, position, rect1, rect2, true, tex, draggable, interactable, invisible);
 		break;
+	case ElementType::HEALTH_BAR:
+
+		ElemGUI = new j2HealthBarGui(name,element,action,position,true,tex, draggable, interactable, invisible);
+
 	}
 
 	ElemGUI->Parent = Parent;
@@ -303,19 +308,18 @@ void j1Gui::CreateSettingsScreen()
 void j1Gui::CreatePlayerGui() {
 
 	SDL_Rect defaultRect = { 0,0,0,0 };
-	SDL_Rect HealthRect = { 1082,474,161,52 };
+	SDL_Rect HealthFrameRect = { 1082,409,161,52 };
 
+		
+	const char*HealthFrameBar = "HealthFrameBar";
+	iPoint PosFrameHealth = { 0,1356 };
+
+	
+	HealthFrame=CreateElement(HealthFrameBar, ElementType::SPRITE, ElementAction::NONE, PosFrameHealth, atlas, false, HealthFrameRect, defaultRect, defaultRect);
+
+	iPoint PosHealth = { 49,45};
 	const char*HealthBar = "HealthBar";
-	iPoint PosHealth = {0,1355 };
-	CreateElement(HealthBar, ElementType::SPRITE, ElementAction::NONE, PosHealth, atlas, false, HealthRect,defaultRect, defaultRect);
-
-
-
-
-
-
-
-
+	CreateElement(HealthBar, ElementType::HEALTH_BAR, ElementAction::NONE, PosHealth, atlas, false, defaultRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, "None", HealthFrame);
 
 
 
