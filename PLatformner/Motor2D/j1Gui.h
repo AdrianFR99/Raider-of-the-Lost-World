@@ -26,7 +26,7 @@ enum class ElementType
 	SPRITE,
 	SLIDER,
 	HEALTH_BAR,
-	COINS_PLAYER,
+	VARS_PLAYER,
 	NOT_ELEMENT
 
 };
