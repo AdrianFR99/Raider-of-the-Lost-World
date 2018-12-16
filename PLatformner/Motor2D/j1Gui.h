@@ -48,12 +48,14 @@ enum class ElementAction
 	CONTINUE,
 	SETTINGS,
 	SETTINGS_BACK,
+	SETTINGS_RESUME,
 	CREDITS,
 	CREDITS_BACK,
 	EXIT,
 	MUSIC_VOL,
 	SFX_VOL,
 	WEB,
+	BACK_TO_MENU,
 	
 
 };
@@ -106,6 +108,8 @@ public:
 
 	void CreateCreditsScreen();
 
+	void CreateInGameScreen();
+
 
 	//UI Callbacks
 	void callbackUiElement(ElementGUI *element);
@@ -136,8 +140,6 @@ private:
 	p2SString hover_sound_name;
 	p2SString clicked_sound_name;
 
-
-	
 };
 
 #endif // __j1GUI_H__

@@ -183,14 +183,14 @@ bool j1App::Update()
 	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
 		Capto30 = !Capto30;
 
-	if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		if (PauseGame == false) {
-			PauseGame = true;
-		}
-		else
-		{
-			PauseGame = false;
-		}
+	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	//	/*if (PauseGame == false) {
+	//		PauseGame = true;
+	//	}
+	//	else
+	//	{
+	//		PauseGame = false;
+	//	}*/
 	
 
 		DisplayFrameRateInfo();

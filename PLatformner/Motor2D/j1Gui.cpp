@@ -73,8 +73,12 @@ bool j1Gui::Start()
 
 	CreatePlayerGui();
 
+	CreateInGameScreen();
+
 	Hide("Settings_Window");
 	Hide("Credits_Window");
+	Hide("InGame_Settings_Window");
+	Hide("");
 
 	bool ret = true;
 	for (p2List_item<ElementGUI*>* item = ElementList.start; item; item = item->next)
@@ -390,6 +394,66 @@ void j1Gui::CreateCreditsScreen()
 
 
 }
+void j1Gui::CreateInGameScreen()
+{
+	SDL_Rect defaultRect = { 0,0,0,0 };
+	SDL_Rect hoveringRect = { 646,170,226,64 };
+	SDL_Rect clickedRect = { 416,170,226,64 };
+	//Settings Screen
+	iPoint testPoint = { 400,20 };
+	SDL_Rect testRect = { 468, 204, 236, 185 };
+	const char* PanelText = "InGame_Settings_Window";
+	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
+
+	//Settings Screen Text
+	iPoint textTestPoint = { 170,50 };
+	SDL_Rect textTestRect = { 0,0, 150, 20 };
+	const char*Text = "Settings";
+	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
+
+	//Music Slider
+	iPoint SlidertestPos = { 200,300 };
+	SDL_Rect unhoveredSlide = { 1278, 296, 6, 18 };
+	SDL_Rect SlidertestRect = { 1251, 274, 131, 8 };
+	volume_slider = CreateElement("Music_Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+
+	//Music Slider Text
+	iPoint musicSliderTestPoint = { 200, 230 };
+	SDL_Rect MusicTestRect = { 0,0, 140, 20 };
+	const char* MusicText = "Music Vol";
+	CreateElement(MusicText, ElementType::TEXT, ElementAction::NONE, musicSliderTestPoint, nullptr, false, MusicTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, MusicText, Panel, false);
+
+	//SFX Slider
+	iPoint SlidertestPos_2 = { 200, 500 };
+	CreateElement("FX_Slider", ElementType::SLIDER, ElementAction::SFX_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+
+	//Music	Slider Text
+	iPoint SlidertestPos_3 = { 200, 400 };
+	const char* SFXText = "FX Vol";
+	CreateElement(SFXText, ElementType::TEXT, ElementAction::NONE, SlidertestPos_3, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, SFXText, Panel, false);
+
+	//Settings back button
+	iPoint ButtonBackPos = { 400, 1000 };
+	SDL_Rect idleButtonRect = { 1204,283,25,25 };
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+
+	//Settings Resume button
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	//MainMenu Button
+	SDL_Rect unHoveredRect = { 950,441,123,37 };
+	iPoint ButtonTestPoint_2 = { 350, 800 };
+	ElementGUI* ContinueButton = CreateElement("Main_MenuBack", ElementType::BUTTON, ElementAction::BACK_TO_MENU, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	SDL_Rect RRtextTestRect = { 0,0, 150, 25 };
+	iPoint RRtextTestPoint = { 70,40 };
+	const char* ContinueText = "Main Menu";
+	CreateElement("Continue_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
+
+}
+
+
 void j1Gui::CreatePlayerGui() {
 
 	SDL_Rect defaultRect = { 0,0,0,0 };
