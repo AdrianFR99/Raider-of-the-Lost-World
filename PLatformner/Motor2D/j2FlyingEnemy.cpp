@@ -142,7 +142,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 			position.y += Speed.y;
 		}
 
-		if(currentAnimation !=nullptr)
+		if(currentAnimation !=nullptr) 
 		AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 		//Assign positionChanges
