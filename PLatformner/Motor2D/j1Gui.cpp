@@ -294,20 +294,20 @@ void j1Gui::CreateMainMenuScreen()
 	//Settings
 	iPoint ButtonTestPoint_3 = { 50, 1400 };
 	SDL_Rect SettingsButtonRect = {1103,283,25,25};
-	CreateElement("Settings", ElementType::BUTTON, ElementAction::SETTINGS, ButtonTestPoint_3, atlas, true, SettingsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Settings", ElementType::BUTTON, ElementAction::SETTINGS, ButtonTestPoint_3, atlas, true, SettingsButtonRect, hoveringRect, clickedRect, ButtonType::ROUND, nullptr, Panel, false, false);
 
 	//Credits
 	iPoint ButtonTestPoint_4 = { 200, 1400 };
 	SDL_Rect CreditsButtonRect = { 950,331,92,26 };
 	iPoint SmallButtonTestPoint = { 80,20 };
-	ElementGUI* CreditsButton = CreateElement("Settings", ElementType::BUTTON, ElementAction::CREDITS, ButtonTestPoint_4, atlas, true, CreditsButtonRect, CreditsButtonRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* CreditsButton = CreateElement("Settings", ElementType::BUTTON, ElementAction::CREDITS, ButtonTestPoint_4, atlas, true, CreditsButtonRect, CreditsButtonRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 	const char* CreditsText = "Credits";
 	CreateElement("Credits_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, CreditsText, CreditsButton, false);
 
 		//Exit
 	iPoint ButtonTestPoint_5 = { 1400, 1000 };
-	ElementGUI* ExitButton = CreateElement("Exit", ElementType::BUTTON, ElementAction::EXIT, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* ExitButton = CreateElement("Exit", ElementType::BUTTON, ElementAction::EXIT, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 	const char* ExitText = "Exit";
 	CreateElement("Exit_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ExitText, ExitButton, false);
@@ -356,7 +356,7 @@ void j1Gui::CreateSettingsScreen()
 	//Settings back button
 	iPoint ButtonBackPos = { 400, 700};
 	SDL_Rect idleButtonRect = {1204,283,25,25};
-	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::ROUND, nullptr, Panel, false, false);
 	
 }
 
@@ -380,7 +380,7 @@ void j1Gui::CreateCreditsScreen()
 	//Web
 	iPoint ButtonTestPoint_5 = { 500, 850 };
 	SDL_Rect CreditsButtonRect = { 950,331,92,26 };
-	ElementGUI* WebButton = CreateElement("Web", ElementType::BUTTON, ElementAction::WEB, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* WebButton = CreateElement("Web", ElementType::BUTTON, ElementAction::WEB, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 
 	iPoint SmallButtonTestPoint = { 80,20 };
@@ -391,7 +391,7 @@ void j1Gui::CreateCreditsScreen()
 	//Settings back button
 	iPoint ButtonBackPos = { 600, 1000 };
 	SDL_Rect idleButtonRect = { 1204,283,25,25 };
-	CreateElement("Credits_Back", ElementType::BUTTON, ElementAction::CREDITS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Credits_Back", ElementType::BUTTON, ElementAction::CREDITS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::ROUND, nullptr, Panel, false, false);
 
 	iPoint AuthorsTesxtPos = { 120, 130 };
 	SDL_Rect AuthorsRect = { 0,0,350, 20 };
@@ -442,16 +442,16 @@ void j1Gui::CreateInGameScreen()
 	//Settings back button
 	iPoint ButtonBackPos = { 400, 1000 };
 	SDL_Rect idleButtonRect = { 1204,283,25,25 };
-	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::ROUND, nullptr, Panel, false, false);
 
 
 	//Settings Resume button
-	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_RESUME, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::ROUND, nullptr, Panel, false, false);
 
 	//MainMenu Button
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
 	iPoint ButtonTestPoint_2 = { 350, 800 };
-	ElementGUI* ContinueButton = CreateElement("Main_MenuBack", ElementType::BUTTON, ElementAction::BACK_TO_MENU, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* ContinueButton = CreateElement("Main_MenuBack", ElementType::BUTTON, ElementAction::BACK_TO_MENU, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 	SDL_Rect RRtextTestRect = { 0,0, 150, 25 };
 	iPoint RRtextTestPoint = { 70,40 };

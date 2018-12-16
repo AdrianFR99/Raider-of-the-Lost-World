@@ -6,9 +6,23 @@
 
 j2ButtonClass::j2ButtonClass(const char* name, ElementType type, ElementAction action, ButtonType buttonType, iPoint position, SDL_Rect &rect1, SDL_Rect &rect2, SDL_Rect &rect3, bool isStatic, SDL_Texture* tex, bool interactable, bool draggable, bool invisible)
 	: ElementGUI(name, type, action, position, rect1, isStatic, interactable, draggable, invisible, tex), bType(buttonType) {
+	
+	if (bType == ButtonType::DEFAULT)
+	{
+		hoveringRect = { 950,487,122,37 };
+		clickedRect = { 950,541,122,37 };
+	}
+	else if (bType == ButtonType::ROUND || bType == ButtonType::SLIDER)
+	{
+		hoveringRect = rect;
+		clickedRect = rect;
+	}
+	else if (bType == ButtonType::SMALL)
+	{
+		hoveringRect = { 950,366,92,26 };
+		clickedRect = { 950,403,92,26 };
+	}
 
-	hoveringRect = { 950,487,122,37 };
-	clickedRect = { 950,541,122,37 };
 
 }
 

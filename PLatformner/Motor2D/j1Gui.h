@@ -36,6 +36,8 @@ enum class ButtonType {
 	CHECKLIST,
 	DEFAULT,
 	SLIDER,
+	ROUND,
+	SMALL,
 	NOT_BUTTON
 
 
