@@ -97,8 +97,9 @@ Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
 ---
  ### TEAM
  
+ 
  <p align="center">
- <img src="https://raw.githubusercontent.com/AdrianFR99/Raider-of-the-Lost-World/gh-pages/team/Team_Didac%26Adrian.jpg" width="645"/>
+  <img src="https://raw.githubusercontent.com/AdrianFR99/Raider-of-the-Lost-World/gh-pages/team/Team_Didac%26Adrian.jpg"/>
 </p>
 
 			(At the left Dídac Romero Camó and at the right Adrián Font Romero)
