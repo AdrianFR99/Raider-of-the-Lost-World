@@ -95,6 +95,10 @@ Dídac Romero Camó: https://github.com/DidacRomero
 Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
 
 ---
+ ### TEAM
+ 
+ 
+
  ### WHO DID WHAT? (TASKS)
 
 Assignment 2:
@@ -115,10 +119,10 @@ Assignment 2:
 * Environmental sounds (Panning and distance attenuation): DidacRomero
 
 Assignment 3:
-	-UI:DidacRomero & AdrianFR99
+	-UI: DidacRomero & AdrianFR99
 * coins and lifes entities and the behaviour of them: AdrianFR99
 * logo of the game: AdrianFR99
-* Music and sound effects of the UI:DidacRomero
+* Music and sound effects of the UI: DidacRomero
 
 ---
  ### Credits
