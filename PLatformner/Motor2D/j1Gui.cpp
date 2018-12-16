@@ -43,7 +43,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 		hover_sound_name = conf.child("sfx").attribute("file_hover_start").as_string("");  
 		clicked_sound_name = conf.child("sfx").attribute("file_button_clicked").as_string("");
-		licenseText = conf.child("License").attribute("text").as_string("");
+		licenseText = conf.child("License").attribute("text").as_string();
 	}
 
 	scale = App->win->GetScale();
@@ -272,7 +272,7 @@ void j1Gui::CreateMainMenuScreen()
 	//Play
 	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
-	iPoint RRtextTestPoint = { 50,20 };
+	iPoint RRtextTestPoint = { 130,40 };
 	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
 	const char* PlayText = "Play";
 	CreateElement("Play_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
@@ -293,17 +293,18 @@ void j1Gui::CreateMainMenuScreen()
 	//Credits
 	iPoint ButtonTestPoint_4 = { 200, 1400 };
 	SDL_Rect CreditsButtonRect = { 950,331,92,26 };
+	iPoint SmallButtonTestPoint = { 80,20 };
 	ElementGUI* CreditsButton = CreateElement("Settings", ElementType::BUTTON, ElementAction::CREDITS, ButtonTestPoint_4, atlas, true, CreditsButtonRect, CreditsButtonRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	const char* CreditsText = "Credits";
-	CreateElement("Credits_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, CreditsText, CreditsButton, false);
+	CreateElement("Credits_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, CreditsText, CreditsButton, false);
 
 		//Exit
 	iPoint ButtonTestPoint_5 = { 1400, 1000 };
 	ElementGUI* ExitButton = CreateElement("Exit", ElementType::BUTTON, ElementAction::EXIT, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	const char* ExitText = "Exit";
-	CreateElement("Exit_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ExitText, ExitButton, false);
+	CreateElement("Exit_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ExitText, ExitButton, false);
 
 
 }
@@ -366,20 +367,26 @@ void j1Gui::CreateCreditsScreen()
 	const char* PanelText = "Credits_Window";
 	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
 
-	iPoint LicenseTesxtPos = { 100, 170 };
+	iPoint LicenseTesxtPos = { 120, 170 };
 	SDL_Rect LicenseRect = {0,0,600, 200};
 	CreateElement("License", ElementType::TEXT, ElementAction::NONE, LicenseTesxtPos, nullptr, false, LicenseRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, licenseText, Panel, false);
 
 	//Web
-	iPoint ButtonTestPoint_5 = { 500, 1000 };
+	iPoint ButtonTestPoint_5 = { 500, 850 };
 	SDL_Rect CreditsButtonRect = { 950,331,92,26 };
 	ElementGUI* WebButton = CreateElement("Web", ElementType::BUTTON, ElementAction::WEB, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
-	iPoint RRtextTestPoint = { 50,20 };
+	iPoint SmallButtonTestPoint = { 80,20 };
 	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
 	const char* WebText = "Web";
-	CreateElement("Web_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, WebText, WebButton, false);
+	CreateElement("Web_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, WebText, WebButton, false);
+
+	//Settings back button
+	iPoint ButtonBackPos = { 600, 1000 };
+	SDL_Rect idleButtonRect = { 1204,283,25,25 };
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::CREDITS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
 
 
 }
@@ -408,7 +415,7 @@ void j1Gui::callbackUiElement(ElementGUI *element)
 {
 	if (element->type == ElementType::BUTTON)
 	{
-		if (element->was_clicked && element->clicked == false)
+		if (element->was_clicked && element->clicked == false && element->hovering == true)
 		{
 			App->audio->PlayFx(App->gui->button_clicked);
 		}

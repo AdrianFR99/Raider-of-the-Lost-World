@@ -180,6 +180,13 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 			}
 			break;
 
+		case	ElementAction::CREDITS_BACK:
+			if (element->was_clicked && element->clicked == false)
+			{
+				App->gui->Hide("Credits_Window");
+			}
+			break;
+
 		case	ElementAction::WEB:
 			if (element->was_clicked && element->clicked == false)
 			{

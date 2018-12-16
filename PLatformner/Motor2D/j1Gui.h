@@ -49,6 +49,7 @@ enum class ElementAction
 	SETTINGS,
 	SETTINGS_BACK,
 	CREDITS,
+	CREDITS_BACK,
 	EXIT,
 	MUSIC_VOL,
 	SFX_VOL,
