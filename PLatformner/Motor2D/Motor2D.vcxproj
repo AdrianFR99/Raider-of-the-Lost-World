@@ -99,6 +99,7 @@
     <ClCompile Include="j2GuiSprites.cpp" />
     <ClCompile Include="j2GUIText.cpp" />
     <ClCompile Include="j2LifeItem.cpp" />
+    <ClCompile Include="j2MainMenu.cpp" />
     <ClCompile Include="j2Player.cpp" />
     <ClCompile Include="j2SliderGUI.cpp" />
     <ClCompile Include="j2StaticEntity.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="j2GuiSprites.h" />
     <ClInclude Include="j2GUIText.h" />
     <ClInclude Include="j2LifeItem.h" />
+    <ClInclude Include="j2MainMenu.h" />
     <ClInclude Include="j2Player.h" />
     <ClInclude Include="j2Collision.h" />
     <ClInclude Include="j2SliderGUI.h" />

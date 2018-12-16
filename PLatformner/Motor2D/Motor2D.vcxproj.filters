@@ -92,6 +92,7 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClCompile>
+    <ClCompile Include="j2MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -209,6 +210,7 @@
     <ClInclude Include="j1Fonts.h">
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="j2MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

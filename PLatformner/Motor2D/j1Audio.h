@@ -3,6 +3,8 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
+#include "p2List.h"
+#include "p2SString.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 

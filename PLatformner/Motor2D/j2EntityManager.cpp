@@ -10,8 +10,10 @@
 
 j2EntityManager::j2EntityManager() : j1Module()
 {
-	name.create("entities");
+	
+	
 
+	name.create("entities");
 
 	update_ms_cycle = 0.200f;  //Change/Fix @D�dac must calculate value not hardcode
 
