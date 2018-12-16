@@ -16,6 +16,7 @@
 #include "j1Gui.h"
 #include "ElementGUI.h"
 #include "Brofiler/Brofiler.h"
+#include "j2MainMenu.h"
 
 
 
@@ -100,24 +101,20 @@ void j1Scene::callbackUiElement(ElementGUI * element)
 		{
 			switch (element->action)
 			{
-			case	ElementAction::PLAY:
+			case	ElementAction::SETTINGS_RESUME:
 				if (element->was_clicked && element->clicked == false)
 				{
-					
+					App->gui->Hide("InGame_Settings_Window");
+					App->PauseGame = false;
 				}
 				break;
-
-			case	ElementAction::CONTINUE:
+			case	ElementAction::BACK_TO_MENU:
 				if (element->was_clicked && element->clicked == false)
 				{
-				
-				}
-				break;
-
-			case	ElementAction::SETTINGS:
-				if (element->was_clicked && element->clicked == false)
-				{
-					App->gui->Display("Settings_Window");
+					App->fade->FadeToBlack(this,App->menu,3.0f);
+					App->render->camera.x = 0;
+					App->render->camera.y = 0;
+					App->entities->Disable();
 				}
 				break;
 			}
@@ -241,7 +238,7 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		App->fade->FadeCustom(0,0,0,255.0f,0.5f);
 		switchTheMaps();
 
@@ -263,6 +260,10 @@ bool j1Scene::Update(float dt)
 		else
 			switchTheMaps();
   }
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		App->gui->debug = !App->gui->debug;
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
@@ -289,11 +290,6 @@ bool j1Scene::Update(float dt)
 		}
 	
 	
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
-		int i = 0;
-		App->gui->debug = !App->gui->debug;
 	}
 
 
@@ -401,8 +397,8 @@ bool j1Scene::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		App->map->CleanUp(App->map->data2);
-		ret = false;
+		App->gui->Display("InGame_Settings_Window");
+		App->PauseGame = true;
 	}
 
 	return ret;

@@ -54,14 +54,18 @@ bool j2MainMenu::Awake(pugi::xml_node& config) {
 // Called before the first frame
 bool j2MainMenu::Start() {
 
-	
+	App->scene->Disable();
+	App->entities->Disable();
+
 	MainMenuTex = App->tex->Load(texturePath.GetString());
 
 	//Play the menu song
 	p2SString menu_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.end->data->GetString());
 	App->audio->PlayMusic(menu_song.GetString(), 0.5f);
 
+
 	/*App->gui->CreateMainMenuScreen();*/
+
 
 	//If the Continue button exists and is disabled and there is a save, enable
 	pugi::xml_document save_file;
@@ -177,6 +181,13 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 			if (element->was_clicked && element->clicked == false)
 			{
 				App->gui->Display("Credits_Window");
+			}
+			break;
+
+		case	ElementAction::CREDITS_BACK:
+			if (element->was_clicked && element->clicked == false)
+			{
+				App->gui->Hide("Credits_Window");
 			}
 			break;
 
