@@ -49,6 +49,11 @@ bool j2GUIText::Awake() {
 
 	Textfont = App->font->sanskrit;
 
+	if (name == "License")
+	{
+		Textfont = App->font->fonts.start->data;
+	}
+
 	tex = App->font->Print(Text, ColorText, Textfont);
 	return true;
 }
@@ -84,7 +89,7 @@ bool j2GUIText::PostUpdate() {
 void j2GUIText::DisplayText() {
 
 	//FIX must update functions and modules
-	App->render->Blit(tex, GlobalPosition.x, GlobalPosition.y, &rect, SDL_FLIP_NONE,1.0f,0.0,0,0,!isStatic);
+	App->render->Blit(tex, GlobalPosition.x, GlobalPosition.y, &rect, SDL_FLIP_NONE,1.0f,0.0,0,0,!isStatic,true);
 }
 
 

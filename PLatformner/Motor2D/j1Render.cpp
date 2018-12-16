@@ -162,7 +162,7 @@ iPoint j1Render::ScreenToWorld(int x, int y,MapData& DataAux) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y, bool use_camera) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y, bool use_camera, bool ignore_size) const
 {
 	bool ret = true;
 		uint scale = App->win->GetScale();
@@ -189,8 +189,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 			SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 		}
 
-		rect.w *= scale;
-		rect.h *= scale;
+		if (ignore_size == false)
+		{
+			rect.w *= scale;
+			rect.h *= scale;
+		}
 
 		SDL_Point* p = NULL;
 		SDL_Point pivot;

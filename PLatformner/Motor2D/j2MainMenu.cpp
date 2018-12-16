@@ -173,7 +173,7 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 		case	ElementAction::CREDITS:
 			if (element->was_clicked && element->clicked == false)
 			{
-			
+				App->gui->Display("Credits_Window");
 			}
 			break;
 

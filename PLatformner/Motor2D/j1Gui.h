@@ -97,6 +97,7 @@ public:
 	//Functions to create the different screens
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
+	void CreateCreditsScreen();
 
 	//UI Callbacks
 	void callbackUiElement(ElementGUI *element);
@@ -113,6 +114,8 @@ public:
 	uint button_clicked;
 
 	ElementGUI* volume_slider = nullptr;
+
+	const char* licenseText = nullptr;
 private:
 
 	SDL_Texture* atlas;
