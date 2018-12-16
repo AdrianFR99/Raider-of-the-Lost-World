@@ -219,20 +219,20 @@ void j1Gui::CreateMainMenuScreen()
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };
 	//Window
-	iPoint testPoint = { 100,50 };
+	iPoint testPoint = { 0,0 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
 	const char* PanelText = "Main_Menu";
-	Panel = CreateElement("Main_Menu", ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, true);
+	Panel = CreateElement("Main_Menu", ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
 
-	iPoint textTestPoint = { 200,20 };
+	/*iPoint textTestPoint = { 100,600 };
 	SDL_Rect textTestRect = { 0,0, 50, 20 };
 	const char*Text = "Main_Menu_Label";
 	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
-
+*/
 
 		//BUTTONS
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
-	iPoint ButtonTestPoint = { 100,200 };
+	iPoint ButtonTestPoint = { 1400,600 };
 	//Play
 	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
@@ -242,7 +242,7 @@ void j1Gui::CreateMainMenuScreen()
 	CreateElement("Play_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
 
 	//Continue
-	iPoint ButtonTestPoint_2 = { 100, 400 };
+	iPoint ButtonTestPoint_2 = { 1400, 800 };
 	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
@@ -259,6 +259,12 @@ void j1Gui::CreateMainMenuScreen()
 	//Credits
 
 		//Exit
+	iPoint ButtonTestPoint_4 = { 1400, 1000 };
+	ElementGUI* ExitButton = CreateElement("Exit", ElementType::BUTTON, ElementAction::EXIT, ButtonTestPoint_4, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+	const char* ExitText = "Exit";
+	CreateElement("Exit_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ExitText, ExitButton, false);
+
 
 }
 

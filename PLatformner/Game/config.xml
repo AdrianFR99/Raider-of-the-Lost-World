@@ -33,6 +33,7 @@
     <folder>textures/</folder>
     <MainMenuTex path="MainMenu.png"/>
     <MainMenuRect x="0" y="314" w="560" h="406"/>
+    
    
   </menu>
   
@@ -48,6 +49,7 @@
         <folder>audio/music/</folder>
         <song name="lvl_1_the_cave.ogg"/>
         <song name="lvl_2_the_mountain.ogg"/>
+        <song name="the_menu.ogg"/>
       </music>
     <FX>
       <folderFX>audio/FX/</folderFX>
