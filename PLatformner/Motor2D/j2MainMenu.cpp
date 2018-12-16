@@ -57,6 +57,8 @@ bool j2MainMenu::Start() {
 	p2SString menu_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.end->data->GetString());
 	App->audio->PlayMusic(menu_song.GetString(), 0.5f);
 
+	App->gui->CreateMainMenuScreen();
+
 	return true;
 
 }
@@ -123,7 +125,7 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 		case	ElementAction::CONTINUE:
 			if (element->was_clicked && element->clicked == false)
 			{
-
+				App->fade->FadeToBlack(this, App->scene, 3.0f, true);
 			}
 			break;
 
@@ -148,9 +150,6 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 			}
 			break;
 		}
-
-
-
 	}
 }
 

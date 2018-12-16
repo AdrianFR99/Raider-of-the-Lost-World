@@ -51,6 +51,13 @@ bool j1FadeToBlack::PostUpdate()
 			{
 				fade_out->Disable();
 				fade_in->Enable();
+				
+				if (load == true)
+				{
+					//FIX HARDCODING
+					App->LoadGame("save_game.xml");
+					load = false;
+				}
 
 				fade_out = nullptr;
 				fade_in = nullptr;
@@ -81,7 +88,7 @@ bool j1FadeToBlack::PostUpdate()
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time)
+bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, bool load)
 {
 	bool ret = false;
 
@@ -98,6 +105,8 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 		manage_active = true;
 		r = g = b = 0;
 		a = 255.f;
+
+		this->load = load;
 
 		ret = true;
 	}

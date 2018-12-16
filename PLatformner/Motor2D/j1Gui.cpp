@@ -13,6 +13,7 @@
 #include "j2GUIText.h"
 #include "j2ButtonClass.h"
 #include "Brofiler/Brofiler.h"
+#include "PugiXml/src/pugixml.hpp"
 #include "j2SliderGUI.h"
 
 
@@ -39,6 +40,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		clicked_sound_name = conf.child("sfx").attribute("file_button_clicked").as_string("");
 	}
 
+	scale = App->win->GetScale();
+
 	debug = false;
 	return ret;
 }
@@ -46,7 +49,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	scale = App->win->GetScale();
 
 	atlas = App->tex->Load(atlas_file_name.GetString());
 
@@ -218,6 +220,19 @@ void j1Gui::CreateMainMenuScreen()
 	SDL_Rect defaultRect = { 0,0,0,0 };
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };
+
+	bool continueButton_Interactable = true;
+
+	pugi::xml_document save_file;
+	pugi::xml_parse_result res;
+
+	res = save_file.load_file("save_game.xml");
+
+	if (res == NULL)
+	{
+		continueButton_Interactable = false;
+	}
+
 	//Window
 	iPoint testPoint = { 0,0 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
@@ -243,7 +258,7 @@ void j1Gui::CreateMainMenuScreen()
 
 	//Continue
 	iPoint ButtonTestPoint_2 = { 1400, 800 };
-	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, continueButton_Interactable, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
 	const char* ContinueText = "Continue";
