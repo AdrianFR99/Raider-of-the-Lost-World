@@ -144,6 +144,9 @@ Assignment 3:
 * logo of the game: AdrianFR99
 * Music and sound effects of the UI: DidacRomero
 
+We developed the UI in this repository and then we used the code in the project: https://github.com/DidacRomero/Development-Homework
+All commits from 27th of november to 16th december are related to UI.
+
 ---
  ### Credits
 
