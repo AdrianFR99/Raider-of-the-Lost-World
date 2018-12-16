@@ -33,10 +33,10 @@ bool j2MainMenu::Awake(pugi::xml_node& config) {
 	p2SString strAux = config.child("MainMenuTex").attribute("path").as_string();
 	p2SString strAux2("%s%s", folder.GetString(), strAux.GetString());
 	
-	MainMenuRect.x = config.child("MainMenuRect").attribute("x").as_int;
-	MainMenuRect.y= config.child("MainMenuRect").attribute("y").as_int;
-	MainMenuRect.w = config.child("MainMenuRect").attribute("w").as_int;
-	MainMenuRect.h = config.child("MainMenuRect").attribute("h").as_int;
+	MainMenuRect.x = config.child("MainMenuRect").attribute("x").as_int();
+	MainMenuRect.y= config.child("MainMenuRect").attribute("y").as_int();
+	MainMenuRect.w = config.child("MainMenuRect").attribute("w").as_int();
+	MainMenuRect.h = config.child("MainMenuRect").attribute("h").as_int();
 
 
 	texturePath = strAux2;
