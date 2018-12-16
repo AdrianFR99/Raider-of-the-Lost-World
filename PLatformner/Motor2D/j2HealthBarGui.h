@@ -23,7 +23,7 @@ public:
 	//PostUpdate	
 	bool PostUpdate();
 	
-	
+	bool CleanUp();
 
 public:
 

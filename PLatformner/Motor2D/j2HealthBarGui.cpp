@@ -124,6 +124,16 @@ bool j2HealthBarGui::PostUpdate() {
 	return true;
 }
 
+bool j2HealthBarGui::CleanUp() {
+
+
+
+	App->tex->UnLoad(tex);
+	
+	return true;
+}
+
+
 void j2HealthBarGui::DisplayHealthBar() {
 
 
