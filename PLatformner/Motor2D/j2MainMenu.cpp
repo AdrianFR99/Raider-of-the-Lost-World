@@ -7,8 +7,6 @@
 
 j2MainMenu::j2MainMenu()
 {
-
-	/*active = false;*/
 	name.create("menu");
 
 
