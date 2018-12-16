@@ -33,6 +33,8 @@ Thank you for checking our game!
   
   ATTACK: G       
 
+  PAUSE GAME: ESC
+
 You can perform different attacks depending on if you're not moving, crouching, whilst going up after jumping 
 and if you reach max horizontal speed you can perform a sliding low-attack!
 
@@ -53,10 +55,11 @@ MOVE DOWN: S
 
 * KEY F1: Start from the very first level
 *  "  F2: Start from the beginning of the current level
+*  "  F4: Switch maps
 *  "  F5: Save the current state 
 *  "  F6: Load the previous state (even across levels!)
 *  "  F9: To view colliders/Logic/Enemy Pathfinding
-*  "  F8: Switch Maps
+*  "  F8: UI Debug
 *  "  F10: God Mode (you can fly and nothing will kill you)
 *  "  F11: Enable/Disable FPS Cap to 30 FPS
 
@@ -79,6 +82,9 @@ which will perform a low-slide attack, and another one while going upwards.
 
 -Enemies have a Range of perception.
 
+-When the player picks up more than three lifes,this forth is applied as a shield which will absorve damage of enviromental traps
+and enemies.
+
 ---
  ### Github links
 
@@ -92,7 +98,6 @@ Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
  ### WHO DID WHAT? (TASKS)
 
 Assignment 2:
-
 	-Enemies: DidacRomero & AdrianFR99
 	-Entities: DidacRomero & AdrianFR99
 * UML: AdrianFR99
@@ -108,6 +113,13 @@ Assignment 2:
 * Basic sound effects: (attacks not included) DidacRomero (using bfxr.net)
 * Music for both levels: DidacRomero
 * Environmental sounds (Panning and distance attenuation): DidacRomero
+
+Assignment 3:
+	-UI:DidacRomero & AdrianFR99
+* coins and lifes entities and the behaviour of them: AdrianFR99
+* logo of the game: AdrianFR99
+* Music and sound effects of the UI:DidacRomero
+
 ---
  ### Credits
 
