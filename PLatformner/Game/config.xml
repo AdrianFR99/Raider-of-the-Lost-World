@@ -32,7 +32,10 @@
   <menu>
     <folder>textures/</folder>
     <MainMenuTex path="MainMenu.png"/>
+    <LogoTex path="Raiders.png"/>
+    
     <MainMenuRect x="0" y="314" w="560" h="406"/>
+    <LogoRect x="0" y="0" w="1170" h="638"/>
    
     
    

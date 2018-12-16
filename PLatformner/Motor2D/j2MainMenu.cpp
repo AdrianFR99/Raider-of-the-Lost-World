@@ -39,14 +39,23 @@ bool j2MainMenu::Awake(pugi::xml_node& config) {
 	
 	p2SString strAux = config.child("MainMenuTex").attribute("path").as_string();
 	p2SString strAux2("%s%s", folder.GetString(), strAux.GetString());
+
+	p2SString strAux3 = config.child("LogoTex").attribute("path").as_string();
+	p2SString strAux4("%s%s", folder.GetString(), strAux3.GetString());
 	
 	MainMenuRect.x = config.child("MainMenuRect").attribute("x").as_int();
 	MainMenuRect.y= config.child("MainMenuRect").attribute("y").as_int();
 	MainMenuRect.w = config.child("MainMenuRect").attribute("w").as_int();
 	MainMenuRect.h = config.child("MainMenuRect").attribute("h").as_int();
 
+	LogoRect.x = config.child("LogoRect").attribute("x").as_int();
+	LogoRect.y = config.child("LogoRect").attribute("y").as_int();
+	LogoRect.w = config.child("LogoRect").attribute("w").as_int();
+	LogoRect.h = config.child("LogoRect").attribute("h").as_int();
+
 
 	texturePath = strAux2;
+	logoPath = strAux4;
 
 	return true;
 }
@@ -58,6 +67,7 @@ bool j2MainMenu::Start() {
 	App->entities->Disable();
 
 	MainMenuTex = App->tex->Load(texturePath.GetString());
+	LogoTex = App->tex->Load(logoPath.GetString());
 
 	//Play the menu song
 	p2SString menu_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.end->data->GetString());
@@ -131,6 +141,7 @@ bool j2MainMenu::PostUpdate() {
 
 
 	App->render->Blit(MainMenuTex,0,0,&MainMenuRect);
+	App->render->Blit(LogoTex, -25, 0, &LogoRect,SDL_FLIP_NONE,1.0f,0.0,0,0,true,true);
 
 	return true;
 

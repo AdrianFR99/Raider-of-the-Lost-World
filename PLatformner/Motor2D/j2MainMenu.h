@@ -37,11 +37,13 @@ public:
 public:
 
 SDL_Rect MainMenuRect;
+SDL_Rect LogoRect;
 SDL_Texture*MainMenuTex=nullptr;
-
+SDL_Texture* LogoTex = nullptr;
 
 
 p2SString texturePath;
+p2SString logoPath;
 
 private:
 pugi::xml_node AnimPushBack;

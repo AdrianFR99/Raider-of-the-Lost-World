@@ -274,7 +274,7 @@ void j1Gui::CreateMainMenuScreen()
 
 		//BUTTONS
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
-	iPoint ButtonTestPoint = { 1400,600 };
+	iPoint ButtonTestPoint = { 1400,1000 };
 	//Play
 	ElementGUI* PlayButton = CreateElement("Play", ElementType::BUTTON, ElementAction::PLAY, ButtonTestPoint, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
@@ -284,7 +284,7 @@ void j1Gui::CreateMainMenuScreen()
 	CreateElement("Play_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, PlayText, PlayButton, false);
 
 	//Continue
-	iPoint ButtonTestPoint_2 = { 1400, 800 };
+	iPoint ButtonTestPoint_2 = { 1400, 1200 };
 	ElementGUI* ContinueButton = CreateElement("Continue", ElementType::BUTTON, ElementAction::CONTINUE, ButtonTestPoint_2, atlas, continueButton_Interactable, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 
@@ -306,7 +306,7 @@ void j1Gui::CreateMainMenuScreen()
 	CreateElement("Credits_Label", ElementType::TEXT, ElementAction::NONE, SmallButtonTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, CreditsText, CreditsButton, false);
 
 		//Exit
-	iPoint ButtonTestPoint_5 = { 1400, 1000 };
+	iPoint ButtonTestPoint_5 = { 1400, 1400 };
 	ElementGUI* ExitButton = CreateElement("Exit", ElementType::BUTTON, ElementAction::EXIT, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 	const char* ExitText = "Exit";
