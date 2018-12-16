@@ -60,58 +60,60 @@ bool j2HealthBarGui::PreUpdate() {
 //Update		
 bool j2HealthBarGui::Update() {
 	
-	life=App->entities->player->HitsToRecive;
-	shield= App->entities->player->Shield;
+	if (App->entities->active == true) {
+		life = App->entities->player->HitsToRecive;
+		shield = App->entities->player->Shield;
 
-	switch (life)
-	{
-	case 3:
-		
-		rect = LifeTo3;
+		switch (life)
+		{
+		case 3:
 
-	break;
-	
-	case 2:
+			rect = LifeTo3;
 
-		rect = LifeTo2;
+			break;
 
-		break;
-	
-	case 1:
-		rect = LifeTo1;
+		case 2:
 
-		break;
+			rect = LifeTo2;
 
-	case 0:
+			break;
 
-		rect = Null;
-		break;
+		case 1:
+			rect = LifeTo1;
 
-	}
+			break;
 
+		case 0:
 
-	switch (shield)
-	{
-	case 2:
+			rect = Null;
+			break;
 
-		rect2 = ShieldTo2;
-
-		break;
-
-	case 1:
-
-		rect2 = ShieldTo1;
-
-		break;
-
-	case 0:
-
-		rect2 = Null;
-		break;
+		}
 
 
+		switch (shield)
+		{
+		case 2:
+
+			rect2 = ShieldTo2;
+
+			break;
+
+		case 1:
+
+			rect2 = ShieldTo1;
+
+			break;
+
+		case 0:
+
+			rect2 = Null;
+			break;
 
 
+
+
+		}
 	}
 
 	return true;

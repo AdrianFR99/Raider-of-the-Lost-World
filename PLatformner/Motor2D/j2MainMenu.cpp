@@ -61,7 +61,7 @@ bool j2MainMenu::Start() {
 	p2SString menu_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.end->data->GetString());
 	App->audio->PlayMusic(menu_song.GetString(), 0.5f);
 
-	App->gui->CreateMainMenuScreen();
+	/*App->gui->CreateMainMenuScreen();*/
 
 	//If the Continue button exists and is disabled and there is a save, enable
 	pugi::xml_document save_file;

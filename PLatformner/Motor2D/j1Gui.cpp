@@ -75,6 +75,7 @@ bool j1Gui::Start()
 
 	Hide("Settings_Window");
 	Hide("Credits_Window");
+	Hide("InGameUI");
 
 	bool ret = true;
 	for (p2List_item<ElementGUI*>* item = ElementList.start; item; item = item->next)
@@ -386,12 +387,18 @@ void j1Gui::CreateCreditsScreen()
 void j1Gui::CreatePlayerGui() {
 
 	SDL_Rect defaultRect = { 0,0,0,0 };
-	SDL_Rect HealthFrameRect = { 1082,409,161,52 };
+	iPoint testPoint = { 0,0 };
+	SDL_Rect testRect = { 2, 396, 167, 185 };
+	const char* PanelText = "InGameUI";
+	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
 
+
+	
+	SDL_Rect HealthFrameRect = { 1082,409,161,52 };
 	const char*HealthFrameBar = "HealthFrameBar";
 	iPoint PosFrameHealth = { 0,1356 };
 	
-	HealthFrame=CreateElement(HealthFrameBar, ElementType::SPRITE, ElementAction::NONE, PosFrameHealth, atlas, false, HealthFrameRect, defaultRect, defaultRect);
+	HealthFrame=CreateElement(HealthFrameBar, ElementType::SPRITE, ElementAction::NONE, PosFrameHealth, atlas, false, HealthFrameRect, defaultRect, defaultRect,ButtonType::NOT_BUTTON,nullptr,Panel);
 
 	iPoint PosHealth = {49,45};
 	const char*HealthBar = "HealthBar";
@@ -400,7 +407,7 @@ void j1Gui::CreatePlayerGui() {
 
 	iPoint CoinGUIPos = { 100,100 };
 	const char*Coins = "Coins&Score";
-	CreateElement(Coins, ElementType::VARS_PLAYER,ElementAction::NONE, CoinGUIPos,atlas,false,defaultRect, defaultRect, defaultRect,ButtonType::NOT_BUTTON, "None", nullptr);
+	CreateElement(Coins, ElementType::VARS_PLAYER,ElementAction::NONE, CoinGUIPos,atlas,false,defaultRect, defaultRect, defaultRect,ButtonType::NOT_BUTTON, "None",Panel);
 
 }
 

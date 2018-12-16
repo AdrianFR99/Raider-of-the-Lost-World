@@ -161,6 +161,8 @@ bool j1Scene::Start()
 	//Enable Entities and HIde Main menu
 	App->entities->Enable();
 	App->gui->Hide("Main_Menu");
+	App->gui->Display("InGameUI");
+
 
 	if (CurrentMap2 == false) {
 		App->map->CreateColliders(App->map->data);

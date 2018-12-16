@@ -45,11 +45,20 @@ public:
 
 	char Score[20];
 	const char*ScoreText;
+	const char*ScoreTextAUX;
 	SDL_Texture*ScoretextTexture;
+	SDL_Texture*ScoretextTextureAUX;
 	SDL_Rect RectScore;
+	SDL_Rect RectScoreAUX;
 	
 
-	
+	char Timer[20];
+	const char*TimerText;
+	const char*TimerTextAUX;
+	SDL_Texture*TimertextTexture;
+	SDL_Texture*TimertextTextureAUX;
+	SDL_Rect RectTimer;
+	SDL_Rect RectTimerAUX;
 	
 	SDL_Color ColorText;
 	_TTF_Font*Textfont;

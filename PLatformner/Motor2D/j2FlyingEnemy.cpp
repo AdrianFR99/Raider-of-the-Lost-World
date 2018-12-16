@@ -105,7 +105,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 		active = true;
 	else
 		active = false;
-	if (active)	//If Active: Ok let's do Stuff!
+	if (active==true)	//If Active: Ok let's do Stuff!
 	{
 		if (do_logic == true)
 		{
@@ -142,6 +142,7 @@ bool j2FlyingEnemy::Update(float dt,bool do_logic)
 			position.y += Speed.y;
 		}
 
+		if(currentAnimation !=nullptr)
 		AnimationRect = currentAnimation->GetCurrentFrame(dt);
 
 		//Assign positionChanges
