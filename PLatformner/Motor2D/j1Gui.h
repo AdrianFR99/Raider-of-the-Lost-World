@@ -47,10 +47,13 @@ enum class ElementAction
 	PLAY,
 	CONTINUE,
 	SETTINGS,
+	SETTINGS_BACK,
 	CREDITS,
 	EXIT,
 	MUSIC_VOL,
 	SFX_VOL,
+	WEB,
+	
 
 };
 
@@ -97,7 +100,11 @@ public:
 	//Functions to create the different screens
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
+
 	void CreatePlayerGui();
+
+	void CreateCreditsScreen();
+
 
 	//UI Callbacks
 	void callbackUiElement(ElementGUI *element);
@@ -114,9 +121,12 @@ public:
 	uint button_clicked;
 
 	ElementGUI* volume_slider = nullptr;
+
 	ElementGUI*Panel;
 	ElementGUI*HealthFrame;
 	
+	const char* licenseText = nullptr;
+
 private:
 
 	SDL_Texture* atlas;

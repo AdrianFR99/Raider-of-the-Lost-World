@@ -158,6 +158,10 @@ bool j1Scene::Start()
 
 	//Selecting which Colliders create 
 
+	//Enable Entities and HIde Main menu
+	App->entities->Enable();
+	App->gui->Hide("Main_Menu");
+
 	if (CurrentMap2 == false) {
 		App->map->CreateColliders(App->map->data);
 		

@@ -31,10 +31,15 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//UI Callback override
+	void callbackUiElement(ElementGUI *element);
+
 public:
 
 SDL_Rect MainMenuRect;
 SDL_Texture*MainMenuTex=nullptr;
+
+
 
 p2SString texturePath;
 
@@ -42,6 +47,8 @@ private:
 pugi::xml_node AnimPushBack;
 pugi::xml_document configAnim;
 p2SString			folder;
+
+bool exit_game = false;
 
 };
 

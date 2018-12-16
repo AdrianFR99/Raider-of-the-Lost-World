@@ -13,7 +13,7 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
-	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f);
+	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, bool load = false);
 	bool FadeCustom(int r, int g, int b, float a,float time = 2.0f);
 
 private:
@@ -38,6 +38,8 @@ private:
 
 	//Bool for module Enable and Disable
 	bool manage_active;
+	//Manage Load on continue
+	bool load;
 
 	//Colors and Alpha values
 	int r, g, b;

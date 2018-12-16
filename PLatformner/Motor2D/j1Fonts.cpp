@@ -80,7 +80,8 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, TTF_Font* font)
 {
 	SDL_Texture* ret = NULL;
-	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
+	//SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped((font) ? font : default, text, color,600);
 
 	if (surface == NULL)
 	{
