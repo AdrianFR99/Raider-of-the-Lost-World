@@ -288,29 +288,37 @@ void j1Gui::CreateSettingsScreen()
 	SDL_Rect clickedRect = { 416,170,226,64 };
 	//Settings Screen
 	iPoint testPoint = { 800,20 };
-	SDL_Rect testRect = { 2, 396, 167, 185 };
+	SDL_Rect testRect = { 468, 204, 236, 185 };
 	const char* PanelText = "Settings_Window";
 	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
 
 	//Settings Screen Text
 	iPoint textTestPoint = { 170,50 };
-	SDL_Rect textTestRect = { 0,0, 100, 20 };
+	SDL_Rect textTestRect = { 0,0, 150, 20 };
 	const char*Text = "Settings";
 	CreateElement(Text, ElementType::TEXT, ElementAction::NONE, textTestPoint, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, Text, Panel, false);
 
 	//Music Slider
-	iPoint SlidertestPos = { 100,300 };
+	iPoint SlidertestPos = { 200,300 };
 	SDL_Rect unhoveredSlide = { 1278, 296, 6, 18 };
 	SDL_Rect SlidertestRect = { 1251, 274, 131, 8 };
-	volume_slider = CreateElement("Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	volume_slider = CreateElement("Music_Slider", ElementType::SLIDER, ElementAction::MUSIC_VOL, SlidertestPos, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music Slider Text
+	iPoint musicSliderTestPoint = { 200, 230 };
+	SDL_Rect MusicTestRect = { 0,0, 140, 20 };
+	const char* MusicText = "Music Vol";
+	CreateElement(MusicText, ElementType::TEXT, ElementAction::NONE, musicSliderTestPoint, nullptr, false, MusicTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, MusicText, Panel, false);
 
 	//SFX Slider
-	iPoint SlidertestPos_2 = { 100, 500 };
-	CreateElement("Slider", ElementType::SLIDER, ElementAction::SFX_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
+	iPoint SlidertestPos_2 = { 200, 500 };
+	CreateElement("FX_Slider", ElementType::SLIDER, ElementAction::SFX_VOL, SlidertestPos_2, atlas, false, SlidertestRect, unhoveredSlide, hoveringRect, ButtonType::NOT_BUTTON, "None", Panel, false, false);
 
 	//Music	Slider Text
+	iPoint SlidertestPos_3 = { 200, 400 };
+	const char* SFXText = "FX Vol";
+	CreateElement(SFXText, ElementType::TEXT, ElementAction::NONE, SlidertestPos_3, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, SFXText, Panel, false);
+
 }
 
 

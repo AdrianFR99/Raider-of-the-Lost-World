@@ -60,6 +60,8 @@ bool j2GUIText::Start() {
 	hovering = false;
 	dragging = false;
 
+	//TTF_RenderText_Blended_Wrapped();
+
 	return true;
 }
 //PreUpdate		

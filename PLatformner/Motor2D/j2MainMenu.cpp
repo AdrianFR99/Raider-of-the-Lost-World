@@ -7,6 +7,8 @@
 #include "j1Scene.h"
 #include "j2EntityManager.h"
 #include "ElementGUI.h"
+#include "j1Input.h"
+#include "PugiXml/src/pugixml.hpp"
 
 
 j2MainMenu::j2MainMenu()
@@ -59,6 +61,27 @@ bool j2MainMenu::Start() {
 
 	App->gui->CreateMainMenuScreen();
 
+	//If the Continue button exists and is disabled and there is a save, enable
+	pugi::xml_document save_file;
+	pugi::xml_parse_result res;
+
+	res = save_file.load_file("save_game.xml");
+	
+	ElementGUI* continue_ptr = nullptr;
+	for (p2List_item<ElementGUI*>* item = App->gui->ElementList.start; item != nullptr; item = item->next)
+	{
+		if (item->data->action == ElementAction::CONTINUE)
+		{
+			continue_ptr = item->data;
+			break;
+		}
+	}
+	
+	if (res != NULL && continue_ptr !=nullptr)
+	{
+		continue_ptr->interactable = true;
+	}
+
 	return true;
 
 }
@@ -81,6 +104,10 @@ bool j2MainMenu::Update(float dt) {
 		ret = false;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		App->gui->debug = !App->gui->debug;
+	}
 
 
 	return ret;
