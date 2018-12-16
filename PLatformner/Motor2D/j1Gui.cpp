@@ -451,10 +451,11 @@ void j1Gui::CreateInGameScreen()
 	//MainMenu Button
 	SDL_Rect unHoveredRect = { 950,441,123,37 };
 	iPoint ButtonTestPoint_2 = { 350, 800 };
-	ElementGUI* ContinueButton = CreateElement("Main_MenuBack", ElementType::BUTTON, ElementAction::BACK_TO_MENU, ButtonTestPoint_2, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
+	SDL_Rect SmallButtonRect = { 950,331,92,26 };
+	ElementGUI* ContinueButton = CreateElement("Main_MenuBack", ElementType::BUTTON, ElementAction::BACK_TO_MENU, ButtonTestPoint_2, atlas, true, SmallButtonRect, hoveringRect, clickedRect, ButtonType::SMALL, nullptr, Panel, false, false);
 
 	SDL_Rect RRtextTestRect = { 0,0, 150, 25 };
-	iPoint RRtextTestPoint = { 70,40 };
+	iPoint RRtextTestPoint = { 40,20 };
 	const char* ContinueText = "Main Menu";
 	CreateElement("Continue_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
 
