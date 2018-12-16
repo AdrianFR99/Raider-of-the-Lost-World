@@ -16,7 +16,7 @@ Thank you for checking our game!
 
 ### Gameplay
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IfKwG4F5XU8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BoTzxbeSZW8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 ### CONTROLS:
@@ -122,8 +122,8 @@ Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
  ### WHO DID WHAT? (TASKS)
 
 Assignment 2:
-	-Enemies: DidacRomero & AdrianFR99
-	-Entities: DidacRomero & AdrianFR99
+* Enemies: DidacRomero & AdrianFR99
+* Entities: DidacRomero & AdrianFR99
 * UML: AdrianFR99
 * Player Attacks: AdrianFR99
 * Deltatime implementation and normalization: AdrianFR99
