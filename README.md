@@ -8,6 +8,12 @@ We also have some Profiling working with Brofiler, use it if you want to measure
 
 Thank you for checking our game!
 
+### Download
+You can download the latest version of the game here:
+[Download_the_game here](https://github.com/AdrianFR99/Raider-of-the-Lost-World/releases/download/v0.5/Raiders_of_the_Lost_World.zip)
+
+Unzip the folder from the zip and execute the .exe.
+
 ### Gameplay
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BoTzxbeSZW8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
