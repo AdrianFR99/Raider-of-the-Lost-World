@@ -32,7 +32,7 @@
   <menu>
     <folder>textures/</folder>
     <MainMenuTex path="MainMenu.png"/>
-    <MainMenuRect x="0" y="314" w="560" h="486"/>
+    <MainMenuRect x="0" y="314" w="560" h="406"/>
    
   </menu>
   

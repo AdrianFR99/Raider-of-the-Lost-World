@@ -8,6 +8,7 @@
 j2MainMenu::j2MainMenu()
 {
 
+	/*active = false;*/
 	name.create("menu");
 
 
@@ -27,16 +28,16 @@ j2MainMenu::~j2MainMenu()
 
 bool j2MainMenu::Awake(pugi::xml_node& config) {
 
-
+	
 	folder.create(config.child("folder").child_value());
 	
 	p2SString strAux = config.child("MainMenuTex").attribute("path").as_string();
 	p2SString strAux2("%s%s", folder.GetString(), strAux.GetString());
 	
-	MainMenuRect.x = config.child("MainMenuRect").attribute("x").as_int;
-	MainMenuRect.y= config.child("MainMenuRect").attribute("y").as_int;
-	MainMenuRect.w = config.child("MainMenuRect").attribute("w").as_int;
-	MainMenuRect.h = config.child("MainMenuRect").attribute("h").as_int;
+	MainMenuRect.x = config.child("MainMenuRect").attribute("x").as_int();
+	MainMenuRect.y= config.child("MainMenuRect").attribute("y").as_int();
+	MainMenuRect.w = config.child("MainMenuRect").attribute("w").as_int();
+	MainMenuRect.h = config.child("MainMenuRect").attribute("h").as_int();
 
 
 	texturePath = strAux2;
@@ -75,7 +76,7 @@ bool j2MainMenu::Update(float dt) {
 bool j2MainMenu::PostUpdate() {
 
 
-	App->render->Blit(MainMenuTex,0,314,&MainMenuRect);
+	App->render->Blit(MainMenuTex,0,0,&MainMenuRect);
 
 	return true;
 

@@ -21,6 +21,7 @@
 
 j1Scene::j1Scene() : j1Module()
 {
+	
 	name.create("scene");
 	
 }
@@ -32,6 +33,8 @@ j1Scene::~j1Scene()
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
 {
+	
+	active = false;
 	LOG("Loading Scene");
 	bool ret = true;
 	
