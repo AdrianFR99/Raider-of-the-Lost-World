@@ -13,7 +13,7 @@ You can download the latest version of the game here:
 [Download the game here](https://github.com/AdrianFR99/Raider-of-the-Lost-World/releases/download/v0.5/Raiders_of_the_Lost_World.zip)
 
 Unzip the folder from the zip and execute the .exe.
-You can also chck the previous releases of th egame under our Release section from the repository.
+You can also check the previous releases of the game under our Release section from the repository.
 
 ### Gameplay
 
@@ -65,7 +65,9 @@ MOVE DOWN: S
 *  "  F11: Enable/Disable FPS Cap to 30 FPS
 
 ---
-  ### POTENTIAL INNOVATIONS
+  ### INNOVATIONS 
+  
+  (Features not required for the subject but that add something to game or present a good code improvement/investigation)
 
 -The enemy Bat emmits its sound with Panning and distance attenuation!
 	If you want to play around with how it sounds without running around the bat, 
