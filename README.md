@@ -103,6 +103,22 @@ Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
 
 			(At the left Dídac Romero Camó and at the right Adrián Font Romero)
 
+### CODE SUBSYSTEMS
+
+-MAP
+   The subsystem maps have a secuence of funtions that allows to load xml file, this loads the data based in the different layers
+   that Tiled a 2D map creator program has, this ones are, tile layers, image layers and game objects.Also the map module draws and 
+   creates the colliders of the map. 
+-ENTITIES
+    This module is the one who manages the differents entities of the game, such as enemies,and interactable items(coins and lifes).
+-PATHFINDING
+    This subsystem  contains the A star alghorithm which allows entities to move around the map from point to point,includes a debug
+    functionalities which shows the path taken by the entitie which is using the alghorithm.
+-GUI
+    The subsystem is organized as a tree which includes the code for the the functionalities for various element , such as  
+    buttons, sliders, texts displays and other elements for the game UI. 
+			
+
  ### WHO DID WHAT? (TASKS)
 
 Assignment 2:
