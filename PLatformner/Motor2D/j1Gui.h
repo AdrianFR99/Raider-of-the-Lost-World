@@ -45,10 +45,12 @@ enum class ElementAction
 	PLAY,
 	CONTINUE,
 	SETTINGS,
+	SETTINGS_BACK,
 	CREDITS,
 	EXIT,
 	MUSIC_VOL,
 	SFX_VOL,
+	
 
 };
 

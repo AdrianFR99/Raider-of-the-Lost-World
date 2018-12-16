@@ -163,6 +163,13 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 			}
 			break;
 
+		case	ElementAction::SETTINGS_BACK:
+			if (element->was_clicked && element->clicked == false)
+			{
+				App->gui->Hide("Settings_Window");
+			}
+			break;
+
 		case	ElementAction::CREDITS:
 			if (element->was_clicked && element->clicked == false)
 			{

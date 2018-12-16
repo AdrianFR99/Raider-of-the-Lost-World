@@ -287,7 +287,7 @@ void j1Gui::CreateSettingsScreen()
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };
 	//Settings Screen
-	iPoint testPoint = { 800,20 };
+	iPoint testPoint = { 400,20 };
 	SDL_Rect testRect = { 468, 204, 236, 185 };
 	const char* PanelText = "Settings_Window";
 	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
@@ -319,6 +319,11 @@ void j1Gui::CreateSettingsScreen()
 	const char* SFXText = "FX Vol";
 	CreateElement(SFXText, ElementType::TEXT, ElementAction::NONE, SlidertestPos_3, nullptr, false, textTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, SFXText, Panel, false);
 
+	//Settings back button
+	iPoint ButtonBackPos = { 400, 700};
+	SDL_Rect idleButtonRect = {1204,283,25,25};
+	CreateElement("Settings_Back", ElementType::BUTTON, ElementAction::SETTINGS_BACK, ButtonBackPos, atlas, true, idleButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+	
 }
 
 
