@@ -39,8 +39,8 @@ bool j2GUIText::Awake() {
 		Parent->children.add(this);
 	}
 
-	InterRect.w = rect.w * scale;
-	InterRect.h = rect.h * scale;
+	InterRect.w = rect.w *scale;
+	InterRect.h = rect.h *scale;
 
 	ColorText.r = 255;
 	ColorText.g = 255;
@@ -65,7 +65,6 @@ bool j2GUIText::Start() {
 	hovering = false;
 	dragging = false;
 
-	//TTF_RenderText_Blended_Wrapped();
 
 	return true;
 }

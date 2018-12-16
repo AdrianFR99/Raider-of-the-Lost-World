@@ -349,9 +349,20 @@ void j1Gui::CreateCreditsScreen()
 	const char* PanelText = "Credits_Window";
 	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, true, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false);
 
-	iPoint LicenseTesxtPos = { 40, 20 };
-	SDL_Rect LicenseRect = {0,0,1000, 150};
+	iPoint LicenseTesxtPos = { 100, 170 };
+	SDL_Rect LicenseRect = {0,0,600, 200};
 	CreateElement("License", ElementType::TEXT, ElementAction::NONE, LicenseTesxtPos, nullptr, false, LicenseRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, licenseText, Panel, false);
+
+	//Web
+	iPoint ButtonTestPoint_5 = { 500, 1000 };
+	SDL_Rect CreditsButtonRect = { 950,331,92,26 };
+	ElementGUI* WebButton = CreateElement("Web", ElementType::BUTTON, ElementAction::WEB, ButtonTestPoint_5, atlas, true, CreditsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
+
+
+	iPoint RRtextTestPoint = { 50,20 };
+	SDL_Rect RRtextTestRect = { 0,0, 100, 25 };
+	const char* WebText = "Web";
+	CreateElement("Web_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, WebText, WebButton, false);
 
 
 }

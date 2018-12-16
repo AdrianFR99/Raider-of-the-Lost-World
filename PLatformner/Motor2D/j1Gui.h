@@ -50,6 +50,7 @@ enum class ElementAction
 	EXIT,
 	MUSIC_VOL,
 	SFX_VOL,
+	WEB,
 	
 
 };

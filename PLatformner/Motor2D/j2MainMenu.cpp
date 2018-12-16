@@ -1,5 +1,6 @@
 #include "j1App.h"
 #include "j2MainMenu.h"
+#include "p2Log.h"
 #include "j1Audio.h"
 #include "j1Textures.h"
 #include "j1Render.h"
@@ -174,6 +175,13 @@ void j2MainMenu::callbackUiElement(ElementGUI *element)
 			if (element->was_clicked && element->clicked == false)
 			{
 				App->gui->Display("Credits_Window");
+			}
+			break;
+
+		case	ElementAction::WEB:
+			if (element->was_clicked && element->clicked == false)
+			{
+				ShellExecuteA(NULL, "open", "https://adrianfr99.github.io/Raider-of-the-Lost-World/", NULL, NULL, SW_SHOWNORMAL);
 			}
 			break;
 
