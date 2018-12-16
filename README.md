@@ -6,12 +6,6 @@ Videogame Design and Development.
 We mainly used C++, xml and Tiled to create the game.
 We also have some Profiling working with Brofiler, use it if you want to measure time on different methods and actionsfrom our game!
 
-For the 2nd Assignment, there are enemies that can follow the player by using an A* pathfinding algorithm.
-There are 2 enemies implemented in the game a flying Bat, and a ground Undead.
-Undeads will only follow you if you are close enough to their vertical position and youre under their position or at the same 
-height as them. 
-Flying Bats will fly around chasing you when you enter their perception zone.
- 
 Thank you for checking our game!
 
 ### Gameplay
@@ -88,14 +82,14 @@ and enemies.
 ---
  ### Github links
 
-Adrián Font Romero: https://github.com/AdrianFR99
+Adrián Font Romero: [AdrianFR99](https://github.com/AdrianFR99)
 
-Dídac Romero Camó: https://github.com/DidacRomero
+Dídac Romero Camó: [didacromero](https://github.com/DidacRomero)
 
-Repository of the game: https://github.com/AdrianFR99/Raider-of-the-Lost-World/
-
+Repository of the game: [Raider of the Lost world](https://github.com/AdrianFR99/Raider-of-the-Lost-World/)
 ---
- ### TEAM
+
+### TEAM
  
  
  <p align="center">
