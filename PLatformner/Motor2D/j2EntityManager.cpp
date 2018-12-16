@@ -29,7 +29,7 @@ j2EntityManager::~j2EntityManager()
 
 bool j2EntityManager::Awake(pugi::xml_node & config)
 {
-	active = false;
+	
 
 	bool ret = true;
 	for (p2List_item<j2Entity*>* item = entities.start; item; item = item->next)

@@ -66,7 +66,7 @@ j2FlyingEnemy::j2FlyingEnemy() : j2DynamicEntity()
 	}
 
 	EntitiesEnable = true;
-	currentAnimation = nullptr;
+	//currentAnimation = nullptr;
 	type = ENTITY_TYPE::FLYING_ENEMY;
 }
 

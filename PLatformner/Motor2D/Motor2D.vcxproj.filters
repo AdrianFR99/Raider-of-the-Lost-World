@@ -92,8 +92,17 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClCompile>
+
+    <ClCompile Include="j2MainMenu.cpp" />
+    <ClCompile Include="j2HealthBarGui.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j2CoinsPlayerGUI.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+
     <ClCompile Include="j2MainMenu.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,8 +221,17 @@
     <ClInclude Include="j1Fonts.h">
       <Filter>Desenvolupament  ========\Modules\Fonts</Filter>
     </ClInclude>
+
+    <ClInclude Include="j2MainMenu.h" />
+    <ClInclude Include="j2HealthBarGui.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j2CoinsPlayerGUI.h">
+      <Filter>Desenvolupament  ========\Modules\UI\UI Elements</Filter>
+
     <ClInclude Include="j2MainMenu.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

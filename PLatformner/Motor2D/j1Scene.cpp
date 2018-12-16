@@ -34,7 +34,7 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	
-	active = false;
+	
 	LOG("Loading Scene");
 	bool ret = true;
 	
@@ -138,8 +138,6 @@ bool j1Scene::Start()
 
 	LOG("Loading Maps");
 
-
-
 	for (int i = 0; i < loadedMap.count(); i++) {
 		if (i == 1) {
 			App->map->Load(loadedMap[i]->GetString(), App->map->data2);
@@ -184,6 +182,10 @@ bool j1Scene::Start()
 
 		StageTwoTimerStart = false;
 	}
+	//Creating UI Elements
+
+	
+
 	//Play the first song
 	p2SString lvl_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.start->data->GetString());
 	App->audio->PlayMusic(lvl_song.GetString(), 0.5f);

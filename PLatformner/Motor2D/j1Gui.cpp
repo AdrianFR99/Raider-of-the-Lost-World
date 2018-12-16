@@ -12,6 +12,8 @@
 #include "j2GuiSprites.h"
 #include "j2GUIText.h"
 #include "j2ButtonClass.h"
+#include "j2HealthBarGui.h"
+#include "j2CoinsPlayerGUI.h"
 #include "Brofiler/Brofiler.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "j2SliderGUI.h"
@@ -21,6 +23,9 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
+
+
+
 }
 
 // Destructor
@@ -65,7 +70,9 @@ bool j1Gui::Start()
 	CreateSettingsScreen();
 
 	CreateCreditsScreen();
-	
+
+	App->gui->CreatePlayerGui();
+
 	Hide("Settings_Window");
 	Hide("Credits_Window");
 
@@ -202,6 +209,16 @@ ElementGUI*j1Gui::CreateElement(const char* name, ElementType element, ElementAc
 
 	case ElementType::SLIDER:
 		ElemGUI = new j2SliderGUI(name, element, action, position, rect1, rect2, true, tex, draggable, interactable, invisible);
+		break;
+	case ElementType::HEALTH_BAR:
+
+		ElemGUI = new j2HealthBarGui(name,element,action,position,true,tex, draggable, interactable, invisible);
+		
+		break;
+	case ElementType::COINS_PLAYER:
+
+		ElemGUI = new j2CoinsPlayerGUI(name, element, action, position, true, tex,draggable, interactable, invisible);
+		
 		break;
 	}
 
@@ -366,7 +383,26 @@ void j1Gui::CreateCreditsScreen()
 
 
 }
+void j1Gui::CreatePlayerGui() {
 
+	SDL_Rect defaultRect = { 0,0,0,0 };
+	SDL_Rect HealthFrameRect = { 1082,409,161,52 };
+
+	const char*HealthFrameBar = "HealthFrameBar";
+	iPoint PosFrameHealth = { 0,1356 };
+	
+	HealthFrame=CreateElement(HealthFrameBar, ElementType::SPRITE, ElementAction::NONE, PosFrameHealth, atlas, false, HealthFrameRect, defaultRect, defaultRect);
+
+	iPoint PosHealth = {49,45};
+	const char*HealthBar = "HealthBar";
+	CreateElement(HealthBar, ElementType::HEALTH_BAR, ElementAction::NONE, PosHealth, atlas, false, defaultRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, "None", HealthFrame);
+
+
+	iPoint CoinGUIPos = { 100,100 };
+	const char*Coins = "Coins";
+	CreateElement(Coins, ElementType::COINS_PLAYER,ElementAction::NONE, CoinGUIPos,atlas,false,defaultRect, defaultRect, defaultRect,ButtonType::NOT_BUTTON, "None", nullptr);
+
+}
 
 void j1Gui::callbackUiElement(ElementGUI *element)
 {

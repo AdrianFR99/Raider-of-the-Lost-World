@@ -25,6 +25,8 @@ enum class ElementType
 	TEXT,
 	SPRITE,
 	SLIDER,
+	HEALTH_BAR,
+	COINS_PLAYER,
 	NOT_ELEMENT
 
 };
@@ -98,7 +100,11 @@ public:
 	//Functions to create the different screens
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
+
+	void CreatePlayerGui();
+
 	void CreateCreditsScreen();
+
 
 	//UI Callbacks
 	void callbackUiElement(ElementGUI *element);
@@ -116,7 +122,11 @@ public:
 
 	ElementGUI* volume_slider = nullptr;
 
+	ElementGUI*Panel;
+	ElementGUI*HealthFrame;
+	
 	const char* licenseText = nullptr;
+
 private:
 
 	SDL_Texture* atlas;
@@ -126,7 +136,7 @@ private:
 	p2SString clicked_sound_name;
 
 
-	ElementGUI*Panel;
+	
 };
 
 #endif // __j1GUI_H__

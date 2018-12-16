@@ -43,6 +43,7 @@ bool j2GuiSprites::Awake() {
 }
 //Start
 bool j2GuiSprites::Start() {
+
 	was_hovered = false;
 	was_clicked = false;
 	clicked = false;
@@ -69,6 +70,7 @@ bool j2GuiSprites::Update() {
 }
 //PostUpdate	
 bool j2GuiSprites::PostUpdate() {
+	
 	DisplaySprite();
 	return true;
 }
