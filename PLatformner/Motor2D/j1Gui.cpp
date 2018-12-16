@@ -265,11 +265,9 @@ void j1Gui::CreateMainMenuScreen()
 	CreateElement("Continue_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, ContinueText, ContinueButton, false);
 
 	//Settings
-	iPoint ButtonTestPoint_3 = { 100, 600 };
-	ElementGUI* SettingsButton = CreateElement("Settings", ElementType::BUTTON, ElementAction::SETTINGS, ButtonTestPoint_3, atlas, true, unHoveredRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
-
-	const char* SettingsText = "Settings";
-	CreateElement("Settings_Label", ElementType::TEXT, ElementAction::NONE, RRtextTestPoint, nullptr, false, RRtextTestRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, SettingsText, SettingsButton, false);
+	iPoint ButtonTestPoint_3 = { 50, 1400 };
+	SDL_Rect SettingsButtonRect = {1103,283,25,25};
+	CreateElement("Settings", ElementType::BUTTON, ElementAction::SETTINGS, ButtonTestPoint_3, atlas, true, SettingsButtonRect, hoveringRect, clickedRect, ButtonType::DEFAULT, nullptr, Panel, false, false);
 
 	//Credits
 
