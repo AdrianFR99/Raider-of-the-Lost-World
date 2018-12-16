@@ -63,6 +63,14 @@ bool j2MainMenu::Start() {
 	p2SString menu_song("%s%s", App->audio->music_folder.GetString(), App->audio->songs_list.end->data->GetString());
 	App->audio->PlayMusic(menu_song.GetString(), 0.5f);
 
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+	App->gui->Hide("Settings_Window");
+	App->gui->Hide("Credits_Window");
+	App->gui->Hide("InGameUI");
+	App->gui->Hide("InGame_Settings_Window");
+
+	App->gui->Display("Main_Menu");
 
 	/*App->gui->CreateMainMenuScreen();*/
 

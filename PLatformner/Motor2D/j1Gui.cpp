@@ -264,7 +264,7 @@ void j1Gui::CreateMainMenuScreen()
 	iPoint testPoint = { 0,0 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
 	const char* PanelText = "Main_Menu";
-	Panel = CreateElement("Main_Menu", ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
+	Panel = CreateElement("Main_Menu", ElementType::SPRITE, ElementAction::NONE, testPoint, nullptr, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
 
 	/*iPoint textTestPoint = { 100,600 };
 	SDL_Rect textTestRect = { 0,0, 50, 20 };
@@ -462,7 +462,7 @@ void j1Gui::CreatePlayerGui() {
 	iPoint testPoint = { 0,0 };
 	SDL_Rect testRect = { 2, 396, 167, 185 };
 	const char* PanelText = "InGameUI";
-	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, atlas, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
+	Panel = CreateElement(PanelText, ElementType::SPRITE, ElementAction::NONE, testPoint, nullptr, false, testRect, defaultRect, defaultRect, ButtonType::NOT_BUTTON, nullptr, nullptr, false, true);
 
 
 	

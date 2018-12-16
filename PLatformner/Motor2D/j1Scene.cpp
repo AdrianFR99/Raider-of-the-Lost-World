@@ -112,8 +112,6 @@ void j1Scene::callbackUiElement(ElementGUI * element)
 				if (element->was_clicked && element->clicked == false)
 				{
 					App->fade->FadeToBlack(this,App->menu,3.0f);
-					App->render->camera.x = 0;
-					App->render->camera.y = 0;
 					App->entities->Disable();
 				}
 				break;
@@ -157,8 +155,12 @@ bool j1Scene::Start()
 
 	//Enable Entities and HIde Main menu
 	App->entities->Enable();
-	App->gui->Hide("Main_Menu");
+	
 	App->gui->Display("InGameUI");
+	App->gui->Hide("Main_Menu");
+	App->gui->Hide("Settings_Window");
+	App->gui->Hide("Credits_Window");
+	App->gui->Hide("InGame_Settings_Window");
 
 
 	if (CurrentMap2 == false) {
@@ -269,7 +271,7 @@ bool j1Scene::Update(float dt)
 	{
 		PathfindingDebug = !PathfindingDebug;
 	}
-
+/*
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 	{
 		if (CurrentMap2 == false) {
@@ -290,7 +292,7 @@ bool j1Scene::Update(float dt)
 		}
 	
 	
-	}
+	}*/
 
 
 

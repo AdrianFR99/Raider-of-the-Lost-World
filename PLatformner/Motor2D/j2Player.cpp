@@ -11,6 +11,7 @@
 #include "j1audio.h"
 #include "j2EntityManager.h"
 #include "j1FadeToBlack.h"
+#include "j2MainMenu.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -497,7 +498,7 @@ bool j2Player::Update(float dt, bool do_logic)
 		else
 		{
 
-
+			App->fade->FadeToBlack(App->scene, App->menu, 1.0f);
 			if (DeathTime.Read() > 1000) {
 				
 				//Destroy the player Colliders
@@ -514,7 +515,6 @@ bool j2Player::Update(float dt, bool do_logic)
 
 				else
 					App->render->camera.x = App->map->SetPlayerToInitial(App->map->data2);
-
 
 				dead = false;
 			}
