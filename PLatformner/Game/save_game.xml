@@ -8,12 +8,12 @@
 	<menu />
 	<scene>
 		<switchScene value="false" />
-		<Stage1Time Time="3.58400011" />
+		<Stage1Time Time="35.3440018" />
 		<Stage2Time Time="0" />
 	</scene>
 	<collisions />
 	<entities>
-		<player x="360" y="569" />
+		<player x="531" y="105" />
 		<Speed x="0" y="0" deadCounter="0" />
 		<ToMoveRight value="false" />
 		<ToMoveLeft value="false" />
@@ -22,7 +22,7 @@
 		<MovingRight value="false" />
 		<MovingLeft value="false" />
 		<MovingUp value="false" />
-		<MovingDown value="false" />
+		<MovingDown value="true" />
 		<lookingRight value="true" />
 		<FirstJump value="false" />
 		<ChargedAttackB value="false" />
@@ -37,25 +37,25 @@
 		<landed value="true" />
 		<dead value="false" />
 		<HitsToReceive value="3" />
-		<Shield value="0" />
-		<Coins value="0" />
-		<Score value="0" />
+		<Shield value="2" />
+		<Coins value="3" />
+		<Score value="110" />
 		<UndeadEntity id="4" PositionX="2626" PositionY="392" life="2" hurt="false" dead="false" Enabled="true" />
 		<UndeadEntity id="5" PositionX="3685" PositionY="525" life="2" hurt="false" dead="false" Enabled="true" />
-		<UndeadEntity id="6" PositionX="1898" PositionY="325" life="2" hurt="false" dead="false" Enabled="true" />
-		<UndeadEntity id="7" PositionX="1280" PositionY="288" life="2" hurt="false" dead="false" Enabled="true" />
-		<BatEntity id="8" PositionX="756" PositionY="269" dead="false" Enabled="true" />
-		<BatEntity id="9" PositionX="1647" PositionY="126" dead="false" Enabled="true" />
+		<UndeadEntity id="6" PositionX="1820" PositionY="347" life="2" hurt="false" dead="false" Enabled="true" />
+		<UndeadEntity id="7" PositionX="1174" PositionY="350" life="2" hurt="true" dead="true" Enabled="false" />
+		<BatEntity id="8" PositionX="748" PositionY="359" dead="true" Enabled="false" />
+		<BatEntity id="9" PositionX="1665" PositionY="320" dead="false" Enabled="true" />
 		<BatEntity id="10" PositionX="2451" PositionY="409" dead="false" Enabled="true" />
 		<BatEntity id="11" PositionX="2698" PositionY="109" dead="false" Enabled="true" />
 		<BatEntity id="12" PositionX="3304" PositionY="330" dead="false" Enabled="true" />
 		<BatEntity id="13" PositionX="2213" PositionY="412" dead="false" Enabled="true" />
-		<EntityCoin id="1" Enabled="true" PositionX="790" PositionY="421" touched="false" />
+		<EntityCoin id="1" Enabled="false" PositionX="790" PositionY="421" touched="true" />
 		<EntityCoin id="2" Enabled="true" PositionX="3073" PositionY="354" touched="false" />
 		<Entitylife id="3" Enabled="true" PositionX="3080" PositionY="242" touched="false" />
 		<Entitylife id="4" Enabled="true" PositionX="2336" PositionY="444" touched="false" />
 		<EntityCoin id="5" Enabled="true" PositionX="872" PositionY="123" touched="false" />
-		<EntityCoin id="6" Enabled="true" PositionX="656" PositionY="469" touched="false" />
+		<EntityCoin id="6" Enabled="false" PositionX="656" PositionY="469" touched="true" />
 		<EntityCoin id="7" Enabled="true" PositionX="1357" PositionY="148" touched="false" />
 		<EntityCoin id="8" Enabled="true" PositionX="1401" PositionY="154" touched="false" />
 		<EntityCoin id="9" Enabled="true" PositionX="1438" PositionY="174" touched="false" />
@@ -71,12 +71,12 @@
 		<EntityCoin id="19" Enabled="true" PositionX="2745" PositionY="229" touched="false" />
 		<EntityCoin id="20" Enabled="true" PositionX="2798" PositionY="215" touched="false" />
 		<EntityCoin id="21" Enabled="true" PositionX="2893" PositionY="233" touched="false" />
-		<Entitylife id="22" Enabled="true" PositionX="393" PositionY="123" touched="false" />
-		<Entitylife id="23" Enabled="true" PositionX="431" PositionY="123" touched="false" />
-		<Entitylife id="24" Enabled="true" PositionX="477" PositionY="123" touched="false" />
+		<Entitylife id="22" Enabled="false" PositionX="393" PositionY="123" touched="true" />
+		<Entitylife id="23" Enabled="false" PositionX="431" PositionY="123" touched="true" />
+		<Entitylife id="24" Enabled="false" PositionX="477" PositionY="123" touched="true" />
 		<EntityCoin id="25" Enabled="true" PositionX="752" PositionY="102" touched="false" />
 		<EntityCoin id="26" Enabled="true" PositionX="936" PositionY="96" touched="false" />
-		<EntityCoin id="27" Enabled="true" PositionX="1000" PositionY="96" touched="false" />
+		<EntityCoin id="27" Enabled="false" PositionX="1000" PositionY="96" touched="true" />
 		<EntityCoin id="28" Enabled="true" PositionX="1054" PositionY="106" touched="false" />
 		<EntityCoin id="29" Enabled="true" PositionX="1174" PositionY="139" touched="false" />
 		<UndeadEntity id="50" PositionX="781" PositionY="719" life="2" hurt="false" dead="false" Enabled="false" />
@@ -122,6 +122,6 @@
 	<gui />
 	<FadeToBlack />
 	<renderer>
-		<camera x="123" y="629" />
+		<camera x="476" y="0" />
 	</renderer>
 </game_state>

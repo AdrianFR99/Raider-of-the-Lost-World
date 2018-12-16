@@ -141,7 +141,7 @@ bool j2MainMenu::PostUpdate() {
 
 
 	App->render->Blit(MainMenuTex,0,0,&MainMenuRect);
-	App->render->Blit(LogoTex, -25, 0, &LogoRect,SDL_FLIP_NONE,1.0f,0.0,0,0,true,true);
+	App->render->Blit(LogoTex, 115, 20, &LogoRect,SDL_FLIP_NONE,1.0f,0.0,0,0,true,true);
 
 	return true;
 
