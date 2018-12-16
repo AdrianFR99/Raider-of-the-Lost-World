@@ -69,6 +69,7 @@ bool j2GuiSprites::Update() {
 }
 //PostUpdate	
 bool j2GuiSprites::PostUpdate() {
+	
 	DisplaySprite();
 	return true;
 }

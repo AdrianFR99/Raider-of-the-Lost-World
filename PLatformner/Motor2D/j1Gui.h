@@ -95,6 +95,7 @@ public:
 	//Functions to create the different screens
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
+	void CreatePlayerGui();
 
 	//UI Callbacks
 	void callbackUiElement(ElementGUI *element);

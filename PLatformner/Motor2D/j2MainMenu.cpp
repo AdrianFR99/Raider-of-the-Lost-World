@@ -26,7 +26,8 @@ j2MainMenu::~j2MainMenu()
 
 bool j2MainMenu::Awake(pugi::xml_node& config) {
 
-	
+	active = false;
+
 	folder.create(config.child("folder").child_value());
 	
 	p2SString strAux = config.child("MainMenuTex").attribute("path").as_string();

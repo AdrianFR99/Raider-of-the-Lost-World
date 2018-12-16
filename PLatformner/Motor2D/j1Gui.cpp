@@ -20,6 +20,9 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
+
+
+
 }
 
 // Destructor
@@ -38,7 +41,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		hover_sound_name = conf.child("sfx").attribute("file_hover_start").as_string("");  
 		clicked_sound_name = conf.child("sfx").attribute("file_button_clicked").as_string("");
 	}
-
+	scale = App->win->GetScale();
 	debug = false;
 	return ret;
 }
@@ -57,10 +60,14 @@ bool j1Gui::Start()
 	SDL_Rect hoveringRect = { 646,170,226,64 };
 	SDL_Rect clickedRect = { 416,170,226,64 };*/
 
-	CreateMainMenuScreen();
+	/*CreateMainMenuScreen();
 
-	CreateSettingsScreen();
+
+
+	CreateSettingsScreen();*/
 	
+	App->gui->CreatePlayerGui();
+
 	Hide("Settings_Window");
 
 	bool ret = true;
@@ -293,7 +300,26 @@ void j1Gui::CreateSettingsScreen()
 
 	//Music	Slider Text
 }
+void j1Gui::CreatePlayerGui() {
 
+	SDL_Rect defaultRect = { 0,0,0,0 };
+	SDL_Rect HealthRect = { 1082,474,161,52 };
+
+	const char*HealthBar = "HealthBar";
+	iPoint PosHealth = {0,1355 };
+	CreateElement(HealthBar, ElementType::SPRITE, ElementAction::NONE, PosHealth, atlas, false, HealthRect,defaultRect, defaultRect);
+
+
+
+
+
+
+
+
+
+
+
+}
 
 void j1Gui::callbackUiElement(ElementGUI *element)
 {
