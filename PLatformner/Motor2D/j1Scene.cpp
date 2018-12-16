@@ -103,7 +103,7 @@ void j1Scene::callbackUiElement(ElementGUI * element)
 			case	ElementAction::PLAY:
 				if (element->was_clicked && element->clicked == false)
 				{
-					App->gui->Display("Settings_Window");
+					
 				}
 				break;
 
@@ -117,7 +117,7 @@ void j1Scene::callbackUiElement(ElementGUI * element)
 			case	ElementAction::SETTINGS:
 				if (element->was_clicked && element->clicked == false)
 				{
-
+					App->gui->Display("Settings_Window");
 				}
 				break;
 			}

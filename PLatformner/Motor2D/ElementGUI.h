@@ -47,6 +47,8 @@ public:
 
 	ElementType type;
 	ElementAction action;
+	//This value will only be used by the Slider
+	float slider_value = 1.0f;
 
 	bool isStatic;
 

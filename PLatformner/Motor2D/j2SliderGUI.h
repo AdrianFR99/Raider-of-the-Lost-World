@@ -21,10 +21,8 @@ public:
 	void UpdatePos();
 
 public:
-	float slider_value;
 	float slider_unitVal;
 	uint length;
-	bool values_calc = false;
 };
 
 

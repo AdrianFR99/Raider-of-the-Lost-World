@@ -39,7 +39,7 @@ public:
 	void PlayEnvironmentalFx(unsigned int id, int channel, const iPoint& sound_emmiter, const iPoint& sound_listener, int repeat = 0);
 
 	//UI Callback override
-	//void callbackUiElement(ElementGUI *element);
+	void callbackUiElement(ElementGUI *element);
 public: //Vars
 
 	p2SString music_folder;
